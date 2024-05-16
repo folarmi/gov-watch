@@ -32,7 +32,9 @@ const Header = () => {
         );
       })}
 
-      <CustomButton>Sign In</CustomButton>
+      <Link href="/signin">
+        <CustomButton>Sign In</CustomButton>
+      </Link>
     </nav>
   );
 };

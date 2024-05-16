@@ -22,6 +22,11 @@ export const SidebarList: SidebarItemProp[] = [
     name: "Dashboard",
     url: "/dashboard",
   },
+  {
+    id: 4,
+    name: "Sign up",
+    url: "/signup",
+  },
 ];
 
 export const FooterList: SidebarItemProp[] = [
