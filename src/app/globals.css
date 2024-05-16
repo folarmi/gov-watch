@@ -31,3 +31,19 @@ body {
     text-wrap: balance;
   }
 } */
+
+/* .mapContainer .allHiddenPaths {
+  pointer-events: none;
+} */
+
+/* .mapContainer svg path {
+  fill: "yellow";
+  cursor: pointer;
+} */
+
+/* path:hover {
+  fill: purple;
+  stroke: red;
+  stroke-width: 3px;
+  transition: fill 0.4s;
+} */
