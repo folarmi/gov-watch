@@ -22,6 +22,11 @@ export const SidebarList: SidebarItemProp[] = [
     name: "Dashboard",
     url: "/dashboard",
   },
+  {
+    id: 4,
+    name: "Sign up",
+    url: "/signup",
+  },
 ];
 
 export const FooterList: SidebarItemProp[] = [
@@ -117,5 +122,19 @@ export const cardData = [
     date: "10 Jul 2024",
     promise: true,
     imageUrl: coatOfArms,
+  },
+];
+
+export const stateInfo = [
+  {
+    id: 1,
+    capital: "Ikeja",
+    governor: "Babajide Sanwo-Olu",
+    politicalParty: "All Progressive Congress (APC)",
+    population: "16,536,018",
+    landMass: "3,577 km²",
+    financialAllocation: "246 trillion at 2023",
+    mdas: 82,
+    lga: 20,
   },
 ];

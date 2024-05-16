@@ -13,7 +13,9 @@ const Header = () => {
 
   return (
     <nav className="flex items-center justify-around my-6">
-      <Image src={logo} alt="Company logo" />
+      <Link href="/">
+        <Image src={logo} alt="Company logo" />
+      </Link>
 
       {SidebarList.map(({ name, id, url }) => {
         return (
@@ -30,7 +32,9 @@ const Header = () => {
         );
       })}
 
-      <CustomButton>Sign In</CustomButton>
+      <Link href="/signin">
+        <CustomButton>Sign In</CustomButton>
+      </Link>
     </nav>
   );
 };
