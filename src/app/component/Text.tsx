@@ -2,7 +2,13 @@
 import React from "react";
 
 interface TextProps extends React.HTMLProps<HTMLParagraphElement> {
-  variant?: "heading" | "subheading" | "body" | "bodyTwo" | "caption";
+  variant?:
+    | "heading"
+    | "subheading"
+    | "body"
+    | "bodyTwo"
+    | "bodyThree"
+    | "caption";
   className?: string;
   children: React.ReactNode;
 }
@@ -27,6 +33,9 @@ const Text: React.FC<TextProps> = ({
       break;
     case "bodyTwo":
       textSize = "text-base font-bold";
+      break;
+    case "bodyThree":
+      textSize = "text-xl font-normal";
       break;
     case "caption":
       textSize = "text-sm font-light";

@@ -119,3 +119,17 @@ export const cardData = [
     imageUrl: coatOfArms,
   },
 ];
+
+export const stateInfo = [
+  {
+    id: 1,
+    capital: "Ikeja",
+    governor: "Babajide Sanwo-Olu",
+    politicalParty: "All Progressive Congress (APC)",
+    population: "16,536,018",
+    landMass: "3,577 km²",
+    financialAllocation: "246 trillion at 2023",
+    mdas: 82,
+    lga: 20,
+  },
+];
