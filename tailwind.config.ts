@@ -22,6 +22,8 @@ const config: Config = {
         black_200: "#010101",
         black_300: "#212121",
         grey_100: "#323232",
+        customgreen: "#8db391",
+        green_700: "#047857",
       },
     },
   },
