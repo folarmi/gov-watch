@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use client";
 import React from "react";
 import { useState } from "react";
@@ -28,6 +29,14 @@ const SignIn = () => {
       >
         This is the div that appears when the icon is clicked.
       </div>
+=======
+import React from "react";
+
+const SignIn = () => {
+  return (
+    <div>
+      <p>SignIn</p>
+>>>>>>> 4ca02f43f72be77757bcb2727da5f5a4871ced0e
     </div>
   );
 };
