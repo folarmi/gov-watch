@@ -23,22 +23,22 @@ const Text: React.FC<TextProps> = ({
 
   switch (variant) {
     case "heading":
-      textSize = "text-[40px] font-bold";
+      textSize = "text-[40px] font-bold dark:text-white";
       break;
     case "subheading":
-      textSize = "text-lg font-semibold";
+      textSize = "text-lg font-semibold dark:text-white";
       break;
     case "body":
-      textSize = "text-base font-normal";
+      textSize = "text-base font-normal dark:text-white";
       break;
     case "bodyTwo":
-      textSize = "text-base font-bold";
+      textSize = "text-base font-bold dark:text-white";
       break;
     case "bodyThree":
-      textSize = "text-xl font-normal";
+      textSize = "text-xl font-normal dark:text-white";
       break;
     case "caption":
-      textSize = "text-sm font-light";
+      textSize = "text-sm font-light dark:text-white";
       break;
     default:
       textSize = "text-base font-normal";

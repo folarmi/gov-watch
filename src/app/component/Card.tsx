@@ -25,7 +25,7 @@ const Card = ({
   imageUrl,
 }: CardProps) => {
   return (
-    <div className="max-w-72 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mb-6">
+    <div className="max-w-72 bg-white dark:bg-black_100 border border-gray-200 rounded-lg shadow dark:border-black-100 mb-6">
       <div className="p-5">
         <Image src={imageUrl} alt="dummy image" />
         <Text
@@ -35,18 +35,18 @@ const Card = ({
           {section}
         </Text>
 
-        <p className="font-medium text-black_100 dark:text-gray-400 w-[200]">
+        <p className="font-medium text-black_100 dark:text-white w-[200]">
           {truncateText(articleTitle, 4)}
         </p>
 
-        <p className="pb-2 font-normal text-black_100 dark:text-gray-400 w-[200]">
+        <p className="pb-2 font-normal text-black_100 dark:text-white w-[200]">
           {truncateText(summary, 7)}
         </p>
 
         <div className="flex items-center justify-between">
           <p className="font-medium text-[13px">{date}</p>
           {promise && (
-            <span className="bg-primary_DM text-white text-xs font-bold me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
+            <span className="bg-primary_DM dark:bg-primary_DM text-white text-xs font-bold me-2 px-2.5 py-0.5 rounded  dark:text-gray-300">
               Promise
             </span>
           )}
@@ -62,7 +62,7 @@ const Card = ({
 
         <a
           href="#"
-          className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-primary rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-5"
+          className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-primary rounded-lg focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-primary mt-5"
         >
           Read more
           <svg

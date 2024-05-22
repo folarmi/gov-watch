@@ -20,6 +20,7 @@ const config: Config = {
         black_100: "#0A0909",
         black_200: "#010101",
         black_300: "#212121",
+        black_400: "#141414",
         grey_100: "#323232",
         grey_200: "#6B6A6A",
         customgreen: "#8db391",

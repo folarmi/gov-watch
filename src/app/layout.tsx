@@ -5,6 +5,8 @@ import { ThemeProvider } from "next-themes";
 import { Header } from "./component/Header";
 import Footer from "./component/Footer";
 import QueryClientContextProvider from "./lib/QueryClientContextProvider";
+import ExploreButton from "./component/ExploreButton";
+import ThemeToogle from "./component/ThemeToggle";
 
 // const inter = Inter({ subsets: ["latin"] });
 const inter = Rubik({
@@ -32,6 +34,8 @@ export default function RootLayout({
             <Footer />
           </ThemeProvider>
         </QueryClientContextProvider>
+        {/* <ThemeToogle /> */}
+        <ExploreButton />
       </body>
     </html>
   );
