@@ -23,13 +23,13 @@ const Text: React.FC<TextProps> = ({
 
   switch (variant) {
     case "heading":
-      textSize = "text-[40px] font-bold dark:text-white";
+      textSize = "text-[19px] md:text-[40px] font-bold dark:text-white ";
       break;
     case "subheading":
       textSize = "text-lg font-semibold dark:text-white";
       break;
     case "body":
-      textSize = "text-base font-normal dark:text-white";
+      textSize = "text-xs md:text-base font-normal dark:text-white";
       break;
     case "bodyTwo":
       textSize = "text-base font-bold dark:text-white";

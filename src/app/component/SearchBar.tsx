@@ -24,10 +24,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   };
 
   return (
-    <div className="">
-      <section className="flex justify-center my-14">
-        <div className="flex items-center justify-center bg-white p-2 w-1/2 rounded-[50px]  border border-primary">
-          {/* <select
+    <section className="hidden md:flex justify-center my-14">
+      <div className="flex items-center justify-center bg-white p-2 w-1/2 rounded-[50px]  border border-primary">
+        {/* <select
           className="px-2 py-1 mr-2 bg-white border rounded-md"
           onChange={(e) => setSearchTerm(e.target.value)}
         >
@@ -35,52 +34,51 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
           <option value="option2">Option 2</option>
         </select> */}
 
-          <Image
-            src={filterIcon}
-            alt="a search icon"
-            width={32}
-            className="cursor-pointer "
-            onClick={toggleFilter}
-          />
-          {showFilterDropdown && (
-            <div
-              className={`mt-6 absolute top-52 left-64  bg-green_100  text-offwhite font-medium text-xs rounded-md text-center transition-opacity  ${
-                showFilterDropdown
-                  ? "opacity-100 duration-500"
-                  : "opacity-0 duration-1000 pointer-events-none"
-              }`}
-            >
-              <p className="border-b-2 pb-4 border-grey_200 whitespace-nowrap py-4 px-20">
-                Ministries, Departments, Agencies (MDAs)
-              </p>
-              <p className="border-b-2 pb-4 border-grey_200 whitespace-nowrap py-4 px-20">
-                Political actors
-              </p>
-              <p className="border-b-2 pb-4 border-grey_200 whitespace-nowrap py-4 px-20">
-                State
-              </p>
-              <p className="pb-4 whitespace-nowrap py-4 px-20">
-                Local Govt Area (LGA)
-              </p>
-            </div>
-          )}
-
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-1 px-2 py-1 bg-transparent border-0 focus:outline-none"
-          />
-
-          <button
-            onClick={handleSearch}
-            className="flex-shrink-0 bg-primary text-white px-4 py-2 "
+        <Image
+          src={filterIcon}
+          alt="a search icon"
+          width={32}
+          className="cursor-pointer "
+          onClick={toggleFilter}
+        />
+        {showFilterDropdown && (
+          <div
+            className={`mt-6 absolute top-52 left-64  bg-green_100  text-offwhite font-medium text-xs rounded-md text-center transition-opacity  ${
+              showFilterDropdown
+                ? "opacity-100 duration-500"
+                : "opacity-0 duration-1000 pointer-events-none"
+            }`}
           >
-            <Image src={searchIcon} alt="a search icon" width={32} />
-          </button>
-        </div>
-      </section>
-    </div>
+            <p className="border-b-2 pb-4 border-grey_200 whitespace-nowrap py-4 px-20">
+              Ministries, Departments, Agencies (MDAs)
+            </p>
+            <p className="border-b-2 pb-4 border-grey_200 whitespace-nowrap py-4 px-20">
+              Political actors
+            </p>
+            <p className="border-b-2 pb-4 border-grey_200 whitespace-nowrap py-4 px-20">
+              State
+            </p>
+            <p className="pb-4 whitespace-nowrap py-4 px-20">
+              Local Govt Area (LGA)
+            </p>
+          </div>
+        )}
+
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="flex-1 px-2 py-1 bg-transparent border-0 focus:outline-none"
+        />
+
+        <button
+          onClick={handleSearch}
+          className="flex-shrink-0 bg-primary text-white px-4 py-2 "
+        >
+          <Image src={searchIcon} alt="a search icon" width={32} />
+        </button>
+      </div>
+    </section>
   );
 };
 

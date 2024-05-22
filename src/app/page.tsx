@@ -25,10 +25,10 @@ export default function Home() {
   // if (error) return <div>Error loading data</div>;
 
   return (
-    <div className="px-24">
+    <div className="px-8 md:px-24">
       <SearchBar onSearch={handleSearch} />
       <HeroSection />
-      <ThemeToogle />
+      {/* <ThemeToogle /> */}
       <ScrollableCategories categories={categories} />
       <section className="mt-10 flex flex-wrap justify-between">
         {cardData.map(
