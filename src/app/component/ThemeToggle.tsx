@@ -4,7 +4,8 @@ import { useTheme } from "next-themes";
 
 const ThemeToogle = () => {
   const { systemTheme, theme, setTheme } = useTheme();
-  const currentTheme = theme === "system" ? systemTheme : theme;
+  // const currentTheme = theme === "system" ? systemTheme : theme;
+  const currentTheme = theme === "light" ? systemTheme : theme;
 
   return (
     <button
