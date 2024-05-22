@@ -25,17 +25,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <body className={inter.className}>
-        <QueryClientContextProvider>
-          <ThemeProvider attribute="class">
+        <ThemeProvider attribute="class">
+          <ThemeToogle />
+          <QueryClientContextProvider>
             <Header />
             {children}
             <Footer />
-          </ThemeProvider>
-        </QueryClientContextProvider>
-        {/* <ThemeToogle /> */}
-        <ExploreButton />
+          </QueryClientContextProvider>
+          <ExploreButton />
+        </ThemeProvider>
       </body>
     </html>
   );

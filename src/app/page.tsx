@@ -29,6 +29,7 @@ export default function Home() {
       <SearchBar onSearch={handleSearch} />
       <HeroSection />
       {/* <ThemeToogle /> */}
+
       <ScrollableCategories categories={categories} />
       <section className="mt-10 flex flex-wrap justify-between">
         {cardData.map(
