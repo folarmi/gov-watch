@@ -29,7 +29,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
         {label}
       </label>
       <input
-        className="h-14 rounded-2xl px-4 border-2 border-black bg-gray-50 text-sm"
+        className="h-14 rounded-2xl px-4 border-2 border-black bg-gray-50 text-sm w-auto"
         {...field}
         {...rest}
       />
