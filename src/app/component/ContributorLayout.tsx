@@ -3,7 +3,7 @@ import React from "react";
 import { editorSideBarItems } from "../data";
 import Image from "next/image";
 
-const EditorLayout = ({
+const ContributorLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -27,4 +27,4 @@ const EditorLayout = ({
   );
 };
 
-export default EditorLayout;
+export default ContributorLayout;

@@ -199,21 +199,54 @@ export const editorSideBarItems = [
   {
     id: 1,
     name: "No. of Contributors",
+    image: iconTwo,
   },
   {
     id: 2,
     name: "Approved Publications",
+    image: iconThree,
   },
   {
     id: 3,
     name: "Reviewed Publications",
+    image: iconOne,
   },
   {
     id: 4,
     name: "Pending  Publications",
+    image: iconFive,
   },
   {
     id: 5,
     name: "Total Publications",
+    image: iconFour,
+  },
+];
+
+export const editDashboard = [
+  {
+    id: 1,
+    name: "Total Published",
+    number: 700,
+  },
+  {
+    id: 2,
+    name: "Submitted  Publication",
+    number: 600,
+  },
+  {
+    id: 3,
+    name: "Rejected Publication",
+    number: 200,
+  },
+  {
+    id: 4,
+    name: "Approved Publication",
+    number: 400,
+  },
+  {
+    id: 5,
+    name: "Bookmarks",
+    number: 156,
   },
 ];
