@@ -1,32 +1,79 @@
 "use client";
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
+import CustomInput from "../component/CustomInput";
+import Image from "next/image";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { FormValues } from "../types/generalTypes";
 
+//const SignIn: React.FC = () => {
+  //const [email, setEmail] = useState('');
+  //const [password, setPassword] = useState('');
+
+  //const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //setEmail(e.target.value);
+  //};
+
+  //const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //setPassword(e.target.value);
+  //};
+
+//const isFormFilled = email !== '' && password !== '';
+  
 const SignIn = () => {
-  const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+  const { handleSubmit, control } = useForm<FormValues>();
 
-  const toggleDiv = () => {
-    setShowFilterDropdown(!showFilterDropdown);
-    // console.log("showDiv state:", showDiv); // Debugging to check if state toggles correctly
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
+    console.log(data);
   };
 
   return (
-    <div className="relative">
-      <button
-        className="bg-blue-500 text-white py-2 px-4 rounded"
-        onClick={toggleDiv}
-      >
-        Toggle Div
-      </button>
-      <div
-        className={`absolute bg-white shadow-md p-4 rounded-lg transition-opacity ${
-          showFilterDropdown
-            ? "opacity-100 duration-500"
-            : "opacity-0 duration-1000 pointer-events-none"
-        }`}
-        style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
-      >
-        This is the div that appears when the icon is clicked.
+    <div className="flex justify-center gap-16 py-10">
+      <div className="w-1/3 min-h-full bg-cover bg-center relative rounded-3xl hidden lg:block"
+           style={{ backgroundImage: "url('/Signin-Banner.svg')" }}>
+        <div className="absolute inset-0 bg-gradient-to-b from-primary bg-opacity-75 rounded-3xl">
+          <div className="mt-6 ml-7">
+            <Image src="logo.svg" alt="logo" width={70} height={70} />
+          </div>
+          <h1 className="font-bold text-3xl px-7 mt-40 ">Be informed, Engaged And Empowered</h1>
+          <p className="text-sm px-7">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum sequi cupiditate voluptates blanditiis libero neque commodi quas quod itaque nam, at delectus amet voluptatibus iure in quibusdam est expedita corporis!</p>
+        </div>
+      </div>
+
+      <div>
+        <h1 className="font-bold text-4xl">Welcome Back</h1>
+        <p className="mb-9">Enter your email and password to access your account</p>
+
+        <form onSubmit={handleSubmit(onSubmit)}>
+
+        <CustomInput
+            label="Email 
+            address"
+            name="email"
+            control={control}
+            rules={{ required: "Email is required" }}
+          />
+
+          <CustomInput
+            label="Password"
+            name="password"
+            control={control}
+            rules={{ required: "Password is required" }}
+          />
+
+          <p className="font-bold text-sm ml-72">Forgot Password?</p>
+
+          <button
+            type="submit"
+            className={`mt-8 px-32 py-4 rounded-2xl w-full text-white ${ true
+              ? 'bg-primary' : 'bg-customgreen'}`}
+            //disabled={!isFormFilled}
+          >
+            Sign In
+          </button>
+          <p className="flex justify-center mt-5 text-sm">
+            Don't have an account? <span className="font-bold text-primary">Sign Up</span>
+          </p>
+        </form>
       </div>
     </div>
   );
