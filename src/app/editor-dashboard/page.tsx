@@ -3,8 +3,8 @@ import React from "react";
 import { cardData, editorDashboard } from "../data";
 import Card from "../component/Card";
 import SearchBar from "../component/SearchBar";
-import Text from "../component/Text";
 import EditorLayout from "../component/EditorLayout";
+import InformationTab from "../component/InformationTab";
 
 const EditorDashboard = () => {
   const handleSearch = () => {};
@@ -13,20 +13,7 @@ const EditorDashboard = () => {
     <div className="px-8 md:px-12">
       <SearchBar onSearch={handleSearch} />
 
-      <div className="flex items-center justify-between px-16 bg-green_300 rounded-lg py-9">
-        {editorDashboard.map(({ id, name, number }) => {
-          return (
-            <div key={id}>
-              <Text className="text-green_200" variant="heading">
-                {number}
-              </Text>
-              <Text variant="caption" className="text-center text-grey_100">
-                {name}
-              </Text>
-            </div>
-          );
-        })}
-      </div>
+      <InformationTab data={editorDashboard} />
 
       <EditorLayout>
         <section className="mt-10 flex flex-wrap justify-between">

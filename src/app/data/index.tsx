@@ -5,6 +5,15 @@ import iconTwo from "../../../public/iconTwo.svg";
 import iconThree from "../../../public/iconThree.svg";
 import iconFour from "../../../public/iconFour.svg";
 import iconFive from "../../../public/iconFive.svg";
+import iconSix from "../../../public/iconSix.svg";
+import iconSeven from "../../../public/iconSeven.svg";
+import iconEight from "../../../public/iconEight.svg";
+import categoriesIcon from "../../../public/categories.svg";
+import state from "../../../public/state.svg";
+import lga from "../../../public/lga.svg";
+import mda from "../../../public/mda.svg";
+import region from "../../../public/region.svg";
+import inbox from "../../../public/inbox.svg";
 
 export const SidebarList: SidebarItemProp[] = [
   {
@@ -223,7 +232,7 @@ export const editorSideBarItems = [
   },
 ];
 
-export const editDashboard = [
+export const contributorDashboard = [
   {
     id: 1,
     name: "Total Published",
@@ -248,5 +257,104 @@ export const editDashboard = [
     id: 5,
     name: "Bookmarks",
     number: 156,
+  },
+];
+
+export const contributorSideBarItems = [
+  {
+    id: 1,
+    name: "Total Publications",
+    image: iconFour,
+  },
+  {
+    id: 2,
+    name: "Approved Publication",
+    image: iconThree,
+  },
+  {
+    id: 3,
+    name: "Submitted Publications",
+    image: iconEight,
+  },
+  {
+    id: 4,
+    name: "Unapproved Publication",
+    image: iconSeven,
+  },
+  {
+    id: 5,
+    name: "Draft",
+    image: iconSix,
+  },
+];
+
+export const adminDashboard = [
+  {
+    id: 1,
+    name: "Top Engaged Post",
+    number: 700,
+  },
+  {
+    id: 2,
+    name: "Total Publications",
+    number: 160,
+  },
+  {
+    id: 3,
+    name: "Submitted Publication",
+    number: 165,
+  },
+  {
+    id: 4,
+    name: "Pending Publication",
+    number: 5,
+  },
+  {
+    id: 5,
+    name: "Bookmarks",
+    number: 56,
+  },
+  {
+    id: 6,
+    name: "Total Users",
+    number: 400,
+  },
+];
+
+export const adminDashboardSideBarItems = [
+  {
+    id: 1,
+    name: "Manage Users",
+    image: iconTwo,
+  },
+  {
+    id: 2,
+    name: "Categories",
+    image: categoriesIcon,
+  },
+  {
+    id: 3,
+    name: "State",
+    image: state,
+  },
+  {
+    id: 4,
+    name: "LGA",
+    image: lga,
+  },
+  {
+    id: 5,
+    name: "MDA",
+    image: mda,
+  },
+  {
+    id: 6,
+    name: "Region",
+    image: region,
+  },
+  {
+    id: 7,
+    name: "All inbox",
+    image: inbox,
   },
 ];
