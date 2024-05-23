@@ -7,7 +7,6 @@ import SearchBar from "./component/SearchBar";
 import { cardData, categories } from "./data";
 import arrow from "../../public/arrow.svg";
 import Image from "next/image";
-import ThemeToogle from "./component/ThemeToggle";
 
 export default function Home() {
   const handleSearch = () => {};
@@ -28,7 +27,6 @@ export default function Home() {
     <div className="px-8 md:px-24">
       <SearchBar onSearch={handleSearch} />
       <HeroSection />
-      {/* <ThemeToogle /> */}
 
       <ScrollableCategories categories={categories} />
       <section className="mt-10 flex flex-wrap justify-between">

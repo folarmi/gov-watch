@@ -1,5 +1,10 @@
 import { SidebarItemProp } from "../types/generalTypes";
 import coatOfArms from "../../../public/coatOfArms.svg";
+import iconOne from "../../../public/iconOne.svg";
+import iconTwo from "../../../public/iconTwo.svg";
+import iconThree from "../../../public/iconThree.svg";
+import iconFour from "../../../public/iconFour.svg";
+import iconFive from "../../../public/iconFive.svg";
 
 export const SidebarList: SidebarItemProp[] = [
   {
@@ -136,5 +141,79 @@ export const stateInfo = [
     financialAllocation: "246 trillion at 2023",
     mdas: 82,
     lga: 20,
+  },
+];
+
+export const customerDashboard = [
+  {
+    id: 1,
+    name: "Total Read",
+    number: 700,
+  },
+  {
+    id: 2,
+    name: "Total Liked Post",
+    number: 156,
+  },
+  {
+    id: 3,
+    name: "Bookmarks",
+    number: 400,
+  },
+];
+
+export const editorDashboard = [
+  {
+    id: 1,
+    name: "Total Contributors",
+    number: 700,
+  },
+  {
+    id: 2,
+    name: "Approved Publications ",
+    number: 160,
+  },
+  {
+    id: 3,
+    name: "Reviewed Publications",
+    number: 165,
+  },
+  {
+    id: 4,
+    name: "Pending  Publications",
+    number: 5,
+  },
+  {
+    id: 5,
+    name: "Top Contributors",
+    number: 56,
+  },
+  {
+    id: 6,
+    name: "Total Publications",
+    number: 400,
+  },
+];
+
+export const editorSideBarItems = [
+  {
+    id: 1,
+    name: "No. of Contributors",
+  },
+  {
+    id: 2,
+    name: "Approved Publications",
+  },
+  {
+    id: 3,
+    name: "Reviewed Publications",
+  },
+  {
+    id: 4,
+    name: "Pending  Publications",
+  },
+  {
+    id: 5,
+    name: "Total Publications",
   },
 ];
