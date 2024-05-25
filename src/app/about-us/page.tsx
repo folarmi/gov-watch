@@ -22,7 +22,11 @@ const About = () => {
         </div>
       </div>
 
+<<<<<<< HEAD
+      <div className="flex mx-6 md:mx-10 lg:mx-20 gap-16 lg:flex-row md:flex-row flex-col">
+=======
       <div className="flex mx-6 md:mx-10 lg:mx-20 gap-7 lg:flex-row md:flex-row flex-col">
+>>>>>>> a5253702df24d0dd7292ec8577fd3e44d238cc8d
         <div className="bg-green-200 rounded-2xl">
           <h1 className="font-bold text-3xl text-green-700 mb-14 mt-11 flex justify-center">THE TEAM</h1>
 
@@ -30,10 +34,17 @@ const About = () => {
             <div className="mb-8">
               <Team
               img='Olabayo.svg'
+<<<<<<< HEAD
+            name="Olabayo Balogun"
+            role="lorem ipsum dolor sit a met consectetur" />
+            </div>
+            <div className="lg:pl-36 mb-8">
+=======
               name="Olabayo Balogun"
               role="lorem ipsum dolor sit a met consectetur" />
             </div>
             <div className="mb-8 lg:pl-44 md:pl-24">
+>>>>>>> a5253702df24d0dd7292ec8577fd3e44d238cc8d
               <Team
               img='Folashayo.svg'
               name="Folashayo Akinyosoye"
@@ -45,11 +56,19 @@ const About = () => {
               name="Phebe Keshinro"
               role="lorem ipsum dolor sit a met consectetur" />
           </div>
+<<<<<<< HEAD
+            <div className="lg:pl-36 mb-24">
+              <Team
+              img='Ayomide.svg'
+              name="Ayomide Gbebu"
+             role="lorem ipsum dolor sit a met consectetur" />
+=======
             <div className="mb-24 lg:pl-44 md:pl-24">
               <Team
               img='Ayomide.svg'
               name="Ayomide Gbebu"
               role="lorem ipsum dolor sit a met consectetur" />
+>>>>>>> a5253702df24d0dd7292ec8577fd3e44d238cc8d
             </div>
           </div>
         </div>

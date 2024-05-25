@@ -27,7 +27,7 @@ const CustomTextArea: React.FC<CustomTextAreaProps> = ({
   });
 
   return (
-    <div className="flex flex-col gap-2 mb-3 w-full lg:w-1/2 md:w-1/2 sm:w-1/2">
+    <div className="flex flex-col gap-2 mb-3 w-full">
       <label htmlFor={label} className="text-sm font-semibold">
         {label}
       </label>

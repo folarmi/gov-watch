@@ -2,19 +2,26 @@
 
 import React from "react";
 import logo from "../../../public/logo.svg";
+import darkModeLogo from "../../../public/logoDarkMode.svg";
 import Image from "next/image";
 import { SidebarList } from "../data";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import CustomButton from "./CustomButton";
+import { useTheme } from "next-themes";
 
 const Header = () => {
   const pathName = usePathname();
+  const { theme } = useTheme();
 
   return (
-    <nav className="flex items-center justify-around my-6">
+    <nav className="hidden md:flex items-center justify-around my-6">
       <Link href="/">
-        <Image src={logo} alt="Company logo" />
+        {theme === "light" ? (
+          <Image src={logo} alt="Company logo" />
+        ) : (
+          <Image src={darkModeLogo} alt="Company logo" />
+        )}
       </Link>
 
       {SidebarList.map(({ name, id, url }) => {
