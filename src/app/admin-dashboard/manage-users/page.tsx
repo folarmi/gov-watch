@@ -7,8 +7,14 @@ import React from "react";
 import defaultAvatar from "../../../../public/defaultAvatar.svg";
 import Image from "next/image";
 import IndeterminateCheckbox from "@/app/component/InterdeterminateCheckbox";
+import filterIcon from "../../../../public/filterIcon.svg";
+import trashCan from "../../../../public/trash.svg";
+import CustomSelect from "@/app/component/CustomSelect";
+import { useForm } from "react-hook-form";
 
 const ManageUsers = () => {
+  const { control } = useForm();
+
   const [data, setData] = React.useState<UserType[]>([
     {
       username: "Jane Doe",
@@ -107,8 +113,38 @@ const ManageUsers = () => {
     }),
   ];
 
+  const options = [
+    { value: "admin", label: "Make Admin" },
+    { value: "user", label: "Make User" },
+    { value: "editor", label: "Make Editor" },
+    { value: "contributor", label: "Make Contributor" },
+    { value: "edit", label: "Edit" },
+  ];
+
   return (
-    <div>
+    <div className="mt-10">
+      <section className="flex items-center mb-4 justify-between">
+        <div className="flex py-5 items-center border border-gray-300 rounded-lg overflow-hidden w-80 h-8">
+          <div className="px-3 cursor-pointer">
+            <Image src={filterIcon} alt="filter icon" width={30} height={30} />
+          </div>
+          <input type="text" className="flex-1 px-2 focus:outline-none" />
+        </div>
+
+        <div className="flex items-center">
+          <CustomSelect
+            name="mySelect"
+            options={options}
+            label="Actions"
+            control={control}
+          />
+
+          <div className="flex items-center ml-4 cursor-pointer">
+            <Image src={trashCan} alt="trash can" className="" />
+            <p>Delete</p>
+          </div>
+        </div>
+      </section>
       <Table columns={columns} data={data} />
     </div>
   );

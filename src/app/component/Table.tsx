@@ -4,12 +4,12 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import React from "react";
-import searchIcon from "../../../public/searchIcon.svg";
-import filterIcon from "../../../public/filterIcon.svg";
-import Image from "next/image";
-import CustomSelect from "./CustomSelect";
-import { useForm } from "react-hook-form";
-import trashCan from "../../../public/trash.svg";
+// import searchIcon from "../../../public/searchIcon.svg";
+// import filterIcon from "../../../public/filterIcon.svg";
+// import Image from "next/image";
+// import CustomSelect from "./CustomSelect";
+// import { useForm } from "react-hook-form";
+// import trashCan from "../../../public/trash.svg";
 
 const Table = ({ columns, data }: any) => {
   const table = useReactTable({
@@ -18,18 +18,8 @@ const Table = ({ columns, data }: any) => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const { control } = useForm();
-
-  const options = [
-    { value: "admin", label: "Make Admin" },
-    { value: "user", label: "Make User" },
-    { value: "editor", label: "Make Editor" },
-    { value: "contributor", label: "Make Contributor" },
-    { value: "edit", label: "Edit" },
-  ];
-
   return (
-    <section className="mt-10">
+    <section>
       {/* Search Bar */}
       <section className="flex items-center justify-between">
         {/* <div className="flex items-center border border-gray-300 rounded-[50px] overflow-hidden w-[420px] h-[54px]">

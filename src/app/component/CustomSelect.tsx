@@ -13,6 +13,7 @@ interface CustomSelectProps extends SelectProps<Option> {
   options: Option[];
   label?: string;
   control: any;
+  className?: any;
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({
@@ -20,6 +21,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   control,
   options,
   label,
+  className,
   ...rest
 }) => {
   const {
@@ -28,9 +30,9 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   } = useController({ name, control });
 
   return (
-    <div className="mb-4">
+    <div className={`mb-4 w-full ${className}`}>
       {label && (
-        <label className="block text-sm font-medium text-gray-700">
+        <label className="block text-sm pb-4 font-medium text-gray-700 dark:text-white">
           {label}
         </label>
       )}

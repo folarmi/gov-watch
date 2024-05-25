@@ -54,7 +54,7 @@ const Region = () => {
   ];
 
   return (
-    <div>
+    <div className="mt-10">
       <Table columns={columns} data={data} />
     </div>
   );

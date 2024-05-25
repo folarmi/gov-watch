@@ -21,30 +21,34 @@ const AdminDashboardLayout = ({
 
   return (
     <section className="px-8 md:px-24">
-      <SearchBar onSearch={handleSearch} />
+      {/* <SearchBar onSearch={handleSearch} /> */}
       <InformationTab data={adminDashboard} />
       <div className="flex ">
-        <section className="bg-green_100 text-white px-8 my-10 mr-8 pt-6 rounded-lg">
-          <div className="flex items-center pb-11">
+        <section className="bg-green_100 text-white my-10 mr-8 pt-6 rounded-lg">
+          <div className="flex items-center px-8 mb-6">
             <Image src={iconSeven} alt="item icon" />
             <p className="text-base font-medium whitespace-nowrap mx-5 cursor-pointer">
               Unapproved Publications
             </p>
           </div>
 
-          <p className="text-base font-medium pb-8 cursor-pointer">Editing</p>
-          <div className="flex items-center pb-11">
+          <p className="text-base font-medium px-8 pb-8 cursor-pointer">
+            Editing
+          </p>
+          <div className="flex items-center px-8 mb-6">
             <Image src={pending} alt="item icon" />
             <p className="text-base font-medium whitespace-nowrap mx-5 cursor-pointer">
               Pending Publications
             </p>
           </div>
 
-          <p className="text-base font-medium pb-8 cursor-pointer">Admin</p>
+          <p className="text-base font-medium px-8 pb-8 cursor-pointer">
+            Admin
+          </p>
           {adminDashboardSideBarItems.map(({ id, name, image, link }) => {
             return (
               <div
-                className={`flex items-center pb-11 ${
+                className={`flex items-center py-4 px-8 mb-6 ${
                   pathName === link ? "bg-green_300" : ""
                 }`}
                 key={id}
