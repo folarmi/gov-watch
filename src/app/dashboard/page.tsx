@@ -5,6 +5,10 @@ import { cardData, customerDashboard } from "../data";
 import Card from "../component/Card";
 import SearchBar from "../component/SearchBar";
 import InformationTab from "../component/InformationTab";
+import Image from "next/image";
+import ExploreButton from "../component/ExploreButton";
+import arrow from "../../../public/arrow.svg";
+import SeeAllPublications from "../component/SeeAllPublications";
 
 const Dashboard = () => {
   const handleSearch = () => {};
@@ -35,6 +39,8 @@ const Dashboard = () => {
           }
         )}
       </section>
+      <SeeAllPublications />
+      <ExploreButton />
     </div>
   );
 };

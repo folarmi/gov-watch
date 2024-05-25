@@ -326,35 +326,42 @@ export const adminDashboardSideBarItems = [
     id: 1,
     name: "Manage Users",
     image: iconTwo,
+    link: "/admin-dashboard/manage-users",
   },
   {
     id: 2,
     name: "Categories",
     image: categoriesIcon,
+    link: "/admin-dashboard/categories",
   },
   {
     id: 3,
     name: "State",
     image: state,
+    link: "/admin-dashboard/state",
   },
   {
     id: 4,
     name: "LGA",
     image: lga,
+    link: "/admin-dashboard/lga",
   },
   {
     id: 5,
     name: "MDA",
     image: mda,
+    link: "/admin-dashboard/mda",
   },
   {
     id: 6,
     name: "Region",
     image: region,
+    link: "/admin-dashboard/region",
   },
   {
     id: 7,
     name: "All inbox",
     image: inbox,
+    link: "/admin-dashboard/all-inbox",
   },
 ];

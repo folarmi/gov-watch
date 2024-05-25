@@ -3,6 +3,7 @@ import React from "react";
 import SearchBar from "../component/SearchBar";
 import { cardData } from "../data";
 import Card from "../component/Card";
+import SeeAllPublications from "../component/SeeAllPublications";
 
 const AdminDashboard = () => {
   const handleSearch = () => {};
@@ -27,6 +28,7 @@ const AdminDashboard = () => {
           }
         )}
       </section>
+      <SeeAllPublications />
     </div>
   );
 };

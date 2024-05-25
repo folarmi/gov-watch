@@ -1,4 +1,5 @@
-// components/SectionLayout.js
+"use client";
+
 import React from "react";
 import { adminDashboard, adminDashboardSideBarItems } from "../data";
 import Image from "next/image";
@@ -6,14 +7,21 @@ import InformationTab from "../component/InformationTab";
 import CreatePublication from "../component/CreatePublication";
 import pending from "../../../public/pending.svg";
 import iconSeven from "../../../public/iconSeven.svg";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import SearchBar from "../component/SearchBar";
 
 const AdminDashboardLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
+  const pathName = usePathname();
+  const handleSearch = () => {};
+
   return (
     <section className="px-8 md:px-24">
+      <SearchBar onSearch={handleSearch} />
       <InformationTab data={adminDashboard} />
       <div className="flex ">
         <section className="bg-green_100 text-white px-8 my-10 mr-8 pt-6 rounded-lg">
@@ -33,13 +41,21 @@ const AdminDashboardLayout = ({
           </div>
 
           <p className="text-base font-medium pb-8 cursor-pointer">Admin</p>
-          {adminDashboardSideBarItems.map(({ id, name, image }) => {
+          {adminDashboardSideBarItems.map(({ id, name, image, link }) => {
             return (
-              <div className="flex items-center pb-11" key={id}>
+              <div
+                className={`flex items-center pb-11 ${
+                  pathName === link ? "bg-green_300" : ""
+                }`}
+                key={id}
+              >
                 <Image src={image} alt="item icon" className="" />
-                <p className="text-base font-medium whitespace-nowrap mx-5 cursor-pointer">
+                <Link
+                  href={link}
+                  className={`text-base font-medium whitespace-nowrap mx-5 cursor-pointer`}
+                >
                   {name}
-                </p>
+                </Link>
               </div>
             );
           })}
