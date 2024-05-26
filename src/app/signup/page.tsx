@@ -4,6 +4,7 @@ import CustomInput from "../component/CustomInput";
 import Image from "next/image";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FormValues } from "../types/generalTypes";
+import Link from "next/link";
 
 const Signup = () => {
   const { handleSubmit, control } = useForm<FormValues>();
@@ -91,8 +92,6 @@ const Signup = () => {
             control={control}
             rules={{ required: "Confirm password" }}
           />
-          
-          <p className="font-bold text-sm ml-72">Forgot Password?</p>
 
           <button
             type="submit"
@@ -101,9 +100,12 @@ const Signup = () => {
           >
             Sign Up
           </button>
-          <p className="flex justify-center mt-5 text-sm">
-            Already have an account? <span className="font-bold text-primary">Sign In</span>
-          </p>
+          
+          <Link href="/signin">
+            <p className="flex justify-center mt-5 text-sm">
+              Already have an account? <span className="font-bold text-primary">Sign In</span>
+            </p>
+          </Link>
         </form>
       </div>
     </div>
