@@ -158,16 +158,19 @@ export const customerDashboard = [
     id: 1,
     name: "Total Read",
     number: 700,
+    path: "/",
   },
   {
     id: 2,
     name: "Total Liked Post",
     number: 156,
+    path: "/",
   },
   {
     id: 3,
     name: "Bookmarks",
     number: 400,
+    path: "/",
   },
 ];
 
@@ -176,31 +179,37 @@ export const editorDashboard = [
     id: 1,
     name: "Total Contributors",
     number: 700,
+    path: "/",
   },
   {
     id: 2,
     name: "Approved Publications ",
     number: 160,
+    path: "/",
   },
   {
     id: 3,
     name: "Reviewed Publications",
     number: 165,
+    path: "/",
   },
   {
     id: 4,
     name: "Pending  Publications",
     number: 5,
+    path: "/",
   },
   {
     id: 5,
     name: "Top Contributors",
     number: 56,
+    path: "/",
   },
   {
     id: 6,
     name: "Total Publications",
     number: 400,
+    path: "/",
   },
 ];
 
@@ -237,26 +246,31 @@ export const contributorDashboard = [
     id: 1,
     name: "Total Published",
     number: 700,
+    path: "/",
   },
   {
     id: 2,
     name: "Submitted  Publication",
     number: 600,
+    path: "/",
   },
   {
     id: 3,
     name: "Rejected Publication",
     number: 200,
+    path: "/",
   },
   {
     id: 4,
     name: "Approved Publication",
     number: 400,
+    path: "/",
   },
   {
     id: 5,
     name: "Bookmarks",
     number: 156,
+    path: "/",
   },
 ];
 
@@ -293,31 +307,37 @@ export const adminDashboard = [
     id: 1,
     name: "Top Engaged Post",
     number: 700,
+    path: "/admin-dashboard/top-engaged-posts",
   },
   {
     id: 2,
     name: "Total Publications",
     number: 160,
+    path: "/admin-dashboard/total-publications",
   },
   {
     id: 3,
     name: "Submitted Publication",
     number: 165,
+    path: "/admin-dashboard/submitted-publications",
   },
   {
     id: 4,
     name: "Pending Publication",
     number: 5,
+    path: "/admin-dashboard/pending-publications",
   },
   {
     id: 5,
     name: "Bookmarks",
     number: 56,
+    path: "/admin-dashboard/bookmarks",
   },
   {
     id: 6,
     name: "Total Users",
     number: 400,
+    path: "/admin-dashboard/manage-users",
   },
 ];
 

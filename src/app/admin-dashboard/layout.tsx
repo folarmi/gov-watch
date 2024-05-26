@@ -9,7 +9,7 @@ import pending from "../../../public/pending.svg";
 import iconSeven from "../../../public/iconSeven.svg";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import SearchBar from "../component/SearchBar";
+// import SearchBar from "../component/SearchBar";
 
 const AdminDashboardLayout = ({
   children,
@@ -17,7 +17,7 @@ const AdminDashboardLayout = ({
   children: React.ReactNode;
 }>) => {
   const pathName = usePathname();
-  const handleSearch = () => {};
+  // const handleSearch = () => {};
 
   return (
     <section className="px-8 md:px-24">
