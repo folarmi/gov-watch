@@ -158,19 +158,19 @@ export const customerDashboard = [
     id: 1,
     name: "Total Read",
     number: 700,
-    path: "/",
+    path: "/dashboard",
   },
   {
     id: 2,
     name: "Total Liked Post",
     number: 156,
-    path: "/",
+    path: "/dashboard/liked-post",
   },
   {
     id: 3,
     name: "Bookmarks",
     number: 400,
-    path: "/",
+    path: "/dashboard/bookmarks",
   },
 ];
 
@@ -179,37 +179,37 @@ export const editorDashboard = [
     id: 1,
     name: "Total Contributors",
     number: 700,
-    path: "/",
+    path: "/editor-dashboard/total-contributors",
   },
   {
     id: 2,
     name: "Approved Publications ",
     number: 160,
-    path: "/",
+    path: "/editor-dashboard/approved-publications",
   },
   {
     id: 3,
     name: "Reviewed Publications",
     number: 165,
-    path: "/",
+    path: "/editor-dashboard/reviewed-publications",
   },
   {
     id: 4,
     name: "Pending  Publications",
     number: 5,
-    path: "/",
+    path: "/editor-dashboard/pending-publications",
   },
   {
     id: 5,
     name: "Top Contributors",
     number: 56,
-    path: "/",
+    path: "/editor-dashboard/top-contributors",
   },
   {
     id: 6,
     name: "Total Publications",
     number: 400,
-    path: "/",
+    path: "/editor-dashboard/total-publications",
   },
 ];
 
@@ -218,26 +218,31 @@ export const editorSideBarItems = [
     id: 1,
     name: "No. of Contributors",
     image: iconTwo,
+    path: "/editor-dashboard/total-contributors",
   },
   {
     id: 2,
     name: "Approved Publications",
     image: iconThree,
+    path: "/editor-dashboard/approved-publications",
   },
   {
     id: 3,
     name: "Reviewed Publications",
     image: iconOne,
+    path: "/editor-dashboard/reviewed-publications",
   },
   {
     id: 4,
     name: "Pending  Publications",
     image: iconFive,
+    path: "/editor-dashboard/pending-publications",
   },
   {
     id: 5,
     name: "Total Publications",
     image: iconFour,
+    path: "/editor-dashboard/total-publications",
   },
 ];
 
@@ -246,31 +251,31 @@ export const contributorDashboard = [
     id: 1,
     name: "Total Published",
     number: 700,
-    path: "/",
+    path: "/contributor-dashboard",
   },
   {
     id: 2,
-    name: "Submitted  Publication",
+    name: "Submitted Publication",
     number: 600,
-    path: "/",
+    path: "/contributor-dashboard/submitted-publications",
   },
   {
     id: 3,
     name: "Rejected Publication",
     number: 200,
-    path: "/",
+    path: "/contributor-dashboard/unapproved-publications",
   },
   {
     id: 4,
     name: "Approved Publication",
     number: 400,
-    path: "/",
+    path: "/contributor-dashboard/approved-publications",
   },
   {
     id: 5,
     name: "Bookmarks",
     number: 156,
-    path: "/",
+    path: "/contributor-dashboard/bookmarks",
   },
 ];
 
@@ -279,26 +284,31 @@ export const contributorSideBarItems = [
     id: 1,
     name: "Total Publications",
     image: iconFour,
+    path: "/contributor-dashboard",
   },
   {
     id: 2,
     name: "Approved Publication",
     image: iconThree,
+    path: "/contributor-dashboard/approved-publications",
   },
   {
     id: 3,
     name: "Submitted Publications",
     image: iconEight,
+    path: "/contributor-dashboard/submitted-publications",
   },
   {
     id: 4,
     name: "Unapproved Publication",
     image: iconSeven,
+    path: "/contributor-dashboard/unapproved-publications",
   },
   {
     id: 5,
     name: "Draft",
     image: iconSix,
+    path: "/contributor-dashboard/drafts",
   },
 ];
 

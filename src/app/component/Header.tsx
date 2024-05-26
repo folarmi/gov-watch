@@ -16,7 +16,7 @@ import { motion } from "framer-motion";
 const Header = () => {
   const pathName = usePathname();
   const { theme } = useTheme();
-  const [isSideBarOpen, setIsSideBarOpen] = useState(true);
+  const [isSideBarOpen, setIsSideBarOpen] = useState(false);
 
   const toggleSideBar = () => {
     setIsSideBarOpen(!isSideBarOpen);

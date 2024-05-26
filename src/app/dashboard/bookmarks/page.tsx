@@ -1,12 +1,12 @@
 "use client";
 
 import React from "react";
-import { cardData } from "../data";
-import Card from "../component/Card";
-import ExploreButton from "../component/ExploreButton";
-import SeeAllPublications from "../component/SeeAllPublications";
+import { cardData } from "../../data";
+import Card from "../../component/Card";
+import ExploreButton from "../../component/ExploreButton";
+import SeeAllPublications from "../../component/SeeAllPublications";
 
-const Dashboard = () => {
+const BookMarks = () => {
   return (
     <div className="">
       <section className="mt-10 flex flex-wrap justify-between">
@@ -36,4 +36,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default BookMarks;
