@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const HeroSection = () => {
   return (
-    <div className="flex items-center justify-between my-12">
+    <div className="flex items-center justify-between my-2 md:my-12">
       <div>
         <Text
           variant="heading"
@@ -15,7 +15,7 @@ const HeroSection = () => {
           participation in governance.
         </Text>
         <div className="flex items-center justify-between">
-          <Text variant="body" className="w-[236px] md:w-[891px]">
+          <Text variant="body" className="w-[236px] md:w-[891px] pb-4 md:pb-0">
             Lorem ipsum dolor sit amet consectetur. Neque eu velit diam vel
             venenatis cras. Tincidunt curabitur quis praesent aliquet lectus
             neque. Varius et scelerisque faucibus id convallis gravida. Sed

@@ -44,38 +44,39 @@ const ContactUs = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="lg:my-24 lg:mx-48 flex flex-col gap-3 items-center shadow-2xl bg-gray-50 dark:bg-black_400 px-8 py-6"
       >
-        <CustomInput
-          name="name"
-          label="Your Name"
-          control={control}
-          placeholder="Enter your name here"
-          rules={{ required: "First name is required" }}
-        />
+        <div className="w-full lg:w-1/2 md:w-1/2 sm:w-1/2">
+          <CustomInput
+            name="name"
+            label="Your Name"
+            control={control}
+            placeholder="Enter your name here"
+            rules={{ required: "First name is required" }}
+          />
 
-        <CustomInput
-          name="email"
-          label="Email address"
-          control={control}
-          placeholder="Enter your email address here"
-          rules={{ required: "Email is required" }}
-        />
+          <CustomInput
+            name="email"
+            label="Email address"
+            control={control}
+            placeholder="Enter your email address here"
+            rules={{ required: "Email is required" }}
+          />
 
-        <CustomInput
-          name="subject"
-          label="Subject of the message"
-          control={control}
-          placeholder="Enter your subject message here"
-          rules={{ required: "Subject is required" }}
-          required
-        />
+          <CustomInput
+            name="subject"
+            label="Subject of the message"
+            control={control}
+            placeholder="Enter your subject message here"
+            rules={{ required: "Subject is required" }}
+            required
+          />
 
-        <CustomTextArea
-          name="message"
-          placeholder="Write your message here"
-          control={control}
-          label="  Your message"
-        />
-
+          <CustomTextArea
+            name="message"
+            placeholder="Write your message here"
+            control={control}
+            label="  Your message"
+          />
+        </div>
         <button
           className={`mt-8 mb-20 px-32 py-4 rounded-2xl text-white ${
             true ? "bg-customgreen" : "bg-primary transition-all duration-500"

@@ -7,7 +7,8 @@ import SearchBar from "./component/SearchBar";
 import { cardData, categories } from "./data";
 import arrow from "../../public/arrow.svg";
 import Image from "next/image";
-import ThemeToogle from "./component/ThemeToggle";
+import ExploreButton from "./component/ExploreButton";
+import SeeAllPublications from "./component/SeeAllPublications";
 
 export default function Home() {
   const handleSearch = () => {};
@@ -28,7 +29,6 @@ export default function Home() {
     <div className="px-8 md:px-24">
       <SearchBar onSearch={handleSearch} />
       <HeroSection />
-      {/* <ThemeToogle /> */}
 
       <ScrollableCategories categories={categories} />
       <section className="mt-10 flex flex-wrap justify-between">
@@ -37,7 +37,7 @@ export default function Home() {
             return (
               <div
                 key={articleTitle}
-                className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4"
+                className=" flex items-center justify-center w-full sm:w-1/2 md:w-1/3 lg:w-1/4"
               >
                 <Card
                   section={section}
@@ -52,11 +52,8 @@ export default function Home() {
           }
         )}
       </section>
-
-      <div className="mb-6 flex items-center justify-end">
-        <p className="text-lg font-bold pr-3">See More Publications</p>
-        <Image src={arrow} alt="arrow" />
-      </div>
+      <SeeAllPublications />
+      <ExploreButton />
     </div>
   );
 }

@@ -5,7 +5,6 @@ import { ThemeProvider } from "next-themes";
 import { Header } from "./component/Header";
 import Footer from "./component/Footer";
 import QueryClientContextProvider from "./lib/QueryClientContextProvider";
-import ExploreButton from "./component/ExploreButton";
 import ThemeToogle from "./component/ThemeToggle";
 
 // const inter = Inter({ subsets: ["latin"] });
@@ -34,7 +33,6 @@ export default function RootLayout({
             {children}
             <Footer />
           </QueryClientContextProvider>
-          <ExploreButton />
         </ThemeProvider>
       </body>
     </html>

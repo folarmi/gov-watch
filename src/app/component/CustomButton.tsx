@@ -11,11 +11,11 @@ const CustomButton: React.FC<ButtonProps> = ({
   ...props
 }) => {
   let buttonStyle =
-    "bg-primary text-white text-base font-medium py-5 px-12 rounded-[20px]";
+    "bg-primary text-white text-base font-medium py-4 px-10 rounded-2xl";
 
   if (variant === "secondary") {
     buttonStyle =
-      "bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded";
+      "bg-white text-black font-medium py-4 px-10 rounded border border-primary rounded-2xl";
   }
 
   return (
