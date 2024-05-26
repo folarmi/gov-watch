@@ -18,7 +18,7 @@ const InformationTab = ({ data }: InformationTabProps) => {
   const pathName = usePathname();
 
   return (
-    <div className="flex items-center justify-between px-16 bg-green_300 rounded-lg py-9">
+    <div className="flex items-center justify-between px-8 md:px-16 bg-green_300 rounded-lg py-9">
       {data.map(({ id, name, number, path }) => {
         return (
           <Link

@@ -35,7 +35,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
           />
           {showFilterDropdown && (
             <div
-              className={`mt-6 absolute top-52 left-64  bg-green_100  text-offwhite font-medium text-xs rounded-md text-center transition-opacity  ${
+              className={`mt-6 absolute md:top-52 md:left-64  bg-green_100  text-offwhite font-medium text-xs rounded-md text-center transition-opacity  ${
                 showFilterDropdown
                   ? "opacity-100 duration-500"
                   : "opacity-0 duration-1000 pointer-events-none"
