@@ -2,19 +2,17 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import ReactTooltip from "react-tooltip";
+import { Tooltip } from "react-tooltip";
 
 const Explore = () => {
   const [selectedState, setSelectedState] = useState<string | null>(null);
 
-  const handleStateClick = (stateId: string, stateName: string) => {
+  const handleStateClick = (stateId: string) => {
     setSelectedState(stateId);
-    ReactTooltip.show(document.getElementById(stateId));
   };
 
   return (
     <div className="flex justify-center items-center mapContainer">
-      {/* <Image src={nigeria} alt="a map of nigeria" /> */}
       <div>
         <svg
           width="1034"
@@ -50,12 +48,15 @@ const Explore = () => {
           <g>
             <motion.path
               className={`state ${
-                selectedState === "Akwa Ibom" ? "fill-red-500" : "fill-gray-300"
-              }`}
+                selectedState === "akw" ? "fill-green_300" : "fill-white"
+              } hover:fill-green_300`}
               d="M498.036 885.052L494.564 868.309L468.526 823.732L456.591 823.515L448.129 805.901L440.534 802.64L431.203 814.817L422.958 840.04L420.354 845.042L426.43 850.478L425.996 891.141"
               stroke="#008000"
               stroke-width="2.41053"
-              id="Akwa Ibom"
+              id="akw"
+              key="akw"
+              data-tooltip-id="akw"
+              data-tooltip-content="Akwa Ibom"
               onClick={() => handleStateClick("Akwa Ibom")}
               // whileTap={{ scale: 0.95 }}
               transition={{ duration: 0.2 }}
@@ -376,9 +377,37 @@ const Explore = () => {
             fill="#010101"
           />
         </svg>
+        <Tooltip place="bottom-end" id="akw" />
       </div>
-
-      {/* <Test /> */}
+      {/* <div>
+        <svg
+          version="1.1"
+          id="Layer_1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlnsXlink="http://www.w3.org/1999/xlink"
+          viewBox="0 0 800 600"
+          xmlSpace="preserve"
+          className="w-full h-auto"
+        >
+          <g>
+            {states.map((state) => (
+              <motion.path
+                key={state.id}
+                id={state.id}
+                data-tip={state.name}
+                data-for={`${state.id}Tooltip`}
+                className={`state ${
+                  selectedState === state.id ? "fill-blue-500" : "fill-gray-300"
+                }`}
+                d={state.pathData}
+                onClick={() => handleStateClick(state.id)}
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.2 }}
+              />
+            ))}
+          </g>
+        </svg>
+      </div> */}
     </div>
   );
 };

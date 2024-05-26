@@ -16,12 +16,15 @@ const Header = () => {
 
   return (
     <nav className="hidden md:flex items-center justify-around my-6">
-      <Link href="/">
+      {/* <Link href="/">
         {theme === "light" ? (
           <Image src={logo} alt="Company logo" />
         ) : (
           <Image src={darkModeLogo} alt="Company logo" />
         )}
+      </Link> */}
+      <Link href="/">
+        <Image src={logo} alt="Company logo" />
       </Link>
 
       {SidebarList.map(({ name, id, url }) => {
