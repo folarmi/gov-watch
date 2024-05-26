@@ -1,9 +1,17 @@
-import React from "react";
-import nigeria from "../../../public/nigeria.svg";
-import Image from "next/image";
-import Test from "../component/test";
+"use client";
+
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import ReactTooltip from "react-tooltip";
 
 const Explore = () => {
+  const [selectedState, setSelectedState] = useState<string | null>(null);
+
+  const handleStateClick = (stateId: string, stateName: string) => {
+    setSelectedState(stateId);
+    ReactTooltip.show(document.getElementById(stateId));
+  };
+
   return (
     <div className="flex justify-center items-center mapContainer">
       {/* <Image src={nigeria} alt="a map of nigeria" /> */}
@@ -39,16 +47,18 @@ const Explore = () => {
             stroke="#008000"
             stroke-width="2.41053"
           />
-          <g id="AKW">
-            <path
+          <g>
+            <motion.path
+              className={`state ${
+                selectedState === "Akwa Ibom" ? "fill-red-500" : "fill-gray-300"
+              }`}
               d="M498.036 885.052L494.564 868.309L468.526 823.732L456.591 823.515L448.129 805.901L440.534 802.64L431.203 814.817L422.958 840.04L420.354 845.042L426.43 850.478L425.996 891.141"
               stroke="#008000"
               stroke-width="2.41053"
-              //   style={{
-              //     fill: "red",
-              //   }}
               id="Akwa Ibom"
-              className="allHiddenPaths"
+              onClick={() => handleStateClick("Akwa Ibom")}
+              // whileTap={{ scale: 0.95 }}
+              transition={{ duration: 0.2 }}
             />
           </g>
 
