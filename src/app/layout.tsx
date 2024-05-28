@@ -5,7 +5,6 @@ import { ThemeProvider } from "next-themes";
 import { Header } from "./component/Header";
 import Footer from "./component/Footer";
 import QueryClientContextProvider from "./lib/QueryClientContextProvider";
-import ExploreButton from "./component/ExploreButton";
 import ThemeToogle from "./component/ThemeToggle";
 
 // const inter = Inter({ subsets: ["latin"] });
@@ -25,17 +24,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <body className={inter.className}>
-        <QueryClientContextProvider>
-          <ThemeProvider attribute="class">
+        <ThemeProvider attribute="class">
+          <ThemeToogle />
+          <QueryClientContextProvider>
             <Header />
             {children}
             <Footer />
-          </ThemeProvider>
-        </QueryClientContextProvider>
-        {/* <ThemeToogle /> */}
-        <ExploreButton />
+          </QueryClientContextProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

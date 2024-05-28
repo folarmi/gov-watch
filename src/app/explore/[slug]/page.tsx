@@ -6,6 +6,7 @@ import Image from "next/image";
 import { cardData } from "../../data";
 import Card from "../../component/Card";
 import ExploreButton from "../../component/ExploreButton";
+import SeeAllPublications from "@/app/component/SeeAllPublications";
 
 const StateDetails = () => {
   return (
@@ -58,10 +59,7 @@ const StateDetails = () => {
         )}
       </section>
 
-      <div className="mb-6 flex items-center justify-end">
-        <p className="text-lg font-bold pr-3">See More Publications</p>
-        <Image src={arrow} alt="arrow" />
-      </div>
+      <SeeAllPublications />
 
       <ExploreButton />
     </div>

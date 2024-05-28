@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 import React, { useState } from "react";
 import CustomInput from "../component/CustomInput";
@@ -7,19 +8,19 @@ import { FormValues } from "../types/generalTypes";
 import Link from "next/link";
 
 //const SignIn: React.FC = () => {
-  //const [email, setEmail] = useState('');
-  //const [password, setPassword] = useState('');
+//const [email, setEmail] = useState('');
+//const [password, setPassword] = useState('');
 
-  //const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //setEmail(e.target.value);
-  //};
+//const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//setEmail(e.target.value);
+//};
 
-  //const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //setPassword(e.target.value);
-  //};
+//const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//setPassword(e.target.value);
+//};
 
 //const isFormFilled = email !== '' && password !== '';
-  
+
 const SignIn = () => {
     const { handleSubmit, control } = useForm<FormValues>();
 
@@ -42,8 +43,10 @@ const SignIn = () => {
 
   return (
     <div className="flex justify-center gap-16 py-10">
-      <div className="w-1/3 min-h-full bg-cover bg-center relative rounded-3xl hidden lg:block"
-           style={{ backgroundImage: "url('/Signin-Banner.svg')" }}>
+      <div
+        className="w-1/3 min-h-full bg-cover bg-center relative rounded-3xl hidden lg:block"
+        style={{ backgroundImage: "url('/Signin-Banner.svg')" }}
+      >
         <div className="absolute inset-0 bg-gradient-to-b from-primary bg-opacity-75 rounded-3xl">
           <div className="mt-6 ml-7">
             <Image src="logo.svg" alt="logo" width={70} height={70} />
@@ -55,7 +58,9 @@ const SignIn = () => {
 
       <div className="mb-24">
         <h1 className="font-bold text-4xl">Welcome Back</h1>
-        <p className="mb-9">Enter your email and password to access your account</p>
+        <p className="mb-9">
+          Enter your email and password to access your account
+        </p>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <CustomInput
@@ -85,7 +90,8 @@ const SignIn = () => {
             Sign In
           </button>
           <p className="flex justify-center mt-5 text-sm">
-            Don't have an account? <span className="font-bold text-primary">Sign Up</span>
+            Don't have an account?{" "}
+            <span className="font-bold text-primary">Sign Up</span>
           </p>
         </form>
       </div>
