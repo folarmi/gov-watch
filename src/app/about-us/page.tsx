@@ -57,10 +57,9 @@ const About = () => {
           <div className="mx-6">
             <div className="mb-8">
               <Team
-                img="Olabayo.svg"
-                name="Olabayo Balogun"
-                role="lorem ipsum dolor sit a met consectetur"
-              />
+              img='Olabayo.svg'
+              name="Olabayo Balogun"
+              role="lorem ipsum dolor sit a met consectetur" />
             </div>
             <div className="mb-8 lg:pl-44 md:pl-24">
               <Team
@@ -70,18 +69,16 @@ const About = () => {
               />
             </div>
             <div className="mb-8">
-              <Team
-                img="Phebe.svg"
-                name="Phebe Keshinro"
-                role="lorem ipsum dolor sit a met consectetur"
-              />
-            </div>
+             <Team
+              img='Phebe.svg'
+              name="Phebe Keshinro"
+              role="lorem ipsum dolor sit a met consectetur" />
+          </div>
             <div className="mb-24 lg:pl-44 md:pl-24">
               <Team
-                img="Ayomide.svg"
-                name="Ayomide Gbebu"
-                role="lorem ipsum dolor sit a met consectetur"
-              />
+              img='Ayomide.svg'
+              name="Ayomide Gbebu"
+              role="lorem ipsum dolor sit a met consectetur" />
             </div>
           </div>
         </div>
