@@ -7,83 +7,97 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { FormValues } from "../types/generalTypes";
 import Link from "next/link";
 
-const Signup = () => {
-  const { handleSubmit, control } = useForm<FormValues>();
+//const SignIn: React.FC = () => {
+//const [email, setEmail] = useState('');
+//const [password, setPassword] = useState('');
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log(data);
-  };
+//const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//setEmail(e.target.value);
+//};
 
-  //const [formData, setFormData] = useState({
-  //fName: '',
-  //lName: '',
-  //email: '',
-  //sor: '',
-  //password: '',
-  //cPassword: ''
-  //});
+//const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//setPassword(e.target.value);
+//};
 
-  //const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //const { name, value } = e.target;
-  // setFormData(prevState => ({ ...prevState, [name]: value }));
+//const isFormFilled = email !== '' && password !== '';
+
+const SignIn = () => {
+    const { handleSubmit, control } = useForm<FormValues>();
+
+    const onSubmit: SubmitHandler<FormValues> = (data) => {
+      console.log(data);
+    };  
+
+  //const [email, setEmail] = useState('');
+  //const [password, setPassword] = useState('');
+
+  //const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //setEmail(e.target.value);
+ // };
+
+  //const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+   // setPassword(e.target.value);
   //};
 
-  //const isFormFilled = Object.values(formData).every(value => value !== '');
+  //const isFormFilled = email !== '' && password !== '';
 
   return (
     <div className="flex justify-center gap-16 py-10">
       <div
         className="w-1/3 min-h-full bg-cover bg-center relative rounded-3xl hidden lg:block"
-        style={{ backgroundImage: "url('/Signup-Banner.svg')" }}
+        style={{ backgroundImage: "url('/signup-Banner.svg')" }}
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-primary to-gray-200 opacity-75 rounded-3xl">
-          <div className="mt-6 ml-7 pb-28">
+        <div className="absolute inset-0 bg-gradient-to-b from-primary bg-opacity-75 rounded-3xl">
+          <div className="mt-6 ml-7 pb-56">
             <Image src="logo.svg" alt="logo" width={70} height={70} />
           </div>
-          <h1 className="font-bold text-3xl mt-96 px-5">
-            Empowering Nigerians with information and fostering citizen
-            participation in governance.
-          </h1>
+          <h1 className="font-extrabold text-3xl px-4 mt-96 ">Empowering Nigerians with information and fostering citizen participation in governance.</h1>
         </div>
       </div>
 
-      <div>
-        <h1 className="font-bold text-4xl">Let's get started</h1>
-        <p className="mb-9">Kindly fill in the required details below</p>
+      <div className="mb-24 md:mx-10 mx-6 w-96">
+        <h1 className="font-bold text-4xl mb-2">Let's get started</h1>
+        <p className="mb-9">
+          Kindly fill in the required details below
+        </p>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <CustomInput
+        <CustomInput
             label="First name"
             name="fName"
+            type="name"
             control={control}
-            rules={{ required: "First Name is required" }}
+            rules={{ required: "First name is required" }}
           />
 
           <CustomInput
             label="Last name"
             name="lName"
+            type="name"
             control={control}
-            rules={{ required: "Last Name is required" }}
+            rules={{ required: "Last name is required" }}
           />
 
           <CustomInput
-            label="Email 
-            address"
+            label="Email address"
             name="email"
+            type="email"
             control={control}
             rules={{ required: "Email is required" }}
           />
 
           <CustomInput
-            label="State of Residence"
-            name="sor"
+            label="State Of Residence"
+            name="SOR"
+            type="name"
             control={control}
-            rules={{ required: "State of Residience is required" }}
+            rules={{ required: "State of residence is required" }}
           />
 
           <CustomInput
             label="Password"
             name="password"
+            type="password"
             control={control}
             rules={{ required: "Password is required" }}
           />
@@ -91,29 +105,27 @@ const Signup = () => {
           <CustomInput
             label="Confirm Password"
             name="cPassword"
+            type="password"
             control={control}
-            rules={{ required: "Confirm password" }}
+            rules={{ required: "Please confirm your password" }}
           />
 
           <button
             type="submit"
-            className={`mt-8 px-32 py-4 rounded-2xl w-full text-white ${
-              true ? "bg-primary" : "bg-customgreen"
-            }`}
+            className={`mt-8 px-32 py-4 rounded-2xl w-full text-white ${true
+              ? 'bg-primary' : 'bg-customgreen'}`}
             //disabled={!isFormFilled}
           >
-            Sign Up
+            Sign In
           </button>
-          
-          <Link href="/signin">
-            <p className="flex justify-center mt-5 text-sm">
-              Already have an account? <span className="font-bold text-primary">Sign In</span>
-            </p>
-          </Link>
+          <p className="flex justify-center mt-5 text-sm">
+            Don't have an account?{" "}
+            <span className="font-bold text-primary">Sign Up</span>
+          </p>
         </form>
       </div>
     </div>
   );
 };
 
-export default Signup;
+export default SignIn;

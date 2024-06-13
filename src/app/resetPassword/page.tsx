@@ -52,14 +52,15 @@ const resetPassword = () => {
         </div>
       </div>
 
-      <div className="mb-36">
-        <h1 className="font-bold text-4xl">Reset Password</h1>
+      <div className="mb-36 md:mx-10 mx-12">
+        <h1 className="font-bold text-4xl mb-2">Reset Password</h1>
         <p className="mb-9">Enter your email and we will share a link to create a new password.</p>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <CustomInput
             label="New password"
             name="password"
+            type="password"
             control={control}
             rules={{ required: "Password is required" }}
             placeholder="Enter new password"
@@ -67,7 +68,8 @@ const resetPassword = () => {
           
           <CustomInput
             label="Confirm password"
-            name="password"
+            name="Cpassword"
+            type="password"
             control={control}
             rules={{ required: "Password is required" }}
             placeholder="Confirm new password"
