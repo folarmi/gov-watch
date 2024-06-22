@@ -1,27 +1,25 @@
-/* eslint-disable react/no-unescaped-entities */
 "use client";
 import React, { useState } from "react";
 import CustomInput from "../component/CustomInput";
 import Image from "next/image";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FormValues } from "../types/generalTypes";
-import Link from "next/link";
 
 //const SignIn: React.FC = () => {
-//const [email, setEmail] = useState('');
-//const [password, setPassword] = useState('');
+  //const [email, setEmail] = useState('');
+  //const [password, setPassword] = useState('');
 
-//const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//setEmail(e.target.value);
-//};
+  //const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //setEmail(e.target.value);
+  //};
 
-//const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//setPassword(e.target.value);
-//};
+  //const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //setPassword(e.target.value);
+  //};
 
 //const isFormFilled = email !== '' && password !== '';
-
-const SignIn = () => {
+  
+const resetPassword = () => {
     const { handleSubmit, control } = useForm<FormValues>();
 
     const onSubmit: SubmitHandler<FormValues> = (data) => {
@@ -43,10 +41,8 @@ const SignIn = () => {
 
   return (
     <div className="flex justify-center gap-16 py-10">
-      <div
-        className="w-1/3 min-h-full bg-cover bg-center relative rounded-3xl hidden lg:block"
-        style={{ backgroundImage: "url('/Signin-Banner.svg')" }}
-      >
+      <div className="w-1/3 min-h-full bg-cover bg-center relative rounded-3xl hidden lg:block"
+           style={{ backgroundImage: "url('/Signin-Banner.svg')" }}>
         <div className="absolute inset-0 bg-gradient-to-b from-primary bg-opacity-75 rounded-3xl">
           <div className="mt-6 ml-7">
             <Image src="logo.svg" alt="logo" width={70} height={70} />
@@ -56,32 +52,26 @@ const SignIn = () => {
         </div>
       </div>
 
-      <div className="mb-24">
-        <h1 className="font-bold text-4xl">Welcome Back</h1>
-        <p className="mb-9">
-          Enter your email and password to access your account
-        </p>
+      <div className="mb-36">
+        <h1 className="font-bold text-4xl">Reset Password</h1>
+        <p className="mb-9">Enter your email and we will share a link to create a new password.</p>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <CustomInput
-            label="Email address"
-            name="email"
-            control={control}
-            rules={{ required: "Email is required" }}
-            ifPassword
-          />
-
-          <CustomInput
-            label="Password"
+            label="New password"
             name="password"
             control={control}
             rules={{ required: "Password is required" }}
-            ifPassword
+            placeholder="Enter new password"
           />
           
-          <Link href="/forgotPassword" >
-            <p className="font-bold text-sm ml-72">Forgot Password?</p>
-          </Link>
+          <CustomInput
+            label="Confirm password"
+            name="password"
+            control={control}
+            rules={{ required: "Password is required" }}
+            placeholder="Confirm new password"
+          />
 
           <button
             type="submit"
@@ -89,16 +79,12 @@ const SignIn = () => {
               ? 'bg-primary' : 'bg-customgreen'}`}
             //disabled={!isFormFilled}
           >
-            Sign In
+            Submit
           </button>
-          <p className="flex justify-center mt-5 text-sm">
-            Don't have an account?{" "}
-            <span className="font-bold text-primary">Sign Up</span>
-          </p>
         </form>
       </div>
     </div>
   );
 };
 
-export default SignIn;
+export default resetPassword;
