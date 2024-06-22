@@ -4,7 +4,7 @@ import React from 'react'
 
 const userProfileAbout = () => {
   return (
-    <div className="flex flex-col mx-64 my-9 shadow-2xl">
+    <div className="flex flex-col lg:mx-64 lg:my-9 shadow-2xl">
       <div className='px-7 py-10'>
         <div  className="flex flex-col items-center text-white bg-no-repeat border-b-2 border-black"
               style={{ backgroundImage: "url('/profileBackStyle.svg')" }}>
@@ -13,19 +13,19 @@ const userProfileAbout = () => {
           <Image src="profilePic.svg" alt="profile-pic" height={150} width={150} className='mt-20 mb-7 pb-3' />
         </div>
 
-        <div className='flex gap-5 mt-20 mx-6'>
-          <div className='flex flex-col gap-5'>
-            <p className='border-2 border-black pl-3 pr-10 py-1 cursor-pointer rounded-md font-semibold bg-green-700 text-white text-lg'>
+        <div className='flex lg:flex-row flex-col gap-5 mt-20 mx-6 lg:border-0 border-2 border-green-600'>
+          <div className='flex lg:flex-col lg:justify-start lg:mt-0 flex-row gap-5 justify-center mt-4'>
+            <p className='border-2 border-black lg:pl-3 lg:pr-10 px-14 py-1 cursor-pointer rounded-xl font-semibold bg-primary text-white text-lg'>
               About
             </p>
             <Link href="/userProfilePassword">
-              <p className='border-2 border-black pl-3 pr-3 py-1 cursor-pointer whitespace-nowrap rounded-md font-semibold text-lg'>
+              <p className='border-2 border-black pl-3 pr-3 py-1 cursor-pointer whitespace-nowrap rounded-xl font-semibold text-lg'>
                 Change Password
               </p>
             </Link>
           </div>
 
-          <div className='border-2 border-green-600 px-4 py-7'>
+          <div className='lg:border-2 lg:border-green-900 px-4 py-7'>
             <div className='flex gap-6'>
              <div className='flex flex-col gap-2'>
                 <h1 className='font-bold text-lg'>BIO</h1>
@@ -33,7 +33,7 @@ const userProfileAbout = () => {
               </div>
               <Link href="/userProfileEdit">
                 <div className='cursor-pointer'>
-                  <Image src="editIcon.svg" alt="edit-icon" height={40} width={40} />
+                  <Image src="editIcon.svg" alt="edit-icon" height={60} width={60} />
                 </div>
               </Link>
             </div>
