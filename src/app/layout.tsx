@@ -6,6 +6,8 @@ import { Header } from "./component/Header";
 import Footer from "./component/Footer";
 import QueryClientContextProvider from "./lib/QueryClientContextProvider";
 import ThemeToogle from "./component/ThemeToggle";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // const inter = Inter({ subsets: ["latin"] });
 const inter = Rubik({
@@ -32,6 +34,7 @@ export default function RootLayout({
             <Header />
             {children}
             <Footer />
+            <ToastContainer />
           </QueryClientContextProvider>
         </ThemeProvider>
       </body>

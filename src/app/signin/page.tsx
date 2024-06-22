@@ -74,6 +74,7 @@ const SignIn = () => {
             name="email"
             control={control}
             rules={{ required: "Email is required" }}
+            ifPassword
           />
 
           <CustomInput
@@ -81,6 +82,7 @@ const SignIn = () => {
             name="password"
             control={control}
             rules={{ required: "Password is required" }}
+            ifPassword
           />
 
           <p className="font-bold text-sm ml-72">Forgot Password?</p>

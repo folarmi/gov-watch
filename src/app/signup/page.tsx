@@ -5,12 +5,37 @@ import CustomInput from "../component/CustomInput";
 import Image from "next/image";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FormValues } from "../types/generalTypes";
+import { useMutation } from "@tanstack/react-query";
+import api from "../lib/axios";
 
 const Signup = () => {
   const { handleSubmit, control } = useForm<FormValues>();
 
+  const signUpMutation = useMutation({
+    mutationFn: async (data: FormData) => {
+      const response = await api.post("Register", data);
+      return response;
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      // Toast.show(data?.data?.data?.message, {
+      //   type: "success",
+      //   placement: "top",
+      // });
+      // router.navigate("/login");
+    },
+    onError: (error: any) => {
+      console.log(error);
+      // Toast.show(error?.response?.data?.error, {
+      //   type: "error",
+      //   placement: "top",
+      // });
+    },
+  });
+
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     console.log(data);
+    signUpMutation.mutate(data);
   };
 
   //const [formData, setFormData] = useState({
@@ -53,14 +78,14 @@ const Signup = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <CustomInput
             label="First name"
-            name="fName"
+            name="firstName"
             control={control}
             rules={{ required: "First Name is required" }}
           />
 
           <CustomInput
             label="Last name"
-            name="lName"
+            name="lastName"
             control={control}
             rules={{ required: "Last Name is required" }}
           />
@@ -73,24 +98,28 @@ const Signup = () => {
             rules={{ required: "Email is required" }}
           />
 
-          <CustomInput
+          {/* <CustomInput
             label="State of Residence"
             name="sor"
             control={control}
             rules={{ required: "State of Residience is required" }}
-          />
+          /> */}
 
           <CustomInput
             label="Password"
             name="password"
             control={control}
+            type="password"
+            ifPassword
             rules={{ required: "Password is required" }}
           />
 
           <CustomInput
             label="Confirm Password"
-            name="cPassword"
+            name="confirmPassword"
             control={control}
+            type="password"
+            ifPassword
             rules={{ required: "Confirm password" }}
           />
 
@@ -116,3 +145,19 @@ const Signup = () => {
 };
 
 export default Signup;
+
+// {
+//   "firstName": "string",
+//   "lastName": "string",
+//   "email": "user@example.com",
+//   "password": "z<>|&8\\s3nl-s,G'$f{ZkLy=::sG3eO9|Rok*es",
+//   "confirmPassword": "string",
+//   "bio": "string",
+//   "phoneNumber": "string",
+//   "socialMediaLink": "string",
+//   "image": "string",
+//   "otherInformation": "string",
+//   "userId": "string",
+//   "organizationName": "string",
+//   "isOrganization": true
+// }
