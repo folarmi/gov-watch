@@ -19,7 +19,7 @@ import { FormValues } from "../types/generalTypes";
 
 //const isFormFilled = email !== '' && password !== '';
 
-const resetPassword = () => {
+const ResetPassword = () => {
   const { handleSubmit, control } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
@@ -101,4 +101,4 @@ const resetPassword = () => {
   );
 };
 
-export default resetPassword;
+export default ResetPassword;
