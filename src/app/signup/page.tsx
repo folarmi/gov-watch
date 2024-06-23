@@ -35,7 +35,6 @@ const Signup = () => {
   });
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log(data);
     signUpMutation.mutate(data);
   };
 
