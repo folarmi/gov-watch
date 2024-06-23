@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const CustomPreview = ({
   meta,
   fileWithMeta: { cancel, remove, restart },
@@ -72,7 +74,7 @@ const CustomPreview = ({
     >
       <section>
         {type === "image/jpeg" && status !== "error_file_size" ? (
-          <img
+          <Image
             src={meta?.previewUrl}
             alt={name}
             width="50"
