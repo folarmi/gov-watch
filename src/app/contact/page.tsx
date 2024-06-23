@@ -48,6 +48,7 @@ const ContactUs = () => {
           <CustomInput
             name="name"
             label="Your Name"
+            type="name"
             control={control}
             placeholder="Enter your name here"
             rules={{ required: "First name is required" }}
@@ -56,6 +57,7 @@ const ContactUs = () => {
           <CustomInput
             name="email"
             label="Email address"
+            type="email"
             control={control}
             placeholder="Enter your email address here"
             rules={{ required: "Email is required" }}
@@ -64,6 +66,7 @@ const ContactUs = () => {
           <CustomInput
             name="subject"
             label="Subject of the message"
+            type="name"
             control={control}
             placeholder="Enter your subject message here"
             rules={{ required: "Subject is required" }}

@@ -53,14 +53,15 @@ const forgotPassword = () => {
         </div>
       </div>
 
-      <div className="mb-56">
-        <h1 className="font-bold text-4xl">Forgot your password?</h1>
+      <div className="mb-56 md:mx-10 mx-12">
+        <h1 className="font-bold text-4xl mb-2">Forgot your password?</h1>
         <p className="mb-9">Enter your email and we will share a link to create a new password.</p>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <CustomInput
             label="Email address"
             name="email"
+            type="email"
             control={control}
             rules={{ required: "Email is required" }}
             placeholder="Enter your email"

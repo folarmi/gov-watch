@@ -1,8 +1,8 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
 import React, { useState } from "react";
-import CustomInput from "../component/CustomInput";
 import Image from "next/image";
+import CustomInput from "../component/CustomInput";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FormValues } from "../types/generalTypes";
 import Link from "next/link";
@@ -56,8 +56,8 @@ const SignIn = () => {
         </div>
       </div>
 
-      <div className="mb-24">
-        <h1 className="font-bold text-4xl">Welcome Back</h1>
+      <div className="mb-24 md:mx-10 mx-12">
+        <h1 className="font-bold text-4xl mb-2">Welcome Back</h1>
         <p className="mb-9">
           Enter your email and password to access your account
         </p>
@@ -66,6 +66,7 @@ const SignIn = () => {
           <CustomInput
             label="Email address"
             name="email"
+            type="email"
             control={control}
             rules={{ required: "Email is required" }}
           />
@@ -73,6 +74,7 @@ const SignIn = () => {
           <CustomInput
             label="Password"
             name="password"
+            type="password"
             control={control}
             rules={{ required: "Password is required" }}
           />
