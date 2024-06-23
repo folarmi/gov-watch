@@ -9,47 +9,33 @@ import { useMutation } from "@tanstack/react-query";
 import api from "../lib/axios";
 import Link from "next/link";
 
-//const SignIn: React.FC = () => {
-//const [email, setEmail] = useState('');
-//const [password, setPassword] = useState('');
-
-const signUpMutation = useMutation({
-  mutationFn: async (data: FormData) => {
-    const response = await api.post("Register", data);
-    return response;
-  },
-  onSuccess: (data) => {
-    console.log(data);
-    // Toast.show(data?.data?.data?.message, {
-    //   type: "success",
-    //   placement: "top",
-    // });
-    // router.navigate("/login");
-  },
-  onError: (error: any) => {
-    console.log(error);
-    // Toast.show(error?.response?.data?.error, {
-    //   type: "error",
-    //   placement: "top",
-    // });
-  },
-});
-
-const onSubmit: SubmitHandler<FormValues> = (data) => {
-  signUpMutation.mutate(data);
-};
-
-//const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//setPassword(e.target.value);
-//};
-
-//const isFormFilled = email !== '' && password !== '';
-
 const Signup = () => {
   const { handleSubmit, control } = useForm<FormValues>();
 
+  const signUpMutation = useMutation({
+    mutationFn: async (data: FormData) => {
+      const response = await api.post("Register", data);
+      return response;
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      // Toast.show(data?.data?.data?.message, {
+      //   type: "success",
+      //   placement: "top",
+      // });
+      // router.navigate("/login");
+    },
+    onError: (error: any) => {
+      console.log(error);
+      // Toast.show(error?.response?.data?.error, {
+      //   type: "error",
+      //   placement: "top",
+      // });
+    },
+  });
+
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log(data);
+    signUpMutation.mutate(data);
   };
 
   //const [email, setEmail] = useState('');
