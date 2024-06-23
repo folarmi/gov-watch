@@ -1,17 +1,17 @@
 "use client";
 
+import Image from "next/image";
+import { useState } from "react";
 import { useController, UseControllerProps } from "react-hook-form";
 import eyesClosed from "../../../public/eyesClosed.svg";
 import eyeOpened from "../../../public/eyeOpened.svg";
-import Image from "next/image";
-import { useState } from "react";
 
 interface CustomInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
   control: any;
   rules?: UseControllerProps["rules"];
   label: string;
-  ifPassword?: boolean;
+  type?: string;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -19,9 +19,11 @@ const CustomInput: React.FC<CustomInputProps> = ({
   control,
   rules,
   label,
-  ifPassword,
+  type = "text",
   ...rest
 }) => {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
   const {
     field,
     fieldState: { error },
@@ -50,7 +52,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
           value={field.value || ""}
           type={showPassword ? "text" : "password"}
         />
-        {ifPassword && (
+        {type === "password" && (
           <div
             className="absolute left-[90%] top-5 cursor-pointer"
             onClick={togglePassword}

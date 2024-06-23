@@ -9,70 +9,81 @@ import { useMutation } from "@tanstack/react-query";
 import api from "../lib/axios";
 import Link from "next/link";
 
+//const SignIn: React.FC = () => {
+//const [email, setEmail] = useState('');
+//const [password, setPassword] = useState('');
+
+const signUpMutation = useMutation({
+  mutationFn: async (data: FormData) => {
+    const response = await api.post("Register", data);
+    return response;
+  },
+  onSuccess: (data) => {
+    console.log(data);
+    // Toast.show(data?.data?.data?.message, {
+    //   type: "success",
+    //   placement: "top",
+    // });
+    // router.navigate("/login");
+  },
+  onError: (error: any) => {
+    console.log(error);
+    // Toast.show(error?.response?.data?.error, {
+    //   type: "error",
+    //   placement: "top",
+    // });
+  },
+});
+
+const onSubmit: SubmitHandler<FormValues> = (data) => {
+  signUpMutation.mutate(data);
+};
+
+//const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//setPassword(e.target.value);
+//};
+
+//const isFormFilled = email !== '' && password !== '';
+
 const Signup = () => {
   const { handleSubmit, control } = useForm<FormValues>();
 
-  const signUpMutation = useMutation({
-    mutationFn: async (data: FormData) => {
-      const response = await api.post("Register", data);
-      return response;
-    },
-    onSuccess: (data) => {
-      console.log(data);
-      // Toast.show(data?.data?.data?.message, {
-      //   type: "success",
-      //   placement: "top",
-      // });
-      // router.navigate("/login");
-    },
-    onError: (error: any) => {
-      console.log(error);
-      // Toast.show(error?.response?.data?.error, {
-      //   type: "error",
-      //   placement: "top",
-      // });
-    },
-  });
-
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    signUpMutation.mutate(data);
+    console.log(data);
   };
 
-  //const [formData, setFormData] = useState({
-  //fName: '',
-  //lName: '',
-  //email: '',
-  //sor: '',
-  //password: '',
-  //cPassword: ''
-  //});
+  //const [email, setEmail] = useState('');
+  //const [password, setPassword] = useState('');
 
-  //const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //const { name, value } = e.target;
-  // setFormData(prevState => ({ ...prevState, [name]: value }));
+  //const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //setEmail(e.target.value);
+  // };
+
+  //const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // setPassword(e.target.value);
   //};
 
-  //const isFormFilled = Object.values(formData).every(value => value !== '');
+  //const isFormFilled = email !== '' && password !== '';
 
   return (
     <div className="flex justify-center gap-16 py-10">
       <div
         className="w-1/3 min-h-full bg-cover bg-center relative rounded-3xl hidden lg:block"
-        style={{ backgroundImage: "url('/Signup-Banner.svg')" }}
+        style={{ backgroundImage: "url('/signup-Banner.svg')" }}
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-primary to-gray-200 opacity-75 rounded-3xl">
-          <div className="mt-6 ml-7 pb-28">
+        <div className="absolute inset-0 bg-gradient-to-b from-primary bg-opacity-75 rounded-3xl">
+          <div className="mt-6 ml-7 pb-56">
             <Image src="logo.svg" alt="logo" width={70} height={70} />
           </div>
-          <h1 className="font-bold text-3xl mt-96 px-5">
+          <h1 className="font-extrabold text-3xl px-4 mt-96 ">
             Empowering Nigerians with information and fostering citizen
             participation in governance.
           </h1>
         </div>
       </div>
 
-      <div>
-        <h1 className="font-bold text-4xl">Let's get started</h1>
+      <div className="mb-24 md:mx-10 mx-6 w-96">
+        <h1 className="font-bold text-4xl mb-2">Let's get started</h1>
         <p className="mb-9">Kindly fill in the required details below</p>
 
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -80,20 +91,20 @@ const Signup = () => {
             label="First name"
             name="firstName"
             control={control}
-            rules={{ required: "First Name is required" }}
+            rules={{ required: "First name is required" }}
           />
 
           <CustomInput
             label="Last name"
             name="lastName"
             control={control}
-            rules={{ required: "Last Name is required" }}
+            rules={{ required: "Last name is required" }}
           />
 
           <CustomInput
-            label="Email 
-            address"
+            label="Email address"
             name="email"
+            type="email"
             control={control}
             rules={{ required: "Email is required" }}
           />
@@ -110,7 +121,6 @@ const Signup = () => {
             name="password"
             control={control}
             type="password"
-            ifPassword
             rules={{ required: "Password is required" }}
           />
 
@@ -119,7 +129,6 @@ const Signup = () => {
             name="confirmPassword"
             control={control}
             type="password"
-            ifPassword
             rules={{ required: "Confirm password" }}
           />
 
@@ -130,7 +139,7 @@ const Signup = () => {
             }`}
             //disabled={!isFormFilled}
           >
-            Sign Up
+            Sign In
           </button>
 
           <Link href="/signin">
