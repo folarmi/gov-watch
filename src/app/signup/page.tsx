@@ -25,7 +25,7 @@ const Signup = () => {
       console.log(data?.data?.statusText);
 
       toast(data?.data?.statusText, {});
-      router.push("/signin");
+      router.push("/verify-email");
     },
     onError: (error: any) => {
       console.log(error);

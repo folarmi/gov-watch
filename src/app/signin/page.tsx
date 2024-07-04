@@ -26,8 +26,6 @@ import CustomButton from "../component/CustomButton";
 
 const SignIn = () => {
   const { handleSubmit, control } = useForm();
-  // lodumaba@mailinator.com
-  // Password1@
 
   const signInMutation = useMutation({
     mutationFn: async (data: FormData) => {
@@ -38,19 +36,9 @@ const SignIn = () => {
       if (data?.status === 200) {
         toast("Logged in sucessfully");
       }
-      console.log("res", data);
-      // Toast.show(data?.data?.data?.message, {
-      //   type: "success",
-      //   placement: "top",
-      // });
-      // router.navigate("/login");
     },
     onError: (error: any) => {
       console.log(error);
-      // Toast.show(error?.response?.data?.error, {
-      //   type: "error",
-      //   placement: "top",
-      // });
     },
   });
 
