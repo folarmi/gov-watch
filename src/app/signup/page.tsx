@@ -4,13 +4,17 @@ import React, { useState } from "react";
 import CustomInput from "../component/CustomInput";
 import Image from "next/image";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { FormValues } from "../types/generalTypes";
+import { RegisterFormValues } from "../types/generalTypes";
 import { useMutation } from "@tanstack/react-query";
 import api from "../lib/axios";
 import Link from "next/link";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import CustomButton from "../component/CustomButton";
 
 const Signup = () => {
-  const { handleSubmit, control } = useForm<FormValues>();
+  const { handleSubmit, control } = useForm<RegisterFormValues>();
+  const router = useRouter();
 
   const signUpMutation = useMutation({
     mutationFn: async (data: FormData) => {
@@ -18,12 +22,10 @@ const Signup = () => {
       return response;
     },
     onSuccess: (data) => {
-      console.log(data);
-      // Toast.show(data?.data?.data?.message, {
-      //   type: "success",
-      //   placement: "top",
-      // });
-      // router.navigate("/login");
+      console.log(data?.data?.statusText);
+
+      toast(data?.data?.statusText, {});
+      router.push("/signin");
     },
     onError: (error: any) => {
       console.log(error);
@@ -34,22 +36,9 @@ const Signup = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
+  const onSubmit: SubmitHandler<RegisterFormValues> = (data: any) => {
     signUpMutation.mutate(data);
   };
-
-  //const [email, setEmail] = useState('');
-  //const [password, setPassword] = useState('');
-
-  //const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //setEmail(e.target.value);
-  // };
-
-  //const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  // setPassword(e.target.value);
-  //};
-
-  //const isFormFilled = email !== '' && password !== '';
 
   return (
     <div className="flex justify-center gap-16 py-10">
@@ -95,6 +84,14 @@ const Signup = () => {
             rules={{ required: "Email is required" }}
           />
 
+          <CustomInput
+            label="Country"
+            name="country"
+            type="text"
+            control={control}
+            rules={{ required: "Country is required" }}
+          />
+
           {/* <CustomInput
             label="State of Residence"
             name="sor"
@@ -118,20 +115,21 @@ const Signup = () => {
             rules={{ required: "Confirm password" }}
           />
 
-          <button
+          <CustomButton
             type="submit"
             className={`mt-8 px-32 py-4 rounded-2xl w-full text-white ${
               true ? "bg-primary" : "bg-customgreen"
             }`}
-            //disabled={!isFormFilled}
+            disabled={signUpMutation.isPending}
+            loading={signUpMutation.isPending}
           >
             Sign In
-          </button>
+          </CustomButton>
 
-          <Link href="/signin">
+          <Link href="/signin" className="cursor-pointer">
             <p className="flex justify-center mt-5 text-sm">
               Already have an account?{" "}
-              <span className="font-bold text-primary">Sign In</span>
+              <span className="font-bold text-primary"> Sign In</span>
             </p>
           </Link>
         </form>

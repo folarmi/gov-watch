@@ -4,11 +4,13 @@ export interface SidebarItemProp {
   id: number;
 }
 
-export type FormValues = {
-  name: string;
+export type RegisterFormValues = {
+  firstName: string;
+  lastName: string;
+  country: string;
   email: string;
-  subject: string;
-  message: string;
+  password: string;
+  confirmPassword: string;
 };
 
 export type UserType = {
