@@ -42,7 +42,7 @@ const UserProfilePassword = () => {
               style={{ backgroundImage: "url('/profileBackStyle.svg')" }}>
           <h1 className='font-medium text-3xl mt-9'>JANE-DOE</h1>
           <p>contributor</p>
-          <Image src="profilePic.svg" alt="profile-pic" height={150} width={150} className='mt-20 mb-7 pb-3' />
+          <Image src="profilePic.svg" alt="Profile pic" height={150} width={150} className='mt-20 mb-7 pb-3' />
         </div>
 
         <div className='flex lg:flex-row flex-col gap-5 mt-20 mx-6'>
