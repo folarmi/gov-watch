@@ -5,6 +5,10 @@ interface UseDataOptions {
   url: string;
   queryKey: string[];
 }
+interface UseGetDataByIdOptions {
+  url: string;
+  queryKey: string[];
+}
 
 export const useCountriesData = () => {
   return useQuery<any>({
@@ -17,6 +21,16 @@ export const useCountriesData = () => {
 };
 
 export const useGetData = ({ url, queryKey }: UseDataOptions) => {
+  return useQuery<any>({
+    queryKey,
+    queryFn: async () => {
+      const response = await api.get(url);
+      return response?.data;
+    },
+  });
+};
+
+export const useGetDataById = ({ url, queryKey }: UseGetDataByIdOptions) => {
   return useQuery<any>({
     queryKey,
     queryFn: async () => {

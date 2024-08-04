@@ -176,27 +176,6 @@ export const stateInfo = [
   },
 ];
 
-export const customerDashboard = [
-  {
-    id: 1,
-    name: "Total Read",
-    number: 700,
-    path: "/dashboard",
-  },
-  {
-    id: 2,
-    name: "Total Liked Post",
-    number: 156,
-    path: "/dashboard/liked-post",
-  },
-  {
-    id: 3,
-    name: "Bookmarks",
-    number: 400,
-    path: "/dashboard/bookmarks",
-  },
-];
-
 export const editorDashboard = [
   {
     id: 1,
