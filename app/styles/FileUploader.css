@@ -1,0 +1,41 @@
+.file-upload-text {
+  color: black;
+}
+
+.drop__zone {
+  background: #fff;
+  border-radius: 6px;
+}
+
+.attachment {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.dropzone--label {
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 19px;
+  letter-spacing: 0.08em;
+  color: #1e293b;
+}
+
+.upload--info {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 18px;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.upload--info span {
+  color: #201cff;
+}
+
+.dropzone__uploader {
+  position: relative;
+}
+
+.dzu-previewContainer {
+  border: none;
+}
