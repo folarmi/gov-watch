@@ -22,8 +22,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  headerVisible,
 }: Readonly<{
   children: React.ReactNode;
+  headerVisible: any;
 }>) {
   return (
     <html lang="en">

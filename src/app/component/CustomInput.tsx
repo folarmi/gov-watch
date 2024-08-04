@@ -12,6 +12,7 @@ interface CustomInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   rules?: UseControllerProps["rules"];
   label: string;
   type?: string;
+  readOnly?: boolean;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -20,10 +21,9 @@ const CustomInput: React.FC<CustomInputProps> = ({
   rules,
   label,
   type = "text",
+  readOnly,
   ...rest
 }) => {
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
   const {
     field,
     fieldState: { error },
@@ -51,6 +51,9 @@ const CustomInput: React.FC<CustomInputProps> = ({
           {...rest}
           value={field.value || ""}
           type={showPassword ? "text" : "password"}
+          style={{
+            backgroundColor: readOnly ? "hsl(0, 0%, 90%)" : "",
+          }}
         />
         {type === "password" && (
           <div
