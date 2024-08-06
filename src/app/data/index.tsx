@@ -37,7 +37,7 @@ export const SidebarList: SidebarItemProp[] = [
     url: "/dashboard",
   },
   {
-    id: 4,
+    id: 5,
     name: "Sign up",
     url: "/signup",
   },

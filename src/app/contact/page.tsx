@@ -4,12 +4,38 @@ import CustomInput from "../component/CustomInput";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FormValues } from "../types/generalTypes";
 import CustomTextArea from "../component/CustomTextArea";
+import { useMutation } from "@tanstack/react-query";
+import api from "../lib/axios";
+import { toast } from "react-toastify";
 
 const ContactUs = () => {
   const { handleSubmit, control } = useForm<FormValues>();
 
+  const contactUsMutation = useMutation({
+    mutationFn: async (data: FormData) => {
+      const response = await api.post("CreateContactUs", data);
+      return response;
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      toast("Wow so easy!");
+      // Toast.show(data?.data?.data?.message, {
+      //   type: "success",
+      //   placement: "top",
+      // });
+      // router.navigate("/login");
+    },
+    onError: (error: any) => {
+      console.log("Error", error);
+      // Toast.show(error?.response?.data?.error, {
+      //   type: "error",
+      //   placement: "top",
+      // });
+    },
+  });
+
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log(data);
+    contactUsMutation.mutate(data);
   };
 
   // const [formData, setFormData] = useState({

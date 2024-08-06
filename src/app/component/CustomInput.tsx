@@ -1,13 +1,18 @@
+"use client";
+
 import Image from "next/image";
 import { useState } from "react";
 import { useController, UseControllerProps } from "react-hook-form";
+import eyesClosed from "../../../public/eyesClosed.svg";
+import eyeOpened from "../../../public/eyeOpened.svg";
 
 interface CustomInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
   control: any;
   rules?: UseControllerProps["rules"];
   label: string;
-  type: string;
+  type?: string;
+  readOnly?: boolean;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -15,12 +20,10 @@ const CustomInput: React.FC<CustomInputProps> = ({
   control,
   rules,
   label,
-  type,
+  type = "text",
+  readOnly,
   ...rest
 }) => {
-
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
   const {
     field,
     fieldState: { error },
@@ -30,8 +33,10 @@ const CustomInput: React.FC<CustomInputProps> = ({
     rules,
   });
 
-  const togglePasswordVisibility = () => {
-    setIsPasswordVisible(!isPasswordVisible);
+  const [showPassword, setShowPassword] = useState(true);
+
+  const togglePassword = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -39,23 +44,31 @@ const CustomInput: React.FC<CustomInputProps> = ({
       <label htmlFor={label} className="text-sm font-semibold">
         {label}
       </label>
-      <div className="relative w-full">
+      <div className="w-full relative">
         <input
-          className="h-14 rounded-2xl px-4 pr-10 border-2 border-black bg-gray-50 text-sm w-full"
+          className="h-14 rounded-2xl px-4 border-2 border-black bg-gray-50 text-sm w-full"
           {...field}
-          type={type === "password" && isPasswordVisible ? "text" : type}
           {...rest}
+          value={field.value || ""}
+          type={showPassword ? "text" : "password"}
+          style={{
+            backgroundColor: readOnly ? "hsl(0, 0%, 90%)" : "",
+          }}
         />
         {type === "password" && (
-          <div  className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
-                onClick={togglePasswordVisibility}>
+          <div
+            className="absolute left-[90%] top-5 cursor-pointer"
+            onClick={togglePassword}
+          >
             <Image
-              src={isPasswordVisible ? "eye.svg" : "eyeOff.svg"}
-              alt="toggle visibility" width={20} height={20} />
+              src={showPassword ? eyeOpened : eyesClosed}
+              alt="eyeOpened"
+            />
           </div>
         )}
       </div>
-      {error && <span>{error.message}</span>}
+
+      {error && <span className="text-red-600">{error.message}</span>}
     </div>
   );
 };

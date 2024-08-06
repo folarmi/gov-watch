@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.state {
+  cursor: pointer;
+  transition: fill 0.2s ease;
+}
+
+.fill-gray-300 {
+  fill: #d1d5db;
+}
+.fill-blue-500 {
+  fill: #add6ad;
+}
+.hover\:fill-blue-300:hover {
+  fill: #add6ad;
+}
+
+/* Add this to your global CSS file */
+.loader {
+  border-top-color: #3498db;
+  -webkit-animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* :root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+} */
+
+/* .mapContainer .allHiddenPaths {
+  pointer-events: none;
+} */
+
+/* .mapContainer svg path {
+  fill: "yellow";
+  cursor: pointer;
+} */
+
+/* path:hover {
+  fill: purple;
+  stroke: red;
+  strokeWidth: 3px;
+  transition: fill 0.4s;
+} */
