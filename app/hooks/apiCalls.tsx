@@ -17,6 +17,10 @@ export const useCountriesData = () => {
       const response = await api.get("/GetListOfCountries");
       return response?.data;
     },
+    retry: false,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    gcTime: 0,
   });
 };
 
@@ -27,6 +31,10 @@ export const useGetData = ({ url, queryKey }: UseDataOptions) => {
       const response = await api.get(url);
       return response?.data;
     },
+    retry: false,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    gcTime: 0,
   });
 };
 
@@ -37,5 +45,9 @@ export const useGetDataById = ({ url, queryKey }: UseGetDataByIdOptions) => {
       const response = await api.get(url);
       return response?.data;
     },
+    retry: false,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    gcTime: 0,
   });
 };

@@ -9,38 +9,43 @@ import { useMutation } from "@tanstack/react-query";
 import api from "@/app/lib/axios";
 import { toast } from "react-toastify";
 import FileUploader from "../FileUploader";
+import CustomButton from "../CustomButton";
 
 const CreateCategory = ({ toggleModal }: any) => {
   const { control, handleSubmit } = useForm<any>();
   const { userId } = useAppSelector((state: RootState) => state.auth);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [backendPath, setBackendPath] = useState("");
 
   const uploadImageMutation = useMutation({
     mutationFn: async (data: FormData) => {
-      const response = await api.post("UploadImage", data);
+      const response = await api.post("UploadImage", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       return response;
     },
     onSuccess: (data) => {
-      console.log(data);
-      if (data?.status === 200) {
-        toast("File Upload succesful");
+      if (data?.status === 201) {
+        toast(data?.data?.remark);
+        setBackendPath(data?.data?.filePath);
       }
     },
     onError: (error: any) => {
-      toast.error(error?.response?.data?.remark);
-      console.log(error);
+      toast.error(error?.response?.data?.errors?.CreatedBy[0]);
+      toast.error(error?.response?.data?.errors?.UploadFile[0]);
     },
   });
 
   const handleFileUpload = (file: File) => {
     setUploadedFile(file);
-    // Handle the uploaded file here (e.g., upload to server)
-    console.log("Uploaded file:", file);
-    const data: any = {
-      uploadFile: file,
-      CreatedBy: userId,
-    };
-    // uploadImageMutation.mutate(data);
+
+    const formData = new FormData();
+    formData.append("uploadFile", file);
+    formData.append("createdBy", userId);
+
+    uploadImageMutation.mutate(formData);
   };
 
   const createCategoryMutation = useMutation({
@@ -49,8 +54,9 @@ const CreateCategory = ({ toggleModal }: any) => {
       return response;
     },
     onSuccess: (data) => {
-      if (data?.status === 200) {
-        toast("Logged in sucessfully");
+      if (data?.status === 201) {
+        toast(data?.data?.remark);
+        toggleModal();
       }
     },
     onError: (error: any) => {
@@ -60,10 +66,14 @@ const CreateCategory = ({ toggleModal }: any) => {
   });
 
   const submitForm = (data: any) => {
+    if (backendPath === "") {
+      toast("Please upload a file first");
+    }
+
     const formData: any = {
       name: data?.name,
       userId,
-      categoryImage: "string",
+      image: backendPath,
     };
     createCategoryMutation.mutate(formData);
   };
@@ -133,13 +143,16 @@ const CreateCategory = ({ toggleModal }: any) => {
             >
               Cancel
             </button>
-            <button
-              data-modal-hide="popup-modal"
-              type="submit"
-              className="text-white bg-primary font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
+
+            <CustomButton
+              loading={
+                uploadImageMutation.isPending ||
+                createCategoryMutation.isPending
+              }
+              variant="tertiary"
             >
               Create Category
-            </button>
+            </CustomButton>
           </div>
         </div>
       </div>
