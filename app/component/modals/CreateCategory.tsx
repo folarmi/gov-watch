@@ -40,7 +40,7 @@ const CreateCategory = ({ toggleModal }: any) => {
       uploadFile: file,
       CreatedBy: userId,
     };
-    uploadImageMutation.mutate(data);
+    // uploadImageMutation.mutate(data);
   };
 
   const createCategoryMutation = useMutation({
@@ -49,7 +49,6 @@ const CreateCategory = ({ toggleModal }: any) => {
       return response;
     },
     onSuccess: (data) => {
-      console.log(data);
       if (data?.status === 200) {
         toast("Logged in sucessfully");
       }
@@ -64,7 +63,7 @@ const CreateCategory = ({ toggleModal }: any) => {
     const formData: any = {
       name: data?.name,
       userId,
-      //   categoryImage: "string",
+      categoryImage: "string",
     };
     createCategoryMutation.mutate(formData);
   };

@@ -6,12 +6,16 @@ import CustomSelect from "@/app/component/CustomSelect";
 import AdminButton from "@/app/component/forms/AdminButton";
 import { useCountriesData } from "@/app/hooks/apiCalls";
 import api from "@/app/lib/axios";
+import { useAppSelector } from "@/app/lib/hook";
+import { RootState } from "@/app/lib/store";
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 const UserRegistrationForm: React.FC = () => {
+  const { userId } = useAppSelector((state: RootState) => state.auth);
+
   const { data: countriesData, isLoading: countriesDataIsLoading } =
     useCountriesData();
   const { control, handleSubmit } = useForm({
@@ -60,6 +64,7 @@ const UserRegistrationForm: React.FC = () => {
       ...item,
       country: item?.country.value,
       confirmPassword: item?.password,
+      createdBy: userId,
     }));
     registerMultipleUsersMutation.mutate(formattedData);
 
@@ -168,3 +173,6 @@ const UserRegistrationForm: React.FC = () => {
 };
 
 export default UserRegistrationForm;
+
+// 'http://staging.govwatch.ng/api/CreateMultipleUsers
+// 'http://staging.govwatch.ng/api/CreateMultipleUsers

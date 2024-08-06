@@ -18,14 +18,13 @@ const DashboardLayout = ({
   const handleSearch = () => {};
   const { userId, userType } = useAppSelector((state: RootState) => state.auth);
 
-  console.log(userId, userType);
-
   const { data: userCountData, isLoading: userCountIsLoading } = useGetDataById(
     {
       url: `GetAllUserBookmarksByUserId?userPublicId=${userId}`,
       queryKey: ["GetCountOfUsers"],
     }
   );
+  console.log(userCountData);
 
   const customerDashboard = [
     {
