@@ -58,7 +58,7 @@ const Signup = () => {
       </div>
 
       <div className="mb-24 md:mx-10 mx-6 w-96">
-        <h1 className="font-bold text-4xl mb-2">Let's get started</h1>
+        <h1 className="font-bold text-4xl mb-2">Let's get started right now</h1>
         <p className="mb-9">Kindly fill in the required details below</p>
 
         <form onSubmit={handleSubmit(onSubmit)}>
