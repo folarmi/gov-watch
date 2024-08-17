@@ -3,11 +3,11 @@
 import { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import CustomSelect from "../component/CustomSelect";
+import CustomSelect from "../../component/CustomSelect";
 import { useForm } from "react-hook-form";
-import CustomButton from "../component/CustomButton";
-import FileUploader from "../component/FileUploader";
-import { useGetData } from "../hooks/apiCalls";
+import CustomButton from "../../component/CustomButton";
+import FileUploader from "../../component/FileUploader";
+import { useGetData } from "../../hooks/apiCalls";
 // import { FileUploader } from "../component/FileUploader";
 
 const CreatePublication = () => {
@@ -29,14 +29,13 @@ const CreatePublication = () => {
     console.log("Uploaded file:", file);
   };
 
-  console.log(categoriesData);
-
   const categoriesDataFormatted =
     categoriesData?.categoryViewModel &&
-    categoriesData?.categoryViewModel?.map((item: string) => {
+    categoriesData?.categoryViewModel?.map((item: any) => {
       return {
-        label: item,
-        value: item,
+        label: item?.name,
+        value: item?.id,
+        image: item?.categoryImage,
       };
     });
 
@@ -52,7 +51,7 @@ const CreatePublication = () => {
       <div className="flex items-center">
         <CustomSelect
           name="mySelect"
-          options={categories}
+          options={categoriesDataFormatted}
           isLoading={isCategoriesLoading}
           label="Select Category of your Publication"
           control={control}

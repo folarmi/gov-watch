@@ -2,38 +2,35 @@
 
 import AdminButton from "@/app/component/forms/AdminButton";
 import IndeterminateCheckbox from "@/app/component/InterdeterminateCheckbox";
-import CreateState from "@/app/component/modals/CreateState";
+import CreateCountry from "@/app/component/modals/CreateCountry";
 import Modal from "@/app/component/modals/Modal";
 import Table from "@/app/component/Table";
-import { StateType } from "@/app/types/generalTypes";
+import { RegionType } from "@/app/types/generalTypes";
 import { createColumnHelper } from "@tanstack/react-table";
 import React, { useState } from "react";
 
-const State = () => {
-  const [data, setData] = React.useState<StateType[]>([
+const Country = () => {
+  const [data, setData] = React.useState<RegionType[]>([
     {
-      state: "Abia",
       about: "Lorem ipsum dolor sit amet consectetur.  ",
-      post: 50,
+      regions: "North Central (NC)",
     },
     {
-      state: "Adamawa",
       about: "Lorem ipsum dolor sit amet consectetur.",
-      post: 50,
+      regions: "North East (NE)",
     },
     {
-      state: "Akwa Ibom",
       about: "Lorem ipsum dolor sit amet consectetur.",
-      post: 50,
+      regions: "North West (NW)",
     },
     {
-      state: "Calabar",
       about: "Lorem ipsum dolor sit amet consectetur.",
-      post: 50,
+      regions: "North Central (NC)",
     },
   ]);
-  const [createStateModal, setCreateStateModal] = useState(false);
-  const columnHelper = createColumnHelper<StateType>();
+  const [createCountry, setCreateCountry] = useState(true);
+
+  const columnHelper = createColumnHelper<RegionType>();
   const columns = [
     // Display Column
     columnHelper.display({
@@ -46,8 +43,8 @@ const State = () => {
         />
       ),
     }),
-    columnHelper.accessor("state", {
-      header: "State",
+    columnHelper.accessor("regions", {
+      header: "Country",
       cell: (info) => (
         <span className="text-sm font-normal">{info.getValue()}</span>
       ),
@@ -58,32 +55,26 @@ const State = () => {
         <p className="text-sm font-normal w-[272px] ">{info.getValue()}</p>
       ),
     }),
-    columnHelper.accessor("post", {
-      header: "Post",
-      cell: (info) => (
-        <span className="text-sm font-normal">{info.getValue()}</span>
-      ),
-    }),
   ];
 
   const toggleModal = () => {
-    setCreateStateModal(!createStateModal);
+    setCreateCountry(!createCountry);
   };
 
   return (
     <div className="mt-10">
       <div className="flex justify-end w-full mb-4">
-        <AdminButton buttonText="Add State" onClick={toggleModal} />
+        <AdminButton buttonText="Add Country" onClick={toggleModal} />
       </div>
       <Table columns={columns} data={data} />
 
-      <Modal show={createStateModal} toggleModal={toggleModal}>
+      <Modal show={createCountry} toggleModal={toggleModal}>
         <div className="p-4">
-          <CreateState toggleModal={toggleModal} />
+          <CreateCountry toggleModal={toggleModal} />
         </div>
       </Modal>
     </div>
   );
 };
 
-export default State;
+export default Country;

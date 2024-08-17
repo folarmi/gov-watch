@@ -24,7 +24,6 @@ const DashboardLayout = ({
       queryKey: ["GetCountOfUsers"],
     }
   );
-  console.log(userCountData);
 
   const customerDashboard = [
     {

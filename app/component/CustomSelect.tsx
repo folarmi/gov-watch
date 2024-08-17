@@ -40,7 +40,6 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
         styles={{
           input: (baseStyles) => ({
             ...baseStyles,
-            // borderWidth: 2,
             height: "38px",
           }),
         }}
@@ -56,3 +55,10 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
 };
 
 export default CustomSelect;
+
+// formatOptionLabel={(country) => (
+//   <div className="country-option">
+//     <Image src={country?.image} alt="country-image" width={300} height={300} />
+//     <span>{country.label}</span>
+//   </div>
+// )}

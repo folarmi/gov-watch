@@ -2,7 +2,7 @@
 import React, { ButtonHTMLAttributes } from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "tertiary";
+  variant?: "primary" | "secondary" | "tertiary" | "skeleton";
   loading?: boolean;
   className?: string;
 }
@@ -25,6 +25,10 @@ const CustomButton: React.FC<ButtonProps> = ({
   if (variant === "tertiary") {
     buttonStyle =
       "text-white bg-primary font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center";
+  }
+  if (variant === "skeleton") {
+    buttonStyle =
+      "py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 mr-3";
   }
 
   if (loading) {
