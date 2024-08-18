@@ -22,13 +22,13 @@ const AdminDashboardLayout = ({
   const pathName = usePathname();
 
   const { data: userCountData, isLoading: userCountIsLoading } = useGetData({
-    url: "/GetCountOfUsers",
+    url: "Users/GetCountOfUsers",
     queryKey: ["GetCountOfUsers"],
   });
 
   const { data: countOfPublications, isLoading: countOfPublicationsIsLoading } =
     useGetData({
-      url: "/GetCountOfPublications",
+      url: "Publications/GetCountOfPublications",
       queryKey: ["GetCountOfPublications"],
     });
 

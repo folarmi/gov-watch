@@ -57,12 +57,13 @@ const CreateCategory = ({ toggleModal }: any) => {
   // });
 
   const createCategoryMutation = useCustomMutation({
-    endpoint: "CreateCategory",
+    endpoint: "Categories/CreateCategory",
     successMessage: (data: any) => data?.remark,
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
       // Add your success logic here, e.g., closing the modal
       toggleModal();
+      console.log("done");
     },
   });
 
@@ -138,3 +139,60 @@ const CreateCategory = ({ toggleModal }: any) => {
 };
 
 export default CreateCategory;
+
+// import { configureStore } from "@reduxjs/toolkit";
+// import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+// import {
+//   FLUSH,
+//   PAUSE,
+//   PERSIST,
+//   PURGE,
+//   REGISTER,
+//   REHYDRATE,
+//   persistReducer,
+//   persistStore,
+// } from "redux-persist";
+// import storage from "redux-persist/lib/storage";
+
+// import rootReducer from "./reducers";
+// import { baseApi } from "./services/base-service";
+
+// const persistConfig = {
+//   key: "root",
+//   version: 1,
+//   whitelist: [
+//     // "auth",
+//     "multiStep",
+//     // "companyInfo",
+//     // "regulatoryInfo",
+//     // "soleProprietorInfo",
+//     // "relatedPartyInfo",
+//   ],
+//   storage,
+// };
+
+// const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+// export const store = configureStore({
+//   reducer: persistedReducer,
+//   middleware: (getDefaultMiddleware) =>
+//     getDefaultMiddleware({
+//       // serializableCheck: false,
+//       serializableCheck: {
+//         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+//         //   ignoredActionPaths: ["companyInfo/saveCompanyInfo"],
+//         //   ignoredPaths: ["companyInfo/saveCompanyInfo"],
+//       },
+//     }).concat(baseApi.middleware),
+//   devTools: true,
+// });
+
+// export const persistor = persistStore(store);
+
+// export type RootState = ReturnType<typeof store.getState>;
+// export type AppDispatch = typeof store.dispatch;
+
+// export const useAppDispatch = () => useDispatch<AppDispatch>();
+// export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+
+// // export default store;

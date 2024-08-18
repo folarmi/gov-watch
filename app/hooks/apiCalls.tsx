@@ -103,12 +103,12 @@ export const useUploadMutation = (
 ): UseMutationResult<UploadResponse, UploadError, FormData> => {
   return useMutation<UploadResponse, UploadError, FormData>({
     mutationFn: async (data: FormData) => {
-      const response = await api.post("UploadImage", data, {
+      const response = await api.post("Uploads/UploadImage", data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      return response.data; // Return the data property
+      return response.data;
     },
     onSuccess: (data: any) => {
       toast(data?.remark);

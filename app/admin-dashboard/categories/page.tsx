@@ -17,7 +17,7 @@ const Categories = () => {
     isLoading,
     error,
   } = useGetData({
-    url: "/GetAllCategories",
+    url: "Categories/GetAllCategories",
     queryKey: ["GetAllCategories"],
   });
 
