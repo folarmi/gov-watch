@@ -149,7 +149,7 @@ export const useCustomMutation = <
       return response.data;
     },
     onSuccess: (data: any, variables, context) => {
-      if (data?.status === 201) {
+      if (data?.statusCode === 201) {
         if (successMessage) {
           toast(successMessage(data));
         }
