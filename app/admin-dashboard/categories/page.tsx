@@ -21,7 +21,6 @@ const Categories = () => {
     queryKey: ["GetAllCategories"],
   });
 
-  console.log(categoriesData);
   const [data, setData] = React.useState<CategoriesType[]>([
     {
       categories: "Ministries",

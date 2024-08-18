@@ -36,7 +36,7 @@ api.interceptors.response.use(
       // Handle unauthorized errors (e.g., redirect to login)
       console.log("Unauthorized, logging out...");
       localStorage.removeItem("token");
-      window.location.href = "/login";
+      window.location.href = "/signin";
     }
     return Promise.reject(error);
   }

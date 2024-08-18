@@ -22,14 +22,14 @@ const Signup = () => {
 
   const signUpMutation = useMutation({
     mutationFn: async (data: FormData) => {
-      const response = await api.post("Register", data);
+      const response = await api.post("Authentication/Register", data);
       return response;
     },
     onSuccess: (data) => {
       if (data?.data?.statusCode === 201) {
         toast("Kindly check your email for a verification link");
+        router.push("/verify-email");
       }
-      // router.push("/signin");
     },
     onError: (error: any) => {
       toast(error?.response?.data?.remark, {
