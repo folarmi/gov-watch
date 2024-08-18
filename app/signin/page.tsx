@@ -22,7 +22,7 @@ const SignIn = () => {
 
   const signInMutation = useMutation({
     mutationFn: async (data: FormData) => {
-      const response = await api.post("Login", data);
+      const response = await api.post("Authentication/Login", data);
       return response;
     },
     onSuccess: (data) => {

@@ -5,29 +5,22 @@ import HeroSection from "./component/HeroSection";
 import ScrollableCategories from "./component/ScrollableCategories";
 import SearchBar from "./component/SearchBar";
 import { cardData, categories } from "./data";
-// import arrow from "../../public/arrow.svg";
-import Image from "next/image";
 import ExploreButton from "./component/ExploreButton";
 import SeeAllPublications from "./component/SeeAllPublications";
-import { useQuery } from "@tanstack/react-query";
-import api from "./lib/axios";
 import EmptyPage from "./component/EmptyPage";
 import Loader from "./component/Loader";
+import { useGetData } from "./hooks/apiCalls";
 
 export default function Home() {
   const handleSearch = () => {};
-  const fetchPublications = async () => {
-    const { data } = await api.get("/GetLatestPublications");
-    return data;
-  };
 
   const {
     data: articlesData,
-    error,
     isLoading,
-  } = useQuery({
+    error,
+  } = useGetData({
+    url: "Publications/GetLatestPublications",
     queryKey: ["publications"],
-    queryFn: fetchPublications,
   });
 
   if (isLoading) return <Loader />;

@@ -59,7 +59,7 @@ export const useCountriesData = () => {
   return useQuery<any>({
     queryKey: ["getAllCountries"],
     queryFn: async () => {
-      const response = await api.get("/GetListOfCountries");
+      const response = await api.get("Countries/GetListOfCountries");
       return response?.data;
     },
     retry: false,
