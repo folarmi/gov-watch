@@ -20,7 +20,9 @@ import ImageDetails from "../ImageDetails";
 
 const CreateWard = ({ toggleModal }: any) => {
   const { control, handleSubmit } = useForm<any>();
-  const { userId } = useAppSelector((state: RootState) => state.auth);
+  const { userId, userCountry } = useAppSelector(
+    (state: RootState) => state.auth
+  );
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [backendPath, setBackendPath] = useState("");
   const handleSuccess = (data: any) => {
@@ -52,9 +54,8 @@ const CreateWard = ({ toggleModal }: any) => {
   const submitForm = (data: any) => {
     if (backendPath === "") {
       toast("Please upload a file first");
+      return;
     }
-
-    console.log(data);
 
     const formData: any = {
       ...data,
@@ -80,9 +81,23 @@ const CreateWard = ({ toggleModal }: any) => {
       };
     });
 
+  const { data: stateData, isLoading: stateDataIsLoading } = useGetData({
+    url: `States/GetListOfStates?countryName=${userCountry}&pageNumber=1&pageSize=10`,
+    queryKey: ["GetAllStates"],
+  });
+
+  const stateDataFormatted =
+    stateData &&
+    stateData?.map((item: string) => {
+      return {
+        label: item,
+        value: item,
+      };
+    });
+
   return (
     <div className="bg-white rounded-xl p-6">
-      <p className="text-center font-medium text-xl font">Create New State</p>
+      <p className="text-center font-medium text-xl font">Create New Ward</p>
 
       <form
         onSubmit={handleSubmit(submitForm)}
@@ -117,6 +132,7 @@ const CreateWard = ({ toggleModal }: any) => {
           label="Financial Allocation"
           name="financialAllocation"
           type="number"
+          onlyNumbers
           control={control}
           rules={{ required: "Financial Allocation is required" }}
           className="mt-4"
@@ -131,10 +147,10 @@ const CreateWard = ({ toggleModal }: any) => {
         />
 
         <CustomInput
-          label="Political Party (Governor)"
-          name="politicalPartyOfGovernor"
+          label="Political Party (Chairman)"
+          name="politicalPartyOfChairman"
           control={control}
-          rules={{ required: "State governor is required" }}
+          rules={{ required: "Political Party of Chairman is required" }}
           className="mt-4"
         />
 
@@ -143,6 +159,7 @@ const CreateWard = ({ toggleModal }: any) => {
           name="Population"
           control={control}
           type="number"
+          onlyNumbers
           rules={{ required: "Population is required" }}
           className="mt-4"
         />
@@ -151,45 +168,30 @@ const CreateWard = ({ toggleModal }: any) => {
           label="Land Mass"
           name="landMass"
           type="number"
+          onlyNumbers
           control={control}
           rules={{ required: "Land Mass is required" }}
           className="mt-4"
         />
 
-        <CustomInput
-          label="Country"
-          name="country"
+        <CustomSelect
+          name="state"
+          options={stateDataFormatted}
+          isLoading={stateDataIsLoading}
+          label="State"
           control={control}
-          rules={{ required: "Country is required" }}
-          className="mt-4"
+          placeholder="Select State"
+          className="mt-4 col-span-2"
         />
 
         <CustomSelect
-          name="regionId"
+          name="lga"
           options={regionDataFormatted}
           isLoading={regionDataIsLoading}
-          label="Region"
+          label="LGA"
           control={control}
-          placeholder="Select Region"
-          className="mt-4"
-        />
-
-        <CustomInput
-          label="MDA Count"
-          name="mdaCount"
-          type="number"
-          control={control}
-          rules={{ required: "MDA Count is required" }}
-          className="mt-4"
-        />
-
-        <CustomInput
-          label="LGA Count"
-          name="lgaCount"
-          type="number"
-          control={control}
-          rules={{ required: "LGA Count is required" }}
-          className="mt-4"
+          placeholder="Select LGA"
+          className="mt-4 col-span-2"
         />
 
         <div className="col-span-2">

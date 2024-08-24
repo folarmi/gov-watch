@@ -252,10 +252,3 @@ const CreateState = ({ toggleModal }: any) => {
 };
 
 export default CreateState;
-
-// {
-//   "state": "string",
-//   "lga": "string",
-//   "politicalPartyOfChairman": "string",
-//   "population": 0,
-//   "landMass": 0,

@@ -54,29 +54,30 @@ const CreateLGA = ({ toggleModal }: any) => {
   const submitForm = (data: any) => {
     if (backendPath === "") {
       toast("Please upload a file first");
+      return;
     }
 
     const formData: any = {
       ...data,
       image: backendPath,
+      country: userCountry,
       createdBy: userId,
-      state: data?.regionId?.value,
     };
 
     createLGAMutation.mutate(formData);
   };
 
   const { data: stateData, isLoading: stateDataIsLoading } = useGetData({
-    url: `States/GetListOfStates?countryName=${userCountry}&pageNumber=1&pageSize=10`,
+    url: `States/GetListOfStates?countryName=${userCountry}&pageNumber=1&pageSize=100`,
     queryKey: ["GetAllStates"],
   });
 
   const stateDataFormatted =
-    stateData?.stateViewModel &&
-    stateData?.stateViewModel.map((item: any) => {
+    stateData &&
+    stateData?.map((item: string) => {
       return {
-        label: item?.name,
-        value: item?.id,
+        label: item,
+        value: item,
       };
     });
 
@@ -106,20 +107,19 @@ const CreateLGA = ({ toggleModal }: any) => {
         />
 
         <CustomInput
-          label="Leader Name"
-          name="leaderName"
+          label="Chairman"
+          name="chairman"
           control={control}
-          rules={{ required: "Leader Name is required" }}
-          className="mt-4 col-span-2"
+          rules={{ required: "Chairman Name is required" }}
+          className="mt-4"
         />
 
         <CustomInput
-          label="Financial Allocation"
-          name="financialAllocation"
-          type="number"
+          label="Political Party Of Chairman"
+          name="politicalPartyOfChairman"
           control={control}
-          rules={{ required: "Financial Allocation is required" }}
-          className="mt-4 col-span-2"
+          rules={{ required: "Political Party Of Chairman is required" }}
+          className="mt-4"
         />
 
         <CustomSelect
@@ -129,6 +129,56 @@ const CreateLGA = ({ toggleModal }: any) => {
           label="State"
           control={control}
           placeholder="Select State"
+          className="mt-4"
+        />
+
+        <CustomInput
+          label="Population"
+          name="population"
+          type="number"
+          onlyNumbers
+          control={control}
+          rules={{ required: "Population is required" }}
+          className="mt-4"
+        />
+
+        <CustomInput
+          label="Land Mass"
+          name="landMass"
+          type="number"
+          onlyNumbers
+          control={control}
+          rules={{ required: "Land Mass is required" }}
+          className="mt-4"
+        />
+
+        <CustomInput
+          label="Ward Count"
+          name="wardCount"
+          type="number"
+          onlyNumbers
+          control={control}
+          rules={{ required: "Ward Count is required" }}
+          className="mt-4"
+        />
+
+        <CustomInput
+          label="Financial Allocation"
+          name="financialAllocation"
+          type="number"
+          onlyNumbers
+          control={control}
+          rules={{ required: "Financial Allocation is required" }}
+          className="mt-4 col-span-2"
+        />
+
+        <CustomInput
+          label="LCDA Count"
+          name="lcdaCount"
+          type="number"
+          onlyNumbers
+          control={control}
+          rules={{ required: "LCDA Count is required" }}
           className="mt-4 col-span-2"
         />
 

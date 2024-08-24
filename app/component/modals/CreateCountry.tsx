@@ -49,6 +49,7 @@ const CreateCountry = ({ toggleModal }: any) => {
   const submitForm = (data: any) => {
     if (backendPath === "") {
       toast("Please upload a file first");
+      return;
     }
 
     const formData: any = {
