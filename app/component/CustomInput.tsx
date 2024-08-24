@@ -43,6 +43,17 @@ const CustomInput: React.FC<CustomInputProps> = ({
     setShowPassword(!showPassword);
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // If the input type is number, convert the value to a number before passing it to onChange
+    const parsedValue = onlyNumbers
+      ? value === ""
+        ? ""
+        : Number(value)
+      : value;
+    field.onChange(parsedValue);
+  };
+
   return (
     <div className={`flex flex-col gap-2 mb-3 w-full ${className}`}>
       <label htmlFor={label} className="text-sm font-medium">
@@ -54,6 +65,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
           {...field}
           {...rest}
           value={field.value || ""}
+          onChange={handleChange}
           type={onlyNumbers ? "number" : showPassword ? type : "password"}
           inputMode={onlyNumbers ? "numeric" : "text"}
           pattern={onlyNumbers ? "[0-9]*" : undefined}

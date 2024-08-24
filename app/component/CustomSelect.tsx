@@ -1,6 +1,11 @@
 // components/CustomSelect.tsx
 import React from "react";
-import Select, { Props as SelectProps } from "react-select";
+import Select, {
+  ActionMeta,
+  MultiValue,
+  Props as SelectProps,
+  SingleValue,
+} from "react-select";
 import { useController } from "react-hook-form";
 
 type Option = {
@@ -29,6 +34,20 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     fieldState: { error },
   } = useController({ name, control });
 
+  const handleChange = (
+    newValue: SingleValue<Option> | MultiValue<Option> | null,
+    _actionMeta: ActionMeta<Option>
+  ) => {
+    // Check if the newValue is an array (MultiValue case)
+    if (Array.isArray(newValue)) {
+      const values = newValue.map((option) => option.value);
+      field.onChange(values); // Pass an array of values
+    } else {
+      // For SingleValue or null, directly pass the value or null
+      field.onChange(newValue ? newValue.value : null);
+    }
+  };
+
   return (
     <div className={`mb-4 w-full ${className}`}>
       {label && <label className="text-sm font-semibold">{label}</label>}
@@ -45,9 +64,9 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
         }}
         options={options}
         {...rest}
-        onChange={(selectedOption) => field.onChange(selectedOption)}
+        onChange={handleChange}
         // value={field.value}
-        value={options?.find((c: any) => c?.value === field?.value)}
+        value={options?.find((c: any) => c?.value === field?.value) || null}
         className=" rounded-2xl outline-none bg-gray-50 text-sm w-full "
       />
       {error && <p className="mt-1 text-sm text-red-600">{error.message}</p>}
@@ -56,10 +75,3 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
 };
 
 export default CustomSelect;
-
-// formatOptionLabel={(country) => (
-//   <div className="country-option">
-//     <Image src={country?.image} alt="country-image" width={300} height={300} />
-//     <span>{country.label}</span>
-//   </div>
-// )}

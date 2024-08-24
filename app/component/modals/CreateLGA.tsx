@@ -20,7 +20,9 @@ import ImageDetails from "../ImageDetails";
 
 const CreateLGA = ({ toggleModal }: any) => {
   const { control, handleSubmit } = useForm<any>();
-  const { userId } = useAppSelector((state: RootState) => state.auth);
+  const { userId, userCountry } = useAppSelector(
+    (state: RootState) => state.auth
+  );
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [backendPath, setBackendPath] = useState("");
   const handleSuccess = (data: any) => {
@@ -65,7 +67,7 @@ const CreateLGA = ({ toggleModal }: any) => {
   };
 
   const { data: stateData, isLoading: stateDataIsLoading } = useGetData({
-    url: "States/GetAllStates",
+    url: `States/GetListOfStates?countryName=${userCountry}&pageNumber=1&pageSize=10`,
     queryKey: ["GetAllStates"],
   });
 

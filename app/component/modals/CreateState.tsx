@@ -52,17 +52,16 @@ const CreateState = ({ toggleModal }: any) => {
   const submitForm = (data: any) => {
     if (backendPath === "") {
       toast("Please upload a file first");
+      return;
     }
-
-    console.log(data);
 
     const formData: any = {
       ...data,
       image: backendPath,
       createdBy: userId,
-      regionId: data?.regionId?.value,
     };
 
+    console.log(formData);
     createStateMutation.mutate(formData);
   };
 
@@ -72,8 +71,8 @@ const CreateState = ({ toggleModal }: any) => {
   });
 
   const { data: countryData, isLoading: countryDataIsLoading } = useGetData({
-    url: "Countries/GetCountries",
-    queryKey: ["GetCountries"],
+    url: "Countries/GetListOfCountries",
+    queryKey: ["GetListOfCountries"],
   });
 
   const regionDataFormatted =
@@ -82,6 +81,15 @@ const CreateState = ({ toggleModal }: any) => {
       return {
         label: item?.name,
         value: item?.id,
+      };
+    });
+
+  const countriesDataFormatted =
+    countryData &&
+    countryData?.map((item: string) => {
+      return {
+        label: item,
+        value: item,
       };
     });
 
@@ -130,6 +138,7 @@ const CreateState = ({ toggleModal }: any) => {
           name="Population"
           control={control}
           type="number"
+          onlyNumbers
           rules={{ required: "Population is required" }}
           className="mt-4"
         />
@@ -138,6 +147,7 @@ const CreateState = ({ toggleModal }: any) => {
           label="Financial Allocation"
           name="financialAllocation"
           type="number"
+          onlyNumbers
           control={control}
           rules={{ required: "Financial Allocation is required" }}
           className="mt-4"
@@ -147,6 +157,7 @@ const CreateState = ({ toggleModal }: any) => {
           label="Land Mass"
           name="landMass"
           type="number"
+          onlyNumbers
           control={control}
           rules={{ required: "Land Mass is required" }}
           className="mt-4"
@@ -161,11 +172,13 @@ const CreateState = ({ toggleModal }: any) => {
           className="mt-4"
         />
 
-        <CustomInput
-          label="Country"
+        <CustomSelect
           name="country"
+          options={countriesDataFormatted}
+          isLoading={countryDataIsLoading}
+          label="Country"
           control={control}
-          rules={{ required: "Country is required" }}
+          placeholder="Select Country"
           className="mt-4"
         />
 
@@ -183,6 +196,7 @@ const CreateState = ({ toggleModal }: any) => {
           label="MDA Count"
           name="mdaCount"
           type="number"
+          onlyNumbers
           control={control}
           rules={{ required: "MDA Count is required" }}
           className="mt-4"
@@ -192,6 +206,7 @@ const CreateState = ({ toggleModal }: any) => {
           label="LGA Count"
           name="lgaCount"
           type="number"
+          onlyNumbers
           control={control}
           rules={{ required: "LGA Count is required" }}
           className="mt-4"
