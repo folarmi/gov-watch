@@ -32,7 +32,7 @@ const State = () => {
       post: 50,
     },
   ]);
-  const [createStateModal, setCreateStateModal] = useState(true);
+  const [createStateModal, setCreateStateModal] = useState(false);
   const columnHelper = createColumnHelper<StateType>();
   const columns = [
     // Display Column

@@ -11,7 +11,11 @@ import { toast } from "react-toastify";
 import CustomButton from "../component/CustomButton";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "../lib/hook";
-import { updateUserId, updateUserType } from "../lib/features/auth/authSlice";
+import {
+  updateUserCountry,
+  updateUserId,
+  updateUserType,
+} from "../lib/features/auth/authSlice";
 import { useAuth } from "../context/AuthContext";
 
 const SignIn = () => {
@@ -33,6 +37,7 @@ const SignIn = () => {
 
         dispatch(updateUserType(userType));
         dispatch(updateUserId(data?.data?.publicId));
+        dispatch(updateUserCountry(data?.data?.country));
         loginFromContext();
 
         if (userType === "Admin") {

@@ -13,11 +13,13 @@ export type UserType =
 export interface AuthState {
   userType: UserType;
   userId: string;
+  userCountry: string;
 }
 
 const initialState: AuthState = {
   userType: "",
   userId: "",
+  userCountry: "",
 };
 
 export const authSlice = createSlice({
@@ -30,10 +32,14 @@ export const authSlice = createSlice({
     updateUserId: (state, action: PayloadAction<string>) => {
       state.userId = action.payload;
     },
+    updateUserCountry: (state, action: PayloadAction<string>) => {
+      state.userCountry = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { updateUserType, updateUserId } = authSlice.actions;
+export const { updateUserType, updateUserId, updateUserCountry } =
+  authSlice.actions;
 
 export default authSlice.reducer;

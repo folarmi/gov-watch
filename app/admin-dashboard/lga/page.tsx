@@ -1,12 +1,16 @@
 "use client";
 
+import AdminButton from "@/app/component/forms/AdminButton";
 import IndeterminateCheckbox from "@/app/component/InterdeterminateCheckbox";
+import CreateLGA from "@/app/component/modals/CreateLGA";
+import Modal from "@/app/component/modals/Modal";
 import Table from "@/app/component/Table";
 import { LGAType } from "@/app/types/generalTypes";
 import { createColumnHelper } from "@tanstack/react-table";
-import React from "react";
+import React, { useState } from "react";
 
 const LGA = () => {
+  const [createLGAModal, setCreateLGAModal] = useState(false);
   const [data, setData] = React.useState<LGAType[]>([
     {
       lga: "Aba North",
@@ -63,9 +67,22 @@ const LGA = () => {
     }),
   ];
 
+  const toggleModal = () => {
+    setCreateLGAModal(!createLGAModal);
+  };
+
   return (
     <div className="mt-10">
+      <div className="flex justify-end w-full mb-4">
+        <AdminButton buttonText="Add LGA" onClick={toggleModal} />
+      </div>
       <Table columns={columns} data={data} />
+
+      <Modal show={createLGAModal} toggleModal={toggleModal}>
+        <div className="p-4">
+          <CreateLGA toggleModal={toggleModal} />
+        </div>
+      </Modal>
     </div>
   );
 };

@@ -18,7 +18,7 @@ import {
 import CustomSelect from "../CustomSelect";
 import ImageDetails from "../ImageDetails";
 
-const CreateState = ({ toggleModal }: any) => {
+const CreateLGA = ({ toggleModal }: any) => {
   const { control, handleSubmit } = useForm<any>();
   const { userId } = useAppSelector((state: RootState) => state.auth);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -40,8 +40,8 @@ const CreateState = ({ toggleModal }: any) => {
     uploadMutation.mutate(formData);
   };
 
-  const createStateMutation = useCustomMutation({
-    endpoint: "States/CreateState",
+  const createLGAMutation = useCustomMutation({
+    endpoint: "Lgas/CreateLga",
     successMessage: (data: any) => data?.remark,
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
@@ -54,31 +54,24 @@ const CreateState = ({ toggleModal }: any) => {
       toast("Please upload a file first");
     }
 
-    console.log(data);
-
     const formData: any = {
       ...data,
       image: backendPath,
       createdBy: userId,
-      regionId: data?.regionId?.value,
+      state: data?.regionId?.value,
     };
 
-    createStateMutation.mutate(formData);
+    createLGAMutation.mutate(formData);
   };
 
-  const { data: regionData, isLoading: regionDataIsLoading } = useGetData({
-    url: "Regions/GetAllRegions",
-    queryKey: ["GetAllRegions"],
+  const { data: stateData, isLoading: stateDataIsLoading } = useGetData({
+    url: "States/GetAllStates",
+    queryKey: ["GetAllStates"],
   });
 
-  const { data: countryData, isLoading: countryDataIsLoading } = useGetData({
-    url: "Countries/GetCountries",
-    queryKey: ["GetCountries"],
-  });
-
-  const regionDataFormatted =
-    regionData?.regionViewModel &&
-    regionData?.regionViewModel.map((item: any) => {
+  const stateDataFormatted =
+    stateData?.stateViewModel &&
+    stateData?.stateViewModel.map((item: any) => {
       return {
         label: item?.name,
         value: item?.id,
@@ -87,68 +80,17 @@ const CreateState = ({ toggleModal }: any) => {
 
   return (
     <div className="bg-white rounded-xl p-6">
-      <p className="text-center font-medium text-xl font">Create New State</p>
+      <p className="text-center font-medium text-xl font">Create New LGA</p>
 
       <form
         onSubmit={handleSubmit(submitForm)}
         className="my-4 grid grid-cols-4 gap-x-4 w-full"
       >
         <CustomInput
-          label="State Name"
+          label="LGA Name"
           name="name"
           control={control}
-          rules={{ required: "State Name is required" }}
-          className="mt-4"
-        />
-
-        <CustomInput
-          label="State Capital"
-          name="capital"
-          control={control}
-          rules={{ required: "State Capital is required" }}
-          className="mt-4"
-        />
-
-        <CustomInput
-          label="State Governor"
-          name="governor"
-          control={control}
-          rules={{ required: "State governor is required" }}
-          className="mt-4"
-        />
-
-        <CustomInput
-          label="Political Party (Governor)"
-          name="politicalPartyOfGovernor"
-          control={control}
-          rules={{ required: "State governor is required" }}
-          className="mt-4"
-        />
-
-        <CustomInput
-          label="Population"
-          name="Population"
-          control={control}
-          type="number"
-          rules={{ required: "Population is required" }}
-          className="mt-4"
-        />
-
-        <CustomInput
-          label="Financial Allocation"
-          name="financialAllocation"
-          type="number"
-          control={control}
-          rules={{ required: "Financial Allocation is required" }}
-          className="mt-4"
-        />
-
-        <CustomInput
-          label="Land Mass"
-          name="landMass"
-          type="number"
-          control={control}
-          rules={{ required: "Land Mass is required" }}
+          rules={{ required: "LGA Name is required" }}
           className="mt-4"
         />
 
@@ -162,39 +104,30 @@ const CreateState = ({ toggleModal }: any) => {
         />
 
         <CustomInput
-          label="Country"
-          name="country"
+          label="Leader Name"
+          name="leaderName"
           control={control}
-          rules={{ required: "Country is required" }}
-          className="mt-4"
+          rules={{ required: "Leader Name is required" }}
+          className="mt-4 col-span-2"
+        />
+
+        <CustomInput
+          label="Financial Allocation"
+          name="financialAllocation"
+          type="number"
+          control={control}
+          rules={{ required: "Financial Allocation is required" }}
+          className="mt-4 col-span-2"
         />
 
         <CustomSelect
-          name="regionId"
-          options={regionDataFormatted}
-          isLoading={regionDataIsLoading}
-          label="Region"
+          name="state"
+          options={stateDataFormatted}
+          isLoading={stateDataIsLoading}
+          label="State"
           control={control}
-          placeholder="Select Region"
-          className="mt-4"
-        />
-
-        <CustomInput
-          label="MDA Count"
-          name="mdaCount"
-          type="number"
-          control={control}
-          rules={{ required: "MDA Count is required" }}
-          className="mt-4"
-        />
-
-        <CustomInput
-          label="LGA Count"
-          name="lgaCount"
-          type="number"
-          control={control}
-          rules={{ required: "LGA Count is required" }}
-          className="mt-4"
+          placeholder="Select State"
+          className="mt-4 col-span-2"
         />
 
         <div className="col-span-2">
@@ -225,10 +158,10 @@ const CreateState = ({ toggleModal }: any) => {
           </div>
 
           <CustomButton
-            loading={uploadMutation.isPending || createStateMutation.isPending}
+            loading={uploadMutation.isPending || createLGAMutation.isPending}
             variant="tertiary"
           >
-            Create State
+            Create LGA
           </CustomButton>
         </div>
       </form>
@@ -236,11 +169,4 @@ const CreateState = ({ toggleModal }: any) => {
   );
 };
 
-export default CreateState;
-
-// {
-//   "state": "string",
-//   "lga": "string",
-//   "politicalPartyOfChairman": "string",
-//   "population": 0,
-//   "landMass": 0,
+export default CreateLGA;

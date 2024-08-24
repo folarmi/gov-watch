@@ -18,7 +18,7 @@ import {
 import CustomSelect from "../CustomSelect";
 import ImageDetails from "../ImageDetails";
 
-const CreateState = ({ toggleModal }: any) => {
+const CreateWard = ({ toggleModal }: any) => {
   const { control, handleSubmit } = useForm<any>();
   const { userId } = useAppSelector((state: RootState) => state.auth);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -68,12 +68,7 @@ const CreateState = ({ toggleModal }: any) => {
 
   const { data: regionData, isLoading: regionDataIsLoading } = useGetData({
     url: "Regions/GetAllRegions",
-    queryKey: ["GetAllRegions"],
-  });
-
-  const { data: countryData, isLoading: countryDataIsLoading } = useGetData({
-    url: "Countries/GetCountries",
-    queryKey: ["GetCountries"],
+    queryKey: ["GetAllCategories"],
   });
 
   const regionDataFormatted =
@@ -94,18 +89,36 @@ const CreateState = ({ toggleModal }: any) => {
         className="my-4 grid grid-cols-4 gap-x-4 w-full"
       >
         <CustomInput
-          label="State Name"
+          label="Ward Name"
           name="name"
           control={control}
-          rules={{ required: "State Name is required" }}
+          rules={{ required: "Ward Name is required" }}
           className="mt-4"
         />
 
         <CustomInput
-          label="State Capital"
-          name="capital"
+          label="Date Founded"
+          name="dateFounded"
+          type="date"
           control={control}
-          rules={{ required: "State Capital is required" }}
+          rules={{ required: "Date Founded is required" }}
+          className="mt-4"
+        />
+
+        <CustomInput
+          label="Chairman"
+          name="chairman"
+          control={control}
+          rules={{ required: "Chairman is required" }}
+          className="mt-4"
+        />
+
+        <CustomInput
+          label="Financial Allocation"
+          name="financialAllocation"
+          type="number"
+          control={control}
+          rules={{ required: "Financial Allocation is required" }}
           className="mt-4"
         />
 
@@ -135,29 +148,11 @@ const CreateState = ({ toggleModal }: any) => {
         />
 
         <CustomInput
-          label="Financial Allocation"
-          name="financialAllocation"
-          type="number"
-          control={control}
-          rules={{ required: "Financial Allocation is required" }}
-          className="mt-4"
-        />
-
-        <CustomInput
           label="Land Mass"
           name="landMass"
           type="number"
           control={control}
           rules={{ required: "Land Mass is required" }}
-          className="mt-4"
-        />
-
-        <CustomInput
-          label="Date Founded"
-          name="dateFounded"
-          type="date"
-          control={control}
-          rules={{ required: "Date Founded is required" }}
           className="mt-4"
         />
 
@@ -236,11 +231,4 @@ const CreateState = ({ toggleModal }: any) => {
   );
 };
 
-export default CreateState;
-
-// {
-//   "state": "string",
-//   "lga": "string",
-//   "politicalPartyOfChairman": "string",
-//   "population": 0,
-//   "landMass": 0,
+export default CreateWard;
