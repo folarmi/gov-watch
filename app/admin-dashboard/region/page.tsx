@@ -1,32 +1,24 @@
 "use client";
 
+import AdminButton from "@/app/component/forms/AdminButton";
 import IndeterminateCheckbox from "@/app/component/InterdeterminateCheckbox";
+import Loader from "@/app/component/Loader";
+import CreateRegion from "@/app/component/modals/CreateRegion";
+import Modal from "@/app/component/modals/Modal";
 import Table from "@/app/component/Table";
-import { RegionType } from "@/app/types/generalTypes";
+import { useGetData } from "@/app/hooks/apiCalls";
 import { createColumnHelper } from "@tanstack/react-table";
-import React from "react";
+import React, { useState } from "react";
 
 const Region = () => {
-  const [data, setData] = React.useState<RegionType[]>([
-    {
-      about: "Lorem ipsum dolor sit amet consectetur.  ",
-      regions: "North Central (NC)",
-    },
-    {
-      about: "Lorem ipsum dolor sit amet consectetur.",
-      regions: "North East (NE)",
-    },
-    {
-      about: "Lorem ipsum dolor sit amet consectetur.",
-      regions: "North West (NW)",
-    },
-    {
-      about: "Lorem ipsum dolor sit amet consectetur.",
-      regions: "North Central (NC)",
-    },
-  ]);
+  const { data: regionData, isLoading } = useGetData({
+    url: "Regions/GetAllRegions",
+    queryKey: ["GetAllRegions"],
+  });
 
-  const columnHelper = createColumnHelper<RegionType>();
+  const [createRegion, setCreateRegion] = useState(false);
+
+  const columnHelper = createColumnHelper<any>();
   const columns = [
     // Display Column
     columnHelper.display({
@@ -39,24 +31,40 @@ const Region = () => {
         />
       ),
     }),
-    columnHelper.accessor("regions", {
-      header: "Regions",
+    columnHelper.accessor("name", {
+      header: "Region Name",
       cell: (info) => (
         <span className="text-sm font-normal">{info.getValue()}</span>
       ),
     }),
-    columnHelper.accessor("about", {
-      header: "About",
-      cell: (info) => (
-        <p className="text-sm font-normal w-[272px] ">{info.getValue()}</p>
-      ),
-    }),
   ];
 
+  const toggleModal = () => {
+    setCreateRegion(!createRegion);
+  };
+
   return (
-    <div className="mt-10">
-      <Table columns={columns} data={data} />
-    </div>
+    <>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <div className="mt-10">
+          <div className="flex justify-end w-full mb-4">
+            <AdminButton buttonText="Add Region" onClick={toggleModal} />
+          </div>
+
+          <div className="w-1/2">
+            <Table columns={columns} data={regionData?.regionViewModel} />
+          </div>
+
+          <Modal show={createRegion} toggleModal={toggleModal}>
+            <div className="p-4">
+              <CreateRegion toggleModal={toggleModal} />
+            </div>
+          </Modal>
+        </div>
+      )}
+    </>
   );
 };
 

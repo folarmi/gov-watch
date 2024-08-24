@@ -122,7 +122,6 @@ const AdminDashboardLayout = ({
                   >
                     <Image src={image} alt="item icon" className="" />
                     <p
-                      // href={link}
                       className={`text-base font-medium whitespace-nowrap mx-5 cursor-pointer`}
                     >
                       {name}

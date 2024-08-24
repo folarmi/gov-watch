@@ -51,7 +51,7 @@ const DashboardLayout = ({
       <SearchBar onSearch={handleSearch} />
 
       <InformationTab data={customerDashboard} />
-      <div className="flex">
+      <div className="w-full">
         <main className="w-auto">{children}</main>
       </div>
 

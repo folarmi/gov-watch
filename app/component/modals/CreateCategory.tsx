@@ -5,8 +5,6 @@ import CustomInput from "../CustomInput";
 import { useForm } from "react-hook-form";
 import { useAppSelector } from "@/app/lib/hook";
 import { RootState } from "@/app/lib/store";
-// import { useMutation } from "@tanstack/react-query";
-// import api from "@/app/lib/axios";
 import { toast } from "react-toastify";
 import FileUploader from "../FileUploader";
 import CustomButton from "../CustomButton";
@@ -16,6 +14,7 @@ import {
   useCustomMutation,
   useUploadMutation,
 } from "@/app/hooks/apiCalls";
+import ImageDetails from "../ImageDetails";
 
 const CreateCategory = ({ toggleModal }: any) => {
   const { control, handleSubmit } = useForm<any>();
@@ -46,7 +45,6 @@ const CreateCategory = ({ toggleModal }: any) => {
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
       toggleModal();
-      console.log("done");
     },
   });
 
@@ -88,13 +86,10 @@ const CreateCategory = ({ toggleModal }: any) => {
                 onFileUpload={handleFileUpload}
               />
               {uploadedFile && (
-                <div className="mt-2">
-                  <h2>Uploaded File Details:</h2>
-                  <p>Name: {uploadedFile.name}</p>
-                  <p>
-                    Size: {(uploadedFile.size / (1024 * 1024)).toFixed(2)} MB
-                  </p>
-                </div>
+                <ImageDetails
+                  fileName={uploadedFile.name}
+                  fileSize={uploadedFile.size}
+                />
               )}
             </div>
 

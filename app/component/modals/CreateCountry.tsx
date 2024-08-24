@@ -6,13 +6,16 @@ import CustomButton from "../CustomButton";
 import { useAppSelector } from "@/app/lib/hook";
 import { RootState } from "@/app/lib/store";
 import CustomTextArea from "../CustomTextArea";
-import { UploadError, useUploadMutation } from "@/app/hooks/apiCalls";
+import {
+  UploadError,
+  useCustomMutation,
+  useUploadMutation,
+} from "@/app/hooks/apiCalls";
+import { toast } from "react-toastify";
+import ImageDetails from "../ImageDetails";
 
 const CreateCountry = ({ toggleModal }: any) => {
   const { control, handleSubmit } = useForm<any>();
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const { userId } = useAppSelector((state: RootState) => state.auth);
-  const [backendPath, setBackendPath] = useState("");
   const handleSuccess = (data: any) => {
     setBackendPath(data?.filePath);
   };
@@ -20,7 +23,11 @@ const CreateCountry = ({ toggleModal }: any) => {
   const handleError = (error: UploadError) => {
     console.error("Upload error:", error);
   };
+
   const uploadMutation = useUploadMutation(handleSuccess, handleError);
+  const { userId } = useAppSelector((state: RootState) => state.auth);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [backendPath, setBackendPath] = useState("");
 
   const handleFileUpload = (file: File) => {
     setUploadedFile(file);
@@ -30,16 +37,39 @@ const CreateCountry = ({ toggleModal }: any) => {
     uploadMutation.mutate(formData);
   };
 
+  const createCountryMutation = useCustomMutation({
+    endpoint: "Countries/CreateCountry",
+    successMessage: (data: any) => data?.remark,
+    errorMessage: (error: any) => error?.response?.data?.remark,
+    onSuccessCallback: () => {
+      toggleModal();
+    },
+  });
+
+  const submitForm = (data: any) => {
+    if (backendPath === "") {
+      toast("Please upload a file first");
+    }
+
+    const formData: any = {
+      ...data,
+      population: +data.population,
+      gdp: +data.gdp,
+      image: backendPath,
+      Bloc: "NATO",
+      createdBy: userId,
+    };
+
+    createCountryMutation.mutate(formData);
+  };
+
   return (
     <div className="bg-white rounded-xl p-6">
       <p className="text-center font-medium text-xl font">
         Create A New Country
       </p>
 
-      <form
-        // onSubmit={handleSubmit()}
-        className="my-4  w-full"
-      >
+      <form onSubmit={handleSubmit(submitForm)} className="my-4  w-full">
         <div className="grid grid-cols-4 gap-x-4">
           <CustomInput
             label="Country Name"
@@ -75,7 +105,7 @@ const CreateCountry = ({ toggleModal }: any) => {
 
           <CustomInput
             label="Population"
-            name="Population"
+            name="population"
             control={control}
             type="number"
             rules={{ required: "Population is required" }}
@@ -104,11 +134,10 @@ const CreateCountry = ({ toggleModal }: any) => {
               onFileUpload={handleFileUpload}
             />
             {uploadedFile && (
-              <div className="mt-2">
-                <h2>Uploaded File Details:</h2>
-                <p>Name: {uploadedFile.name}</p>
-                <p>Size: {(uploadedFile.size / (1024 * 1024)).toFixed(2)} MB</p>
-              </div>
+              <ImageDetails
+                fileName={uploadedFile.name}
+                fileSize={uploadedFile.size}
+              />
             )}
           </div>
         </div>
@@ -121,7 +150,9 @@ const CreateCountry = ({ toggleModal }: any) => {
           </div>
 
           <CustomButton
-            // loading={uploadMutation.isPending || createStateMutation.isPending}
+            loading={
+              uploadMutation.isPending || createCountryMutation.isPending
+            }
             variant="tertiary"
           >
             Create Country

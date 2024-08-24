@@ -46,7 +46,8 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
         options={options}
         {...rest}
         onChange={(selectedOption) => field.onChange(selectedOption)}
-        value={field.value}
+        // value={field.value}
+        value={options?.find((c: any) => c?.value === field?.value)}
         className=" rounded-2xl outline-none bg-gray-50 text-sm w-full "
       />
       {error && <p className="mt-1 text-sm text-red-600">{error.message}</p>}

@@ -8,10 +8,15 @@ import CustomTextArea from "../CustomTextArea";
 import CustomButton from "../CustomButton";
 import { useAppSelector } from "@/app/lib/hook";
 import { RootState } from "@/app/lib/store";
-import { useMutation } from "@tanstack/react-query";
-import api from "@/app/lib/axios";
 import { toast } from "react-toastify";
-import { UploadError, useUploadMutation } from "@/app/hooks/apiCalls";
+import {
+  UploadError,
+  useCustomMutation,
+  useGetData,
+  useUploadMutation,
+} from "@/app/hooks/apiCalls";
+import CustomSelect from "../CustomSelect";
+import ImageDetails from "../ImageDetails";
 
 const CreateState = ({ toggleModal }: any) => {
   const { control, handleSubmit } = useForm<any>();
@@ -35,19 +40,12 @@ const CreateState = ({ toggleModal }: any) => {
     uploadMutation.mutate(formData);
   };
 
-  const createStateMutation = useMutation({
-    mutationFn: async (data) => {
-      const response = await api.post("CreateState", data);
-      return response;
-    },
-    onSuccess: (data) => {
-      if (data?.status === 201) {
-        toast(data?.data?.remark);
-        toggleModal();
-      }
-    },
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.remark);
+  const createStateMutation = useCustomMutation({
+    endpoint: "States/CreateState",
+    successMessage: (data: any) => data?.remark,
+    errorMessage: (error: any) => error?.response?.data?.remark,
+    onSuccessCallback: () => {
+      toggleModal();
     },
   });
 
@@ -56,14 +54,31 @@ const CreateState = ({ toggleModal }: any) => {
       toast("Please upload a file first");
     }
 
+    console.log(data);
+
     const formData: any = {
       ...data,
       image: backendPath,
       createdBy: userId,
+      regionId: data?.regionId?.value,
     };
 
     createStateMutation.mutate(formData);
   };
+
+  const { data: regionData, isLoading: regionDataIsLoading } = useGetData({
+    url: "Regions/GetAllRegions",
+    queryKey: ["GetAllCategories"],
+  });
+
+  const regionDataFormatted =
+    regionData?.regionViewModel &&
+    regionData?.regionViewModel.map((item: any) => {
+      return {
+        label: item?.name,
+        value: item?.id,
+      };
+    });
 
   return (
     <div className="bg-white rounded-xl p-6">
@@ -142,6 +157,24 @@ const CreateState = ({ toggleModal }: any) => {
         />
 
         <CustomInput
+          label="Country"
+          name="country"
+          control={control}
+          rules={{ required: "Country is required" }}
+          className="mt-4"
+        />
+
+        <CustomSelect
+          name="regionId"
+          options={regionDataFormatted}
+          isLoading={regionDataIsLoading}
+          label="Region"
+          control={control}
+          placeholder="Select Region"
+          className="mt-4"
+        />
+
+        <CustomInput
           label="MDA Count"
           name="mdaCount"
           type="number"
@@ -159,14 +192,6 @@ const CreateState = ({ toggleModal }: any) => {
           className="mt-4"
         />
 
-        <CustomInput
-          label="Country"
-          name="country"
-          control={control}
-          rules={{ required: "Country is required" }}
-          className="mt-4"
-        />
-
         <div className="col-span-2">
           <CustomTextArea name="bio" control={control} label="Bio" />
         </div>
@@ -180,11 +205,10 @@ const CreateState = ({ toggleModal }: any) => {
             onFileUpload={handleFileUpload}
           />
           {uploadedFile && (
-            <div className="mt-2">
-              <h2>Uploaded File Details:</h2>
-              <p>Name: {uploadedFile.name}</p>
-              <p>Size: {(uploadedFile.size / (1024 * 1024)).toFixed(2)} MB</p>
-            </div>
+            <ImageDetails
+              fileName={uploadedFile.name}
+              fileSize={uploadedFile.size}
+            />
           )}
         </div>
 

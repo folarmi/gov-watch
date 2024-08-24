@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import CustomButton from "../../component/CustomButton";
 import FileUploader from "../../component/FileUploader";
 import { useGetData } from "../../hooks/apiCalls";
+import ImageDetails from "@/app/component/ImageDetails";
 // import { FileUploader } from "../component/FileUploader";
 
 const CreatePublication = () => {
@@ -19,7 +20,7 @@ const CreatePublication = () => {
     isLoading: isCategoriesLoading,
     error,
   } = useGetData({
-    url: "/GetAllCategories",
+    url: "Categories/GetAllCategories",
     queryKey: ["GetAllCategories"],
   });
 
@@ -47,60 +48,60 @@ const CreatePublication = () => {
   ];
 
   return (
-    <div className="px-8 md:px-24">
-      <div className="flex items-center">
-        <CustomSelect
-          name="mySelect"
-          options={categoriesDataFormatted}
-          isLoading={isCategoriesLoading}
-          label="Select Category of your Publication"
-          control={control}
-          className="mr-12"
+    <form className="px-8 w-3/5 md:px-24 mx-auto mt-4">
+      <CustomSelect
+        name="mySelect"
+        options={categoriesDataFormatted}
+        isLoading={isCategoriesLoading}
+        label="Select Category of your Publication"
+        control={control}
+        className="mr-12"
+      />
+
+      <FileUploader
+        maxSizeMB={1}
+        acceptFormats={["png", "jpeg", "jpg", "gif"]}
+        onFileUpload={handleFileUpload}
+      />
+      {uploadedFile && (
+        <ImageDetails
+          fileName={uploadedFile.name}
+          fileSize={uploadedFile.size}
         />
+      )}
 
-        <CustomSelect
-          name="mySelect"
-          options={categories}
-          label="Additional Information about your Publication"
-          control={control}
-        />
-      </div>
+      <CustomSelect
+        name="mySelect"
+        options={categories}
+        label="Additional Information about your Publication"
+        control={control}
+        className="my-6"
+      />
 
-      <section className="flex  justify-between my-10">
-        <div className="w-1/2">
-          <ReactQuill
-            style={{
-              height: "10rem",
-            }}
-            theme="snow"
-            value={value}
-            onChange={setValue}
-          />
-        </div>
+      <ReactQuill
+        style={{
+          height: "10rem",
+          marginBottom: "5rem",
+        }}
+        theme="snow"
+        value={value}
+        onChange={setValue}
+      />
 
-        <FileUploader
-          maxSizeMB={1}
-          acceptFormats={["png", "jpeg", "jpg", "gif"]}
-          onFileUpload={handleFileUpload}
-        />
-        {uploadedFile && (
-          <div>
-            <h2>Uploaded File Details:</h2>
-            <p>Name: {uploadedFile.name}</p>
-            <p>Size: {(uploadedFile.size / (1024 * 1024)).toFixed(2)} MB</p>
-          </div>
-        )}
-      </section>
-
-      <div className="flex items-center justify-end mb-10">
-        <div className="mr-12">
-          <CustomButton className="mr-12" variant="secondary">
-            Save to Draftsss
+      <div className="flex items-center justify-end my-5">
+        <div className="">
+          <CustomButton className="" variant="secondary">
+            Save to Drafts
           </CustomButton>
         </div>
-        <CustomButton variant="primary">Publish</CustomButton>
+
+        <div className="w-1/2 ml-4">
+          <CustomButton variant="primary" className="">
+            Publish
+          </CustomButton>
+        </div>
       </div>
-    </div>
+    </form>
   );
 };
 

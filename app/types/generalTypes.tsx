@@ -48,8 +48,7 @@ export type MDAType = {
 };
 
 export type RegionType = {
-  regions: string;
-  about: string;
+  name: string;
 };
 
 export type InboxType = {

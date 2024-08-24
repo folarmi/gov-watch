@@ -3,6 +3,7 @@
 import AdminButton from "@/app/component/forms/AdminButton";
 import IndeterminateCheckbox from "@/app/component/InterdeterminateCheckbox";
 import CreateCountry from "@/app/component/modals/CreateCountry";
+// import CreateCountry from "@/app/component/modals/CreateCountry";
 import Modal from "@/app/component/modals/Modal";
 import Table from "@/app/component/Table";
 import { RegionType } from "@/app/types/generalTypes";
@@ -10,7 +11,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 import React, { useState } from "react";
 
 const Country = () => {
-  const [data, setData] = React.useState<RegionType[]>([
+  const [data, setData] = React.useState<any[]>([
     {
       about: "Lorem ipsum dolor sit amet consectetur.  ",
       regions: "North Central (NC)",
@@ -28,7 +29,7 @@ const Country = () => {
       regions: "North Central (NC)",
     },
   ]);
-  const [createCountry, setCreateCountry] = useState(true);
+  const [createCountry, setCreateCountry] = useState(false);
 
   const columnHelper = createColumnHelper<RegionType>();
   const columns = [
