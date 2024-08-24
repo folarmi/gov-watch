@@ -11,6 +11,7 @@ import { AxiosError } from "axios";
 interface UseDataOptions {
   url: string;
   queryKey: string[];
+  enabled?: any;
 }
 interface UseGetDataByIdOptions {
   url: string;
@@ -69,7 +70,7 @@ export const useCountriesData = () => {
   });
 };
 
-export const useGetData = ({ url, queryKey }: UseDataOptions) => {
+export const useGetData = ({ url, queryKey, enabled }: UseDataOptions) => {
   return useQuery<any>({
     queryKey,
     queryFn: async () => {
@@ -80,6 +81,7 @@ export const useGetData = ({ url, queryKey }: UseDataOptions) => {
     refetchOnMount: true,
     refetchOnWindowFocus: false,
     staleTime: 0,
+    enabled,
   });
 };
 

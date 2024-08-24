@@ -358,10 +358,22 @@ export const adminDashboardSideBarItems = [
     link: "/admin-dashboard/ward",
   },
   {
+    id: 10,
+    name: "LCDA",
+    image: lga,
+    link: "/admin-dashboard/lcda",
+  },
+  {
     id: 6,
     name: "MDA",
     image: mda,
     link: "/admin-dashboard/mda",
+  },
+  {
+    id: 10,
+    name: "Tags",
+    image: lga,
+    link: "/admin-dashboard/tags",
   },
   {
     id: 8,

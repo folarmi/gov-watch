@@ -18,7 +18,7 @@ import {
 import CustomSelect from "../CustomSelect";
 import ImageDetails from "../ImageDetails";
 
-const CreateWard = ({ toggleModal }: any) => {
+const CreateLCDA = ({ toggleModal }: any) => {
   const { control, handleSubmit } = useForm<any>();
   const { userId, userCountry } = useAppSelector(
     (state: RootState) => state.auth
@@ -43,8 +43,8 @@ const CreateWard = ({ toggleModal }: any) => {
     uploadMutation.mutate(formData);
   };
 
-  const createWardMutation = useCustomMutation({
-    endpoint: "Wards/CreateWard",
+  const createLCDAMutation = useCustomMutation({
+    endpoint: "Lcdas/CreateLcda",
     successMessage: (data: any) => data?.remark,
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
@@ -65,7 +65,7 @@ const CreateWard = ({ toggleModal }: any) => {
       regionId: data?.regionId?.value,
     };
 
-    createWardMutation.mutate(formData);
+    createLCDAMutation.mutate(formData);
   };
 
   const { data: lgaData, isLoading: lgaDataIsLoading } = useGetData({
@@ -99,17 +99,17 @@ const CreateWard = ({ toggleModal }: any) => {
 
   return (
     <div className="bg-white rounded-xl p-6">
-      <p className="text-center font-medium text-xl font">Create New Ward</p>
+      <p className="text-center font-medium text-xl font">Create LCDA</p>
 
       <form
         onSubmit={handleSubmit(submitForm)}
         className="my-4 grid grid-cols-4 gap-x-4 w-full"
       >
         <CustomInput
-          label="Ward Name"
+          label="LCDA Name"
           name="name"
           control={control}
-          rules={{ required: "Ward Name is required" }}
+          rules={{ required: "LCDA Name is required" }}
           className="mt-4"
         />
 
@@ -137,14 +137,6 @@ const CreateWard = ({ toggleModal }: any) => {
           onlyNumbers
           control={control}
           rules={{ required: "Financial Allocation is required" }}
-          className="mt-4"
-        />
-
-        <CustomInput
-          label="State Governor"
-          name="governor"
-          control={control}
-          rules={{ required: "State governor is required" }}
           className="mt-4"
         />
 
@@ -225,10 +217,10 @@ const CreateWard = ({ toggleModal }: any) => {
           </div>
 
           <CustomButton
-            loading={uploadMutation.isPending || createWardMutation.isPending}
+            loading={uploadMutation.isPending || createLCDAMutation.isPending}
             variant="tertiary"
           >
-            Create Ward
+            Create LCDA
           </CustomButton>
         </div>
       </form>
@@ -236,4 +228,4 @@ const CreateWard = ({ toggleModal }: any) => {
   );
 };
 
-export default CreateWard;
+export default CreateLCDA;
