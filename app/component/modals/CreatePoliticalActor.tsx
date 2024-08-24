@@ -17,18 +17,19 @@ import {
 } from "@/app/hooks/apiCalls";
 import CustomSelect from "../CustomSelect";
 import ImageDetails from "../ImageDetails";
+import CustomCheckBox from "../forms/CustomCheckBox";
 
-const CreateWard = ({ toggleModal }: any) => {
+const CreatePoliticalActor = ({ toggleModal }: any) => {
   const { control, handleSubmit } = useForm<any>();
   const { userId, userCountry } = useAppSelector(
     (state: RootState) => state.auth
   );
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [backendPath, setBackendPath] = useState("");
-  const [selectedState, setSelectedState] = useState("");
   const handleSuccess = (data: any) => {
     setBackendPath(data?.filePath);
   };
+  const [isInPoliticalParty, setIsInPoliticalParty] = useState(false);
 
   const handleError = (error: UploadError) => {
     console.error("Upload error:", error);
@@ -44,7 +45,7 @@ const CreateWard = ({ toggleModal }: any) => {
   };
 
   const createWardMutation = useCustomMutation({
-    endpoint: "Wards/CreateWard",
+    endpoint: "PoliticalActors/CreatePoliticalActor",
     successMessage: (data: any) => data?.remark,
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
@@ -61,27 +62,12 @@ const CreateWard = ({ toggleModal }: any) => {
     const formData: any = {
       ...data,
       image: backendPath,
+      country: userCountry,
       createdBy: userId,
-      // regionId: data?.regionId?.value,
     };
 
     createWardMutation.mutate(formData);
   };
-
-  const { data: lgaData, isLoading: lgaDataIsLoading } = useGetData({
-    url: `/Lgas/GetListOfLgas?stateName=${selectedState}&countryName=${userCountry}&pageNumber=1&pageSize=100`,
-    queryKey: ["GetListOfLgas"],
-    enabled: !!selectedState,
-  });
-
-  const lgaDataFormatted =
-    lgaData &&
-    lgaData.map((item: string) => {
-      return {
-        label: item,
-        value: item,
-      };
-    });
 
   const { data: stateData, isLoading: stateDataIsLoading } = useGetData({
     url: `States/GetListOfStates?countryName=${userCountry}&pageNumber=1&pageSize=10`,
@@ -99,80 +85,36 @@ const CreateWard = ({ toggleModal }: any) => {
 
   return (
     <div className="bg-white rounded-xl p-6">
-      <p className="text-center font-medium text-xl font">Create New Ward</p>
+      <p className="text-center font-medium text-xl font">
+        Create New Political Actor
+      </p>
 
       <form
         onSubmit={handleSubmit(submitForm)}
         className="my-4 grid grid-cols-4 gap-x-4 w-full"
       >
         <CustomInput
-          label="Ward Name"
+          label="Political Actor Name"
           name="name"
           control={control}
-          rules={{ required: "Ward Name is required" }}
+          rules={{ required: "Political Actor Name is required" }}
           className="mt-4"
         />
 
         <CustomInput
-          label="Date Founded"
-          name="dateFounded"
+          label="Date Of Birth"
+          name="dateOfBirth"
           type="date"
           control={control}
-          rules={{ required: "Date Founded is required" }}
+          rules={{ required: "Date Of Birth is required" }}
           className="mt-4"
         />
 
         <CustomInput
-          label="Chairman"
-          name="chairman"
+          label="Social Media Link"
+          name="socialMediaLink"
           control={control}
-          rules={{ required: "Chairman is required" }}
-          className="mt-4"
-        />
-
-        <CustomInput
-          label="Financial Allocation"
-          name="financialAllocation"
-          type="number"
-          onlyNumbers
-          control={control}
-          rules={{ required: "Financial Allocation is required" }}
-          className="mt-4"
-        />
-
-        <CustomInput
-          label="State Governor"
-          name="governor"
-          control={control}
-          rules={{ required: "State governor is required" }}
-          className="mt-4"
-        />
-
-        <CustomInput
-          label="Political Party (Chairman)"
-          name="politicalPartyOfChairman"
-          control={control}
-          rules={{ required: "Political Party of Chairman is required" }}
-          className="mt-4"
-        />
-
-        <CustomInput
-          label="Population"
-          name="Population"
-          control={control}
-          type="number"
-          onlyNumbers
-          rules={{ required: "Population is required" }}
-          className="mt-4"
-        />
-
-        <CustomInput
-          label="Land Mass"
-          name="landMass"
-          type="number"
-          onlyNumbers
-          control={control}
-          rules={{ required: "Land Mass is required" }}
+          rules={{ required: "Social Media Link is required" }}
           className="mt-4"
         />
 
@@ -183,26 +125,42 @@ const CreateWard = ({ toggleModal }: any) => {
           label="State"
           control={control}
           placeholder="Select State"
-          className="mt-4 col-span-2"
-          customOnChange={(name: any) => setSelectedState(name?.value)}
+          className="mt-4"
         />
 
-        <CustomSelect
-          name="lga"
-          options={lgaDataFormatted}
-          isLoading={lgaDataIsLoading}
-          label="LGA"
-          control={control}
-          placeholder="Select LGA"
-          className="mt-4 col-span-2"
-        />
+        <div
+          className={`flex flex-col justify-center mt-3 ${
+            isInPoliticalParty ? "col-span-1" : "col-span-4 "
+          } mb-4`}
+        >
+          <CustomCheckBox
+            checked={isInPoliticalParty}
+            onChange={() => setIsInPoliticalParty(!isInPoliticalParty)}
+            iflabel
+            labelText="Is In Political Party?"
+          />
+        </div>
+
+        {isInPoliticalParty && (
+          <CustomInput
+            label="Current Political Party"
+            name="currentPoliticalParty"
+            control={control}
+            rules={{ required: "Current Political Party is required" }}
+            className="mt-4 col-span-3"
+          />
+        )}
 
         <div className="col-span-2">
-          <CustomTextArea name="bio" control={control} label="Bio" />
+          <CustomTextArea
+            name="otherInformation"
+            control={control}
+            label="Other Information"
+          />
         </div>
 
         <div className="col-span-2 ">
-          <p className="text-sm font-medium pb-2">Flag</p>
+          <p className="text-sm font-medium pb-2">Image</p>
 
           <FileUploader
             maxSizeMB={1}
@@ -228,7 +186,7 @@ const CreateWard = ({ toggleModal }: any) => {
             loading={uploadMutation.isPending || createWardMutation.isPending}
             variant="tertiary"
           >
-            Create Ward
+            Create Political Actor
           </CustomButton>
         </div>
       </form>
@@ -236,4 +194,4 @@ const CreateWard = ({ toggleModal }: any) => {
   );
 };
 
-export default CreateWard;
+export default CreatePoliticalActor;

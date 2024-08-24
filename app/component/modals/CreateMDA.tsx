@@ -17,15 +17,16 @@ import {
 } from "@/app/hooks/apiCalls";
 import CustomSelect from "../CustomSelect";
 import ImageDetails from "../ImageDetails";
+import CustomCheckBox from "../forms/CustomCheckBox";
 
-const CreateWard = ({ toggleModal }: any) => {
+const CreateMDA = ({ toggleModal }: any) => {
   const { control, handleSubmit } = useForm<any>();
   const { userId, userCountry } = useAppSelector(
     (state: RootState) => state.auth
   );
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [backendPath, setBackendPath] = useState("");
-  const [selectedState, setSelectedState] = useState("");
+  const [isFederal, setIsFederal] = useState(false);
   const handleSuccess = (data: any) => {
     setBackendPath(data?.filePath);
   };
@@ -43,8 +44,8 @@ const CreateWard = ({ toggleModal }: any) => {
     uploadMutation.mutate(formData);
   };
 
-  const createWardMutation = useCustomMutation({
-    endpoint: "Wards/CreateWard",
+  const createMDAMutation = useCustomMutation({
+    endpoint: "Mdas/CreateMda",
     successMessage: (data: any) => data?.remark,
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
@@ -61,27 +62,18 @@ const CreateWard = ({ toggleModal }: any) => {
     const formData: any = {
       ...data,
       image: backendPath,
+      country: userCountry,
+      isFederal,
       createdBy: userId,
-      // regionId: data?.regionId?.value,
     };
 
-    createWardMutation.mutate(formData);
+    createMDAMutation.mutate(formData);
   };
 
-  const { data: lgaData, isLoading: lgaDataIsLoading } = useGetData({
-    url: `/Lgas/GetListOfLgas?stateName=${selectedState}&countryName=${userCountry}&pageNumber=1&pageSize=100`,
-    queryKey: ["GetListOfLgas"],
-    enabled: !!selectedState,
+  const { data: categoryData, isLoading: categoryDataIsLoading } = useGetData({
+    url: `Categories/GetAllCategories`,
+    queryKey: ["GetAllCategories"],
   });
-
-  const lgaDataFormatted =
-    lgaData &&
-    lgaData.map((item: string) => {
-      return {
-        label: item,
-        value: item,
-      };
-    });
 
   const { data: stateData, isLoading: stateDataIsLoading } = useGetData({
     url: `States/GetListOfStates?countryName=${userCountry}&pageNumber=1&pageSize=10`,
@@ -97,19 +89,28 @@ const CreateWard = ({ toggleModal }: any) => {
       };
     });
 
+  const categoryDataFormatted =
+    categoryData?.categoryViewModel &&
+    categoryData?.categoryViewModel?.map((item: any) => {
+      return {
+        label: item?.name,
+        value: item?.name,
+      };
+    });
+
   return (
     <div className="bg-white rounded-xl p-6">
-      <p className="text-center font-medium text-xl font">Create New Ward</p>
+      <p className="text-center font-medium text-xl font">Create New MDA</p>
 
       <form
         onSubmit={handleSubmit(submitForm)}
         className="my-4 grid grid-cols-4 gap-x-4 w-full"
       >
         <CustomInput
-          label="Ward Name"
+          label="MDA Name"
           name="name"
           control={control}
-          rules={{ required: "Ward Name is required" }}
+          rules={{ required: "MDA Name is required" }}
           className="mt-4"
         />
 
@@ -123,10 +124,10 @@ const CreateWard = ({ toggleModal }: any) => {
         />
 
         <CustomInput
-          label="Chairman"
-          name="chairman"
+          label="Leader Name"
+          name="leaderName"
           control={control}
-          rules={{ required: "Chairman is required" }}
+          rules={{ required: "Leader Name is required" }}
           className="mt-4"
         />
 
@@ -140,42 +141,6 @@ const CreateWard = ({ toggleModal }: any) => {
           className="mt-4"
         />
 
-        <CustomInput
-          label="State Governor"
-          name="governor"
-          control={control}
-          rules={{ required: "State governor is required" }}
-          className="mt-4"
-        />
-
-        <CustomInput
-          label="Political Party (Chairman)"
-          name="politicalPartyOfChairman"
-          control={control}
-          rules={{ required: "Political Party of Chairman is required" }}
-          className="mt-4"
-        />
-
-        <CustomInput
-          label="Population"
-          name="Population"
-          control={control}
-          type="number"
-          onlyNumbers
-          rules={{ required: "Population is required" }}
-          className="mt-4"
-        />
-
-        <CustomInput
-          label="Land Mass"
-          name="landMass"
-          type="number"
-          onlyNumbers
-          control={control}
-          rules={{ required: "Land Mass is required" }}
-          className="mt-4"
-        />
-
         <CustomSelect
           name="state"
           options={stateDataFormatted}
@@ -183,19 +148,27 @@ const CreateWard = ({ toggleModal }: any) => {
           label="State"
           control={control}
           placeholder="Select State"
-          className="mt-4 col-span-2"
-          customOnChange={(name: any) => setSelectedState(name?.value)}
+          className="mt-4"
         />
 
         <CustomSelect
-          name="lga"
-          options={lgaDataFormatted}
-          isLoading={lgaDataIsLoading}
-          label="LGA"
+          name="category"
+          options={categoryDataFormatted}
+          isLoading={categoryDataIsLoading}
+          label="Category"
           control={control}
-          placeholder="Select LGA"
+          placeholder="Select Category"
           className="mt-4 col-span-2"
         />
+
+        <div className="flex flex-col justify-center mt-3">
+          <CustomCheckBox
+            checked={isFederal}
+            onChange={() => setIsFederal(!isFederal)}
+            iflabel
+            labelText="isFederal"
+          />
+        </div>
 
         <div className="col-span-2">
           <CustomTextArea name="bio" control={control} label="Bio" />
@@ -225,10 +198,10 @@ const CreateWard = ({ toggleModal }: any) => {
           </div>
 
           <CustomButton
-            loading={uploadMutation.isPending || createWardMutation.isPending}
+            loading={uploadMutation.isPending || createMDAMutation.isPending}
             variant="tertiary"
           >
-            Create Ward
+            Create MDA
           </CustomButton>
         </div>
       </form>
@@ -236,4 +209,4 @@ const CreateWard = ({ toggleModal }: any) => {
   );
 };
 
-export default CreateWard;
+export default CreateMDA;

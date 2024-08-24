@@ -15,7 +15,6 @@ const Region = () => {
     url: "Regions/GetAllRegions",
     queryKey: ["GetAllRegions"],
   });
-
   const [createRegion, setCreateRegion] = useState(false);
 
   const columnHelper = createColumnHelper<any>();
