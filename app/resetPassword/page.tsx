@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import api from "../lib/axios";
 import { toast } from "react-toastify";
+import AuthLayout from "../component/AuthLayout";
 
 const ResetPassword = () => {
   const searchParams = useSearchParams();
@@ -42,26 +43,15 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="flex justify-center gap-16 py-10">
-      <div
-        className="w-1/3 min-h-full bg-cover bg-center relative rounded-3xl hidden lg:block"
-        style={{ backgroundImage: "url('/Signin-Banner.svg')" }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-b from-primary bg-opacity-75 rounded-3xl">
-          <div className="mt-6 ml-7">
-            <Image src="logo.svg" alt="logo" width={70} height={70} />
-          </div>
-          <h1 className="font-bold text-3xl px-7 mt-56 ">
-            Be informed, Engaged And Empowered
-          </h1>
-          <p className="text-sm px-7">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum sequi
-            cupiditate voluptates blanditiis libero neque commodi quas quod
-            itaque nam, at delectus amet voluptatibus iure in quibusdam est
-            expedita corporis!
-          </p>
-        </div>
-      </div>
+    <AuthLayout
+      header="Be informed, Engaged And Empowered" 
+      text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum sequi
+      cupiditate voluptates blanditiis libero neque commodi quas quod
+      itaque nam, at delectus amet voluptatibus iure in quibusdam est
+      expedita corporis!" 
+      img="logo.svg" 
+      banner="Signin-Banner.svg">
+
 
       <div className="mb-36 md:mx-10 mx-12">
         <h1 className="font-bold text-4xl mb-2">Reset Password</h1>
@@ -103,7 +93,7 @@ const ResetPassword = () => {
           </button>
         </form>
       </div>
-    </div>
+    </AuthLayout>
   );
 };
 
