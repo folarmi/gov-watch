@@ -9,12 +9,20 @@ import CustomButton from "../../component/CustomButton";
 import FileUploader from "../../component/FileUploader";
 import { useGetData } from "../../hooks/apiCalls";
 import ImageDetails from "@/app/component/ImageDetails";
+import UpArrowButton from "@/app/component/UpArrowButton";
+import DownArrowButton from "@/app/component/DownArrowButton";
+import { useAppSelector } from "@/app/lib/hook";
+import { RootState } from "@/app/lib/store";
 // import { FileUploader } from "../component/FileUploader";
 
 const CreatePublication = () => {
   const { control } = useForm();
+  const { userCountry } = useAppSelector((state: RootState) => state.auth);
   const [value, setValue] = useState("");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [selectedState, setSelectedState] = useState("");
+
+  const [isAdditionalInformation, setIsAdditionalInformation] = useState(true);
   const {
     data: categoriesData,
     isLoading: isCategoriesLoading,
@@ -22,6 +30,17 @@ const CreatePublication = () => {
   } = useGetData({
     url: "Categories/GetAllCategories",
     queryKey: ["GetAllCategories"],
+  });
+
+  const { data: lgaData, isLoading: lgaDataIsLoading } = useGetData({
+    url: `/Lgas/GetListOfLgas?stateName=${selectedState}&countryName=${userCountry}&pageNumber=1&pageSize=100`,
+    queryKey: ["GetListOfLgas"],
+    enabled: !!selectedState,
+  });
+
+  const { data: stateData, isLoading: stateDataIsLoading } = useGetData({
+    url: `States/GetListOfStates?countryName=${userCountry}&pageNumber=1&pageSize=10`,
+    queryKey: ["GetAllStates"],
   });
 
   const handleFileUpload = (file: File) => {
@@ -40,12 +59,23 @@ const CreatePublication = () => {
       };
     });
 
-  const categories = [
-    { value: "mdas", label: "Ministries, Departments, Agencies (MDAs)" },
-    { value: "politicalActors", label: "Political actors" },
-    { value: "state", label: "State" },
-    { value: "lgas", label: "Local Govt Area (LGA)" },
-  ];
+  const lgaDataFormatted =
+    lgaData &&
+    lgaData.map((item: string) => {
+      return {
+        label: item,
+        value: item,
+      };
+    });
+
+  const stateDataFormatted =
+    stateData &&
+    stateData?.map((item: string) => {
+      return {
+        label: item,
+        value: item,
+      };
+    });
 
   return (
     <form className="px-8 w-3/5 md:px-24 mx-auto mt-4">
@@ -70,13 +100,41 @@ const CreatePublication = () => {
         />
       )}
 
-      <CustomSelect
-        name="mySelect"
-        options={categories}
-        label="Additional Information about your Publication"
-        control={control}
-        className="my-6"
-      />
+      <div className="mb-4">
+        <div
+          onClick={() => setIsAdditionalInformation(!isAdditionalInformation)}
+          className="flex items-center border border-gray-300 w-full p-4 rounded-lg mt-4 justify-between cursor-pointer"
+        >
+          <p>Additional Information</p>
+
+          {isAdditionalInformation ? <UpArrowButton /> : <DownArrowButton />}
+        </div>
+
+        {isAdditionalInformation && (
+          <div className="">
+            <CustomSelect
+              name="state"
+              options={stateDataFormatted}
+              isLoading={stateDataIsLoading}
+              label="State"
+              control={control}
+              placeholder="Select State"
+              className="mt-4 col-span-2"
+              customOnChange={(name: any) => setSelectedState(name?.value)}
+            />
+
+            <CustomSelect
+              name="lga"
+              options={lgaDataFormatted}
+              isLoading={lgaDataIsLoading}
+              label="LGA"
+              control={control}
+              placeholder="Select LGA"
+              className="mt-4 col-span-2"
+            />
+          </div>
+        )}
+      </div>
 
       <ReactQuill
         style={{
