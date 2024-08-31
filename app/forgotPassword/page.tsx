@@ -9,6 +9,7 @@ import api from "../lib/axios";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import CustomButton from "../component/CustomButton";
+import AuthLayout from "../component/AuthLayout";
 
 const ForgotPassword = () => {
   const router = useRouter();
@@ -35,26 +36,14 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="flex justify-center gap-16 py-10">
-      <div
-        className="w-1/3 min-h-full bg-cover bg-center relative rounded-3xl hidden lg:block"
-        style={{ backgroundImage: "url('/Signin-Banner.svg')" }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-b from-primary bg-opacity-75 rounded-3xl">
-          <div className="mt-6 ml-7">
-            <Image src="logo.svg" alt="logo" width={70} height={70} />
-          </div>
-          <h1 className="font-bold text-3xl px-7 mt-52 ">
-            Be informed, Engaged And Empowered
-          </h1>
-          <p className="text-sm px-7">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum sequi
-            cupiditate voluptates blanditiis libero neque commodi quas quod
-            itaque nam, at delectus amet voluptatibus iure in quibusdam est
-            expedita corporis!
-          </p>
-        </div>
-      </div>
+    <AuthLayout
+      header="Be informed, Engaged And Empowered" 
+      text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum sequi
+      cupiditate voluptates blanditiis libero neque commodi quas quod
+      itaque nam, at delectus amet voluptatibus iure in quibusdam est
+      expedita corporis!" 
+      img="logo.svg" 
+      banner="Signin-Banner.svg">
 
       <div className="mb-56 md:mx-10 mx-12">
         <h1 className="font-bold text-4xl mb-2">Forgot your password?</h1>
@@ -84,7 +73,7 @@ const ForgotPassword = () => {
           </CustomButton>
         </form>
       </div>
-    </div>
+    </AuthLayout>
   );
 };
 
