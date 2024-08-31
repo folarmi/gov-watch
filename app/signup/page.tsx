@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import CustomButton from "../component/CustomButton";
 import CustomSelect from "../component/CustomSelect";
 import { useCountriesData } from "../hooks/apiCalls";
+import AuthLayout from "../component/AuthLayout";
 
 const Signup = () => {
   const { handleSubmit, control } = useForm<RegisterFormValues>();
@@ -57,21 +58,13 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex justify-center gap-16 py-10">
-      <div
-        className="w-1/3 min-h-full bg-cover bg-center relative rounded-3xl hidden lg:block"
-        style={{ backgroundImage: "url('/signup-Banner.svg')" }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-b from-primary bg-opacity-75 rounded-3xl">
-          <div className="mt-6 ml-7 pb-56">
-            <Image src="logo.svg" alt="logo" width={70} height={70} />
-          </div>
-          <h1 className="font-extrabold text-3xl px-4 mt-96 ">
-            Empowering Nigerians with information and fostering citizen
-            participation in governance.
-          </h1>
-        </div>
-      </div>
+    <AuthLayout
+      header="Empowering Nigerians with information fostering citizenship participation in governance" 
+      text="" 
+      img="logo.svg" 
+      banner="signup-Banner.svg"
+      headerMarginTop="31rem">
+
 
       <div className="mb-24 md:mx-10 mx-6 w-96">
         <h1 className="font-bold text-4xl mb-2">Let's get started</h1>
@@ -142,7 +135,7 @@ const Signup = () => {
           </Link>
         </form>
       </div>
-    </div>
+    </AuthLayout>
   );
 };
 
