@@ -62,7 +62,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
           className="h-12 rounded-lg px-4 border-2 border-black bg-gray-50 text-sm w-full"
           {...field}
           {...rest}
-          value={field.value || ""}
+          value={field.value || (type === "date" ? null : "")}
           onChange={handleChange}
           type={onlyNumbers ? "number" : showPassword ? type : "password"}
           inputMode={onlyNumbers ? "numeric" : "text"}

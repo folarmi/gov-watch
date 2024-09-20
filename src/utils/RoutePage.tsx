@@ -25,6 +25,8 @@ import {
   SinglePublication,
   Explore,
   StateDetails,
+  CreateMultipleUsers,
+  ResetPassword,
 } from "../pages";
 import Reviewed from "../pages/Reviewed";
 import { LCDA } from "../pages/Lcda";
@@ -40,8 +42,13 @@ const RoutePage = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/explore" element={<Explore />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/explore/:id" element={<StateDetails />} />
         <Route path="/dashboard/manage-users" element={<ManageUsers />} />
+        <Route
+          path="/dashboard/manage-users/create"
+          element={<CreateMultipleUsers />}
+        />
         <Route path="/dashboard/pending" element={<PendingPublications />} />
         <Route path="/dashboard/reviewed" element={<Reviewed />} />
         <Route path="/dashboard/total" element={<TotalArticles />} />

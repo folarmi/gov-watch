@@ -64,9 +64,14 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
         // value={options?.find((c: any) => c?.value === field?.value) || null}
         value={
           isMulti
-            ? options?.filter((c: any) => field?.value?.includes(c?.value)) ||
+            ? (options &&
+                options?.filter((c: any) =>
+                  field?.value?.includes(c?.value)
+                )) ||
               []
-            : options?.find((c: any) => c?.value === field?.value) || null
+            : (options &&
+                options?.find((c: any) => c?.value === field?.value)) ||
+              null
         }
         className=" rounded-2xl outline-none bg-gray-50 text-sm w-full"
         // defaultValue={defaultValue}

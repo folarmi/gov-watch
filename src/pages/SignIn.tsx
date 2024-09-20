@@ -16,9 +16,11 @@ import {
 import { useAuth } from "../context/AuthContext";
 import AuthLayout from "../layouts/AuthLayout";
 import { Link, useNavigate } from "react-router-dom";
+// import { RootState } from "../lib/store";
 
 const SignIn = () => {
   const navigate = useNavigate();
+  // const { userType } = useAppSelector((state: RootState) => state.auth);
   const { handleSubmit, control } = useForm();
   const { loginFromContext } = useAuth();
   const dispatch = useAppDispatch();
@@ -34,14 +36,16 @@ const SignIn = () => {
         // sessionStorage.setItem("token", data?.data?.token);
         const userType = data?.data?.userRole;
 
-        console.log(data?.data?.token);
-
         dispatch(updateUserType(userType));
         dispatch(updateUserId(data?.data?.publicId));
         dispatch(updateUserCountry(data?.data?.country));
         loginFromContext(data?.data?.token);
 
-        navigate("/dashboard/manage-users");
+        if (userType === "Contributor") {
+          navigate("/dashboard/total");
+        } else {
+          navigate("/dashboard/manage-users");
+        }
       }
     },
     onError: (error: any) => {

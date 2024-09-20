@@ -461,13 +461,13 @@ export const dashboardSideBarItems = [
         id: 13,
         name: "Total",
         image: lga,
-        link: "/dashboard/tags",
+        link: "/dashboard/total",
       },
       {
         id: 8,
-        name: "Submitted",
+        name: "Pending",
         image: inbox,
-        link: "/dashboard/all-inbox",
+        link: "/dashboard/pending",
       },
       {
         id: 8,

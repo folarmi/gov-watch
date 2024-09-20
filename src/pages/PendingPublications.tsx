@@ -4,14 +4,26 @@ import Loader from "../component/Loader";
 import { useGetData } from "../hooks/apiCalls";
 import Card from "../component/Card";
 import DashboardLayout from "../layouts/DashboardLayout";
+import { RootState } from "../lib/store";
+import { useAppSelector } from "../lib/hook";
+import {
+  getPublicationTypeByUserId,
+  shouldFetchPublications,
+  userTypeObject,
+} from "../utils";
 
 const PendingPublications = () => {
+  const { userId, userType } = useAppSelector((state: RootState) => state.auth);
   const {
     data: pendingPublicationsData,
     isLoading: pendingPublicationsLoading,
   } = useGetData({
-    url: "Publications/GetAllPublications?fetchAllSubmittedPublication=true&page=1&pageSize=100",
-    queryKey: ["GetAllPendingPublications"],
+    url:
+      userType === userTypeObject.contributor
+        ? `${getPublicationTypeByUserId}${userId}&fetchAllSubmittedPublication=true&page=1&pageSize=10`
+        : "Publications/GetAllPublications?fetchAllSubmittedPublication=true&page=1&pageSize=100",
+    queryKey: ["GetAllPendingPublications", userType],
+    enabled: shouldFetchPublications,
   });
   return (
     <DashboardLayout>
@@ -29,10 +41,11 @@ const PendingPublications = () => {
                 summary,
                 isPromise,
                 id,
+                publicId,
               }: any) => {
                 return (
                   <Link
-                    to={`/dashboard/pending/${id}`}
+                    to={`/dashboard/pending/${id || publicId}`}
                     key={id}
                     className="w-full sm:w-1/2 md:w-1/3 mt-10"
                   >

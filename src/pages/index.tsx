@@ -25,3 +25,6 @@ export * from "./CreatePublication";
 export * from "./SinglePendingPublication";
 export * from "./Explore";
 export * from "./StateDetails";
+export * from "./CreateMultipleUsers";
+export * from "./CreateMultipleUsers";
+export * from "./ResetPassword";

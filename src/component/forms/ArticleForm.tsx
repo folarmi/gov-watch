@@ -33,16 +33,16 @@ any) => {
     defaultValues: {
       ...defaultValues,
       datePromiseMade: defaultValues?.datePromiseMade
-        ? new Date(defaultValues.datePromiseMade).toISOString().split("T")[0]
-        : "",
+        ? new Date(defaultValues?.datePromiseMade).toISOString().split("T")[0]
+        : null,
       promisedDeadline: defaultValues?.promisedDeadline
-        ? new Date(defaultValues.promisedDeadline).toISOString().split("T")[0]
-        : "",
+        ? new Date(defaultValues?.promisedDeadline).toISOString().split("T")[0]
+        : null,
       datePromiseFulfilled: defaultValues?.datePromiseFulfilled
-        ? new Date(defaultValues.datePromiseFulfilled)
+        ? new Date(defaultValues?.datePromiseFulfilled)
             .toISOString()
             .split("T")[0]
-        : "",
+        : null,
       article: defaultValues?.article || "",
       isFederal: defaultValues?.isFederal || false,
       isPromiseFulfilled: defaultValues?.isPromiseFulfilled || false,
@@ -74,7 +74,6 @@ any) => {
 
   const [selectedState, setSelectedState] = useState("");
   const [selectedLGA, setSelectedLGA] = useState("");
-  const [, setSelectedLCDA] = useState("");
 
   const handleTagsChange = (newTags: string[]) => {
     console.log("Updated Tags:", newTags);
@@ -99,25 +98,25 @@ any) => {
   const { data: lgaData, isLoading: lgaDataIsLoading } = useGetData({
     url: `/Lgas/GetListOfLgas?stateName=${selectedState}&countryName=${userCountry}&pageNumber=1&pageSize=100`,
     queryKey: ["GetListOfLgas", selectedState],
-    enabled: !!selectedState,
+    enabled: !!selectedState || isEditing,
   });
 
   const { data: lcdaData, isLoading: lcdaDataIsLoading } = useGetData({
     url: `/Lcdas/GetListOfLcdas?lgaName=${selectedLGA}&pageNumber=1&pageSize=100`,
     queryKey: ["GetListOfLcdas", selectedLGA],
-    enabled: !!selectedLGA,
+    enabled: !!selectedLGA || isEditing,
   });
 
   const { data: wardData, isLoading: wardDataIsLoading } = useGetData({
     url: `/Wards/GetListOfWards?lgaName=${selectedLGA}&pageNumber=1&pageSize=100`,
     queryKey: ["GetListOfWards", selectedLGA],
-    enabled: !!selectedLGA,
+    enabled: !!selectedLGA || isEditing,
   });
 
   const { data: mdaData, isLoading: mdaDataIsLoading } = useGetData({
     url: `/Mdas/GetListOfMdas?stateName=${selectedState}&pageNumber=1&pageSize=100`,
     queryKey: ["GetListOfMdas", selectedState],
-    enabled: !!selectedState,
+    enabled: !!selectedState || isEditing,
   });
 
   const { data: politicalActorData, isLoading: politicalActorIsLoading } =
@@ -266,6 +265,7 @@ any) => {
                   control={control}
                   placeholder="Select State"
                   customOnChange={(name: any) => setSelectedState(name?.value)}
+                  // customOnChange={(name: any) => setSelectedState(name?.value)}
                 />
                 <CustomSelect
                   name="lga"
@@ -283,7 +283,7 @@ any) => {
                   label="LCDA"
                   control={control}
                   placeholder="Select LCDA"
-                  customOnChange={(name: any) => setSelectedLCDA(name?.value)}
+                  // customOnChange={(name: any) => setSelectedLCDA(name?.value)}
                 />
                 <CustomSelect
                   name="ward"
@@ -344,7 +344,7 @@ any) => {
                   onChange={isFederalField.onChange}
                   iflabel
                   name="isFederal"
-                  labelText="Is this a Federal Promise?"
+                  labelText="Is this a Federal issue?"
                 />
                 <CustomCheckBox
                   checked={isPromiseField.value}

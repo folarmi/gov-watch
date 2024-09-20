@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+
 import CustomInput from "../component/CustomInput";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { RegisterFormValues } from "../types/generalTypes";
@@ -11,12 +12,31 @@ import CustomSelect from "../component/CustomSelect";
 import { useCountriesData } from "../hooks/apiCalls";
 import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "../layouts/AuthLayout";
+import { useState } from "react";
 
 const Signup = () => {
   const { handleSubmit, control } = useForm<RegisterFormValues>();
+  const { handleSubmit: handleCorporateForm, control: controlCorporateForm } =
+    useForm<RegisterFormValues>();
+
   const { data: countriesData, isLoading: countriesDataIsLoading } =
     useCountriesData();
   const navigate = useNavigate();
+  const [isActiveTab, setIsActiveTab] = useState("Corporate");
+  const [tabs] = useState([
+    {
+      id: 1,
+      name: "Individual",
+    },
+    {
+      id: 2,
+      name: "Corporate",
+    },
+  ]);
+
+  const toggleActiveTab = (name: string) => {
+    setIsActiveTab(name);
+  };
 
   const signUpMutation = useMutation({
     mutationFn: async (data: FormData) => {
@@ -50,7 +70,14 @@ const Signup = () => {
     const formValues = {
       ...data,
     };
-    // console.log(formValues);
+    signUpMutation.mutate(formValues);
+  };
+
+  const submitCorporateForm = (data: any) => {
+    const formValues = {
+      ...data,
+      isOrganization: true,
+    };
     signUpMutation.mutate(formValues);
   };
 
@@ -64,72 +91,154 @@ const Signup = () => {
     >
       <div className="mb-24 md:mx-10 mx-6 w-96">
         <h1 className="font-bold text-4xl mb-2">Let's get started</h1>
-        <p className="mb-9">Kindly fill in the required details below</p>
+        <p className="">Kindly fill in the required details below</p>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <CustomInput
-            label="First name"
-            name="firstName"
-            control={control}
-            rules={{ required: "First name is required" }}
-          />
+        <div className="flex items-center">
+          {tabs?.map(({ id, name }) => {
+            return (
+              <ul
+                key={id}
+                onClick={() => toggleActiveTab(name)}
+                className="flex flex-wrap text-sm font-medium text-center text-gray-500 my-4"
+              >
+                <li className="me-2">
+                  <a
+                    href="#"
+                    className={`inline-block px-4 py-3 rounded-lg  ${
+                      isActiveTab === name
+                        ? "text-white bg-primary"
+                        : "text-black"
+                    }`}
+                  >
+                    {name}
+                  </a>
+                </li>
+              </ul>
+            );
+          })}
+        </div>
 
-          <CustomInput
-            label="Last name"
-            name="lastName"
-            control={control}
-            rules={{ required: "Last name is required" }}
-          />
+        {isActiveTab === "Individual" ? (
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <CustomInput
+              label="First name"
+              name="firstName"
+              control={control}
+              rules={{ required: "First name is required" }}
+            />
 
-          <CustomInput
-            label="Email address"
-            name="email"
-            type="email"
-            control={control}
-            rules={{ required: "Email is required" }}
-          />
+            <CustomInput
+              label="Last name"
+              name="lastName"
+              control={control}
+              rules={{ required: "Last name is required" }}
+            />
 
-          <CustomSelect
-            name="country"
-            options={countriesDataFormatted}
-            isLoading={countriesDataIsLoading}
-            label="Country"
-            control={control}
-            placeholder="Select Country"
-          />
+            <CustomInput
+              label="Email address"
+              name="email"
+              type="email"
+              control={control}
+              rules={{ required: "Email is required" }}
+            />
 
-          <CustomInput
-            label="Password"
-            name="password"
-            control={control}
-            type="password"
-            rules={{ required: "Password is required" }}
-          />
+            <CustomSelect
+              name="country"
+              options={countriesDataFormatted}
+              isLoading={countriesDataIsLoading}
+              label="Country"
+              control={control}
+              placeholder="Select Country"
+            />
 
-          <CustomInput
-            label="Confirm Password"
-            name="confirmPassword"
-            control={control}
-            type="password"
-            rules={{ required: "Confirm password" }}
-          />
+            <CustomInput
+              label="Password"
+              name="password"
+              control={control}
+              type="password"
+              rules={{ required: "Password is required" }}
+            />
 
-          <CustomButton
-            type="submit"
-            className="mt-4"
-            disabled={signUpMutation.isPending}
-            loading={signUpMutation.isPending}
-          >
-            Sign Up
-          </CustomButton>
+            <CustomInput
+              label="Confirm Password"
+              name="confirmPassword"
+              control={control}
+              type="password"
+              rules={{ required: "Confirm password" }}
+            />
 
-          <Link to="/sign-in" className="cursor-pointer">
-            <p className="flex justify-center mt-5 text-sm">
-              Already have an account?
-              <span className="font-bold text-primary"> Sign In</span>
-            </p>
-          </Link>
-        </form>
+            <CustomButton
+              type="submit"
+              className="mt-4"
+              disabled={signUpMutation.isPending}
+              loading={signUpMutation.isPending}
+            >
+              Sign Up
+            </CustomButton>
+
+            <Link to="/sign-in" className="cursor-pointer">
+              <p className="flex justify-center mt-5 text-sm">
+                Already have an account?
+                <span className="font-bold text-primary"> Sign In</span>
+              </p>
+            </Link>
+          </form>
+        ) : (
+          <form onSubmit={handleCorporateForm(submitCorporateForm)}>
+            <CustomInput
+              label="Organization name"
+              name="organizationName"
+              control={controlCorporateForm}
+              rules={{ required: "Organization name is required" }}
+            />
+            <CustomInput
+              label="Email address"
+              name="email"
+              control={controlCorporateForm}
+              rules={{ required: "Email name is required" }}
+            />
+
+            <CustomSelect
+              name="country"
+              options={countriesDataFormatted}
+              isLoading={countriesDataIsLoading}
+              label="Country"
+              control={controlCorporateForm}
+              placeholder="Select Country"
+            />
+
+            <CustomInput
+              label="Password"
+              name="password"
+              control={controlCorporateForm}
+              type="password"
+              rules={{ required: "Password is required" }}
+            />
+
+            <CustomInput
+              label="Confirm Password"
+              name="confirmPassword"
+              control={controlCorporateForm}
+              type="password"
+              rules={{ required: "Confirm password" }}
+            />
+
+            <CustomInput
+              label="Social Media Link"
+              name="socialMediaLink"
+              control={controlCorporateForm}
+            />
+
+            <CustomButton
+              type="submit"
+              className="mt-4"
+              disabled={signUpMutation.isPending}
+              loading={signUpMutation.isPending}
+            >
+              Sign Up
+            </CustomButton>
+          </form>
+        )}
       </div>
     </AuthLayout>
   );

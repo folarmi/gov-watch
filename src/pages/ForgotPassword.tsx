@@ -18,7 +18,9 @@ const ForgotPassword = () => {
 
   const forgotPasswordMutation = useMutation({
     mutationFn: async (data: any) => {
-      const response = await api.post(`ForgotPassword?email=${data?.email}`);
+      const response = await api.post(
+        `/Authentication/ForgotPassword?email=${data?.email}`
+      );
       return response;
     },
     onSuccess: (data) => {
@@ -70,7 +72,7 @@ const ForgotPassword = () => {
             disabled={forgotPasswordMutation.isPending}
             loading={forgotPasswordMutation.isPending}
           >
-            Sign In
+            Send Link
           </CustomButton>
         </form>
       </div>

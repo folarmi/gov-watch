@@ -28,3 +28,19 @@ export const continents = [
   { id: 6, name: "Australia" },
   { id: 7, name: "South America" },
 ];
+
+export function shouldFetchPublications(userType: string) {
+  if (!userType) return false;
+  if (userType === "Contributor") {
+    // Logic to determine if contributor should fetch
+    return true; // Apply custom logic for contributors
+  }
+  // For non-contributors
+  return true;
+}
+
+export const getPublicationTypeByUserId = `Publications/GetAllPublicationsByUserId?userId=`;
+
+export const userTypeObject = {
+  contributor: "Contributor",
+};

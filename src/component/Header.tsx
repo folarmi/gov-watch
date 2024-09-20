@@ -7,6 +7,9 @@ import { SidebarItemProp } from "../types/generalTypes";
 // import { useAppSelector } from "../lib/hook";
 // import { RootState } from "../lib/store";
 import { Link, useLocation } from "react-router-dom";
+import { RootState } from "../lib/store";
+import { useAppSelector } from "../lib/hook";
+import { userTypeObject } from "../utils";
 
 const Header = () => {
   const { isAuthenticated, logout } = useAuth();
@@ -15,7 +18,7 @@ const Header = () => {
 
   // const { theme } = useTheme();
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
-  // const { userType } = useAppSelector((state: RootState) => state.auth);
+  const { userType } = useAppSelector((state: RootState) => state.auth);
 
   const toggleSideBar = () => {
     setIsSideBarOpen(!isSideBarOpen);
@@ -40,7 +43,11 @@ const Header = () => {
     {
       id: 4,
       name: "Dashboard",
-      url: `/dashboard/manage-users`,
+      url: `${
+        userType !== userTypeObject.contributor
+          ? "/dashboard/manage-users"
+          : "/dashboard/total"
+      }`,
     },
     {
       id: 5,
