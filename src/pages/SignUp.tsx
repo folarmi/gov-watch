@@ -22,7 +22,7 @@ const Signup = () => {
   const { data: countriesData, isLoading: countriesDataIsLoading } =
     useCountriesData();
   const navigate = useNavigate();
-  const [isActiveTab, setIsActiveTab] = useState("Corporate");
+  const [isActiveTab, setIsActiveTab] = useState("Individual");
   const [tabs] = useState([
     {
       id: 1,
@@ -78,7 +78,9 @@ const Signup = () => {
       ...data,
       isOrganization: true,
     };
-    signUpMutation.mutate(formValues);
+
+    console.log(formValues);
+    // signUpMutation.mutate(formValues);
   };
 
   return (

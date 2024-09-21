@@ -16,9 +16,10 @@ import UpArrowButton from "../UpArrowButton";
 import DownArrowButton from "../DownArrowButton";
 import { RootState } from "../../lib/store";
 import { useAppSelector } from "../../lib/hook";
-import { useGetData } from "../../hooks/apiCalls";
+import { useCustomMutation, useGetData } from "../../hooks/apiCalls";
 import ReactQuill from "react-quill";
 import { Header } from "../Header";
+import { userTypeObject } from "../../utils";
 
 const ArticleForm = ({
   isEditing = false,
@@ -35,8 +36,8 @@ any) => {
       datePromiseMade: defaultValues?.datePromiseMade
         ? new Date(defaultValues?.datePromiseMade).toISOString().split("T")[0]
         : null,
-      promisedDeadline: defaultValues?.promisedDeadline
-        ? new Date(defaultValues?.promisedDeadline).toISOString().split("T")[0]
+      promiseDeadline: defaultValues?.promiseDeadline
+        ? new Date(defaultValues?.promiseDeadline).toISOString().split("T")[0]
         : null,
       datePromiseFulfilled: defaultValues?.datePromiseFulfilled
         ? new Date(defaultValues?.datePromiseFulfilled)
@@ -81,7 +82,9 @@ any) => {
   const [tags, setTags] = useState<string[]>([]);
   const [isAdditionalInformation, setIsAdditionalInformation] = useState(true);
 
-  const { userCountry } = useAppSelector((state: RootState) => state.auth);
+  const { userCountry, userId, userType } = useAppSelector(
+    (state: RootState) => state.auth
+  );
 
   const { data: categoriesData, isLoading: isCategoriesLoading } = useGetData({
     url: "Categories/GetAllCategories",
@@ -188,6 +191,27 @@ any) => {
         value: item,
       };
     });
+
+  const approvePublicationMutation = useCustomMutation({
+    endpoint: "Publications/UpdatePublicationForAdmin",
+    method: "put",
+    successMessage: (data: any) => data?.remark,
+    errorMessage: (error: any) => error?.response?.data?.remark,
+    onSuccessCallback: () => {
+      // window.location.reload();
+    },
+  });
+
+  const approvePublicationFunction = () => {
+    const data: any = {
+      ...defaultValues,
+      isApproval: true,
+      country: userCountry,
+      lastModifiedBy: userId,
+    };
+
+    approvePublicationMutation.mutate(data);
+  };
 
   return (
     <>
@@ -305,7 +329,7 @@ any) => {
                 />
                 <CustomInput
                   label="Promised Deadline"
-                  name="promisedDeadline"
+                  name="promiseDeadline"
                   type="date"
                   control={control}
                 />
@@ -404,14 +428,16 @@ any) => {
               >
                 Review
               </CustomButton>
-              <CustomButton
-                variant="primary"
-                onClick={() => {
-                  /* Update logic */
-                }}
-              >
-                Approve
-              </CustomButton>
+              {(userType === userTypeObject.admin ||
+                userType === userTypeObject.editor) && (
+                <CustomButton
+                  variant="primary"
+                  loading={approvePublicationMutation.isPending}
+                  onClick={approvePublicationFunction}
+                >
+                  Approve
+                </CustomButton>
+              )}
             </>
           ) : (
             <>

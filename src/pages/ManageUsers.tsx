@@ -99,27 +99,3 @@ const ManageUsers = () => {
 };
 
 export { ManageUsers };
-
-// {
-//   "firstName": "string",
-//   "lastName": "string",
-//   "email": "user@example.com",
-//   "password": "6G\"GTEJ,zhFpw2k]/.[EeCRPrc",
-//   "confirmPassword": "string",
-//   "bio": "string",
-//   "phoneNumber": "string",
-//   "socialMediaLink": "string",
-//   "image": "string",
-//   "otherInformation": "string",
-//   "createdBy": "string",
-//   "organizationName": "string",
-//   "country": "string",
-//   "isOrganization": true,
-//   "isStaff": true,
-//   "cancellationToken": {
-//     "waitHandle": {
-//       "handle": {},
-//       "safeWaitHandle": {}
-//     }
-//   }
-// }

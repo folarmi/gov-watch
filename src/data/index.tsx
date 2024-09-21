@@ -15,6 +15,7 @@ import mda from "../../public/mda.svg";
 import region from "../../public/region.svg";
 import inbox from "../../public/inbox.svg";
 import pending from "../../public/pending.svg";
+import { userTypeObject } from "../utils";
 
 export const SidebarList: SidebarItemProp[] = [
   {
@@ -326,7 +327,7 @@ export const dashboardSideBarItems = [
         link: "/dashboard/manage-users",
       },
     ],
-    userRole: ["Admin"],
+    userRole: [userTypeObject.admin],
   },
   {
     category: "Publications",
@@ -337,18 +338,7 @@ export const dashboardSideBarItems = [
         image: pending,
         link: "/dashboard/pending",
       },
-      // {
-      //   id: 2,
-      //   name: "Unapproved",
-      //   image: iconSeven,
-      //   link: "/dashboard/unapproved",
-      // },
-      // {
-      //   id: 3,
-      //   name: "Approved",
-      //   image: iconThree,
-      //   link: "/dashboard/approved",
-      // },
+
       {
         id: 4,
         name: "Reviewed",
@@ -362,7 +352,7 @@ export const dashboardSideBarItems = [
         link: "/dashboard/total",
       },
     ],
-    userRole: ["Admin", "Editor"],
+    userRole: [userTypeObject.admin, userTypeObject.editor],
   },
   {
     category: "Geographic Locations",
@@ -404,7 +394,7 @@ export const dashboardSideBarItems = [
         link: "/dashboard/lcda",
       },
     ],
-    userRole: ["Admin", "Editor"],
+    userRole: [userTypeObject.admin, userTypeObject.editor],
   },
   {
     category: "Political Entities",
@@ -428,7 +418,7 @@ export const dashboardSideBarItems = [
         link: "/dashboard/categories",
       },
     ],
-    userRole: ["Admin", "Editor"],
+    userRole: [userTypeObject.admin, userTypeObject.editor],
   },
   {
     category: "Miscellaneous",
@@ -452,7 +442,7 @@ export const dashboardSideBarItems = [
         link: "/dashboard/all-inbox",
       },
     ],
-    userRole: ["Admin", "Editor"],
+    userRole: [userTypeObject.admin, userTypeObject.editor],
   },
   {
     category: "Publications",
@@ -488,6 +478,17 @@ export const dashboardSideBarItems = [
         link: "/dashboard/all-inbox",
       },
     ],
-    userRole: ["Contributor"],
+    userRole: [userTypeObject.contributor],
+  },
+  {
+    items: [
+      {
+        id: 6,
+        name: "Users",
+        image: mda,
+        link: "/dashboard/corporate-users",
+      },
+    ],
+    userRole: [userTypeObject.organization],
   },
 ];

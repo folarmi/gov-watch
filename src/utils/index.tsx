@@ -43,4 +43,8 @@ export const getPublicationTypeByUserId = `Publications/GetAllPublicationsByUser
 
 export const userTypeObject = {
   contributor: "Contributor",
+  admin: "Admin",
+  editor: "Editor",
+  user: "User",
+  organization: "Organization",
 };

@@ -27,6 +27,7 @@ import {
   StateDetails,
   CreateMultipleUsers,
   ResetPassword,
+  CorporateUsers,
 } from "../pages";
 import Reviewed from "../pages/Reviewed";
 import { LCDA } from "../pages/Lcda";
@@ -75,6 +76,7 @@ const RoutePage = () => {
           element={<CreatePublication />}
         />
         <Route path="/dashboard/all-inbox" element={<AllInbox />} />
+        <Route path="/dashboard/corporate-users" element={<CorporateUsers />} />
         <Route path="/dashboard/pending/:id" element={<SinglePublication />} />
       </Routes>
     </div>

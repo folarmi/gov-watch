@@ -5,6 +5,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "tertiary" | "skeleton";
   loading?: boolean;
   className?: string;
+  disabled?: boolean;
 }
 
 const CustomButton: React.FC<ButtonProps> = ({
@@ -12,6 +13,7 @@ const CustomButton: React.FC<ButtonProps> = ({
   children,
   loading,
   className,
+  disabled,
   ...props
 }) => {
   let buttonStyle =
@@ -31,7 +33,7 @@ const CustomButton: React.FC<ButtonProps> = ({
       "py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 mr-3";
   }
 
-  if (loading) {
+  if (loading || disabled) {
     buttonStyle += " opacity-50 cursor-not-allowed";
   }
 
@@ -39,7 +41,7 @@ const CustomButton: React.FC<ButtonProps> = ({
     <button
       {...props}
       className={`${buttonStyle}${className}`}
-      disabled={loading}
+      disabled={loading || disabled}
     >
       {loading ? (
         <div className="flex items-center">

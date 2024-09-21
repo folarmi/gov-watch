@@ -7,16 +7,7 @@ import CustomInput from "../CustomInput";
 import { useForm } from "react-hook-form";
 import CustomTextArea from "../CustomTextArea";
 import CustomButton from "../CustomButton";
-// import { useAppSelector } from "@/app/lib/hook";
-// import { RootState } from "@/app/lib/store";
 import { toast } from "react-toastify";
-// import {
-//   UploadError,
-//   useCustomMutation,
-//   useGetData,
-//   useUploadMutation,
-// } from "@/app/hooks/apiCalls";
-// import CustomSelect from "../CustomSelect";
 import ImageDetails from "../ImageDetails";
 import { useAppSelector } from "../../lib/hook";
 import { RootState } from "../../lib/store";

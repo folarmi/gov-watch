@@ -16,6 +16,7 @@ import {
 import { useAuth } from "../context/AuthContext";
 import AuthLayout from "../layouts/AuthLayout";
 import { Link, useNavigate } from "react-router-dom";
+import { userTypeObject } from "../utils";
 // import { RootState } from "../lib/store";
 
 const SignIn = () => {
@@ -41,10 +42,12 @@ const SignIn = () => {
         dispatch(updateUserCountry(data?.data?.country));
         loginFromContext(data?.data?.token);
 
-        if (userType === "Contributor") {
+        if (userType === userTypeObject.contributor) {
           navigate("/dashboard/total");
-        } else {
+        } else if (userType === userTypeObject.admin) {
           navigate("/dashboard/manage-users");
+        } else {
+          navigate("/dashboard/corporate-users");
         }
       }
     },

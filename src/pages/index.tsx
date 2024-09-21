@@ -28,3 +28,4 @@ export * from "./StateDetails";
 export * from "./CreateMultipleUsers";
 export * from "./CreateMultipleUsers";
 export * from "./ResetPassword";
+export * from "./CorporateUsers";

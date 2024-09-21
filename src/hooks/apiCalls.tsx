@@ -52,9 +52,15 @@ interface MutationResponse {
 interface CustomMutationOptions<TData, TError, TVariables, TContext>
   extends UseMutationOptions<TData, TError, TVariables, TContext> {
   endpoint: string;
+  method?: "get" | "post" | "put" | "delete";
   successMessage?: (data: TData) => string;
   errorMessage?: (error: TError) => string;
   onSuccessCallback?: (data: TData) => void;
+  contentType?: "multipart/form-data" | "application/json";
+  mutationOptions?: Omit<
+    UseMutationOptions<TData, TError, TVariables, TContext>,
+    "mutationFn"
+  >;
 }
 
 export const useCountriesData = () => {
@@ -82,7 +88,7 @@ export const useGetData = ({ url, queryKey, enabled }: UseDataOptions) => {
     // retry: true,
     refetchOnMount: true,
     refetchOnWindowFocus: false,
-    // staleTime: 0,
+    staleTime: 0,
     enabled,
   });
 };
@@ -144,15 +150,69 @@ export const useCustomMutation = <
     successMessage,
     errorMessage,
     onSuccessCallback,
+    method = "post",
+    contentType = "application/json",
     ...mutationOptions
   } = options;
 
+  // return useMutation<TData, TError, TVariables, TContext>({
+  //   mutationFn: async (variables: TVariables) => {
+  //     const response = await api[method]<TData>(endpoint, variables);
+  //     return response.data;
+  //   },
+  //   // onSuccess: (data: any, variables, context) => {
+  //   onSuccess: (data: any) => {
+  //     if (data?.statusCode === 201) {
+  //       if (successMessage) {
+  //         toast(successMessage(data));
+  //       }
+  //       if (onSuccessCallback) {
+  //         onSuccessCallback(data);
+  //       }
+  //     }
+  //   },
+  //   onError: (error: any) => {
+  //     console.log(error?.response?.data);
+  //     if (errorMessage) {
+  //       toast.error(errorMessage(error));
+  //     } else if (error?.response?.data?.remark) {
+  //       toast.error(error.response.data.remark);
+  //     } else if (error?.response?.data) {
+  //       toast.error(error?.response?.data);
+  //     }
+  //   },
+
+  //   ...mutationOptions,
+  // });
+
   return useMutation<TData, TError, TVariables, TContext>({
     mutationFn: async (variables: TVariables) => {
-      const response = await api.post<TData>(endpoint, variables);
-      return response.data;
+      if (contentType === "multipart/form-data") {
+        const formData = new FormData();
+
+        // Assuming variables is an object and needs to be appended to formData
+        if (typeof variables === "object" && variables !== null) {
+          for (const key in variables) {
+            formData.append(key, (variables as any)[key]);
+          }
+        }
+
+        const response = await api[method]<TData>(endpoint, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        return response.data;
+      } else {
+        // Default to JSON handling
+        const response = await api[method]<TData>(endpoint, variables, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        return response.data;
+      }
     },
-    // onSuccess: (data: any, variables, context) => {
     onSuccess: (data: any) => {
       if (data?.statusCode === 201) {
         if (successMessage) {
@@ -164,13 +224,15 @@ export const useCustomMutation = <
       }
     },
     onError: (error: any) => {
+      console.log(error?.response?.data);
       if (errorMessage) {
         toast.error(errorMessage(error));
       } else if (error?.response?.data?.remark) {
         toast.error(error.response.data.remark);
+      } else if (error?.response?.data) {
+        toast.error(error?.response?.data);
       }
     },
-
     ...mutationOptions,
   });
 };

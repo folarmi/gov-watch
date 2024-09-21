@@ -26,7 +26,8 @@ const CreatePublication = () => {
   const createPublicationMutation = useCustomMutation({
     endpoint: "Publications/CreatePublication",
     successMessage: (data: any) => data?.remark,
-    errorMessage: (error: any) => error?.response?.data?.remark,
+    errorMessage: (error: any) =>
+      error?.response?.data?.remark || error?.response?.data,
     onSuccessCallback: () => {
       window.location.reload();
     },
@@ -64,6 +65,7 @@ const CreatePublication = () => {
       tags: tags.join(" , "),
       isDraft,
     };
+
     createPublicationMutation.mutate(formData);
   };
 

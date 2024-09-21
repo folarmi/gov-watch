@@ -42,6 +42,7 @@ const PendingPublications = () => {
                 isPromise,
                 id,
                 publicId,
+                promiseDeadline,
               }: any) => {
                 return (
                   <Link
@@ -56,6 +57,7 @@ const PendingPublications = () => {
                       date={date}
                       promise={isPromise}
                       imageUrl={image}
+                      deadline={promiseDeadline}
                       // imageUrl={coatOfArms}
                     />
                   </Link>
