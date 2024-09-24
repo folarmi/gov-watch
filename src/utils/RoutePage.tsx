@@ -28,15 +28,19 @@ import {
   CreateMultipleUsers,
   ResetPassword,
   CorporateUsers,
+  Drafts,
+  Rejected,
 } from "../pages";
 import Reviewed from "../pages/Reviewed";
 import { LCDA } from "../pages/Lcda";
+import Test from "../component/Test";
+
 const RoutePage = () => {
   return (
     <div>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/contact-u" element={<ContactUs />} />
+        <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/about-us" element={<About />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<Signup />} />
@@ -46,6 +50,7 @@ const RoutePage = () => {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/explore/:id" element={<StateDetails />} />
         <Route path="/dashboard/manage-users" element={<ManageUsers />} />
+        <Route path="/test" element={<Test />} />
         <Route
           path="/dashboard/manage-users/create"
           element={<CreateMultipleUsers />}
@@ -71,6 +76,8 @@ const RoutePage = () => {
         <Route path="/dashboard/categories" element={<Categories />} />
         <Route path="/dashboard/mda" element={<MDA />} />
         <Route path="/dashboard/tags" element={<Tags />} />
+        <Route path="/dashboard/drafts" element={<Drafts />} />
+        <Route path="/dashboard/rejected" element={<Rejected />} />
         <Route
           path="/dashboard/create-publication"
           element={<CreatePublication />}

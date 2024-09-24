@@ -333,23 +333,28 @@ export const dashboardSideBarItems = [
     category: "Publications",
     items: [
       {
+        id: 2,
+        name: "Drafts",
+        image: pending,
+        link: "/dashboard/drafts",
+      },
+      {
         id: 1,
         name: "Pending",
         image: pending,
         link: "/dashboard/pending",
-      },
-
-      {
-        id: 4,
-        name: "Reviewed",
-        image: iconThree,
-        link: "/dashboard/reviewed",
       },
       {
         id: 5,
         name: "Total",
         image: iconThree,
         link: "/dashboard/total",
+      },
+      {
+        id: 4,
+        name: "Rejected",
+        image: iconThree,
+        link: "/dashboard/rejected",
       },
     ],
     userRole: [userTypeObject.admin, userTypeObject.editor],

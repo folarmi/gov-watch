@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-irregular-whitespace */
 
 import Text from "../component/Text";
 import TextAndValue from "../component/StateDetail";
@@ -40,8 +39,7 @@ const StateDetails = () => {
         <div className="mx-24">
           <Header />
           <Text variant="heading">
-            Learn about {stateDetailsData?.name} State, Her MDAs and Political
-            actors
+            Learn about {params?.id} State, Her MDAs and Political actors
           </Text>
           <Text variant="bodyThree" className="pt-5 pb-12 text-">
             {stateDetailsData?.bio}
@@ -82,7 +80,9 @@ const StateDetails = () => {
             <img src="/lagos.svg" alt="lagos state logo" />
           </section>
 
-          <p className="text-[28px] font-medium">Publications by Lagos state</p>
+          <p className="text-[28px] font-medium">
+            Publications by {params?.id} state
+          </p>
 
           <>
             {statePublicationsData?.length < 1 ? (

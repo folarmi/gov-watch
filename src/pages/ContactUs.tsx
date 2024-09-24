@@ -1,36 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import CustomInput from "../component/CustomInput";
 import { SubmitHandler, useForm } from "react-hook-form";
-// import { FormValues } from "../types/generalTypes";
 import CustomTextArea from "../component/CustomTextArea";
-import { useMutation } from "@tanstack/react-query";
-import api from "../lib/axios";
-import { toast } from "react-toastify";
 import CustomButton from "../component/CustomButton";
 import OuterPage from "../layouts/OuterPage";
+import { useCustomMutation } from "../hooks/apiCalls";
 
 const ContactUs = () => {
   const { handleSubmit, control } = useForm<any>();
 
-  const contactUsMutation = useMutation({
-    mutationFn: async (data: FormData) => {
-      const response = await api.post("CreateContactUs", data);
-      return response;
-    },
-    onSuccess: (data) => {
-      console.log(data);
-      toast("Wow so easy!");
-      // Toast.show(data?.data?.data?.message, {
-      //   type: "success",
-      //   placement: "top",
-      // });
-      // router.navigate("/login");
-    },
-    onError: (error: any) => {
-      console.log(error);
-      toast(error?.response?.data?.remark, {
-        type: "error",
-      });
+  const contactUsMutation = useCustomMutation({
+    endpoint: "/ContactUsResponses/CreateContactUs",
+    successMessage: (data: any) => data?.remark,
+    errorMessage: (error: any) =>
+      error?.response?.data?.remark || error?.response?.data,
+    onSuccessCallback: () => {
+      window.location.reload();
     },
   });
 

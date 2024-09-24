@@ -1,29 +1,58 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Card from "../component/Card";
 import HeroSection from "../component/HeroSection";
 import ScrollableCategories from "../component/ScrollableCategories";
 import SearchBar from "../component/SearchBar";
-import { cardData, categories } from "../data";
 import ExploreButton from "../component/ExploreButton";
 import SeeAllPublications from "../component/SeeAllPublications";
 import EmptyPage from "../component/EmptyPage";
 import Loader from "../component/Loader";
 import { useGetData } from "../hooks/apiCalls";
 import OuterPage from "../layouts/OuterPage";
+import { useState } from "react";
+// import { Link } from "react-router-dom";
+// import { useEffect } from "react";
 
 const Home = () => {
   const handleSearch = () => {};
+  const [categoryName, setCategoryName] = useState("");
 
   const {
     data: articlesData,
     isLoading,
     error,
   } = useGetData({
-    url: "Publications/GetLatestPublications",
-    queryKey: ["publications"],
+    url: `Publications/GetLatestPublications?categoryName=${categoryName}`,
+    queryKey: ["publications", categoryName],
+    enabled: !!categoryName,
   });
 
-  if (isLoading) return <Loader />;
+  const { data: categoriesData, isLoading: categoriesDataisLoading } =
+    useGetData({
+      url: "Categories/GetAllCategories",
+      queryKey: ["GetAllCategories", "homePage"],
+      // enabled: [],
+    });
+
+  const categoriesDataFormatted =
+    categoriesData?.categoryViewModel &&
+    categoriesData?.categoryViewModel?.map((item: any) => {
+      return {
+        id: item?.id,
+        name: item?.name,
+      };
+    });
+
+  //   let argumentsLength = function(...args) {
+  //     return arguments.length;
+  // };
+
+  if (isLoading || categoriesDataisLoading) return <Loader />;
   if (error) return <div>Error loading data</div>;
+
+  const getCategory = (data: any) => {
+    setCategoryName(data);
+  };
 
   return (
     <OuterPage>
@@ -31,33 +60,42 @@ const Home = () => {
         <SearchBar onSearch={handleSearch} />
         <HeroSection />
 
-        <ScrollableCategories categories={categories} />
+        <ScrollableCategories
+          onClick={getCategory}
+          categories={categoriesDataFormatted}
+        />
         <>
           {articlesData?.length < 1 ? (
             <EmptyPage />
           ) : (
             <section className="mt-10 flex flex-wrap justify-between">
-              {cardData.map(
+              {articlesData?.map(
                 ({
-                  articleTitle,
+                  title,
                   date,
-                  imageUrl,
+                  image,
                   section,
                   summary,
-                  promise,
-                }) => {
+                  isPromise,
+                  id,
+                  // publicId,
+                  promiseDeadline,
+                }: any) => {
                   return (
                     <div
-                      key={articleTitle}
-                      className="flex items-center justify-center w-full sm:w-1/2 md:w-1/3 lg:w-1/4"
+                      // to={`/dashboard/pending/${id || publicId}`}
+                      key={id}
+                      className="w-full sm:w-1/2 md:w-1/3 mt-10"
                     >
                       <Card
                         section={section}
-                        articleTitle={articleTitle}
+                        articleTitle={title}
                         summary={summary}
                         date={date}
-                        promise={promise}
-                        imageUrl={imageUrl}
+                        promise={isPromise}
+                        imageUrl={image}
+                        deadline={promiseDeadline}
+                        // imageUrl={coatOfArms}
                       />
                     </div>
                   );
