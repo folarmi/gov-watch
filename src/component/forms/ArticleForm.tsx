@@ -198,15 +198,33 @@ any) => {
     successMessage: (data: any) => data?.remark,
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
-      // window.location.reload();
+      window.location.reload();
     },
   });
 
   const approvePublicationFunction = () => {
+    const keysToDelete = [
+      "isSuccessful",
+      "statusCode",
+      "remark",
+      "totalCount",
+      "region",
+      "contributorFullName",
+      "bio",
+      "socialMediaLink",
+      "contributorImage",
+      "viewCount",
+      "date",
+    ];
+
+    keysToDelete.forEach((key) => {
+      delete defaultValues[key];
+    });
+
+    console.log(defaultValues);
     const data: any = {
       ...defaultValues,
       isApproval: true,
-      country: userCountry,
       lastModifiedBy: userId,
     };
 
@@ -417,11 +435,17 @@ any) => {
         />
 
         {/* Actions */}
-        <div className="flex items-center justify-end gap-4 mt-5">
+        <div
+          className="flex items-center gap-4 mb-10"
+          style={{
+            marginBottom: "5rem",
+          }}
+        >
           {isEditing ? (
             <>
               <CustomButton
                 variant="secondary"
+                className="w-full md:w-1/2" // Ensure equal width for both buttons
                 onClick={() => {
                   /* Save draft logic */
                 }}
@@ -432,6 +456,7 @@ any) => {
                 userType === userTypeObject.editor) && (
                 <CustomButton
                   variant="primary"
+                  className="w-full md:w-1/2" // Ensure equal width for both buttons
                   loading={approvePublicationMutation.isPending}
                   onClick={approvePublicationFunction}
                 >
@@ -443,6 +468,7 @@ any) => {
             <>
               <CustomButton
                 variant="secondary"
+                className="w-full md:w-1/2"
                 onClick={() => {
                   setIsDraft(true);
                   onSubmit;
@@ -452,6 +478,7 @@ any) => {
               </CustomButton>
               <CustomButton
                 variant="primary"
+                className="w-full md:w-1/2"
                 onClick={() => {
                   /* Publish logic */
                 }}

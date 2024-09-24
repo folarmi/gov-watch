@@ -21,7 +21,7 @@ const CustomButton: React.FC<ButtonProps> = ({
 
   if (variant === "secondary") {
     buttonStyle =
-      "bg-white text-black font-medium py-4 px-10 border border-primary rounded-2xl";
+      "bg-white text-black font-medium py-4 px-10 border border-primary rounded-2xl ";
   }
 
   if (variant === "tertiary") {

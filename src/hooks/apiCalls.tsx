@@ -197,11 +197,16 @@ export const useCustomMutation = <
           }
         }
 
+        // for (let [key, value] of formData.entries()) {
+        //   console.log(`${key}:`, value);
+        // }
+
         const response = await api[method]<TData>(endpoint, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
+        console.log("jmk,mnbn", response.data);
         return response.data;
       } else {
         // Default to JSON handling
@@ -224,7 +229,6 @@ export const useCustomMutation = <
       }
     },
     onError: (error: any) => {
-      console.log(error?.response?.data);
       if (errorMessage) {
         toast.error(errorMessage(error));
       } else if (error?.response?.data?.remark) {

@@ -204,9 +204,9 @@
 
 // export default Card;
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Text from "./Text";
-import { truncateText } from "../utils";
+import { calculateTimeDifference, truncateText } from "../utils";
 
 interface CardProps {
   section: string;
@@ -229,45 +229,13 @@ const Card = ({
 }: CardProps) => {
   const [timeDifference, setTimeDifference] = useState<string>("");
 
-  // Function to calculate the time difference
-  const calculateTimeDifference = () => {
-    if (!deadline) return;
-
-    const currentDate = new Date();
-    const deadlineDate = new Date(deadline);
-
-    const difference = deadlineDate.getTime() - currentDate.getTime();
-
-    const isPastDeadline = difference < 0;
-
-    // Convert the difference to absolute value for formatting
-    const diff = Math.abs(difference);
-
-    // Calculate days, hours, and minutes
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-    // Set time difference string and indicate whether it's past the deadline
-    if (isPastDeadline) {
-      setTimeDifference(
-        `${days}d ${hours}h ${minutes}m ${seconds}s past the deadline`
-      );
-    } else {
-      setTimeDifference(
-        `${days}d ${hours}h ${minutes}m ${seconds}s to the deadline`
-      );
-    }
-  };
-
   // Use useEffect to continuously update the time difference
   useEffect(() => {
     if (deadline) {
-      calculateTimeDifference(); // Initial calculation
+      calculateTimeDifference(deadline, setTimeDifference); // Initial calculation
 
       const interval = setInterval(() => {
-        calculateTimeDifference();
+        calculateTimeDifference(deadline, setTimeDifference);
         // }, 60000); // Update every 1 minute
       }, 1000); // Update every second for accurate countdown
 

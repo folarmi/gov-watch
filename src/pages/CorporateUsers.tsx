@@ -13,6 +13,7 @@ import AdminButton from "../component/forms/AdminButton";
 import CustomButton from "../component/CustomButton";
 import * as XLSX from "xlsx";
 import { toast } from "react-toastify";
+import { emailRegex } from "../utils";
 
 const CorporateUsers = () => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -73,6 +74,8 @@ const CorporateUsers = () => {
 
     // Read the file as a binary string
     reader.readAsArrayBuffer(file);
+
+    setUploadedFile(file);
   };
 
   const submitUsers = (data: any) => {
@@ -243,7 +246,6 @@ const CorporateUsers = () => {
           </p>
 
           <div className="flex mb-4">
-            {/* Radio Buttons to Choose Between File Upload or Manual Entry */}
             <label className="mr-4">
               <input
                 type="radio"
@@ -266,7 +268,6 @@ const CorporateUsers = () => {
             </label>
           </div>
 
-          {/* Conditionally Render File Uploader or Email Inputs */}
           {uploadMethod === "excel" ? (
             <>
               <FileUploader
@@ -296,6 +297,13 @@ const CorporateUsers = () => {
                     label="Email"
                     name={`userForm.${index}.email`}
                     control={control}
+                    rules={{
+                      required: "Email is required",
+                      pattern: {
+                        value: emailRegex,
+                        message: "Invalid email address",
+                      },
+                    }}
                     className="mr-2"
                   />
                   <svg

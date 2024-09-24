@@ -14,6 +14,7 @@ import { useGetData } from "../hooks/apiCalls";
 import InformationTab from "../component/InformationTab";
 import CreatePublication from "../component/CreatePublication";
 import { Header } from "../component/Header";
+import { userTypeObject } from "../utils";
 
 const DashboardLayout = ({
   children,
@@ -134,7 +135,7 @@ const DashboardLayout = ({
             {/* Main Content */}
             <main className="w-full">{children}</main>
           </div>
-          <CreatePublication />
+          {userType !== userTypeObject.organization && <CreatePublication />}
         </section>
       )}
     </>
