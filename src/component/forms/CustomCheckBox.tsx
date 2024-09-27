@@ -45,8 +45,8 @@ const CustomCheckBox = ({
             d="M1 5L4 7.5L9 1"
             stroke="white"
             strokeWidth="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </svg>
       </label>

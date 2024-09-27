@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { createColumnHelper } from "@tanstack/react-table";
 import React from "react";
 // import defaultAvatar from "../../../../public/defaultAvatar.svg";
 import { InboxType } from "../types/generalTypes";
 import Table from "../component/Table";
-import { Link } from "react-router-dom";
 import IndeterminateCheckbox from "../component/InterdeterminateCheckbox";
 import DashboardLayout from "../layouts/DashboardLayout";
 
@@ -83,17 +81,17 @@ const AllInbox = () => {
         <span className="text-sm font-normal">{info.getValue()}</span>
       ),
     }),
-    columnHelper.display({
-      id: "checkbox",
-      cell: (props) => (
-        <Link
-          to="/admin-dashboard/all-inbox/123"
-          className="text-sm font-normal text-primary"
-        >
-          View Message
-        </Link>
-      ),
-    }),
+    // columnHelper.display({
+    //   id: "checkbox",
+    //   cell: (props) => (
+    //     <Link
+    //       to="/admin-dashboard/all-inbox/123"
+    //       className="text-sm font-normal text-primary"
+    //     >
+    //       View Message
+    //     </Link>
+    //   ),
+    // }),
   ];
 
   return (

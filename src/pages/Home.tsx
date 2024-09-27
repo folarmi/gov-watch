@@ -10,8 +10,6 @@ import Loader from "../component/Loader";
 import { useGetData } from "../hooks/apiCalls";
 import OuterPage from "../layouts/OuterPage";
 import { useState } from "react";
-// import { Link } from "react-router-dom";
-// import { useEffect } from "react";
 
 const Home = () => {
   const handleSearch = () => {};
@@ -24,14 +22,12 @@ const Home = () => {
   } = useGetData({
     url: `Publications/GetLatestPublications?categoryName=${categoryName}`,
     queryKey: ["publications", categoryName],
-    enabled: !!categoryName,
   });
 
   const { data: categoriesData, isLoading: categoriesDataisLoading } =
     useGetData({
       url: "Categories/GetAllCategories",
       queryKey: ["GetAllCategories", "homePage"],
-      // enabled: [],
     });
 
   const categoriesDataFormatted =

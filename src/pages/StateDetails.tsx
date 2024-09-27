@@ -7,8 +7,6 @@ import SeeAllPublications from "../component/SeeAllPublications";
 import ExploreButton from "../component/ExploreButton";
 import { Header } from "../component/Header";
 import { useParams } from "react-router-dom";
-// import { useAppSelector } from "../lib/hook";
-// import { RootState } from "../lib/store";
 import { useGetDataById } from "../hooks/apiCalls";
 import Loader from "../component/Loader";
 import EmptyPage from "../component/EmptyPage";
@@ -88,6 +86,9 @@ const StateDetails = () => {
             {statePublicationsData?.length < 1 ? (
               <EmptyPage />
             ) : (
+              // <div className="w-1/2">
+              //   <img src="./emptyPage.svg" alt="emptyPageImage" />
+              // </div>
               <section className="mt-10 flex flex-wrap justify-between">
                 {statePublicationsData?.map(
                   ({

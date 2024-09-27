@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createColumnHelper } from "@tanstack/react-table";
 import { useState } from "react";
@@ -36,19 +35,19 @@ const Categories = () => {
         <span className="text-sm font-normal">{info.getValue()}</span>
       ),
     }),
-    columnHelper.accessor("categoryImage", {
-      header: "Image",
-      cell: (info) => (
-        // <p className="text-sm font-normal w-[272px] ">{info.getValue()}</p>
-        <p className="text-sm font-normal w-[272px] ">Test Image</p>
-        // <Image
-        //   src={info.getValue()}
-        //   alt="category-image"
-        //   width={500}
-        //   height={500}
-        // />
-      ),
-    }),
+    // columnHelper.accessor("categoryImage", {
+    //   header: "Image",
+    //   cell: (info) => (
+    //     // <p className="text-sm font-normal w-[272px] ">{info.getValue()}</p>
+    //     <p className="text-sm font-normal w-[272px] ">Test Image</p>
+    //     // <Image
+    //     //   src={info.getValue()}
+    //     //   alt="category-image"
+    //     //   width={500}
+    //     //   height={500}
+    //     // />
+    //   ),
+    // }),
   ];
 
   const [createCategoryModal, setCreateCategoryModal] = useState(false);

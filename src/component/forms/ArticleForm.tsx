@@ -20,6 +20,8 @@ import { useCustomMutation, useGetData } from "../../hooks/apiCalls";
 import ReactQuill from "react-quill";
 import { Header } from "../Header";
 import { userTypeObject } from "../../utils";
+import Modal from "../modals/Modal";
+import ReviewModal from "../modals/ReviewModal";
 
 const ArticleForm = ({
   isEditing = false,
@@ -30,6 +32,18 @@ const ArticleForm = ({
   setIsDraft,
 }: // initialTags,
 any) => {
+  const [reviewModal, setReviewModal] = useState(false);
+  const [selectedArticleDetails, setSelectedArticleDetails] = useState({});
+
+  const toggleModal = () => {
+    setReviewModal(!reviewModal);
+    setSelectedArticleDetails((prev) => ({
+      ...prev,
+      articleTitle: defaultValues.title,
+      publicationId: defaultValues.publicId,
+    }));
+  };
+
   const { control, handleSubmit } = useForm({
     defaultValues: {
       ...defaultValues,
@@ -54,7 +68,6 @@ any) => {
   const { field } = useController({
     name: "article",
     control,
-    // defaultValue: defaultValues?.article || "",
   });
 
   const { field: isFederalField } = useController({
@@ -221,7 +234,6 @@ any) => {
       delete defaultValues[key];
     });
 
-    console.log(defaultValues);
     const data: any = {
       ...defaultValues,
       isApproval: true,
@@ -445,10 +457,8 @@ any) => {
             <>
               <CustomButton
                 variant="secondary"
-                className="w-full md:w-1/2" // Ensure equal width for both buttons
-                onClick={() => {
-                  /* Save draft logic */
-                }}
+                className="w-full md:w-1/2"
+                onClick={toggleModal}
               >
                 Review
               </CustomButton>
@@ -456,7 +466,7 @@ any) => {
                 userType === userTypeObject.editor) && (
                 <CustomButton
                   variant="primary"
-                  className="w-full md:w-1/2" // Ensure equal width for both buttons
+                  className="w-full md:w-1/2"
                   loading={approvePublicationMutation.isPending}
                   onClick={approvePublicationFunction}
                 >
@@ -488,6 +498,15 @@ any) => {
             </>
           )}
         </div>
+
+        <Modal show={reviewModal} toggleModal={toggleModal}>
+          <div className="p-4">
+            <ReviewModal
+              toggleModal={toggleModal}
+              selectedArticleDetails={selectedArticleDetails}
+            />
+          </div>
+        </Modal>
       </form>
     </>
   );

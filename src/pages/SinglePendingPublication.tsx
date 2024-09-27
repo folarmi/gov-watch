@@ -16,6 +16,7 @@ const SinglePublication = () => {
           ? `/Publications/GetUserPublicationById?publicId=${params?.id}&userId=${userId}`
           : "",
       queryKey: ["GetUserPublicationByIdForSinglePublication"],
+      enabled: !!params?.id && !!userId,
     });
 
   return (

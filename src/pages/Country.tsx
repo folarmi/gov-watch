@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // "use client";
 
@@ -34,13 +33,13 @@ const Country = () => {
         />
       ),
     }),
-    columnHelper.accessor("image", {
-      header: "Image",
-      cell: (info) => (
-        // <span className="text-sm font-normal">{info.getValue()}</span>
-        <span className="text-sm font-normal">ljkdfngkjdfjfd</span>
-      ),
-    }),
+    // columnHelper.accessor("image", {
+    //   header: "Image",
+    //   cell: (info) => (
+    //     // <span className="text-sm font-normal">{info.getValue()}</span>
+    //     <span className="text-sm font-normal">ljkdfngkjdfjfd</span>
+    //   ),
+    // }),
     columnHelper.accessor("name", {
       header: "Country Name",
       cell: (info) => (

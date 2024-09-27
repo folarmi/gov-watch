@@ -17,6 +17,7 @@ interface UseDataOptions {
 interface UseGetDataByIdOptions {
   url: string;
   queryKey: string[];
+  enabled?: any;
 }
 
 export interface UploadResponse {
@@ -93,7 +94,11 @@ export const useGetData = ({ url, queryKey, enabled }: UseDataOptions) => {
   });
 };
 
-export const useGetDataById = ({ url, queryKey }: UseGetDataByIdOptions) => {
+export const useGetDataById = ({
+  url,
+  queryKey,
+  enabled,
+}: UseGetDataByIdOptions) => {
   return useQuery<any>({
     queryKey,
     queryFn: async () => {
@@ -104,6 +109,7 @@ export const useGetDataById = ({ url, queryKey }: UseGetDataByIdOptions) => {
     refetchOnMount: true,
     refetchOnWindowFocus: false,
     staleTime: 0,
+    enabled,
   });
 };
 

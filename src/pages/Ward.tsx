@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { createColumnHelper } from "@tanstack/react-table";
@@ -36,10 +35,10 @@ const Ward = () => {
         />
       ),
     }),
-    columnHelper.accessor("image", {
-      header: "Image",
-      cell: (info) => <span className="text-sm font-normal">ggg</span>,
-    }),
+    // columnHelper.accessor("image", {
+    //   header: "Image",
+    //   cell: (info) => <span className="text-sm font-normal">ggg</span>,
+    // }),
     columnHelper.accessor("name", {
       header: "LGA",
       cell: (info) => (

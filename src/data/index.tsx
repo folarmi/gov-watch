@@ -493,6 +493,12 @@ export const dashboardSideBarItems = [
         image: mda,
         link: "/dashboard/corporate-users",
       },
+      {
+        id: 8,
+        name: "Bookmarks",
+        image: mda,
+        link: "/dashboard/bookmarks",
+      },
     ],
     userRole: [userTypeObject.organization],
   },
