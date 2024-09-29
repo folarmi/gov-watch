@@ -152,6 +152,7 @@ const Home = () => {
                         isArticleBookMarked={isArticleBookMarked}
                         setIsArticleBookMarked={setIsArticleBookMarked}
                         isPublished
+                        link={`/latest-publications/${publicId}`}
                       />
                     </div>
                   );

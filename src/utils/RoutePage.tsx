@@ -34,6 +34,7 @@ import {
   ChangePassword,
   BookMarks,
   LikedArticles,
+  PublicationDetails,
 } from "../pages";
 import Reviewed from "../pages/Reviewed";
 import { LCDA } from "../pages/Lcda";
@@ -52,6 +53,10 @@ const RoutePage = () => {
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/explore" element={<Explore />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route
+          path="/latest-publications/:id"
+          element={<PublicationDetails />}
+        />
         <Route path="/explore/:id" element={<StateDetails />} />
         <Route path="/dashboard/manage-users" element={<ManageUsers />} />
         <Route path="/test" element={<Test />} />
