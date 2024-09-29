@@ -32,6 +32,8 @@ import {
   Rejected,
   Setting,
   ChangePassword,
+  BookMarks,
+  LikedArticles,
 } from "../pages";
 import Reviewed from "../pages/Reviewed";
 import { LCDA } from "../pages/Lcda";
@@ -91,6 +93,8 @@ const RoutePage = () => {
         />
         <Route path="/dashboard/all-inbox" element={<AllInbox />} />
         <Route path="/dashboard/corporate-users" element={<CorporateUsers />} />
+        <Route path="/dashboard/bookmarks" element={<BookMarks />} />
+        <Route path="/dashboard/liked-articles" element={<LikedArticles />} />
         <Route path="/dashboard/pending/:id" element={<SinglePublication />} />
       </Routes>
     </div>

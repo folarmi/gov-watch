@@ -102,3 +102,19 @@ export const queryParamsToAdd = (param: string, filter: string) => {
 
   return returnedQueryParam;
 };
+
+export const directUserToPageOnLogin = (userType: string) => {
+  let pageToRedirect;
+  if (userType === userTypeObject.contributor) {
+    pageToRedirect = "/dashboard/total";
+  } else if (userType === userTypeObject.admin) {
+    pageToRedirect = "/dashboard/manage-users";
+  } else if (userType === userTypeObject.organization) {
+    pageToRedirect = "/dashboard/corporate-users";
+  } else if (userType === userTypeObject.user) {
+    pageToRedirect = "/dashboard/bookmarks";
+  } else {
+    pageToRedirect = "";
+  }
+  return pageToRedirect;
+};

@@ -33,3 +33,7 @@ export * from "./Drafts";
 export * from "./Rejected";
 export * from "./Setting";
 export * from "./ChangePassword";
+export * from "./BookMarks";
+export * from "./LikedArticles";
+export * from "./PublicationDetails";
+export * from "./PublicationDetails";

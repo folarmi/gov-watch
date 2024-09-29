@@ -17,7 +17,7 @@ import {
 import { useAuth } from "../context/AuthContext";
 import AuthLayout from "../layouts/AuthLayout";
 import { Link, useNavigate } from "react-router-dom";
-import { userTypeObject } from "../utils";
+import { directUserToPageOnLogin } from "../utils";
 // import { RootState } from "../lib/store";
 
 const SignIn = () => {
@@ -44,13 +44,7 @@ const SignIn = () => {
         dispatch(updateUserObject(data?.data));
         loginFromContext(data?.data?.token);
 
-        if (userType === userTypeObject.contributor) {
-          navigate("/dashboard/total");
-        } else if (userType === userTypeObject.admin) {
-          navigate("/dashboard/manage-users");
-        } else {
-          navigate("/dashboard/corporate-users");
-        }
+        navigate(directUserToPageOnLogin(userType));
       }
     },
     onError: (error: any) => {

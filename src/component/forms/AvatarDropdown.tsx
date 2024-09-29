@@ -1,5 +1,4 @@
 import { useState } from "react";
-import emptyPage from "../../assets/emptyPage.svg";
 import { useAuth } from "../../context/AuthContext";
 import { avatarDropDown } from "../../data";
 import { useAppSelector } from "../../lib/hook";
@@ -16,7 +15,7 @@ const AvatarDropdown = () => {
   };
   return (
     <div>
-      <img
+      {/* <img
         id="avatarButton"
         // type="button"
         // data-dropdown-toggle="userDropdown"
@@ -25,7 +24,15 @@ const AvatarDropdown = () => {
         className="w-10 h-10 rounded-full cursor-pointer"
         src={emptyPage}
         alt="User dropdown"
-      />
+      /> */}
+      <div
+        onClick={toggleDropDown}
+        className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-primary rounded-full dark:bg-gray-600"
+      >
+        <span className="font-medium text-white dark:text-gray-300 uppercase">
+          {userObject?.firstName[0]} {userObject?.lastName[0]}
+        </span>
+      </div>
 
       {showDropdown && (
         <div

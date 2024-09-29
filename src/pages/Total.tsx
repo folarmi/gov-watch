@@ -57,6 +57,7 @@ const TotalArticles = () => {
                       date={date}
                       promise={isPromise}
                       imageUrl={image}
+                      id={id}
                       // imageUrl={coatOfArms}
                     />
                   </Link>

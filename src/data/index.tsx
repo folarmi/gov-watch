@@ -502,6 +502,23 @@ export const dashboardSideBarItems = [
     ],
     userRole: [userTypeObject.organization],
   },
+  {
+    items: [
+      {
+        id: 12,
+        name: "Bookmarks",
+        image: mda,
+        link: "/dashboard/bookmarks",
+      },
+      {
+        id: 13,
+        name: "Liked Articles",
+        image: mda,
+        link: "/dashboard/liked-articles",
+      },
+    ],
+    userRole: [userTypeObject.user],
+  },
 ];
 
 export const avatarDropDown = [

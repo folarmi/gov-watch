@@ -9,7 +9,7 @@ import { SidebarItemProp } from "../types/generalTypes";
 import { Link, useLocation } from "react-router-dom";
 import { RootState } from "../lib/store";
 import { useAppSelector } from "../lib/hook";
-import { userTypeObject } from "../utils";
+import { directUserToPageOnLogin } from "../utils";
 import AvatarDropdown from "./forms/AvatarDropdown";
 
 const Header = () => {
@@ -44,11 +44,12 @@ const Header = () => {
     {
       id: 4,
       name: "Dashboard",
-      url: `${
-        userType !== userTypeObject.contributor
-          ? "/dashboard/manage-users"
-          : "/dashboard/total"
-      }`,
+      // url: `${
+      //   userType !== userTypeObject.contributor
+      //     ? "/dashboard/manage-users"
+      //     : "/dashboard/total"
+      // }`,
+      url: directUserToPageOnLogin(userType),
     },
     {
       id: 5,

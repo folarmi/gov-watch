@@ -58,6 +58,7 @@ const Drafts = () => {
                       promise={isPromise}
                       imageUrl={image}
                       deadline={promiseDeadline}
+                      id={id}
                       // imageUrl={coatOfArms}
                     />
                   </Link>

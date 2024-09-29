@@ -57,3 +57,18 @@ export type InboxType = {
   role: string;
   subject: string;
 };
+
+export type Article = {
+  publicId: string;
+  image: string;
+  category: string;
+  title: string;
+  content: string;
+  date: string;
+  isPromise: boolean;
+  isBookmarked: boolean;
+  isPromisedFulfilled: boolean;
+  datePromiseMade: string;
+  promiseDeadline: string;
+  datePromiseFulfilled: string;
+};

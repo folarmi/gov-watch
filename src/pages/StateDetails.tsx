@@ -37,7 +37,8 @@ const StateDetails = () => {
         <div className="mx-24">
           <Header />
           <Text variant="heading">
-            Learn about {params?.id} State, Her MDAs and Political actors
+            Learn about <span className="text-primary">{params?.id}</span>{" "}
+            State, Her MDAs and Political actors
           </Text>
           <Text variant="bodyThree" className="pt-5 pb-12 text-">
             {stateDetailsData?.bio}
@@ -79,7 +80,8 @@ const StateDetails = () => {
           </section>
 
           <p className="text-[28px] font-medium">
-            Publications by {params?.id} state
+            Publications by <span className="text-primary">{params?.id}</span>{" "}
+            state
           </p>
 
           <>
@@ -112,6 +114,7 @@ const StateDetails = () => {
                           date={date}
                           promise={isPromise}
                           imageUrl={image}
+                          id={id}
                         />
                       </div>
                     );
