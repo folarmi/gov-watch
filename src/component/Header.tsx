@@ -10,9 +10,10 @@ import { Link, useLocation } from "react-router-dom";
 import { RootState } from "../lib/store";
 import { useAppSelector } from "../lib/hook";
 import { userTypeObject } from "../utils";
+import AvatarDropdown from "./forms/AvatarDropdown";
 
 const Header = () => {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated } = useAuth();
   const location = useLocation();
   const pathName = location.pathname;
 
@@ -86,9 +87,12 @@ const Header = () => {
           )}
 
           {isAuthenticated && (
-            <Link className="hidden md:flex" to="/sign-in">
-              <CustomButton onClick={logout}>Sign Out</CustomButton>
-            </Link>
+            <div>
+              {/* <Link className="hidden md:flex" to="/sign-in">
+                <CustomButton onClick={logout}>Sign Out</CustomButton>
+              </Link> */}
+              <AvatarDropdown />
+            </div>
           )}
         </>
 

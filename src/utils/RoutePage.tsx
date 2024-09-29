@@ -30,6 +30,8 @@ import {
   CorporateUsers,
   Drafts,
   Rejected,
+  Setting,
+  ChangePassword,
 } from "../pages";
 import Reviewed from "../pages/Reviewed";
 import { LCDA } from "../pages/Lcda";
@@ -81,6 +83,11 @@ const RoutePage = () => {
         <Route
           path="/dashboard/create-publication"
           element={<CreatePublication />}
+        />
+        <Route path="/dashboard/settings" element={<Setting />} />
+        <Route
+          path="/dashboard/settings/change-password"
+          element={<ChangePassword />}
         />
         <Route path="/dashboard/all-inbox" element={<AllInbox />} />
         <Route path="/dashboard/corporate-users" element={<CorporateUsers />} />

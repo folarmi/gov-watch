@@ -1,23 +1,35 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { useState } from "react";
+import { searchBarFilter } from "../data";
+import { useController } from "react-hook-form";
 
 interface SearchBarProps {
-  onSearch: (searchTerm: string) => void;
+  // onSearch: (searchTerm: string) => void;
+  setSelectedFilter: (searchTerm: string) => void;
+  setQueryParam: (searchTerm: string) => void;
+  name: string;
+  control: any;
 }
 
-// const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
-const SearchBar: React.FC<SearchBarProps> = () => {
-  // const [searchTerm, setSearchTerm] = useState("");
+const SearchBar: React.FC<SearchBarProps> = ({
+  setSelectedFilter,
+  name,
+  control,
+}: SearchBarProps) => {
+  const { field } = useController({
+    name,
+    control,
+  });
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
-
   const toggleFilter = () => {
     setShowFilterDropdown(!showFilterDropdown);
   };
 
-  // const handleSearch = () => {
-  //   // Call the onSearch callback with the search term
-  //   onSearch(searchTerm);
-  // };
+  const selectFilter = (name: string) => {
+    setSelectedFilter(name);
+    toggleFilter();
+  };
 
   return (
     <section className="md:flex justify-center my-4 md:my-14">
@@ -39,22 +51,23 @@ const SearchBar: React.FC<SearchBarProps> = () => {
                   : "opacity-0 duration-1000 pointer-events-none"
               }`}
             >
-              <p className="border-b-2 pb-4 border-grey_200 whitespace-nowrap py-4 px-20">
-                Ministries, Departments, Agencies (MDAs)
-              </p>
-              <p className="border-b-2 pb-4 border-grey_200 whitespace-nowrap py-4 px-20">
-                Political actors
-              </p>
-              <p className="border-b-2 pb-4 border-grey_200 whitespace-nowrap py-4 px-20">
-                State
-              </p>
-              <p className="pb-4 whitespace-nowrap py-4 px-20">
-                Local Govt Area (LGA)
-              </p>
+              {searchBarFilter?.map(({ id, name }) => (
+                <div key={id} onClick={() => selectFilter(name)}>
+                  <p className="border-b-2 pb-4 border-gray-100 whitespace-nowrap py-4 px-20">
+                    {name}
+                  </p>
+                </div>
+              ))}
             </div>
           )}
         </div>
-        <input type="text" className="flex-1 px-2 focus:outline-none" />
+
+        <input
+          {...field}
+          type="text"
+          name={name}
+          className="flex-1 px-2 focus:outline-none"
+        />
         <div className="bg-primary px-4 py-4">
           <img src="searchIcon.svg" alt="filter icon" width={20} height={20} />
         </div>
@@ -64,14 +77,3 @@ const SearchBar: React.FC<SearchBarProps> = () => {
 };
 
 export default SearchBar;
-
-{
-  /* <div
-className={`absolute bg-white shadow-md p-4 rounded-lg transition-opacity ${
-  showFilterDropdown
-    ? "opacity-100 duration-500"
-    : "opacity-0 duration-1000 pointer-events-none"
-}`}
-style={{ top: "100%", right: 0, transform: "translateY(10px)" }}
-> */
-}

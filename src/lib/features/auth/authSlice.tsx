@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
@@ -14,12 +15,14 @@ export interface AuthState {
   userType: UserType;
   userId: string;
   userCountry: string;
+  userObject: any;
 }
 
 const initialState: AuthState = {
   userType: "",
   userId: "",
   userCountry: "",
+  userObject: {},
 };
 
 export const authSlice = createSlice({
@@ -35,11 +38,18 @@ export const authSlice = createSlice({
     updateUserCountry: (state, action: PayloadAction<string>) => {
       state.userCountry = action.payload;
     },
+    updateUserObject: (state, action: PayloadAction<string>) => {
+      state.userObject = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { updateUserType, updateUserId, updateUserCountry } =
-  authSlice.actions;
+export const {
+  updateUserType,
+  updateUserId,
+  updateUserCountry,
+  updateUserObject,
+} = authSlice.actions;
 
 export default authSlice.reducer;

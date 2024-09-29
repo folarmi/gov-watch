@@ -11,6 +11,7 @@ import { useAppDispatch } from "../lib/hook";
 import {
   updateUserCountry,
   updateUserId,
+  updateUserObject,
   updateUserType,
 } from "../lib/features/auth/authSlice";
 import { useAuth } from "../context/AuthContext";
@@ -40,6 +41,7 @@ const SignIn = () => {
         dispatch(updateUserType(userType));
         dispatch(updateUserId(data?.data?.publicId));
         dispatch(updateUserCountry(data?.data?.country));
+        dispatch(updateUserObject(data?.data));
         loginFromContext(data?.data?.token);
 
         if (userType === userTypeObject.contributor) {

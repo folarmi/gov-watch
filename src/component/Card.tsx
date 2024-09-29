@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import Text from "./Text";
@@ -16,8 +17,9 @@ interface CardProps {
   isArticleBookMarked?: any;
   setIsArticleBookMarked?: any;
   onBookMarkClick?: any;
-  isBookMarked?: () => void;
+  isBookMarked?: boolean;
   link?: string | Partial<Path>;
+  isPublished?: boolean;
 }
 
 const Card = ({
@@ -27,20 +29,15 @@ const Card = ({
   date,
   promise,
   id,
-  // imageUrl,
   link,
   deadline,
-  // isBookMarked,
+  isBookMarked,
   onBookMarkClick,
   isArticleBookMarked,
-}: // setIsArticleBookMarked,
-CardProps) => {
+  setIsArticleBookMarked,
+  isPublished,
+}: CardProps) => {
   const [timeDifference, setTimeDifference] = useState<string>("");
-
-  // const toggleBookMarkStatus = (id: string) => {
-  //   onBookMarkClick();
-  //   // setIsArticleBookMarked(!isArticleBookMarked);
-  // };
 
   useEffect(() => {
     if (deadline) {
@@ -51,6 +48,12 @@ CardProps) => {
       return () => clearInterval(interval);
     }
   }, [deadline]);
+
+  useEffect(() => {
+    if (isBookMarked !== undefined) {
+      setIsArticleBookMarked(isBookMarked);
+    }
+  }, [isBookMarked]);
 
   return (
     <div className="max-w-sm w-[300px] bg-white dark:bg-black_100 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer my-3 overflow-hidden">
@@ -77,8 +80,6 @@ CardProps) => {
         </p>
 
         <div className="flex items-center justify-between mb-4">
-          <p className="font-medium text-xs text-gray-500">{date}</p>
-
           {promise && deadline && (
             <span
               className={`text-white text-xs font-bold me-2 px-2.5 py-0.5 rounded ${
@@ -90,21 +91,26 @@ CardProps) => {
           )}
         </div>
 
+        <p className="font-medium text-xs text-gray-500">{date}</p>
+
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <img src="/heartOutline.svg" alt="Like" className="w-5 h-5" />
             <img src="/comments.svg" alt="Comments" className="w-5 h-5" />
           </div>
-          <div className="">
-            <img
-              onClick={() => onBookMarkClick(id)}
-              src={
-                isArticleBookMarked ? "/filledBookMark.svg" : "/bookMark.svg"
-              }
-              alt="Bookmark"
-              className="w-5 h-5 cursor-pointer"
-            />
-          </div>
+
+          {isPublished && (
+            <div className="">
+              <img
+                onClick={() => onBookMarkClick(id)}
+                src={
+                  isArticleBookMarked ? "/filledBookMark.svg" : "/bookMark.svg"
+                }
+                alt="Bookmark"
+                className="w-5 h-5 cursor-pointer"
+              />
+            </div>
+          )}
         </div>
 
         <Link

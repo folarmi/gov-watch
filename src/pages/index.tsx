@@ -31,3 +31,5 @@ export * from "./ResetPassword";
 export * from "./CorporateUsers";
 export * from "./Drafts";
 export * from "./Rejected";
+export * from "./Setting";
+export * from "./ChangePassword";

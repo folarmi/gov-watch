@@ -503,3 +503,53 @@ export const dashboardSideBarItems = [
     userRole: [userTypeObject.organization],
   },
 ];
+
+export const avatarDropDown = [
+  {
+    id: 1,
+    name: "Dashboard",
+    link: "/dashboard/settings",
+  },
+  {
+    id: 2,
+    name: "Settings",
+    link: "/dashboard/settings",
+  },
+  {
+    id: 3,
+    name: "Earnings",
+    link: "/dashboard/settings",
+  },
+];
+
+export const settingData = [
+  {
+    id: 1,
+    name: "About",
+    link: "/dashboard/settings",
+  },
+  {
+    id: 2,
+    name: " Change Password",
+    link: "/dashboard/settings/change-password",
+  },
+];
+
+export const searchBarFilter = [
+  {
+    id: 1,
+    name: "Ministries, Departments, Agencies (MDAs)",
+  },
+  {
+    id: 2,
+    name: "Political actors",
+  },
+  {
+    id: 3,
+    name: "State",
+  },
+  {
+    id: 4,
+    name: "Local Govt Area (LGA)",
+  },
+];
