@@ -1,122 +1,290 @@
 "use client";
 
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState } from "react";
 
-interface User {
-  firstname: string;
-  lastname: string;
-  email: string;
-}
+const FormComponent = () => {
+  const [formData, setFormData] = useState({
+    snippet: "",
+    article: "",
+    image: null,
+    imageCaption: "",
+    contributorPublicId: "",
+    category: "",
+    state: "",
+    ward: "",
+    lcda: "",
+    isFederal: false,
+    title: "",
+    tags: "",
+    reference: "",
+    authorName: "",
+    link: "",
+    isPromise: false,
+    isPromisedFulfilled: false,
+    datePromiseMade: "",
+    promiseDeadline: "",
+    datePromiseFulfilled: "",
+    politicalActorName: "",
+    country: "",
+  });
 
-const UserRegistrationForm: React.FC = () => {
-  const [users, setUsers] = useState<User[]>([
-    { firstname: "", lastname: "", email: "" },
-  ]);
-
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement>,
-    index: number,
-    field: keyof User
-  ) => {
-    const newUsers = [...users];
-    newUsers[index][field] = e.target.value;
-    setUsers(newUsers);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleAddUser = () => {
-    setUsers([...users, { firstname: "", lastname: "", email: "" }]);
-  };
-
-  const handleRemoveUser = (index: number) => {
-    const newUsers = users.filter((_, i) => i !== index);
-    setUsers(newUsers);
-  };
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    console.log("Registered Users:", users);
-    // Submit the users to your backend or API
+  const handleFileChange = (e) => {
+    setFormData({ ...formData, image: e.target.files[0] });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-lg mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Register Multiple Users</h1>
-      {users.map((user, index) => (
-        <div key={index} className="mb-4 p-4 border border-gray-200 rounded-lg">
-          <div className="mb-2">
-            <label
-              htmlFor={`firstname-${index}`}
-              className="block text-sm font-medium text-gray-700"
-            >
-              Firstname
-            </label>
-            <input
-              id={`firstname-${index}`}
-              type="text"
-              value={user.firstname}
-              onChange={(e) => handleChange(e, index, "firstname")}
-              className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-              required
-            />
-          </div>
-          <div className="mb-2">
-            <label
-              htmlFor={`lastname-${index}`}
-              className="block text-sm font-medium text-gray-700"
-            >
-              Lastname
-            </label>
-            <input
-              id={`lastname-${index}`}
-              type="text"
-              value={user.lastname}
-              onChange={(e) => handleChange(e, index, "lastname")}
-              className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-              required
-            />
-          </div>
-          <div className="mb-2">
-            <label
-              htmlFor={`email-${index}`}
-              className="block text-sm font-medium text-gray-700"
-            >
-              Email
-            </label>
-            <input
-              id={`email-${index}`}
-              type="email"
-              value={user.email}
-              onChange={(e) => handleChange(e, index, "email")}
-              className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-              required
-            />
-          </div>
-          {index > 0 && (
-            <button
-              type="button"
-              onClick={() => handleRemoveUser(index)}
-              className="mt-2 p-2 bg-red-500 text-white rounded-md"
-            >
-              Remove User
-            </button>
-          )}
+    <form className="p-6 space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="col-span-1">
+          <label className="block text-gray-700">Snippet</label>
+          <textarea
+            name="snippet"
+            value={formData.snippet}
+            onChange={handleInputChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          />
         </div>
-      ))}
-      <button
-        type="button"
-        onClick={handleAddUser}
-        className="mt-2 p-2 bg-blue-500 text-white rounded-md"
-      >
-        Add Another User
-      </button>
-      <button
-        type="submit"
-        className="mt-4 p-2 bg-green-500 text-white rounded-md w-full"
-      >
-        Register Users
-      </button>
+        <div className="col-span-1">
+          <label className="block text-gray-700">Article</label>
+          <textarea
+            name="article"
+            value={formData.article}
+            onChange={handleInputChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          />
+        </div>
+        <div className="col-span-1">
+          <label className="block text-gray-700">Image</label>
+          <input
+            type="file"
+            name="image"
+            onChange={handleFileChange}
+            className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+          />
+        </div>
+        <div className="col-span-1">
+          <label className="block text-gray-700">Image Caption</label>
+          <input
+            type="text"
+            name="imageCaption"
+            value={formData.imageCaption}
+            onChange={handleInputChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          />
+        </div>
+        <div className="col-span-1">
+          <label className="block text-gray-700">Contributor Public ID</label>
+          <input
+            type="text"
+            name="contributorPublicId"
+            value={formData.contributorPublicId}
+            onChange={handleInputChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          />
+        </div>
+        <div className="col-span-1">
+          <label className="block text-gray-700">Category</label>
+          <select
+            name="category"
+            value={formData.category}
+            onChange={handleInputChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          >
+            {/* Add options here */}
+          </select>
+        </div>
+        <div className="col-span-1">
+          <label className="block text-gray-700">State</label>
+          <select
+            name="state"
+            value={formData.state}
+            onChange={handleInputChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          >
+            {/* Add options here */}
+          </select>
+        </div>
+        <div className="col-span-1">
+          <label className="block text-gray-700">Ward</label>
+          <select
+            name="ward"
+            value={formData.ward}
+            onChange={handleInputChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          >
+            {/* Add options here */}
+          </select>
+        </div>
+        <div className="col-span-1">
+          <label className="block text-gray-700">LCDA</label>
+          <select
+            name="lcda"
+            value={formData.lcda}
+            onChange={handleInputChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          >
+            {/* Add options here */}
+          </select>
+        </div>
+        <div className="col-span-1">
+          <label className="block text-gray-700">Is Federal?</label>
+          <input
+            type="checkbox"
+            name="isFederal"
+            checked={formData.isFederal}
+            onChange={() =>
+              setFormData({ ...formData, isFederal: !formData.isFederal })
+            }
+            className="mt-1 block rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          />
+        </div>
+        <div className="col-span-1">
+          <label className="block text-gray-700">Title</label>
+          <input
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={handleInputChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          />
+        </div>
+        <div className="col-span-1">
+          <label className="block text-gray-700">Tags</label>
+          <input
+            type="text"
+            name="tags"
+            value={formData.tags}
+            onChange={handleInputChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          />
+        </div>
+        <div className="col-span-1">
+          <label className="block text-gray-700">Reference</label>
+          <input
+            type="text"
+            name="reference"
+            value={formData.reference}
+            onChange={handleInputChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          />
+        </div>
+        <div className="col-span-1">
+          <label className="block text-gray-700">Author Name</label>
+          <input
+            type="text"
+            name="authorName"
+            value={formData.authorName}
+            onChange={handleInputChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          />
+        </div>
+        <div className="col-span-1">
+          <label className="block text-gray-700">Link</label>
+          <input
+            type="text"
+            name="link"
+            value={formData.link}
+            onChange={handleInputChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          />
+        </div>
+        <div className="col-span-1">
+          <label className="block text-gray-700">Is Promise?</label>
+          <input
+            type="checkbox"
+            name="isPromise"
+            checked={formData.isPromise}
+            onChange={() =>
+              setFormData({ ...formData, isPromise: !formData.isPromise })
+            }
+            className="mt-1 block rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          />
+        </div>
+        <div className="col-span-1">
+          <label className="block text-gray-700">Is Promise Fulfilled?</label>
+          <input
+            type="checkbox"
+            name="isPromisedFulfilled"
+            checked={formData.isPromisedFulfilled}
+            onChange={() =>
+              setFormData({
+                ...formData,
+                isPromisedFulfilled: !formData.isPromisedFulfilled,
+              })
+            }
+            className="mt-1 block rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          />
+        </div>
+        <div
+          className="col-span-
+
+1"
+        >
+          <label className="block text-gray-700">Date Promise Made</label>
+          <input
+            type="date"
+            name="datePromiseMade"
+            value={formData.datePromiseMade}
+            onChange={handleInputChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          />
+        </div>
+        <div className="col-span-1">
+          <label className="block text-gray-700">Promise Deadline</label>
+          <input
+            type="date"
+            name="promiseDeadline"
+            value={formData.promiseDeadline}
+            onChange={handleInputChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          />
+        </div>
+        <div className="col-span-1">
+          <label className="block text-gray-700">Date Promise Fulfilled</label>
+          <input
+            type="date"
+            name="datePromiseFulfilled"
+            value={formData.datePromiseFulfilled}
+            onChange={handleInputChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          />
+        </div>
+        <div className="col-span-1">
+          <label className="block text-gray-700">Political Actor Name</label>
+          <input
+            type="text"
+            name="politicalActorName"
+            value={formData.politicalActorName}
+            onChange={handleInputChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          />
+        </div>
+        <div className="col-span-1">
+          <label className="block text-gray-700">Country</label>
+          <input
+            type="text"
+            name="country"
+            value={formData.country}
+            onChange={handleInputChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          />
+        </div>
+      </div>
+      <div className="mt-6">
+        <button
+          type="submit"
+          className="px-4 py-2 bg-blue-500 text-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          Submit
+        </button>
+      </div>
     </form>
   );
 };
 
-export default UserRegistrationForm;
+export default FormComponent;

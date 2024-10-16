@@ -10,7 +10,7 @@ import { RootState } from "../lib/store";
 
 const Dashboard = () => {
   const { userType } = useAppSelector((state: RootState) => state.auth);
-  console.log(userType);
+
   return (
     <div className="">
       <section className="mt-10 flex flex-wrap justify-between">

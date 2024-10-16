@@ -22,13 +22,13 @@ const AdminDashboardLayout = ({
   const pathName = usePathname();
 
   const { data: userCountData, isLoading: userCountIsLoading } = useGetData({
-    url: "/GetCountOfUsers",
+    url: "Users/GetCountOfUsers",
     queryKey: ["GetCountOfUsers"],
   });
 
   const { data: countOfPublications, isLoading: countOfPublicationsIsLoading } =
     useGetData({
-      url: "/GetCountOfPublications",
+      url: "Publications/GetCountOfPublications",
       queryKey: ["GetCountOfPublications"],
     });
 
@@ -122,7 +122,6 @@ const AdminDashboardLayout = ({
                   >
                     <Image src={image} alt="item icon" className="" />
                     <p
-                      // href={link}
                       className={`text-base font-medium whitespace-nowrap mx-5 cursor-pointer`}
                     >
                       {name}

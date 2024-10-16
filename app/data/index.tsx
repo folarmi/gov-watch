@@ -176,27 +176,6 @@ export const stateInfo = [
   },
 ];
 
-export const customerDashboard = [
-  {
-    id: 1,
-    name: "Total Read",
-    number: 700,
-    path: "/dashboard",
-  },
-  {
-    id: 2,
-    name: "Total Liked Post",
-    number: 156,
-    path: "/dashboard/liked-post",
-  },
-  {
-    id: 3,
-    name: "Bookmarks",
-    number: 400,
-    path: "/dashboard/bookmarks",
-  },
-];
-
 export const editorDashboard = [
   {
     id: 1,
@@ -343,6 +322,12 @@ export const adminDashboardSideBarItems = [
     link: "/admin-dashboard/manage-users",
   },
   {
+    id: 11,
+    name: "Political Actors",
+    image: categoriesIcon,
+    link: "/admin-dashboard/political-actors",
+  },
+  {
     id: 2,
     name: "Categories",
     image: categoriesIcon,
@@ -350,30 +335,54 @@ export const adminDashboardSideBarItems = [
   },
   {
     id: 3,
-    name: "State",
+    name: "Country",
     image: state,
-    link: "/admin-dashboard/state",
+    link: "/admin-dashboard/country",
   },
   {
-    id: 4,
-    name: "LGA",
-    image: lga,
-    link: "/admin-dashboard/lga",
-  },
-  {
-    id: 5,
-    name: "MDA",
-    image: mda,
-    link: "/admin-dashboard/mda",
-  },
-  {
-    id: 6,
+    id: 7,
     name: "Region",
     image: region,
     link: "/admin-dashboard/region",
   },
   {
-    id: 7,
+    id: 4,
+    name: "State",
+    image: state,
+    link: "/admin-dashboard/state",
+  },
+  {
+    id: 5,
+    name: "LGA",
+    image: lga,
+    link: "/admin-dashboard/lga",
+  },
+  {
+    id: 9,
+    name: "Ward",
+    image: lga,
+    link: "/admin-dashboard/ward",
+  },
+  {
+    id: 10,
+    name: "LCDA",
+    image: lga,
+    link: "/admin-dashboard/lcda",
+  },
+  {
+    id: 6,
+    name: "MDA",
+    image: mda,
+    link: "/admin-dashboard/mda",
+  },
+  {
+    id: 10,
+    name: "Tags",
+    image: lga,
+    link: "/admin-dashboard/tags",
+  },
+  {
+    id: 8,
     name: "All inbox",
     image: inbox,
     link: "/admin-dashboard/all-inbox",

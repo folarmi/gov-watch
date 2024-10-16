@@ -1,10 +1,13 @@
 "use client";
 
+import AdminButton from "@/app/component/forms/AdminButton";
 import IndeterminateCheckbox from "@/app/component/InterdeterminateCheckbox";
+import CreateMDA from "@/app/component/modals/CreateMDA";
+import Modal from "@/app/component/modals/Modal";
 import Table from "@/app/component/Table";
 import { MDAType } from "@/app/types/generalTypes";
 import { createColumnHelper } from "@tanstack/react-table";
-import React from "react";
+import React, { useState } from "react";
 
 const MDA = () => {
   const [data, setData] = React.useState<MDAType[]>([
@@ -27,6 +30,7 @@ const MDA = () => {
       agencies: "Phs, Yola",
     },
   ]);
+  const [createMDA, setCreateMDA] = useState(false);
 
   const columnHelper = createColumnHelper<MDAType>();
   const columns = [
@@ -67,9 +71,22 @@ const MDA = () => {
     }),
   ];
 
+  const toggleModal = () => {
+    setCreateMDA(!createMDA);
+  };
+
   return (
     <div className="mt-10">
+      <div className="flex justify-end w-full mb-4">
+        <AdminButton buttonText="Add MDA" onClick={toggleModal} />
+      </div>
       <Table columns={columns} data={data} />
+
+      <Modal show={createMDA} toggleModal={toggleModal}>
+        <div className="p-4">
+          <CreateMDA toggleModal={toggleModal} />
+        </div>
+      </Modal>
     </div>
   );
 };
