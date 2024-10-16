@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // components/CustomTextarea.tsx
 import React from "react";
 import { useController, UseControllerProps } from "react-hook-form";

@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-// import Image from "next/image";
 import { useState } from "react";
 import { useController, UseControllerProps } from "react-hook-form";
 
@@ -11,7 +10,7 @@ interface CustomInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
   type?: string;
   readOnly?: boolean;
-  classname?: string;
+  className?: string;
   onlyNumbers?: boolean;
 }
 
@@ -43,7 +42,6 @@ const CustomInput: React.FC<CustomInputProps> = ({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    // If the input type is number, convert the value to a number before passing it to onChange
     const parsedValue = onlyNumbers
       ? value === ""
         ? ""
@@ -59,7 +57,13 @@ const CustomInput: React.FC<CustomInputProps> = ({
       </label>
       <div className="w-full relative">
         <input
-          className="h-12 rounded-lg px-4 border-2 border-black bg-gray-50 text-sm w-full"
+          className={`h-12 rounded-lg px-4 border-2 text-sm w-full 
+            ${
+              readOnly || rest.disabled
+                ? "bg-gray-200 border-gray-400 cursor-not-allowed"
+                : "bg-gray-50 border-black"
+            }
+          `}
           {...field}
           {...rest}
           value={field.value || (type === "date" ? null : "")}
@@ -67,9 +71,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
           type={onlyNumbers ? "number" : showPassword ? type : "password"}
           inputMode={onlyNumbers ? "numeric" : "text"}
           pattern={onlyNumbers ? "[0-9]*" : undefined}
-          style={{
-            backgroundColor: readOnly ? "hsl(0, 0%, 90%)" : "",
-          }}
+          disabled={readOnly}
         />
         {type === "password" && !onlyNumbers && (
           <div
@@ -90,37 +92,3 @@ const CustomInput: React.FC<CustomInputProps> = ({
 };
 
 export default CustomInput;
-
-// {
-//   "snippet": "string",
-//   "article": "string",
-//   "image": "string",
-//   "imageCaption": "string",
-//   "contributorPublicId": "string",
-//   "mda": "string",
-//   "category": "string",
-//   "state": "string",
-//   "ward": "string",
-//   "lcda": "string",
-//   "isFederal": true,
-//   "lga": "string",
-//   "province": "string",
-//   "title": "string",
-//   "tags": "string",
-//   "reference": "string",
-//   "authorName": "string",
-//   "link": "string",
-//   "isPromise": true,
-//   "isPromisedFulfilled": true,
-//   "datePromiseMade": "2024-09-02T13:16:53.137Z",
-//   "promiseDeadline": "2024-09-02T13:16:53.137Z",
-//   "datePromiseFulfilled": "2024-09-02T13:16:53.137Z",
-//   "politicalActorName": "string",
-//   "country": "string",
-//   "cancellationToken": {
-//     "waitHandle": {
-//       "handle": {},
-//       "safeWaitHandle": {}
-//     }
-//   }
-// }

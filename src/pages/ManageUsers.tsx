@@ -10,8 +10,6 @@ import { createColumnHelper } from "@tanstack/react-table";
 import DashboardLayout from "../layouts/DashboardLayout";
 
 const ManageUsers = () => {
-  //   const { control } = useForm();
-
   const { data: usersData, isLoading: usersDataIsLoading } = useGetData({
     url: `Users/GetAllUser?page=1&pageSize=10`,
     queryKey: ["GetAllUsers"],

@@ -15,34 +15,13 @@ const SettingsLayout: React.FC<LayoutProps> = ({ children }) => {
 
   const { userObject } = useAppSelector((state: RootState) => state.auth);
 
-  const userData = {
-    name: "JANE DOE",
-    role: "Contributor",
-    bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec tincidunt arcu. Pellentesque sodales purus sed nisi congue, non fermentum nisl consequat. Cras sollicitudin a nulla ut congue.",
-    email: "janedoe@gmail.com",
-    socialLink: "Janedoe/linkedin.com",
-    residence: "Lagos",
-    otherInfo: "I am a Lawyer.",
-    profilePic: "https://via.placeholder.com/150",
-  };
-
   return (
     <div>
       <Header />
 
       <div className="min-h-screen bg-gray-100 flex flex-col items-center py-10">
         <div className="bg-white w-3/4 shadow-lg rounded-lg overflow-hidden">
-          <div className="relative h-32 bg-green_200">
-            <div className="absolute inset-0 flex justify-center">
-              <div className="relative -bottom-10 w-24 h-24 rounded-full overflow-hidden border-4 border-white">
-                <img
-                  src={userData.profilePic}
-                  alt="Profile"
-                  className="object-cover w-full h-full"
-                />
-              </div>
-            </div>
-          </div>
+          <div className="relative h-32 bg-green_200"></div>
 
           <div className="pt-12 pb-6 text-center">
             <h2 className="text-2xl font-semibold text-gray-800">
@@ -56,21 +35,14 @@ const SettingsLayout: React.FC<LayoutProps> = ({ children }) => {
               {settingData.map(({ id, name, link }) => {
                 return (
                   <div
-                    className={`w-full whitespace-nowrap py-2 px-4 rounded ${pathName.startsWith(
-                      link
+                    key={id}
+                    className={`w-full whitespace-nowrap py-2 px-4 rounded cursor-pointer mb-4 ${
+                      pathName === link
                         ? "text-white hover:bg-green-600 bg-green-700"
-                        : "text-gray-700 bg-gray-300 hover:bg-gray-400"
-                    )}`}
+                        : "text-gray-700 bg-green-100 hover:bg-green-300"
+                    }`}
                   >
-                    <Link
-                      to={link}
-                      key={id}
-                      //   className={`w-full whitespace-nowrap  py-2 px-4 rounded ${pathName.startsWith(
-                      //     link
-                      //       ? "text-white hover:bg-green-600 bg-green-700"
-                      //       : "text-gray-700 bg-gray-300 hover:bg-gray-400"
-                      //   )}`}
-                    >
+                    <Link to={link} key={id}>
                       {name}
                     </Link>
                   </div>

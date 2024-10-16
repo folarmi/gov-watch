@@ -97,8 +97,11 @@ const DashboardLayout = ({
       ) : (
         <section className="px-8 md:px-24">
           <Header />
-          {/* <SearchBar onSearch={handleSearch} /> */}
-          <InformationTab data={adminDashboard} />
+
+          {userType !== userTypeObject.user &&
+            userType !== userTypeObject.organization && (
+              <InformationTab data={adminDashboard} />
+            )}
           <div className="flex">
             {/* Sidebar */}
             <section className="bg-green_100 text-white my-10 mr-8 rounded-lg max-h-screen overflow-y-scroll w-[400px]">

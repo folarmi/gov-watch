@@ -117,7 +117,7 @@ const Header = () => {
           initial={{ x: "100%" }}
           animate={{ x: isSideBarOpen ? "0%" : "100%" }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="fixed top-0 right-0 w-64 h-full bg-white md:hidden pl-8"
+          className="fixed top-0 right-0 w-64 h-full bg-white md:hidden pl-8 z-50"
         >
           <div className="flex justify-end mt-4">
             <img

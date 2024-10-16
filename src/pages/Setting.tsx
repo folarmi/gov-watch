@@ -1,70 +1,201 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useForm } from "react-hook-form";
 import { SettingsLayout } from "../layouts/SettingsLayout";
 import { useAppSelector } from "../lib/hook";
 import { RootState } from "../lib/store";
+import CustomInput from "../component/CustomInput";
+import { useEffect, useState } from "react";
+import CustomButton from "../component/CustomButton";
+import Loader from "../component/Loader";
+import CustomTextArea from "../component/CustomTextArea";
+import {
+  UploadError,
+  useCustomMutation,
+  useUploadMutation,
+} from "../hooks/apiCalls";
+import FileUploader from "../component/FileUploader";
+import ImageDetails from "../component/ImageDetails";
 
 const Setting = () => {
-  const { userObject } = useAppSelector((state: RootState) => state.auth);
-  const userData = {
-    name: "JANE DOE",
-    role: "Contributor",
-    bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec tincidunt arcu. Pellentesque sodales purus sed nisi congue, non fermentum nisl consequat. Cras sollicitudin a nulla ut congue.",
-    email: "janedoe@gmail.com",
-    socialLink: "Janedoe/linkedin.com",
-    residence: "Lagos",
-    otherInfo: "I am a Lawyer.",
-    profilePic: "https://via.placeholder.com/150",
+  const { userId, userObject } = useAppSelector(
+    (state: RootState) => state.auth
+  );
+
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      socialMediaLink: "",
+      country: "",
+      state: "",
+    },
+  });
+
+  const [backendPath, setBackendPath] = useState("");
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+
+  const updateUserMutation = useCustomMutation({
+    endpoint: "Users/UpdateUser",
+    method: "put",
+    successMessage: (data: any) => data?.remark,
+    errorMessage: (error: any) => error?.response?.data?.remark,
+    onSuccessCallback: () => {
+      // window.location.reload();
+    },
+  });
+
+  const submitForm = (data: any) => {
+    const keysToDelete = [
+      "statusCode",
+      "remark",
+      "totalCount",
+      "skipToken",
+      "validTo",
+      "isSuccessful",
+      "isStaff",
+      "isActiveStaff",
+      "userRole",
+      "token",
+      "isSubscribed",
+      "subscriptionDate",
+      "subscriptionExpirationDate",
+      "isStaff",
+      "isActiveStaff",
+    ];
+
+    keysToDelete.forEach((key) => {
+      delete data[key];
+    });
+
+    const formData = {
+      ...data,
+      lastModifiedBy: userId,
+      image: backendPath,
+    };
+
+    console.log(formData);
+    updateUserMutation.mutate(formData);
   };
 
-  console.log(userObject);
+  const handleSuccess = (data: any) => {
+    setBackendPath(data?.filePath);
+  };
+
+  const handleError = (error: UploadError) => {
+    console.error("Upload error:", error);
+  };
+
+  const uploadMutation = useUploadMutation(handleSuccess, handleError);
+
+  const handleFileUpload = (file: File) => {
+    setUploadedFile(file);
+    const formData = new FormData();
+    formData.append("uploadFile", file);
+    formData.append("createdBy", userId);
+    uploadMutation.mutate(formData);
+  };
+
+  useEffect(() => {
+    if (userObject) {
+      reset(userObject);
+    }
+  }, [userObject, reset]);
+
+  if (!userObject) {
+    return <Loader />;
+  }
 
   return (
     <SettingsLayout>
-      <div className="mb-6 border border-gray-200 rounded-lg p-4 bg-green-50">
-        <div className="flex justify-between items-center mb-2">
-          <h3 className="font-bold text-lg">BIO</h3>
-          <button className="text-gray-500 hover:text-gray-700">
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M12 4v16m8-8H4"
-              ></path>
-            </svg>
-          </button>
-        </div>
-        <p>{userData.bio}</p>
-      </div>
+      <form onSubmit={handleSubmit(submitForm)}>
+        {/* <div className="absolute inset-0 flex justify-center">
+          <div className="relative top-60 w-24 h-24 rounded-full overflow-hidden border-4 border-white">
+            <img
+              src="https://via.placeholder.com/150"
+              alt="Profile"
+              className="object-cover w-full h-full"
+            />
+          </div>
+        </div> */}
 
-      <div>
-        <h3 className="font-bold text-lg mb-4">DETAILS</h3>
+        <div>
+          <CustomTextArea
+            className="border border-gray-300 rounded-md p-2 w-full"
+            rows={4}
+            control={control}
+            label="Bio"
+            // onChange={(e) => setBio(e.target.value)}
+            placeholder="Update your bio"
+            name="bio"
+          />
+        </div>
+
+        {/* <h3 className="font-bold text-lg mb-4">DETAILS</h3> */}
         <div className="space-y-4">
-          <div className="flex justify-between">
-            <span className="font-semibold">Email</span>
-            <span>{userObject.email}</span>
+          <div className="flex items-center">
+            <CustomInput
+              className="mr-4"
+              label="First Name"
+              name="firstName"
+              control={control}
+            />
+            <CustomInput label="Last Name" name="lastName" control={control} />
           </div>
-          <div className="flex justify-between">
-            <span className="font-semibold">Social Media Link</span>
-            <a href="#" className="text-green-600 hover:underline">
-              {userData.socialLink}
-            </a>
+
+          <div className="flex items-center">
+            <CustomInput
+              label="Email"
+              className="mr-4"
+              name="email"
+              control={control}
+              readOnly
+            />
+            <CustomInput
+              label="Social Media Link"
+              name="socialMediaLink"
+              control={control}
+            />
           </div>
-          <div className="flex justify-between">
-            <span className="font-semibold">State of Residence</span>
-            <span>{userData.residence}</span>
+
+          <div className="flex items-center">
+            <CustomInput
+              className="mr-4"
+              label="Country"
+              name="country"
+              control={control}
+            />
+            <CustomInput
+              label="State of Residence"
+              name="state"
+              control={control}
+            />
           </div>
-          <div className="flex justify-between">
-            <span className="font-semibold">Other Information</span>
-            <span>{userData.otherInfo}</span>
+
+          <FileUploader
+            maxSizeMB={1}
+            acceptFormats={["png", "jpeg", "jpg", "gif"]}
+            onFileUpload={handleFileUpload}
+          />
+          {uploadedFile && (
+            <ImageDetails
+              fileName={uploadedFile.name}
+              fileSize={uploadedFile.size}
+            />
+          )}
+
+          <div className="w-1/4 ml-auto">
+            <CustomButton
+              type="submit"
+              className="mt-4"
+              disabled={updateUserMutation.isPending}
+              loading={updateUserMutation.isPending}
+            >
+              Update Profile
+            </CustomButton>
           </div>
         </div>
-      </div>
+      </form>
     </SettingsLayout>
   );
 };

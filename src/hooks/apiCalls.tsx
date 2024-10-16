@@ -203,16 +203,11 @@ export const useCustomMutation = <
           }
         }
 
-        // for (let [key, value] of formData.entries()) {
-        //   console.log(`${key}:`, value);
-        // }
-
         const response = await api[method]<TData>(endpoint, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
-        console.log("jmk,mnbn", response.data);
         return response.data;
       } else {
         // Default to JSON handling
@@ -225,7 +220,8 @@ export const useCustomMutation = <
       }
     },
     onSuccess: (data: any) => {
-      if (data?.statusCode === 201) {
+      if (data?.statusCode === 201 || data?.statusCode === 200) {
+        console.log(data);
         if (successMessage) {
           toast(successMessage(data));
         }

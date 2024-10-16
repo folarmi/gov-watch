@@ -35,6 +35,8 @@ import {
   BookMarks,
   LikedArticles,
   PublicationDetails,
+  Subscription,
+  UserSubscription,
 } from "../pages";
 import Reviewed from "../pages/Reviewed";
 import { LCDA } from "../pages/Lcda";
@@ -59,6 +61,7 @@ const RoutePage = () => {
         />
         <Route path="/explore/:id" element={<StateDetails />} />
         <Route path="/dashboard/manage-users" element={<ManageUsers />} />
+        <Route path="/dashboard/subscription" element={<UserSubscription />} />
         <Route path="/test" element={<Test />} />
         <Route
           path="/dashboard/manage-users/create"
@@ -95,6 +98,10 @@ const RoutePage = () => {
         <Route
           path="/dashboard/settings/change-password"
           element={<ChangePassword />}
+        />
+        <Route
+          path="/dashboard/settings/subscription"
+          element={<Subscription />}
         />
         <Route path="/dashboard/all-inbox" element={<AllInbox />} />
         <Route path="/dashboard/corporate-users" element={<CorporateUsers />} />

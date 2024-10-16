@@ -4,11 +4,13 @@ import { avatarDropDown } from "../../data";
 import { useAppSelector } from "../../lib/hook";
 import { RootState } from "../../lib/store";
 import { Link } from "react-router-dom";
+import { userTypeObject } from "../../utils";
 
 const AvatarDropdown = () => {
   const { logout } = useAuth();
   const { userObject } = useAppSelector((state: RootState) => state.auth);
   const [showDropdown, setShowDropdown] = useState(false);
+  const { userType } = useAppSelector((state: RootState) => state.auth);
 
   const toggleDropDown = () => {
     setShowDropdown(!showDropdown);
@@ -29,9 +31,19 @@ const AvatarDropdown = () => {
         onClick={toggleDropDown}
         className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-primary rounded-full dark:bg-gray-600"
       >
-        <span className="font-medium text-white dark:text-gray-300 uppercase">
-          {userObject?.firstName[0]} {userObject?.lastName[0]}
-        </span>
+        {userType !== userTypeObject.organization && (
+          <span className="font-medium text-white dark:text-gray-300 uppercase">
+            {userObject?.firstName && userObject?.firstName[0]}
+            {userObject?.lastName && userObject?.lastName[0]}
+          </span>
+        )}
+
+        {userType === userTypeObject.organization && (
+          <span className="font-medium text-white dark:text-gray-300 uppercase">
+            {userObject?.organizationName &&
+              userObject?.organizationName.slice(0, 2)}
+          </span>
+        )}
       </div>
 
       {showDropdown && (

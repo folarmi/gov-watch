@@ -85,7 +85,7 @@ const Signup = () => {
 
   return (
     <AuthLayout
-      header="Empowering Nigerians with information fostering citizenship participation in governance"
+      header="Empowering Netizens with information fostering citizenship participation in governance"
       text=""
       img="logo.svg"
       banner="signup-Banner.svg"

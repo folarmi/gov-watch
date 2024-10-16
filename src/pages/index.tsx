@@ -36,4 +36,6 @@ export * from "./ChangePassword";
 export * from "./BookMarks";
 export * from "./LikedArticles";
 export * from "./PublicationDetails";
-export * from "./PublicationDetails";
+export * from "./ChangePassword";
+export * from "./Subscription";
+export * from "./UserSubscription";

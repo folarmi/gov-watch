@@ -3,7 +3,7 @@
 // components/CustomSelect.tsx
 import React from "react";
 import Select, { PropsValue, Props as SelectProps } from "react-select";
-import { useController } from "react-hook-form";
+import { useController, UseControllerProps } from "react-hook-form";
 
 type Option = {
   value: string;
@@ -15,6 +15,7 @@ interface CustomSelectProps extends SelectProps<Option> {
   options: Option[];
   label?: string;
   control: any;
+  rules?: UseControllerProps["rules"];
   className?: any;
   customOnChange?: any;
   isMulti?: boolean;
@@ -27,6 +28,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   control,
   options,
   label,
+  rules,
   className,
   customOnChange,
   // defaultValue,
@@ -36,7 +38,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   const {
     field,
     fieldState: { error },
-  } = useController({ name, control });
+  } = useController({ name, control, rules });
 
   return (
     <div className={`mb-4 w-full ${className}`}>
