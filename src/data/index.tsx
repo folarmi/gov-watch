@@ -8,14 +8,29 @@ import iconFive from "../../public/iconFive.svg";
 import iconSix from "../../public/iconSix.svg";
 import iconSeven from "../../public/iconSeven.svg";
 import iconEight from "../../public/iconEight.svg";
-import categoriesIcon from "../../public/categories.svg";
-import state from "../../public/state.svg";
 import lga from "../../public/lga.svg";
 import mda from "../../public/mda.svg";
-import region from "../../public/region.svg";
 import inbox from "../../public/inbox.svg";
-import pending from "../../public/pending.svg";
 import { userTypeObject } from "../utils";
+import {
+  User,
+  FileText,
+  Hourglass,
+  Slash,
+  Globe,
+  MapPin,
+  Flag,
+  Building,
+  Layers,
+  Building2,
+  UserCheck,
+  Grid,
+  Briefcase,
+  Tag,
+  Inbox,
+  CreditCard,
+  Users,
+} from "lucide-react";
 
 export const SidebarList: SidebarItemProp[] = [
   {
@@ -40,7 +55,7 @@ export const SidebarList: SidebarItemProp[] = [
   },
   {
     id: 5,
-    name: "Sign upbfjksdfj",
+    name: "Sign up",
     url: "/sign-up",
   },
 ];
@@ -323,13 +338,14 @@ export const dashboardSideBarItems = [
       {
         id: 1,
         name: "Users",
-        image: iconTwo,
+        image: User,
         link: "/dashboard/manage-users",
       },
       {
         id: 11,
         name: "Subscription",
-        image: iconTwo,
+        // image: iconTwo,
+        image: CreditCard,
         link: "/dashboard/subscription",
       },
     ],
@@ -341,25 +357,29 @@ export const dashboardSideBarItems = [
       {
         id: 2,
         name: "Drafts",
-        image: pending,
+        // image: pending,
+        image: FileText,
         link: "/dashboard/drafts",
       },
       {
         id: 1,
         name: "Pending",
-        image: pending,
+        // image: pending,
+        image: Hourglass,
         link: "/dashboard/pending",
       },
       {
         id: 5,
         name: "Total",
-        image: iconThree,
+        // image: iconThree,
+        image: Layers,
         link: "/dashboard/total",
       },
       {
         id: 4,
         name: "Rejected",
-        image: iconThree,
+        // image: iconThree,
+        image: Slash,
         link: "/dashboard/rejected",
       },
     ],
@@ -371,37 +391,43 @@ export const dashboardSideBarItems = [
       {
         id: 3,
         name: "Country",
-        image: state,
+        // image: state,
+        image: Globe,
         link: "/dashboard/country",
       },
       {
         id: 7,
         name: "Region",
-        image: region,
+        // image: region,
+        image: MapPin,
         link: "/dashboard/region",
       },
       {
         id: 4,
         name: "State",
-        image: state,
+        // image: state,
+        image: Flag,
         link: "/dashboard/state",
       },
       {
         id: 5,
         name: "LGA",
-        image: lga,
+        // image: lga,
+        image: Building,
         link: "/dashboard/lga",
       },
       {
         id: 9,
         name: "Ward",
-        image: lga,
+        // image: lga,
+        image: MapPin,
         link: "/dashboard/ward",
       },
       {
         id: 10,
         name: "LCDA",
-        image: lga,
+        // image: lga,
+        image: Building2,
         link: "/dashboard/lcda",
       },
     ],
@@ -413,19 +439,22 @@ export const dashboardSideBarItems = [
       {
         id: 11,
         name: "Political Actors",
-        image: categoriesIcon,
+        // image: categoriesIcon,
+        image: UserCheck,
         link: "/dashboard/political-actors",
       },
       {
         id: 12,
         name: "Political Parties",
-        image: categoriesIcon,
+        // image: categoriesIcon,
+        image: Users,
         link: "/dashboard/political-parties",
       },
       {
         id: 2,
         name: "Categories",
-        image: categoriesIcon,
+        // image: categoriesIcon,
+        image: Grid,
         link: "/dashboard/categories",
       },
     ],
@@ -437,19 +466,22 @@ export const dashboardSideBarItems = [
       {
         id: 6,
         name: "MDA",
-        image: mda,
+        // image: mda,
+        image: Briefcase,
         link: "/dashboard/mda",
       },
       {
         id: 13,
         name: "Tags",
-        image: lga,
+        // image: lga,
+        image: Tag,
         link: "/dashboard/tags",
       },
       {
         id: 8,
         name: "All inbox",
-        image: inbox,
+        // image: inbox,
+        image: Inbox,
         link: "/dashboard/all-inbox",
       },
     ],

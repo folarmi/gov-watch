@@ -115,7 +115,7 @@ const DashboardLayout = ({
                   <h3 className="text-lg font-semibold pb-2 px-8">
                     {category}
                   </h3>
-                  {items.map(({ id, name, image, link }) => (
+                  {items.map(({ id, name, image: Icon, link }) => (
                     <Link
                       key={id}
                       className={`flex items-center px-8 py-2 mb-2 hover:bg-green-400 transition-colors duration-200 whitespace-nowrap ${
@@ -125,7 +125,8 @@ const DashboardLayout = ({
                       }`}
                       to={link}
                     >
-                      <img src={image} alt="item icon" />
+                      {/* <img src={image} alt="item icon" /> */}
+                      <Icon className="w-6 h-6" />
                       <p className="text-base font-medium mx-5 cursor-pointer">
                         {name}
                       </p>
