@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { useGetData } from "../hooks/apiCalls";
-import { createColumnHelper } from "@tanstack/react-table";
+import { createColumnHelper, PaginationState } from "@tanstack/react-table";
 import IndeterminateCheckbox from "../component/InterdeterminateCheckbox";
 import AdminButton from "../component/forms/AdminButton";
 import Table from "../component/Table";
@@ -11,11 +11,18 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import Loader from "../component/Loader";
 
 const PoliticalParties = () => {
-  const { data: politicalPartiesData, isLoading } = useGetData({
-    url: `PoliticalParties/GetAllPoliticalParties?pageNumber=1&pageSize=10`,
-    queryKey: ["GetAllPoliticalPartiesTable"],
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 5,
   });
   const [createPoliticalActor, setCreatePoliticalActor] = useState(false);
+
+  const { data: politicalPartiesData, isLoading } = useGetData({
+    url: `PoliticalParties/GetAllPoliticalParties?pageNumber=${
+      pagination.pageIndex + 1
+    }&pageSize=${pagination.pageSize}`,
+    queryKey: ["GetAllPoliticalPartiesTable", JSON.stringify(pagination)],
+  });
 
   const columnHelper = createColumnHelper<any>();
   const columns = [
@@ -83,6 +90,9 @@ const PoliticalParties = () => {
               columns={columns}
               data={politicalPartiesData?.politicalPartyViewModel}
               isLoading={isLoading}
+              rowCount={politicalPartiesData?.totalCount || 0}
+              pagination={pagination}
+              setPagination={setPagination}
             />
 
             <Modal show={createPoliticalActor} toggleModal={toggleModal}>

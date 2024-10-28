@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { createColumnHelper } from "@tanstack/react-table";
+import { createColumnHelper, PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
 import { useAppSelector } from "../lib/hook";
 import { RootState } from "../lib/store";
@@ -15,13 +15,19 @@ import Loader from "../component/Loader";
 import DashboardLayout from "../layouts/DashboardLayout";
 
 const LGA = () => {
-  const { userCountry } = useAppSelector((state: RootState) => state.auth);
-  const { data: lgaData, isLoading } = useGetData({
-    url: `/Lgas/GetAllLgas?country=${userCountry}&pageNumber=1&pageSize=10`,
-    queryKey: ["GetAllLgas"],
+  const [createLGAModal, setCreateLGAModal] = useState(false);
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 5,
   });
 
-  const [createLGAModal, setCreateLGAModal] = useState(false);
+  const { userCountry } = useAppSelector((state: RootState) => state.auth);
+  const { data: lgaData, isLoading } = useGetData({
+    url: `/Lgas/GetAllLgas?country=${userCountry}&pageNumber=${
+      pagination.pageIndex + 1
+    }&pageSize=${pagination.pageSize}`,
+    queryKey: ["GetAllLgas", JSON.stringify(pagination)],
+  });
 
   const columnHelper = createColumnHelper<any>();
   const columns = [
@@ -78,6 +84,9 @@ const LGA = () => {
               columns={columns}
               data={lgaData?.lgaViewModel}
               isLoading={isLoading}
+              rowCount={lgaData?.totalCount || 0}
+              pagination={pagination}
+              setPagination={setPagination}
             />
 
             <Modal show={createLGAModal} toggleModal={toggleModal}>

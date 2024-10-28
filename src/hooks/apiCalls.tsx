@@ -4,12 +4,14 @@ import {
   UseMutationOptions,
   UseMutationResult,
   useQuery,
+  UseQueryOptions,
 } from "@tanstack/react-query";
 import api from "../lib/axios";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 
-interface UseDataOptions {
+interface UseDataOptions
+  extends Omit<UseQueryOptions<any, any>, "queryKey" | "queryFn"> {
   url: string;
   queryKey: string[];
   enabled?: any;
@@ -78,19 +80,25 @@ export const useCountriesData = () => {
   });
 };
 
-export const useGetData = ({ url, queryKey, enabled }: UseDataOptions) => {
+export const useGetData = ({
+  url,
+  queryKey,
+  enabled,
+  ...rest
+}: UseDataOptions) => {
   return useQuery<any>({
     queryKey,
     queryFn: async () => {
       const response = await api.get(url);
       return response?.data;
     },
+    enabled,
     retry: false,
     // retry: true,
     refetchOnMount: true,
     refetchOnWindowFocus: false,
     staleTime: 0,
-    enabled,
+    ...rest,
   });
 };
 
@@ -221,7 +229,6 @@ export const useCustomMutation = <
     },
     onSuccess: (data: any) => {
       if (data?.statusCode === 201 || data?.statusCode === 200) {
-        console.log(data);
         if (successMessage) {
           toast(successMessage(data));
         }

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { createColumnHelper } from "@tanstack/react-table";
+import { createColumnHelper, PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
 import { useGetData } from "../hooks/apiCalls";
 import IndeterminateCheckbox from "../component/InterdeterminateCheckbox";
@@ -12,12 +12,18 @@ import CreateRegion from "../component/modals/CreateRegion";
 import DashboardLayout from "../layouts/DashboardLayout";
 
 const Region = () => {
-  const { data: regionData, isLoading } = useGetData({
-    url: "Regions/GetRegions?page=1&pageSize=10",
-    // url: "Regions/GetAllRegions",
-    queryKey: ["GetAllRegions"],
-  });
   const [createRegion, setCreateRegion] = useState(false);
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 5,
+  });
+  const { data: regionData, isLoading } = useGetData({
+    url: `Regions/GetRegions?page=${pagination.pageIndex + 1}&pageSize=${
+      pagination.pageSize
+    }`,
+    // url: "Regions/GetAllRegions",
+    queryKey: ["GetAllRegions", JSON.stringify(pagination)],
+  });
 
   const columnHelper = createColumnHelper<any>();
   const columns = [
@@ -56,7 +62,13 @@ const Region = () => {
             </div>
 
             <div className="w-1/2">
-              <Table columns={columns} data={regionData?.regionViewModel} />
+              <Table
+                columns={columns}
+                data={regionData?.regionViewModel}
+                rowCount={regionData?.totalCount || 0}
+                pagination={pagination}
+                setPagination={setPagination}
+              />
             </div>
 
             <Modal show={createRegion} toggleModal={toggleModal}>

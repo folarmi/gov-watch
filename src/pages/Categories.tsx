@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createColumnHelper } from "@tanstack/react-table";
+import { createColumnHelper, PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
 import IndeterminateCheckbox from "../component/InterdeterminateCheckbox";
 import Loader from "../component/Loader";
@@ -11,9 +11,15 @@ import { useGetData } from "../hooks/apiCalls";
 import DashboardLayout from "../layouts/DashboardLayout";
 
 const Categories = () => {
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 5,
+  });
   const { data: categoriesData, isLoading } = useGetData({
-    url: "Categories/GetAllCategories",
-    queryKey: ["GetAllCategories"],
+    url: `Categories/GetAllCategories?page=${
+      pagination.pageIndex + 1
+    }&pageSize=${pagination.pageSize}`,
+    queryKey: ["GetAllCategories", JSON.stringify(pagination)],
   });
 
   const columnHelper = createColumnHelper<any>();
@@ -66,7 +72,13 @@ const Categories = () => {
             <div className="flex justify-end w-full mb-4">
               <AdminButton buttonText="Add Category" onClick={toggleModal} />
             </div>
-            <Table columns={columns} data={categoriesData?.categoryViewModel} />
+            <Table
+              columns={columns}
+              data={categoriesData?.categoryViewModel}
+              rowCount={categoriesData?.totalCount || 0}
+              pagination={pagination}
+              setPagination={setPagination}
+            />
 
             <Modal show={createCategoryModal} toggleModal={toggleModal}>
               <div className="p-4">

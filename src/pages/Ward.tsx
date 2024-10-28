@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { createColumnHelper } from "@tanstack/react-table";
+import { createColumnHelper, PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
 import { useGetData } from "../hooks/apiCalls";
 import IndeterminateCheckbox from "../component/InterdeterminateCheckbox";
@@ -12,9 +12,15 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import Loader from "../component/Loader";
 
 const Ward = () => {
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 5,
+  });
   const { data: wardData, isLoading: wardDataIsLoading } = useGetData({
-    url: `Wards/GetAllWards?pageNumber=1&pageSize=10`,
-    queryKey: ["GetAllWardsTable"],
+    url: `Wards/GetAllWards?pageNumber=${pagination.pageIndex + 1}&pageSize=${
+      pagination.pageSize
+    }`,
+    queryKey: ["GetAllWardsTable", JSON.stringify(pagination)],
   });
   const columnHelper = createColumnHelper<any>();
   const [createWardModal, setCreateWardModal] = useState(false);
@@ -73,6 +79,9 @@ const Ward = () => {
               columns={columns}
               data={wardData?.wardViewModel}
               isLoading={wardDataIsLoading}
+              rowCount={wardData?.totalCount || 0}
+              pagination={pagination}
+              setPagination={setPagination}
             />
 
             <Modal show={createWardModal} toggleModal={toggleModal}>

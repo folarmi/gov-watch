@@ -16,12 +16,13 @@ import UpArrowButton from "../UpArrowButton";
 import DownArrowButton from "../DownArrowButton";
 import { RootState } from "../../lib/store";
 import { useAppSelector } from "../../lib/hook";
-import { useCustomMutation, useGetData } from "../../hooks/apiCalls";
+import { useGetData } from "../../hooks/apiCalls";
 import ReactQuill from "react-quill";
 import { Header } from "../Header";
 import { userTypeObject } from "../../utils";
 import Modal from "../modals/Modal";
 import ReviewModal from "../modals/ReviewModal";
+import ApprovePublication from "../modals/ApprovePublication";
 
 const ArticleForm = ({
   isEditing = false,
@@ -34,6 +35,9 @@ const ArticleForm = ({
 any) => {
   const [reviewModal, setReviewModal] = useState(false);
   const [selectedArticleDetails, setSelectedArticleDetails] = useState({});
+  const [selectedState, setSelectedState] = useState("");
+  const [selectedLGA, setSelectedLGA] = useState("");
+  const [approveModal, setApproveModal] = useState(false);
 
   const toggleModal = () => {
     setReviewModal(!reviewModal);
@@ -42,6 +46,10 @@ any) => {
       articleTitle: defaultValues.title,
       publicationId: defaultValues.publicId,
     }));
+  };
+
+  const toggleApproveModal = () => {
+    setApproveModal(!approveModal);
   };
 
   const { control, handleSubmit } = useForm({
@@ -86,16 +94,13 @@ any) => {
     control,
   });
 
-  const [selectedState, setSelectedState] = useState("");
-  const [selectedLGA, setSelectedLGA] = useState("");
-
   const handleTagsChange = (newTags: string[]) => {
     console.log("Updated Tags:", newTags);
   };
   const [tags, setTags] = useState<string[]>([]);
   const [isAdditionalInformation, setIsAdditionalInformation] = useState(true);
 
-  const { userCountry, userId, userType } = useAppSelector(
+  const { userCountry, userType } = useAppSelector(
     (state: RootState) => state.auth
   );
 
@@ -204,44 +209,6 @@ any) => {
         value: item,
       };
     });
-
-  const approvePublicationMutation = useCustomMutation({
-    endpoint: "Publications/UpdatePublicationForAdmin",
-    method: "put",
-    successMessage: (data: any) => data?.remark,
-    errorMessage: (error: any) => error?.response?.data?.remark,
-    onSuccessCallback: () => {
-      window.location.reload();
-    },
-  });
-
-  const approvePublicationFunction = () => {
-    const keysToDelete = [
-      "isSuccessful",
-      "statusCode",
-      "remark",
-      "totalCount",
-      "region",
-      "contributorFullName",
-      "bio",
-      "socialMediaLink",
-      "contributorImage",
-      "viewCount",
-      "date",
-    ];
-
-    keysToDelete.forEach((key) => {
-      delete defaultValues[key];
-    });
-
-    const data: any = {
-      ...defaultValues,
-      isApproval: true,
-      lastModifiedBy: userId,
-    };
-
-    approvePublicationMutation.mutate(data);
-  };
 
   return (
     <>
@@ -466,9 +433,9 @@ any) => {
                 userType === userTypeObject.editor) && (
                 <CustomButton
                   variant="primary"
-                  className="w-full md:w-1/2"
-                  loading={approvePublicationMutation.isPending}
-                  onClick={approvePublicationFunction}
+                  className="w-full md:w-1/2 cursor-pointer"
+                  // onClick={approvePublicationFunction}
+                  onClick={toggleApproveModal}
                 >
                   Approve
                 </CustomButton>
@@ -504,6 +471,15 @@ any) => {
             <ReviewModal
               toggleModal={toggleModal}
               selectedArticleDetails={selectedArticleDetails}
+            />
+          </div>
+        </Modal>
+
+        <Modal show={approveModal} toggleModal={toggleApproveModal}>
+          <div className="p-4">
+            <ApprovePublication
+              toggleModal={toggleApproveModal}
+              defaultValues={defaultValues}
             />
           </div>
         </Modal>

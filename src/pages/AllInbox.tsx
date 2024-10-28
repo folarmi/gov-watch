@@ -1,5 +1,5 @@
-import { createColumnHelper } from "@tanstack/react-table";
-import React from "react";
+import { createColumnHelper, PaginationState } from "@tanstack/react-table";
+import React, { useState } from "react";
 // import defaultAvatar from "../../../../public/defaultAvatar.svg";
 import { InboxType } from "../types/generalTypes";
 import Table from "../component/Table";
@@ -7,6 +7,10 @@ import IndeterminateCheckbox from "../component/InterdeterminateCheckbox";
 import DashboardLayout from "../layouts/DashboardLayout";
 
 const AllInbox = () => {
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 5,
+  });
   const [data] = React.useState<InboxType[]>([
     {
       username: "Jane Doe",
@@ -97,7 +101,13 @@ const AllInbox = () => {
   return (
     <DashboardLayout>
       <div className="mt-10">
-        <Table columns={columns} data={data} />
+        <Table
+          columns={columns}
+          data={data}
+          rowCount={data}
+          pagination={pagination}
+          setPagination={setPagination}
+        />
       </div>
     </DashboardLayout>
   );

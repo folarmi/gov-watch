@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // "use client";
 
-import { createColumnHelper } from "@tanstack/react-table";
+import { createColumnHelper, PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
 import { useGetData } from "../hooks/apiCalls";
 import IndeterminateCheckbox from "../component/InterdeterminateCheckbox";
@@ -13,12 +13,18 @@ import CreateCountry from "../component/modals/CreateCountry";
 import DashboardLayout from "../layouts/DashboardLayout";
 
 const Country = () => {
-  const { data: countryData, isLoading: countryDataIsLoading } = useGetData({
-    url: `/Countries/GetCountries`,
-    queryKey: ["GetCountriesTable"],
+  const [createCountry, setCreateCountry] = useState(false);
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 5,
   });
 
-  const [createCountry, setCreateCountry] = useState(false);
+  const { data: countryData, isLoading: countryDataIsLoading } = useGetData({
+    url: `/Countries/GetCountries?page=${pagination.pageIndex + 1}&pageSize=${
+      pagination.pageSize
+    }`,
+    queryKey: ["GetCountriesTable", JSON.stringify(pagination)],
+  });
 
   const columnHelper = createColumnHelper<any>();
   const columns = [
@@ -58,30 +64,6 @@ const Country = () => {
         <span className="text-sm font-normal">{info.getValue()}</span>
       ),
     }),
-    // columnHelper.accessor("currency", {
-    //   header: "Currency",
-    //   cell: (info) => (
-    //     <span className="text-sm font-normal">{info.getValue()}</span>
-    //   ),
-    // }),
-    // columnHelper.accessor("bio", {
-    //   header: "Bio",
-    //   cell: (info) => (
-    //     <span className="text-sm font-normal">{info.getValue()}</span>
-    //   ),
-    // }),
-    // columnHelper.accessor("population", {
-    //   header: "Population",
-    //   cell: (info) => (
-    //     <span className="text-sm font-normal">{info.getValue()}</span>
-    //   ),
-    // }),
-    // columnHelper.accessor("gdp", {
-    //   header: "GDP",
-    //   cell: (info) => (
-    //     <span className="text-sm font-normal">{info.getValue()}</span>
-    //   ),
-    // }),
   ];
 
   const toggleModal = () => {
@@ -101,6 +83,9 @@ const Country = () => {
             columns={columns}
             data={countryData?.countryViewModel}
             isLoading={countryDataIsLoading}
+            rowCount={countryData?.totalCount || 0}
+            pagination={pagination}
+            setPagination={setPagination}
           />
 
           <Modal show={createCountry} toggleModal={toggleModal}>
