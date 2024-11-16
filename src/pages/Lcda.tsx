@@ -19,7 +19,7 @@ const LCDA = () => {
   });
 
   const { data: lcdaData, isLoading: lcdaDataIsLoading } = useGetData({
-    url: `Lcdas/GetAllLcdas?pageNumber==${pagination.pageIndex + 1}&pageSize=${
+    url: `Lcdas/GetAllLcdas?pageNumber=${pagination.pageIndex + 1}&pageSize=${
       pagination.pageSize
     }`,
     queryKey: ["GetAllLcdas", JSON.stringify(pagination)],
@@ -39,24 +39,32 @@ const LCDA = () => {
         />
       ),
     }),
-    // columnHelper.accessor("image", {
-    //   header: "Image",
-    //   cell: (info) => <span className="text-sm font-normal">ggg</span>,
-    // }),
+    columnHelper.accessor("image", {
+      header: "Image",
+      cell: (info) => (
+        <img src={info.getValue()} className="rounded-full h-16 w-16" />
+      ),
+    }),
     columnHelper.accessor("name", {
+      header: "Name",
+      cell: (info) => (
+        <span className="text-sm font-normal">{info.getValue()}</span>
+      ),
+    }),
+    columnHelper.accessor("state", {
       header: "State",
       cell: (info) => (
         <span className="text-sm font-normal">{info.getValue()}</span>
       ),
     }),
-    columnHelper.accessor("capital", {
-      header: "Capital",
+    columnHelper.accessor("lga", {
+      header: "LGA",
       cell: (info) => (
-        <p className="text-sm font-normal w-[272px] ">{info.getValue()}</p>
+        <span className="text-sm font-normal">{info.getValue()}</span>
       ),
     }),
-    columnHelper.accessor("governor", {
-      header: "Governor",
+    columnHelper.accessor("chairman", {
+      header: "Chairman",
       cell: (info) => (
         <span className="text-sm font-normal">{info.getValue()}</span>
       ),

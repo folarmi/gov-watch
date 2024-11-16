@@ -13,6 +13,7 @@ import Modal from "../component/modals/Modal";
 import CreateLGA from "../component/modals/CreateLGA";
 import Loader from "../component/Loader";
 import DashboardLayout from "../layouts/DashboardLayout";
+import moment from "moment";
 
 const LGA = () => {
   const [createLGAModal, setCreateLGAModal] = useState(false);
@@ -42,26 +43,37 @@ const LGA = () => {
         />
       ),
     }),
-    // columnHelper.accessor("image", {
-    //   header: "Image",
-    //   cell: (info) => <span className="text-sm font-normal">ggg</span>,
-    // }),
+    columnHelper.accessor("image", {
+      header: "Image",
+      cell: (info) => (
+        <img src={info.getValue()} className="rounded-full h-16 w-16" />
+      ),
+    }),
     columnHelper.accessor("name", {
       header: "LGA",
       cell: (info) => (
         <span className="text-sm font-normal">{info.getValue()}</span>
       ),
     }),
-    columnHelper.accessor("capital", {
-      header: "Capital",
-      cell: (info) => (
-        <p className="text-sm font-normal w-[272px] ">{info.getValue()}</p>
-      ),
-    }),
+
     columnHelper.accessor("chairman", {
       header: "Governor",
       cell: (info) => (
         <span className="text-sm font-normal">{info.getValue()}</span>
+      ),
+    }),
+    columnHelper.accessor("financialAllocation", {
+      header: "Financial Allocation",
+      cell: (info) => (
+        <span className="text-sm font-normal">{info.getValue()}</span>
+      ),
+    }),
+    columnHelper.accessor("dateFounded", {
+      header: "Date Founded",
+      cell: (info) => (
+        <span className="text-sm font-normal">
+          {moment(info.getValue()).format("YYYY-MM-DD")}
+        </span>
       ),
     }),
   ];

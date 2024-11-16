@@ -54,10 +54,6 @@ const SignIn = () => {
   });
 
   const onSubmit: any = (data: any) => {
-    // const formData: any = {
-    // email: "duvotes@mailinator.com",
-    // password: "Password1@",
-    // };
     signInMutation.mutate(data);
   };
 

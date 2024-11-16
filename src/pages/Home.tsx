@@ -118,46 +118,47 @@ const Home = () => {
             <EmptyPage />
           ) : (
             <section className="mt-10 flex flex-wrap justify-between">
-              {articlesData?.map(
-                ({
-                  title,
-                  date,
-                  image,
-                  section,
-                  summary,
-                  isPromise,
-                  publicId,
-                  promiseDeadline,
-                  isBookmarked,
-                }: any) => {
-                  return (
-                    <div
-                      key={publicId}
-                      className="w-full sm:w-1/2 md:w-1/3 mt-10"
-                    >
-                      <Card
-                        section={section}
-                        articleTitle={title}
-                        summary={summary}
-                        date={date}
-                        promise={isPromise}
-                        imageUrl={image}
-                        deadline={promiseDeadline}
-                        id={publicId}
-                        onBookMarkClick={(id: string) =>
-                          toggleBookMarkStatus(id)
-                        }
-                        // imageUrl={coatOfArms}
-                        isBookMarked={isBookmarked}
-                        isArticleBookMarked={isArticleBookMarked}
-                        setIsArticleBookMarked={setIsArticleBookMarked}
-                        isPublished
-                        link={`/latest-publications/${publicId}`}
-                      />
-                    </div>
-                  );
-                }
-              )}
+              {articlesData &&
+                articlesData?.map(
+                  ({
+                    title,
+                    date,
+                    image,
+                    section,
+                    summary,
+                    isPromise,
+                    publicId,
+                    promiseDeadline,
+                    isBookmarked,
+                  }: any) => {
+                    return (
+                      <div
+                        key={publicId}
+                        className="w-full sm:w-1/2 md:w-1/3 mt-10"
+                      >
+                        <Card
+                          section={section}
+                          articleTitle={title}
+                          summary={summary}
+                          date={date}
+                          promise={isPromise}
+                          imageUrl={image}
+                          deadline={promiseDeadline}
+                          id={publicId}
+                          onBookMarkClick={(id: string) =>
+                            toggleBookMarkStatus(id)
+                          }
+                          // imageUrl={coatOfArms}
+                          isBookMarked={isBookmarked}
+                          isArticleBookMarked={isArticleBookMarked}
+                          setIsArticleBookMarked={setIsArticleBookMarked}
+                          isPublished
+                          link={`/latest-publications/${publicId}`}
+                        />
+                      </div>
+                    );
+                  }
+                )}
             </section>
           )}
         </>

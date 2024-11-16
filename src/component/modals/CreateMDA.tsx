@@ -76,7 +76,7 @@ const CreateMDA = ({ toggleModal }: any) => {
   });
 
   const { data: stateData, isLoading: stateDataIsLoading } = useGetData({
-    url: `States/GetListOfStates?countryName=${userCountry}&pageNumber=1&pageSize=10`,
+    url: `States/GetListOfStates?country=${userCountry}&pageNumber=1&pageSize=10`,
     queryKey: ["GetAllStates"],
   });
 

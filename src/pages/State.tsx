@@ -41,10 +41,7 @@ const State = () => {
         />
       ),
     }),
-    // columnHelper.accessor("image", {
-    //   header: "Image",
-    //   cell: (info) => <span className="text-sm font-normal">ggg</span>,
-    // }),
+
     columnHelper.accessor("name", {
       header: "State",
       cell: (info) => (

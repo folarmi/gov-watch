@@ -41,24 +41,38 @@ const Ward = () => {
         />
       ),
     }),
-    // columnHelper.accessor("image", {
-    //   header: "Image",
-    //   cell: (info) => <span className="text-sm font-normal">ggg</span>,
-    // }),
+    columnHelper.accessor("image", {
+      header: "Image",
+      cell: (info) => (
+        <img src={info.getValue()} className="rounded-full h-16 w-16" />
+      ),
+    }),
     columnHelper.accessor("name", {
+      header: "Name",
+      cell: (info) => (
+        <span className="text-sm font-normal">{info.getValue()}</span>
+      ),
+    }),
+    columnHelper.accessor("state", {
+      header: "State",
+      cell: (info) => (
+        <span className="text-sm font-normal">{info.getValue()}</span>
+      ),
+    }),
+    columnHelper.accessor("lga", {
       header: "LGA",
       cell: (info) => (
         <span className="text-sm font-normal">{info.getValue()}</span>
       ),
     }),
-    columnHelper.accessor("capital", {
-      header: "Capital",
+    columnHelper.accessor("chairman", {
+      header: "Chairman",
       cell: (info) => (
-        <p className="text-sm font-normal w-[272px] ">{info.getValue()}</p>
+        <span className="text-sm font-normal">{info.getValue()}</span>
       ),
     }),
-    columnHelper.accessor("chairman", {
-      header: "Governor",
+    columnHelper.accessor("politicalPartyOfChairman", {
+      header: "Political Party",
       cell: (info) => (
         <span className="text-sm font-normal">{info.getValue()}</span>
       ),

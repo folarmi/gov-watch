@@ -39,13 +39,12 @@ const Country = () => {
         />
       ),
     }),
-    // columnHelper.accessor("image", {
-    //   header: "Image",
-    //   cell: (info) => (
-    //     // <span className="text-sm font-normal">{info.getValue()}</span>
-    //     <span className="text-sm font-normal">ljkdfngkjdfjfd</span>
-    //   ),
-    // }),
+    columnHelper.accessor("image", {
+      header: "Image",
+      cell: (info) => (
+        <img src={info.getValue()} className="rounded-full h-16 w-16" />
+      ),
+    }),
     columnHelper.accessor("name", {
       header: "Country Name",
       cell: (info) => (

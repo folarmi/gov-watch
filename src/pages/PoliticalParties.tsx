@@ -9,6 +9,7 @@ import Modal from "../component/modals/Modal";
 import CreatePoliticalParty from "../component/modals/CreatePoliticalParty";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Loader from "../component/Loader";
+import moment from "moment";
 
 const PoliticalParties = () => {
   const [pagination, setPagination] = useState<PaginationState>({
@@ -45,14 +46,15 @@ const PoliticalParties = () => {
     }),
     columnHelper.accessor("country", {
       header: "Country",
-      cell: (info) => (
-        <p className="text-sm font-normal w-[272px] ">{info.getValue()}</p>
-      ),
+      cell: (info) => <p className="text-sm font-normal">{info.getValue()}</p>,
     }),
     columnHelper.accessor("dateFounded", {
       header: "Date Founded",
       cell: (info) => (
-        <span className="text-sm font-normal">{info.getValue()}</span>
+        <span className="text-sm font-normal">
+          {" "}
+          {moment(info.getValue()).format("YYYY-MM-DD")}
+        </span>
       ),
     }),
     columnHelper.accessor("bio", {

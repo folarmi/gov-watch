@@ -9,6 +9,7 @@ import Modal from "../component/modals/Modal";
 import CreateCategory from "../component/modals/CreateCategory";
 import { useGetData } from "../hooks/apiCalls";
 import DashboardLayout from "../layouts/DashboardLayout";
+import moment from "moment";
 
 const Categories = () => {
   const [pagination, setPagination] = useState<PaginationState>({
@@ -35,25 +36,26 @@ const Categories = () => {
         />
       ),
     }),
+    columnHelper.accessor("image", {
+      header: "Image",
+      cell: (info) => (
+        <img src={info.getValue()} className="rounded-full h-16 w-16" />
+      ),
+    }),
     columnHelper.accessor("name", {
       header: "Category Name",
       cell: (info) => (
         <span className="text-sm font-normal">{info.getValue()}</span>
       ),
     }),
-    // columnHelper.accessor("categoryImage", {
-    //   header: "Image",
-    //   cell: (info) => (
-    //     // <p className="text-sm font-normal w-[272px] ">{info.getValue()}</p>
-    //     <p className="text-sm font-normal w-[272px] ">Test Image</p>
-    //     // <Image
-    //     //   src={info.getValue()}
-    //     //   alt="category-image"
-    //     //   width={500}
-    //     //   height={500}
-    //     // />
-    //   ),
-    // }),
+    columnHelper.accessor("dateFounded", {
+      header: "Date Founded",
+      cell: (info) => (
+        <span className="text-sm font-normal">
+          {moment(info.getValue()).format("YYYY-MM-DD")}
+        </span>
+      ),
+    }),
   ];
 
   const [createCategoryModal, setCreateCategoryModal] = useState(false);

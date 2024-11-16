@@ -23,6 +23,8 @@ import { userTypeObject } from "../../utils";
 import Modal from "../modals/Modal";
 import ReviewModal from "../modals/ReviewModal";
 import ApprovePublication from "../modals/ApprovePublication";
+import { WarningModal } from "../modals/WarningModal";
+import { useConfirmNavigation } from "../../hooks/useConfirmNavigation";
 
 const ArticleForm = ({
   isEditing = false,
@@ -33,11 +35,16 @@ const ArticleForm = ({
   setIsDraft,
 }: // initialTags,
 any) => {
+  const { isModalOpen, handleConfirm, handleCancel } = useConfirmNavigation(
+    () => console.log("User confirmed navigation")
+  );
+
   const [reviewModal, setReviewModal] = useState(false);
   const [selectedArticleDetails, setSelectedArticleDetails] = useState({});
   const [selectedState, setSelectedState] = useState("");
   const [selectedLGA, setSelectedLGA] = useState("");
   const [approveModal, setApproveModal] = useState(false);
+  // const [previousPath, setPreviousPath] = useState("");
 
   const toggleModal = () => {
     setReviewModal(!reviewModal);
@@ -97,6 +104,7 @@ any) => {
   const handleTagsChange = (newTags: string[]) => {
     console.log("Updated Tags:", newTags);
   };
+
   const [tags, setTags] = useState<string[]>([]);
   const [isAdditionalInformation, setIsAdditionalInformation] = useState(true);
 
@@ -480,6 +488,15 @@ any) => {
             <ApprovePublication
               toggleModal={toggleApproveModal}
               defaultValues={defaultValues}
+            />
+          </div>
+        </Modal>
+
+        <Modal show={isModalOpen} toggleModal={handleCancel}>
+          <div className="p-4">
+            <WarningModal
+              toggleModal={handleCancel}
+              handleConfirm={handleConfirm}
             />
           </div>
         </Modal>

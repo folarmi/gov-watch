@@ -36,6 +36,7 @@ const Card = ({
   isArticleBookMarked,
   setIsArticleBookMarked,
   isPublished,
+  imageUrl,
 }: CardProps) => {
   const [timeDifference, setTimeDifference] = useState<string>("");
 
@@ -58,10 +59,10 @@ const Card = ({
   return (
     <div className="max-w-sm w-[300px] bg-white dark:bg-black_100 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer my-3 overflow-hidden">
       <img
-        // src={imageUrl}
-        src="/coatOfArms.svg"
+        src={imageUrl}
+        // src="/coatOfArms.svg"
         alt="article thumbnail"
-        className="w-full h-48 object-fit transition-transform duration-300 hover:scale-105"
+        className="w-full h-48 object-contain transition-transform duration-300 hover:scale-105"
       />
       <div className="p-5">
         <Text

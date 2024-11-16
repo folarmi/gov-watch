@@ -10,6 +10,7 @@ import Modal from "../component/modals/Modal";
 import CreatePoliticalActor from "../component/modals/CreatePoliticalActor";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Loader from "../component/Loader";
+import moment from "moment";
 
 const PoliticalActors = () => {
   const [pagination, setPagination] = useState<PaginationState>({
@@ -18,7 +19,7 @@ const PoliticalActors = () => {
   });
 
   const { data: politicalActorsData, isLoading } = useGetData({
-    url: `PoliticalActors/GetAllPoliticalActors?pageNumber==${
+    url: `PoliticalActors/GetAllPoliticalActors?pageNumber=${
       pagination.pageIndex + 1
     }&pageSize=${pagination.pageSize}`,
     queryKey: ["GetAllPoliticalActorsTable", JSON.stringify(pagination)],
@@ -46,9 +47,7 @@ const PoliticalActors = () => {
     }),
     columnHelper.accessor("bio", {
       header: "Bio",
-      cell: (info) => (
-        <p className="text-sm font-normal w-[272px] ">{info.getValue()}</p>
-      ),
+      cell: (info) => <p className="text-sm font-normal">{info.getValue()}</p>,
     }),
     columnHelper.accessor("socialMediaLink", {
       header: "Social Media",
@@ -60,6 +59,14 @@ const PoliticalActors = () => {
       header: "Other Info",
       cell: (info) => (
         <span className="text-sm font-normal">{info.getValue()}</span>
+      ),
+    }),
+    columnHelper.accessor("dateOfBirth", {
+      header: "Date of Birth",
+      cell: (info) => (
+        <span className="text-sm font-normal">
+          {moment(info.getValue()).format("YYYY-MM-DD")}
+        </span>
       ),
     }),
   ];
