@@ -7,8 +7,10 @@ import QueryClientContextProvider from "./lib/QueryClientContextProvider";
 import { AuthProvider } from "./context/AuthContext";
 import StoreProvider from "./lib/StoreProvider";
 import "react-toastify/dist/ReactToastify.css";
+import GoogleAdScript from "./hooks/AdsScript";
 
 function App() {
+  const isSubscribed = true;
   return (
     <>
       <StoreProvider>
@@ -16,6 +18,7 @@ function App() {
           <AuthProvider>
             <Router>
               <RoutePage />
+              {!isSubscribed && <GoogleAdScript isSubscribed={isSubscribed} />}
             </Router>
             <ToastContainer />
           </AuthProvider>

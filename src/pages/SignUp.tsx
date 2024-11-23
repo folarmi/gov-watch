@@ -79,7 +79,7 @@ const Signup = () => {
       ...data,
       isOrganization: true,
     };
-
+    console.log(formValues);
     // signUpMutation.mutate(formValues);
   };
 

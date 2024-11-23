@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createColumnHelper, PaginationState } from "@tanstack/react-table";
 import React, { useState } from "react";
 // import defaultAvatar from "../../../../public/defaultAvatar.svg";
@@ -5,11 +6,19 @@ import { InboxType } from "../types/generalTypes";
 import Table from "../component/Table";
 import IndeterminateCheckbox from "../component/InterdeterminateCheckbox";
 import DashboardLayout from "../layouts/DashboardLayout";
+import { useGetData } from "../hooks/apiCalls";
 
 const AllInbox = () => {
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 5,
+  });
+
+  const { data: contactUsResponses, isLoading } = useGetData({
+    url: `ContactUsResponses/GetContactUs?pageNumber=${
+      pagination.pageIndex + 1
+    }&pageSize=${pagination.pageSize}`,
+    queryKey: ["GetAllContactUsResponses", JSON.stringify(pagination)],
   });
   const [data] = React.useState<InboxType[]>([
     {
@@ -44,7 +53,7 @@ const AllInbox = () => {
     },
   ]);
 
-  const columnHelper = createColumnHelper<InboxType>();
+  const columnHelper = createColumnHelper<any>();
   const columns = [
     // Display Column
     columnHelper.display({
@@ -57,45 +66,36 @@ const AllInbox = () => {
         />
       ),
     }),
-    columnHelper.display({
-      id: "actions",
-      cell: () => <img src="/defaultAvatar.svg" alt="default avatar" />,
-    }),
-    columnHelper.accessor("username", {
-      header: "Username",
+    columnHelper.accessor("name", {
+      header: "Name",
       cell: (info) => (
         <span className="text-sm font-normal">{info.getValue()}</span>
       ),
     }),
-    columnHelper.accessor("email", {
-      header: "Email",
+    columnHelper.accessor("bio", {
+      header: "Bio",
+      cell: (info) => <p className="text-sm font-normal">{info.getValue()}</p>,
+    }),
+    columnHelper.accessor("socialMediaLink", {
+      header: "Social Media",
       cell: (info) => (
         <span className="text-sm font-normal">{info.getValue()}</span>
       ),
     }),
-    columnHelper.accessor("role", {
-      header: "Role",
+    columnHelper.accessor("otherInformation", {
+      header: "Other Info",
       cell: (info) => (
         <span className="text-sm font-normal">{info.getValue()}</span>
       ),
     }),
-    columnHelper.accessor("subject", {
-      header: "Subject",
+    columnHelper.accessor("dateOfBirth", {
+      header: "Date of Birth",
       cell: (info) => (
-        <span className="text-sm font-normal">{info.getValue()}</span>
+        <span className="text-sm font-normal">
+          {/* {moment(info.getValue()).format("YYYY-MM-DD")} */}
+        </span>
       ),
     }),
-    // columnHelper.display({
-    //   id: "checkbox",
-    //   cell: (props) => (
-    //     <Link
-    //       to="/admin-dashboard/all-inbox/123"
-    //       className="text-sm font-normal text-primary"
-    //     >
-    //       View Message
-    //     </Link>
-    //   ),
-    // }),
   ];
 
   return (
@@ -104,6 +104,7 @@ const AllInbox = () => {
         <Table
           columns={columns}
           data={data}
+          isLoading={isLoading}
           rowCount={data}
           pagination={pagination}
           setPagination={setPagination}

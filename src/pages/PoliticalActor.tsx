@@ -17,6 +17,7 @@ const PoliticalActors = () => {
     pageIndex: 0,
     pageSize: 5,
   });
+  const [createPoliticalActor, setCreatePoliticalActor] = useState(false);
 
   const { data: politicalActorsData, isLoading } = useGetData({
     url: `PoliticalActors/GetAllPoliticalActors?pageNumber=${
@@ -24,7 +25,6 @@ const PoliticalActors = () => {
     }&pageSize=${pagination.pageSize}`,
     queryKey: ["GetAllPoliticalActorsTable", JSON.stringify(pagination)],
   });
-  const [createPoliticalActor, setCreatePoliticalActor] = useState(false);
 
   const columnHelper = createColumnHelper<any>();
   const columns = [

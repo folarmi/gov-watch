@@ -23,7 +23,7 @@ const CustomCheckBox = ({
         checked={checked}
         id={name}
         type="checkbox"
-        value=""
+        // value=""
         onChange={onChange}
         className="hidden"
       />

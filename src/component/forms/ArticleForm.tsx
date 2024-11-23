@@ -23,8 +23,8 @@ import { userTypeObject } from "../../utils";
 import Modal from "../modals/Modal";
 import ReviewModal from "../modals/ReviewModal";
 import ApprovePublication from "../modals/ApprovePublication";
-import { WarningModal } from "../modals/WarningModal";
-import { useConfirmNavigation } from "../../hooks/useConfirmNavigation";
+// import { WarningModal } from "../modals/WarningModal";
+// import { useConfirmNavigation } from "../../hooks/useConfirmNavigation";
 
 const ArticleForm = ({
   isEditing = false,
@@ -35,9 +35,9 @@ const ArticleForm = ({
   setIsDraft,
 }: // initialTags,
 any) => {
-  const { isModalOpen, handleConfirm, handleCancel } = useConfirmNavigation(
-    () => console.log("User confirmed navigation")
-  );
+  // const { isModalOpen, handleConfirm, handleCancel } = useConfirmNavigation(
+  //   () => console.log("User confirmed navigation")
+  // );
 
   const [reviewModal, setReviewModal] = useState(false);
   const [selectedArticleDetails, setSelectedArticleDetails] = useState({});
@@ -98,6 +98,11 @@ any) => {
 
   const { field: isPromiseFulfilledField } = useController({
     name: "isPromiseFulfilled",
+    control,
+  });
+
+  const { field: isCredibleField } = useController({
+    name: "isCredible",
     control,
   });
 
@@ -367,7 +372,7 @@ any) => {
               </div>
 
               {/* Checkboxes */}
-              <div className="flex items-center gap-x-4">
+              <div className="grid grid-cols-2 gap-4">
                 <CustomCheckBox
                   checked={isFederalField.value}
                   onChange={isFederalField.onChange}
@@ -388,6 +393,13 @@ any) => {
                   iflabel
                   labelText="Has this Promise been Fulfilled?"
                   name="isPromiseFulfilled"
+                />
+                <CustomCheckBox
+                  checked={isCredibleField.value}
+                  onChange={isCredibleField.onChange}
+                  iflabel
+                  labelText="Is this Credible?"
+                  name="isCredible"
                 />
               </div>
 
@@ -492,14 +504,14 @@ any) => {
           </div>
         </Modal>
 
-        <Modal show={isModalOpen} toggleModal={handleCancel}>
+        {/* <Modal show={isModalOpen} toggleModal={handleCancel}>
           <div className="p-4">
             <WarningModal
               toggleModal={handleCancel}
               handleConfirm={handleConfirm}
             />
           </div>
-        </Modal>
+        </Modal> */}
       </form>
     </>
   );

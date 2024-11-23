@@ -367,7 +367,7 @@ export const dashboardSideBarItems = [
       },
       {
         id: 5,
-        name: "Total",
+        name: "Published",
         image: Layers,
         link: "/dashboard/total",
       },
@@ -649,3 +649,18 @@ export const dummyPlans = [
     Sketch Files
   </span>
 </li>;
+
+export const politicalLevelData = [
+  {
+    label: "Local",
+    value: "local",
+  },
+  {
+    label: "State",
+    value: "state",
+  },
+  {
+    label: "Federal",
+    value: "federal",
+  },
+];

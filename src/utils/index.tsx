@@ -118,36 +118,3 @@ export const directUserToPageOnLogin = (userType: string) => {
   }
   return pageToRedirect;
 };
-
-// import React, { useEffect } from "react";
-
-// function GoogleAdScript({ isSubscribed }) {
-//   useEffect(() => {
-//     if (!isSubscribed) {
-//       // Inject the Google Ads script
-//       const script = document.createElement("script");
-//       script.src = "https://www.googletagmanager.com/gtag/js?id=YOUR_GOOGLE_ADS_ID";
-//       script.async = true;
-//       document.body.appendChild(script);
-
-//       // Initialize the Google Ads script
-//       window.dataLayer = window.dataLayer || [];
-//       function gtag() {
-//         window.dataLayer.push(arguments);
-//       }
-//       gtag("js", new Date());
-//       gtag("config", "YOUR_GOOGLE_ADS_ID");
-
-//       console.log("Google Ads script loaded for unsubscribed user");
-
-//       // Cleanup the script when component unmounts
-//       return () => {
-//         document.body.removeChild(script);
-//       };
-//     }
-//   }, [isSubscribed]);
-
-//   return null;
-// }
-
-// export default GoogleAdScript;

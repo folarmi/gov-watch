@@ -19,6 +19,7 @@ import {
   useUploadMutation,
 } from "../../hooks/apiCalls";
 import FileUploader from "../FileUploader";
+import { politicalLevelData } from "../../data";
 
 const CreatePoliticalActor = ({ toggleModal }: any) => {
   const { control, handleSubmit } = useForm<any>();
@@ -169,6 +170,15 @@ const CreatePoliticalActor = ({ toggleModal }: any) => {
             className="mt-4 col-span-2"
           />
         )}
+
+        <CustomSelect
+          name="level"
+          options={politicalLevelData}
+          label="Political Level"
+          control={control}
+          placeholder="Political level"
+          className="mt-4 col-span-2"
+        />
 
         <CustomTextArea name="bio" control={control} label="Bio" />
 

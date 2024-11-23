@@ -43,6 +43,7 @@ const Drafts = () => {
                 id,
                 publicId,
                 promiseDeadline,
+                category,
               }: any) => {
                 return (
                   <Link
@@ -59,6 +60,8 @@ const Drafts = () => {
                       imageUrl={image}
                       deadline={promiseDeadline}
                       id={id}
+                      isPublished={false}
+                      category={category}
                       // imageUrl={coatOfArms}
                     />
                   </Link>

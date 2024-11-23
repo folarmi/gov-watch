@@ -35,7 +35,6 @@ const SignIn = () => {
     onSuccess: (data) => {
       if (data?.status === 200) {
         toast("Logged in sucessfully");
-        // sessionStorage.setItem("token", data?.data?.token);
         const userType = data?.data?.userRole;
 
         dispatch(updateUserType(userType));
@@ -49,7 +48,6 @@ const SignIn = () => {
     },
     onError: (error: any) => {
       toast.error(error?.response?.data?.remark);
-      // console.log(error?.response?.data?.remark);
     },
   });
 
