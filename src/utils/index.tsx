@@ -114,7 +114,7 @@ export const directUserToPageOnLogin = (userType: string) => {
   } else if (userType === userTypeObject.user) {
     pageToRedirect = "/dashboard/bookmarks";
   } else {
-    pageToRedirect = "";
+    pageToRedirect = "/";
   }
   return pageToRedirect;
 };

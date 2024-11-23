@@ -33,9 +33,7 @@ api.interceptors.response.use(
   (error) => {
     // Any status codes that falls outside the range of 2xx causes this function to trigger
     if (error?.response?.status === 401) {
-      console.log("axiosss", error);
       // Handle unauthorized errors (e.g., redirect to login)
-      console.log("Unauthorized, logging out...");
       localStorage.removeItem("token");
       window.location.href = "/sign-in";
     }

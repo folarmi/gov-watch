@@ -34,7 +34,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
     rules,
   });
 
-  const [showPassword, setShowPassword] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
 
   const togglePassword = () => {
     setShowPassword(!showPassword);
@@ -68,7 +68,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
           {...rest}
           value={field.value || (type === "date" ? null : "")}
           onChange={handleChange}
-          type={onlyNumbers ? "number" : showPassword ? type : "password"}
+          type={onlyNumbers ? "number" : showPassword ? "text" : "password"}
           inputMode={onlyNumbers ? "numeric" : "text"}
           pattern={onlyNumbers ? "[0-9]*" : undefined}
           disabled={readOnly}

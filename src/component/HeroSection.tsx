@@ -11,8 +11,6 @@ const HeroSection = () => {
   const { userObject } = useAppSelector((state: RootState) => state.auth);
 
   useEffect(() => {
-    console.log("isAuthenticated:", isAuthenticated);
-    console.log("userObject:", userObject);
     if (isAuthenticated && userObject?.countryImage) {
       setImageSrc(`${userObject.countryImage}?t=${Date.now()}`);
     } else {
