@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -78,7 +79,6 @@ const Signup = () => {
       ...data,
       isOrganization: true,
     };
-
     console.log(formValues);
     // signUpMutation.mutate(formValues);
   };

@@ -40,7 +40,7 @@ import {
 } from "../pages";
 import Reviewed from "../pages/Reviewed";
 import { LCDA } from "../pages/Lcda";
-import Test from "../component/Test";
+// import Test from "../component/Test";
 
 const RoutePage = () => {
   return (
@@ -62,7 +62,7 @@ const RoutePage = () => {
         <Route path="/explore/:id" element={<StateDetails />} />
         <Route path="/dashboard/manage-users" element={<ManageUsers />} />
         <Route path="/dashboard/subscription" element={<UserSubscription />} />
-        <Route path="/test" element={<Test />} />
+        {/* <Route path="/test" element={<Test />} /> */}
         <Route
           path="/dashboard/manage-users/create"
           element={<CreateMultipleUsers />}

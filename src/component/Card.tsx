@@ -20,6 +20,7 @@ interface CardProps {
   isBookMarked?: boolean;
   link?: string | Partial<Path>;
   isPublished?: boolean;
+  category?: string;
 }
 
 const Card = ({
@@ -36,6 +37,8 @@ const Card = ({
   isArticleBookMarked,
   setIsArticleBookMarked,
   isPublished,
+  imageUrl,
+  category,
 }: CardProps) => {
   const [timeDifference, setTimeDifference] = useState<string>("");
 
@@ -58,10 +61,10 @@ const Card = ({
   return (
     <div className="max-w-sm w-[300px] bg-white dark:bg-black_100 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer my-3 overflow-hidden">
       <img
-        // src={imageUrl}
-        src="/coatOfArms.svg"
+        src={imageUrl}
+        // src="/coatOfArms.svg"
         alt="article thumbnail"
-        className="w-full h-48 object-fit transition-transform duration-300 hover:scale-105"
+        className="w-full  h-48 object-cover transition-transform duration-300 hover:scale-105"
       />
       <div className="p-5">
         <Text
@@ -93,13 +96,13 @@ const Card = ({
 
         <p className="font-medium text-xs text-gray-500">{date}</p>
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <img src="/heartOutline.svg" alt="Like" className="w-5 h-5" />
-            <img src="/comments.svg" alt="Comments" className="w-5 h-5" />
-          </div>
+        {isPublished && (
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <img src="/heartOutline.svg" alt="Like" className="w-5 h-5" />
+              <img src="/comments.svg" alt="Comments" className="w-5 h-5" />
+            </div>
 
-          {isPublished && (
             <div className="">
               <img
                 onClick={() => onBookMarkClick(id)}
@@ -110,8 +113,16 @@ const Card = ({
                 className="w-5 h-5 cursor-pointer"
               />
             </div>
-          )}
-        </div>
+          </div>
+        )}
+
+        {category && (
+          <div className="tag">
+            <span className="bg-primary text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded">
+              {category}
+            </span>
+          </div>
+        )}
 
         <Link
           to={link || ""}

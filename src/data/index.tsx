@@ -8,9 +8,6 @@ import iconFive from "../../public/iconFive.svg";
 import iconSix from "../../public/iconSix.svg";
 import iconSeven from "../../public/iconSeven.svg";
 import iconEight from "../../public/iconEight.svg";
-import lga from "../../public/lga.svg";
-import mda from "../../public/mda.svg";
-import inbox from "../../public/inbox.svg";
 import { userTypeObject } from "../utils";
 import {
   User,
@@ -30,6 +27,9 @@ import {
   Inbox,
   CreditCard,
   Users,
+  Check,
+  BookMarkedIcon,
+  Heart,
 } from "lucide-react";
 
 export const SidebarList: SidebarItemProp[] = [
@@ -344,7 +344,6 @@ export const dashboardSideBarItems = [
       {
         id: 11,
         name: "Subscription",
-        // image: iconTwo,
         image: CreditCard,
         link: "/dashboard/subscription",
       },
@@ -357,28 +356,24 @@ export const dashboardSideBarItems = [
       {
         id: 2,
         name: "Drafts",
-        // image: pending,
         image: FileText,
         link: "/dashboard/drafts",
       },
       {
         id: 1,
         name: "Pending",
-        // image: pending,
         image: Hourglass,
         link: "/dashboard/pending",
       },
       {
         id: 5,
-        name: "Total",
-        // image: iconThree,
+        name: "Published",
         image: Layers,
         link: "/dashboard/total",
       },
       {
         id: 4,
         name: "Rejected",
-        // image: iconThree,
         image: Slash,
         link: "/dashboard/rejected",
       },
@@ -391,42 +386,36 @@ export const dashboardSideBarItems = [
       {
         id: 3,
         name: "Country",
-        // image: state,
         image: Globe,
         link: "/dashboard/country",
       },
       {
         id: 7,
         name: "Region",
-        // image: region,
         image: MapPin,
         link: "/dashboard/region",
       },
       {
         id: 4,
         name: "State",
-        // image: state,
         image: Flag,
         link: "/dashboard/state",
       },
       {
         id: 5,
         name: "LGA",
-        // image: lga,
         image: Building,
         link: "/dashboard/lga",
       },
       {
         id: 9,
         name: "Ward",
-        // image: lga,
         image: MapPin,
         link: "/dashboard/ward",
       },
       {
         id: 10,
         name: "LCDA",
-        // image: lga,
         image: Building2,
         link: "/dashboard/lcda",
       },
@@ -439,21 +428,18 @@ export const dashboardSideBarItems = [
       {
         id: 11,
         name: "Political Actors",
-        // image: categoriesIcon,
         image: UserCheck,
         link: "/dashboard/political-actors",
       },
       {
         id: 12,
         name: "Political Parties",
-        // image: categoriesIcon,
         image: Users,
         link: "/dashboard/political-parties",
       },
       {
         id: 2,
         name: "Categories",
-        // image: categoriesIcon,
         image: Grid,
         link: "/dashboard/categories",
       },
@@ -466,21 +452,18 @@ export const dashboardSideBarItems = [
       {
         id: 6,
         name: "MDA",
-        // image: mda,
         image: Briefcase,
         link: "/dashboard/mda",
       },
       {
         id: 13,
         name: "Tags",
-        // image: lga,
         image: Tag,
         link: "/dashboard/tags",
       },
       {
         id: 8,
         name: "All inbox",
-        // image: inbox,
         image: Inbox,
         link: "/dashboard/all-inbox",
       },
@@ -493,31 +476,31 @@ export const dashboardSideBarItems = [
       {
         id: 13,
         name: "Total",
-        image: lga,
+        image: Layers,
         link: "/dashboard/total",
       },
       {
         id: 8,
         name: "Pending",
-        image: inbox,
+        image: Hourglass,
         link: "/dashboard/pending",
       },
       {
         id: 8,
         name: "Rejected",
-        image: inbox,
+        image: Slash,
         link: "/dashboard/all-inbox",
       },
       {
         id: 8,
         name: "Approved",
-        image: inbox,
+        image: Check,
         link: "/dashboard/all-inbox",
       },
       {
         id: 8,
         name: "Bookmarks",
-        image: inbox,
+        image: BookMarkedIcon,
         link: "/dashboard/all-inbox",
       },
     ],
@@ -528,13 +511,13 @@ export const dashboardSideBarItems = [
       {
         id: 6,
         name: "Users",
-        image: mda,
+        image: User,
         link: "/dashboard/corporate-users",
       },
       {
         id: 8,
         name: "Bookmarks",
-        image: mda,
+        image: BookMarkedIcon,
         link: "/dashboard/bookmarks",
       },
     ],
@@ -545,13 +528,13 @@ export const dashboardSideBarItems = [
       {
         id: 12,
         name: "Bookmarks",
-        image: mda,
+        image: BookMarkedIcon,
         link: "/dashboard/bookmarks",
       },
       {
         id: 13,
         name: "Liked Articles",
-        image: mda,
+        image: Heart,
         link: "/dashboard/liked-articles",
       },
     ],
@@ -666,3 +649,18 @@ export const dummyPlans = [
     Sketch Files
   </span>
 </li>;
+
+export const politicalLevelData = [
+  {
+    label: "Local",
+    value: "local",
+  },
+  {
+    label: "State",
+    value: "state",
+  },
+  {
+    label: "Federal",
+    value: "federal",
+  },
+];

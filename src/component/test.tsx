@@ -128,3 +128,41 @@ export default Test;
 // }
 
 // console.log(breadthFirstSearch("you"))
+
+// const dijkstraObject = {
+//   start: {
+//       a: 6,
+//       b:2
+//   },
+//   a:{
+//       fin:1
+//   },
+//   b: {
+//       a:3,
+//       b:5
+//   },
+//   fin: {}
+// }
+
+// const costs = {
+//   a: 6,
+//   b: 2,
+//   fin: Infinity
+// }
+
+// const parents = {
+//   a: "start",
+//   b: "start",
+//   fin: "None"
+// }
+
+// const processed = {}
+
+// const findLowestCostNodes = () => {}
+
+// const node = findLowestCostNodes(costs)
+// while (node) {
+//   let cost = costs[node]
+//   let neighbors = dijkstraObject[node]
+// }
+// // console.log(costs.fin)

@@ -41,6 +41,9 @@ export const authSlice = createSlice({
     updateUserObject: (state, action: PayloadAction<string>) => {
       state.userObject = action.payload;
     },
+    logout: () => {
+      return initialState;
+    },
   },
 });
 
@@ -50,6 +53,7 @@ export const {
   updateUserId,
   updateUserCountry,
   updateUserObject,
+  logout,
 } = authSlice.actions;
 
 export default authSlice.reducer;

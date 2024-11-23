@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { useGetData } from "../hooks/apiCalls";
-import { createColumnHelper } from "@tanstack/react-table";
+import { createColumnHelper, PaginationState } from "@tanstack/react-table";
 import IndeterminateCheckbox from "../component/InterdeterminateCheckbox";
 import AdminButton from "../component/forms/AdminButton";
 import Table from "../component/Table";
@@ -9,13 +9,21 @@ import Modal from "../component/modals/Modal";
 import CreatePoliticalParty from "../component/modals/CreatePoliticalParty";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Loader from "../component/Loader";
+import moment from "moment";
 
 const PoliticalParties = () => {
-  const { data: politicalPartiesData, isLoading } = useGetData({
-    url: `PoliticalParties/GetAllPoliticalParties?pageNumber=1&pageSize=10`,
-    queryKey: ["GetAllPoliticalPartiesTable"],
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 5,
   });
   const [createPoliticalActor, setCreatePoliticalActor] = useState(false);
+
+  const { data: politicalPartiesData, isLoading } = useGetData({
+    url: `PoliticalParties/GetAllPoliticalParties?pageNumber=${
+      pagination.pageIndex + 1
+    }&pageSize=${pagination.pageSize}`,
+    queryKey: ["GetAllPoliticalPartiesTable", JSON.stringify(pagination)],
+  });
 
   const columnHelper = createColumnHelper<any>();
   const columns = [
@@ -38,14 +46,15 @@ const PoliticalParties = () => {
     }),
     columnHelper.accessor("country", {
       header: "Country",
-      cell: (info) => (
-        <p className="text-sm font-normal w-[272px] ">{info.getValue()}</p>
-      ),
+      cell: (info) => <p className="text-sm font-normal">{info.getValue()}</p>,
     }),
     columnHelper.accessor("dateFounded", {
       header: "Date Founded",
       cell: (info) => (
-        <span className="text-sm font-normal">{info.getValue()}</span>
+        <span className="text-sm font-normal">
+          {" "}
+          {moment(info.getValue()).format("YYYY-MM-DD")}
+        </span>
       ),
     }),
     columnHelper.accessor("bio", {
@@ -83,6 +92,9 @@ const PoliticalParties = () => {
               columns={columns}
               data={politicalPartiesData?.politicalPartyViewModel}
               isLoading={isLoading}
+              rowCount={politicalPartiesData?.totalCount || 0}
+              pagination={pagination}
+              setPagination={setPagination}
             />
 
             <Modal show={createPoliticalActor} toggleModal={toggleModal}>

@@ -6,22 +6,37 @@ import Loader from "../component/Loader";
 import { Link } from "react-router-dom";
 import AdminButton from "../component/forms/AdminButton";
 import Table from "../component/Table";
-import { createColumnHelper } from "@tanstack/react-table";
+import { createColumnHelper, PaginationState } from "@tanstack/react-table";
 import DashboardLayout from "../layouts/DashboardLayout";
+import { MoreVertical } from "lucide-react";
+import { useState } from "react";
+import Modal from "../component/modals/Modal";
+import Users from "../component/modals/Users";
+import { keepPreviousData } from "@tanstack/react-query";
 
 const ManageUsers = () => {
+  const [verticalMore, setVerticalMore] = useState(false);
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 5,
+  });
+
   const { data: usersData, isLoading: usersDataIsLoading } = useGetData({
-    url: `Users/GetAllUser?page=1&pageSize=10`,
-    queryKey: ["GetAllUsers"],
+    url: `Users/GetAllUser?page=${pagination.pageIndex + 1}&pageSize=${
+      pagination.pageSize
+    }`,
+    queryKey: ["GetAllUsers", JSON.stringify(pagination)],
+    placeholderData: keepPreviousData,
   });
 
   const columnHelper = createColumnHelper<any>();
   const columns = [
     // Display Column
     columnHelper.display({
-      id: "checkbox",
-      cell: ({ table }) => (
+      id: `checkbox-${Math.random().toString(36).substr(2, 9)}`,
+      cell: ({ table, row }) => (
         <IndeterminateCheckbox
+          id={`checkbox-${row.index}`}
           checked={table.getIsAllRowsSelected()}
           indeterminate={table.getIsSomeRowsSelected()}
           onChange={table.getToggleAllRowsSelectedHandler()}
@@ -70,7 +85,15 @@ const ManageUsers = () => {
         </span>
       ),
     }),
+    columnHelper.display({
+      id: "checkbox",
+      cell: () => <MoreVertical onClick={toggleModal} />,
+    }),
   ];
+
+  const toggleModal = () => {
+    setVerticalMore(!verticalMore);
+  };
 
   return (
     <DashboardLayout>
@@ -88,10 +111,22 @@ const ManageUsers = () => {
               <AdminButton buttonText="Add User(s)" />
             </Link>
 
-            <Table columns={columns} data={usersData?.userViewModel} />
+            <Table
+              columns={columns}
+              data={usersData?.userViewModel}
+              isLoading={usersDataIsLoading}
+              rowCount={usersData?.totalCount || 0}
+              pagination={pagination}
+              setPagination={setPagination}
+            />
           </div>
         )}
       </>
+      <Modal show={verticalMore} toggleModal={toggleModal}>
+        <div className="p-4">
+          <Users toggleModal={toggleModal} />
+        </div>
+      </Modal>
     </DashboardLayout>
   );
 };

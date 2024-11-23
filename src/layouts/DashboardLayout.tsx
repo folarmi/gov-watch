@@ -95,7 +95,7 @@ const DashboardLayout = ({
       countOfPublicationsForAdminIsLoading ? (
         <Loader />
       ) : (
-        <section className="px-8 md:px-24">
+        <section className=" px-8 md:px-24">
           <Header />
 
           {userType !== userTypeObject.user &&

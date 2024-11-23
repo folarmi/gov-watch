@@ -29,7 +29,7 @@ const CreateLGA = ({ toggleModal }: any) => {
   const handleSuccess = (data: any) => {
     setBackendPath(data?.filePath);
   };
-
+  console.log(userCountry);
   const handleError = (error: UploadError) => {
     console.error("Upload error:", error);
   };
@@ -69,7 +69,7 @@ const CreateLGA = ({ toggleModal }: any) => {
   };
 
   const { data: stateData, isLoading: stateDataIsLoading } = useGetData({
-    url: `States/GetListOfStates?countryName=${userCountry}&pageNumber=1&pageSize=100`,
+    url: `States/GetListOfStates?country=${userCountry}&pageNumber=1&pageSize=100`,
     queryKey: ["GetAllStates"],
   });
 
