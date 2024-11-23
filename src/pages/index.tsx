@@ -39,3 +39,5 @@ export * from "./PublicationDetails";
 export * from "./ChangePassword";
 export * from "./Subscription";
 export * from "./UserSubscription";
+export * from "./TermsOfUse";
+export * from "./PrivacyPolicy";

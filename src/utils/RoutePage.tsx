@@ -37,9 +37,12 @@ import {
   PublicationDetails,
   Subscription,
   UserSubscription,
+  PrivacyPolicy,
+  TermsOfUse,
 } from "../pages";
 import Reviewed from "../pages/Reviewed";
 import { LCDA } from "../pages/Lcda";
+import { CookiesPolicy } from "../pages/CookiesPolicy";
 // import Test from "../component/Test";
 
 const RoutePage = () => {
@@ -55,6 +58,9 @@ const RoutePage = () => {
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/explore" element={<Explore />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-of-use" element={<TermsOfUse />} />
+        <Route path="/cookies-policy" element={<CookiesPolicy />} />
         <Route
           path="/latest-publications/:id"
           element={<PublicationDetails />}

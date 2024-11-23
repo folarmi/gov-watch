@@ -90,9 +90,6 @@ const Header = () => {
 
           {isAuthenticated && (
             <div className="flex items-center">
-              {/* <Link className="hidden md:flex" to="/sign-in">
-                <CustomButton onClick={logout}>Sign Out</CustomButton>
-              </Link> */}
               <UserRoleTag role={userType} />
               <AvatarDropdown />
             </div>

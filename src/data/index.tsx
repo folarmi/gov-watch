@@ -87,17 +87,17 @@ export const FooterList: SidebarItemProp[] = [
   {
     id: 1,
     name: "Privacy",
-    url: "/",
+    url: "/privacy-policy",
   },
   {
     id: 2,
     name: "Cookies Policy",
-    url: "/contact",
+    url: "/cookies-policy",
   },
   {
     id: 3,
     name: "Terms of use",
-    url: "/about-us",
+    url: "/terms-of-use",
   },
 ];
 
