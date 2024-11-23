@@ -1,18 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use client";
 
-import CustomInput from "../component/CustomInput";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { RegisterFormValues } from "../types/generalTypes";
 import { useMutation } from "@tanstack/react-query";
-import api from "../lib/axios";
 import { toast } from "react-toastify";
-import CustomButton from "../component/CustomButton";
-import CustomSelect from "../component/CustomSelect";
-import { useCountriesData } from "../hooks/apiCalls";
 import { Link, useNavigate } from "react-router-dom";
-import AuthLayout from "../layouts/AuthLayout";
 import { useState } from "react";
+import { RegisterFormValues } from "../../types/generalTypes";
+import { useCountriesData } from "../../hooks/apiCalls";
+import api from "../../lib/axios";
+import AuthLayout from "../../layouts/AuthLayout";
+import CustomInput from "../../component/CustomInput";
+import CustomSelect from "../../component/CustomSelect";
+import CustomButton from "../../component/CustomButton";
 
 const Signup = () => {
   const { handleSubmit, control } = useForm<RegisterFormValues>();
