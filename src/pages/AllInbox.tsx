@@ -93,6 +93,7 @@ const AllInbox = () => {
       cell: (info) => (
         <span className="text-sm font-normal">
           {/* {moment(info.getValue()).format("YYYY-MM-DD")} */}
+          <span className="text-sm font-normal">{info.getValue()}</span>
         </span>
       ),
     }),
@@ -103,7 +104,7 @@ const AllInbox = () => {
       <div className="mt-10">
         <Table
           columns={columns}
-          data={data}
+          data={contactUsResponses}
           isLoading={isLoading}
           rowCount={data}
           pagination={pagination}
