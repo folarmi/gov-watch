@@ -16,12 +16,15 @@ import UpArrowButton from "../UpArrowButton";
 import DownArrowButton from "../DownArrowButton";
 import { RootState } from "../../lib/store";
 import { useAppSelector } from "../../lib/hook";
-import { useCustomMutation, useGetData } from "../../hooks/apiCalls";
+import { useGetData } from "../../hooks/apiCalls";
 import ReactQuill from "react-quill";
 import { Header } from "../Header";
 import { userTypeObject } from "../../utils";
 import Modal from "../modals/Modal";
 import ReviewModal from "../modals/ReviewModal";
+import ApprovePublication from "../modals/ApprovePublication";
+// import { WarningModal } from "../modals/WarningModal";
+// import { useConfirmNavigation } from "../../hooks/useConfirmNavigation";
 
 const ArticleForm = ({
   isEditing = false,
@@ -32,8 +35,16 @@ const ArticleForm = ({
   setIsDraft,
 }: // initialTags,
 any) => {
+  // const { isModalOpen, handleConfirm, handleCancel } = useConfirmNavigation(
+  //   () => console.log("User confirmed navigation")
+  // );
+
   const [reviewModal, setReviewModal] = useState(false);
   const [selectedArticleDetails, setSelectedArticleDetails] = useState({});
+  const [selectedState, setSelectedState] = useState("");
+  const [selectedLGA, setSelectedLGA] = useState("");
+  const [approveModal, setApproveModal] = useState(false);
+  // const [previousPath, setPreviousPath] = useState("");
 
   const toggleModal = () => {
     setReviewModal(!reviewModal);
@@ -42,6 +53,10 @@ any) => {
       articleTitle: defaultValues.title,
       publicationId: defaultValues.publicId,
     }));
+  };
+
+  const toggleApproveModal = () => {
+    setApproveModal(!approveModal);
   };
 
   const { control, handleSubmit } = useForm({
@@ -86,16 +101,19 @@ any) => {
     control,
   });
 
-  const [selectedState, setSelectedState] = useState("");
-  const [selectedLGA, setSelectedLGA] = useState("");
+  const { field: isCredibleField } = useController({
+    name: "isCredible",
+    control,
+  });
 
   const handleTagsChange = (newTags: string[]) => {
     console.log("Updated Tags:", newTags);
   };
+
   const [tags, setTags] = useState<string[]>([]);
   const [isAdditionalInformation, setIsAdditionalInformation] = useState(true);
 
-  const { userCountry, userId, userType } = useAppSelector(
+  const { userCountry, userType } = useAppSelector(
     (state: RootState) => state.auth
   );
 
@@ -204,44 +222,6 @@ any) => {
         value: item,
       };
     });
-
-  const approvePublicationMutation = useCustomMutation({
-    endpoint: "Publications/UpdatePublicationForAdmin",
-    method: "put",
-    successMessage: (data: any) => data?.remark,
-    errorMessage: (error: any) => error?.response?.data?.remark,
-    onSuccessCallback: () => {
-      window.location.reload();
-    },
-  });
-
-  const approvePublicationFunction = () => {
-    const keysToDelete = [
-      "isSuccessful",
-      "statusCode",
-      "remark",
-      "totalCount",
-      "region",
-      "contributorFullName",
-      "bio",
-      "socialMediaLink",
-      "contributorImage",
-      "viewCount",
-      "date",
-    ];
-
-    keysToDelete.forEach((key) => {
-      delete defaultValues[key];
-    });
-
-    const data: any = {
-      ...defaultValues,
-      isApproval: true,
-      lastModifiedBy: userId,
-    };
-
-    approvePublicationMutation.mutate(data);
-  };
 
   return (
     <>
@@ -392,7 +372,7 @@ any) => {
               </div>
 
               {/* Checkboxes */}
-              <div className="flex items-center gap-x-4">
+              <div className="grid grid-cols-2 gap-4">
                 <CustomCheckBox
                   checked={isFederalField.value}
                   onChange={isFederalField.onChange}
@@ -413,6 +393,13 @@ any) => {
                   iflabel
                   labelText="Has this Promise been Fulfilled?"
                   name="isPromiseFulfilled"
+                />
+                <CustomCheckBox
+                  checked={isCredibleField.value}
+                  onChange={isCredibleField.onChange}
+                  iflabel
+                  labelText="Is this Credible?"
+                  name="isCredible"
                 />
               </div>
 
@@ -466,9 +453,9 @@ any) => {
                 userType === userTypeObject.editor) && (
                 <CustomButton
                   variant="primary"
-                  className="w-full md:w-1/2"
-                  loading={approvePublicationMutation.isPending}
-                  onClick={approvePublicationFunction}
+                  className="w-full md:w-1/2 cursor-pointer"
+                  // onClick={approvePublicationFunction}
+                  onClick={toggleApproveModal}
                 >
                   Approve
                 </CustomButton>
@@ -507,6 +494,24 @@ any) => {
             />
           </div>
         </Modal>
+
+        <Modal show={approveModal} toggleModal={toggleApproveModal}>
+          <div className="p-4">
+            <ApprovePublication
+              toggleModal={toggleApproveModal}
+              defaultValues={defaultValues}
+            />
+          </div>
+        </Modal>
+
+        {/* <Modal show={isModalOpen} toggleModal={handleCancel}>
+          <div className="p-4">
+            <WarningModal
+              toggleModal={handleCancel}
+              handleConfirm={handleConfirm}
+            />
+          </div>
+        </Modal> */}
       </form>
     </>
   );

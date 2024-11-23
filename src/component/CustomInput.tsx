@@ -75,7 +75,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
         />
         {type === "password" && !onlyNumbers && (
           <div
-            className="absolute left-[90%] top-5 cursor-pointer"
+            className="absolute left-[90%] top-3 cursor-pointer"
             onClick={togglePassword}
           >
             <img

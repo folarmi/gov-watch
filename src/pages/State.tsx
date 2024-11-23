@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { createColumnHelper } from "@tanstack/react-table";
+import { createColumnHelper, PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
 import { useAppSelector } from "../lib/hook";
 import { RootState } from "../lib/store";
@@ -14,13 +14,20 @@ import CreateState from "../component/modals/CreateState";
 import DashboardLayout from "../layouts/DashboardLayout";
 
 const State = () => {
-  const { userCountry } = useAppSelector((state: RootState) => state.auth);
-  const { data: stateData, isLoading } = useGetData({
-    url: `States/GetAllStates?country=${userCountry}&page=1&pageSize=10`,
-    queryKey: ["GetAllStatesTable"],
+  const [createStateModal, setCreateStateModal] = useState(false);
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 5,
   });
 
-  const [createStateModal, setCreateStateModal] = useState(false);
+  const { userCountry } = useAppSelector((state: RootState) => state.auth);
+  const { data: stateData, isLoading } = useGetData({
+    url: `States/GetAllStates?country=${userCountry}&page=${
+      pagination.pageIndex + 1
+    }&pageSize=${pagination.pageSize}`,
+    queryKey: ["GetAllStatesTable", JSON.stringify(pagination)],
+  });
+
   const columnHelper = createColumnHelper<any>();
   const columns = [
     // Display Column
@@ -34,10 +41,7 @@ const State = () => {
         />
       ),
     }),
-    // columnHelper.accessor("image", {
-    //   header: "Image",
-    //   cell: (info) => <span className="text-sm font-normal">ggg</span>,
-    // }),
+
     columnHelper.accessor("name", {
       header: "State",
       cell: (info) => (
@@ -72,7 +76,13 @@ const State = () => {
             <div className="flex justify-end w-full mb-4">
               <AdminButton buttonText="Add State" onClick={toggleModal} />
             </div>
-            <Table columns={columns} data={stateData?.stateViewModel} />
+            <Table
+              columns={columns}
+              data={stateData?.stateViewModel}
+              rowCount={stateData?.totalCount || 0}
+              pagination={pagination}
+              setPagination={setPagination}
+            />
 
             <Modal show={createStateModal} toggleModal={toggleModal}>
               <div className="p-4">

@@ -35,7 +35,6 @@ const SignIn = () => {
     onSuccess: (data) => {
       if (data?.status === 200) {
         toast("Logged in sucessfully");
-        // sessionStorage.setItem("token", data?.data?.token);
         const userType = data?.data?.userRole;
 
         dispatch(updateUserType(userType));
@@ -49,15 +48,10 @@ const SignIn = () => {
     },
     onError: (error: any) => {
       toast.error(error?.response?.data?.remark);
-      // console.log(error?.response?.data?.remark);
     },
   });
 
   const onSubmit: any = (data: any) => {
-    // const formData: any = {
-    // email: "duvotes@mailinator.com",
-    // password: "Password1@",
-    // };
     signInMutation.mutate(data);
   };
 

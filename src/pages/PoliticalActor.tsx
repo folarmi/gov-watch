@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { createColumnHelper } from "@tanstack/react-table";
+import { createColumnHelper, PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
 import { useGetData } from "../hooks/apiCalls";
 import IndeterminateCheckbox from "../component/InterdeterminateCheckbox";
@@ -10,13 +10,21 @@ import Modal from "../component/modals/Modal";
 import CreatePoliticalActor from "../component/modals/CreatePoliticalActor";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Loader from "../component/Loader";
+import moment from "moment";
 
 const PoliticalActors = () => {
-  const { data: politicalActorsData, isLoading } = useGetData({
-    url: `PoliticalActors/GetAllPoliticalActors?pageNumber=1&pageSize=10`,
-    queryKey: ["GetAllPoliticalActorsTable"],
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 5,
   });
   const [createPoliticalActor, setCreatePoliticalActor] = useState(false);
+
+  const { data: politicalActorsData, isLoading } = useGetData({
+    url: `PoliticalActors/GetAllPoliticalActors?pageNumber=${
+      pagination.pageIndex + 1
+    }&pageSize=${pagination.pageSize}`,
+    queryKey: ["GetAllPoliticalActorsTable", JSON.stringify(pagination)],
+  });
 
   const columnHelper = createColumnHelper<any>();
   const columns = [
@@ -39,9 +47,7 @@ const PoliticalActors = () => {
     }),
     columnHelper.accessor("bio", {
       header: "Bio",
-      cell: (info) => (
-        <p className="text-sm font-normal w-[272px] ">{info.getValue()}</p>
-      ),
+      cell: (info) => <p className="text-sm font-normal">{info.getValue()}</p>,
     }),
     columnHelper.accessor("socialMediaLink", {
       header: "Social Media",
@@ -53,6 +59,14 @@ const PoliticalActors = () => {
       header: "Other Info",
       cell: (info) => (
         <span className="text-sm font-normal">{info.getValue()}</span>
+      ),
+    }),
+    columnHelper.accessor("dateOfBirth", {
+      header: "Date of Birth",
+      cell: (info) => (
+        <span className="text-sm font-normal">
+          {moment(info.getValue()).format("YYYY-MM-DD")}
+        </span>
       ),
     }),
   ];
@@ -78,6 +92,9 @@ const PoliticalActors = () => {
               columns={columns}
               data={politicalActorsData?.politicalActorViewModel}
               isLoading={isLoading}
+              rowCount={politicalActorsData?.totalCount || 0}
+              pagination={pagination}
+              setPagination={setPagination}
             />
 
             <Modal show={createPoliticalActor} toggleModal={toggleModal}>

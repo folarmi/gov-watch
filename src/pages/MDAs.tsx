@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { createColumnHelper } from "@tanstack/react-table";
+import { createColumnHelper, PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
 import { useGetData } from "../hooks/apiCalls";
 import IndeterminateCheckbox from "../component/InterdeterminateCheckbox";
@@ -13,9 +13,15 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import Loader from "../component/Loader";
 
 const MDA = () => {
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 5,
+  });
   const { data: mdaData, isLoading } = useGetData({
-    url: `Mdas/GetAllMdas?pageNumber=1&pageSize=10`,
-    queryKey: ["GetAllMdasTable"],
+    url: `Mdas/GetAllMdas?pageNumber=${pagination.pageIndex + 1}&pageSize=${
+      pagination.pageSize
+    }`,
+    queryKey: ["GetAllMdasTable", JSON.stringify(pagination)],
   });
   const [createMDA, setCreateMDA] = useState(false);
 
@@ -80,6 +86,9 @@ const MDA = () => {
               columns={columns}
               data={mdaData?.mdaViewModel}
               isLoading={isLoading}
+              rowCount={mdaData?.totalCount || 0}
+              pagination={pagination}
+              setPagination={setPagination}
             />
 
             <Modal show={createMDA} toggleModal={toggleModal}>

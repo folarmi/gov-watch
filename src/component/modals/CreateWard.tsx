@@ -70,7 +70,7 @@ const CreateWard = ({ toggleModal }: any) => {
   };
 
   const { data: lgaData, isLoading: lgaDataIsLoading } = useGetData({
-    url: `/Lgas/GetListOfLgas?stateName=${selectedState}&countryName=${userCountry}&pageNumber=1&pageSize=100`,
+    url: `/Lgas/GetListOfLgas?stateName=${selectedState}&country=${userCountry}&pageNumber=1&pageSize=100`,
     queryKey: ["GetListOfLgas"],
     enabled: !!selectedState,
   });
@@ -85,7 +85,7 @@ const CreateWard = ({ toggleModal }: any) => {
     });
 
   const { data: stateData, isLoading: stateDataIsLoading } = useGetData({
-    url: `States/GetListOfStates?countryName=${userCountry}&pageNumber=1&pageSize=10`,
+    url: `States/GetListOfStates?country=${userCountry}&pageNumber=1&pageSize=10`,
     queryKey: ["GetAllStates"],
   });
 

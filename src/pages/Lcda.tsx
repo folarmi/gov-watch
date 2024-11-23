@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { createColumnHelper } from "@tanstack/react-table";
+import { createColumnHelper, PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
 import { useGetData } from "../hooks/apiCalls";
 import IndeterminateCheckbox from "../component/InterdeterminateCheckbox";
@@ -13,9 +13,16 @@ import Loader from "../component/Loader";
 import DashboardLayout from "../layouts/DashboardLayout";
 
 const LCDA = () => {
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 5,
+  });
+
   const { data: lcdaData, isLoading: lcdaDataIsLoading } = useGetData({
-    url: `Lcdas/GetAllLcdas?pageNumber=1&pageSize=10`,
-    queryKey: ["GetAllLcdas"],
+    url: `Lcdas/GetAllLcdas?pageNumber=${pagination.pageIndex + 1}&pageSize=${
+      pagination.pageSize
+    }`,
+    queryKey: ["GetAllLcdas", JSON.stringify(pagination)],
   });
 
   const columnHelper = createColumnHelper<any>();
@@ -32,24 +39,32 @@ const LCDA = () => {
         />
       ),
     }),
-    // columnHelper.accessor("image", {
-    //   header: "Image",
-    //   cell: (info) => <span className="text-sm font-normal">ggg</span>,
-    // }),
+    columnHelper.accessor("image", {
+      header: "Image",
+      cell: (info) => (
+        <img src={info.getValue()} className="rounded-full h-16 w-16" />
+      ),
+    }),
     columnHelper.accessor("name", {
+      header: "Name",
+      cell: (info) => (
+        <span className="text-sm font-normal">{info.getValue()}</span>
+      ),
+    }),
+    columnHelper.accessor("state", {
       header: "State",
       cell: (info) => (
         <span className="text-sm font-normal">{info.getValue()}</span>
       ),
     }),
-    columnHelper.accessor("capital", {
-      header: "Capital",
+    columnHelper.accessor("lga", {
+      header: "LGA",
       cell: (info) => (
-        <p className="text-sm font-normal w-[272px] ">{info.getValue()}</p>
+        <span className="text-sm font-normal">{info.getValue()}</span>
       ),
     }),
-    columnHelper.accessor("governor", {
-      header: "Governor",
+    columnHelper.accessor("chairman", {
+      header: "Chairman",
       cell: (info) => (
         <span className="text-sm font-normal">{info.getValue()}</span>
       ),
@@ -76,6 +91,9 @@ const LCDA = () => {
               columns={columns}
               data={lcdaData?.lcdaViewModel}
               isLoading={lcdaDataIsLoading}
+              rowCount={lcdaData?.totalCount || 0}
+              pagination={pagination}
+              setPagination={setPagination}
             />
 
             <Modal show={createLCDAModal} toggleModal={toggleModal}>

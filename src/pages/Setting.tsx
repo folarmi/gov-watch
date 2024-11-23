@@ -106,6 +106,8 @@ const Setting = () => {
     return <Loader />;
   }
 
+  console.log(userObject);
+
   return (
     <SettingsLayout>
       <form onSubmit={handleSubmit(submitForm)}>

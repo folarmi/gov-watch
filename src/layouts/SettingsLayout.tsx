@@ -39,7 +39,7 @@ const SettingsLayout: React.FC<LayoutProps> = ({ children }) => {
                     className={`w-full whitespace-nowrap py-2 px-4 rounded cursor-pointer mb-4 ${
                       pathName === link
                         ? "text-white hover:bg-green-600 bg-green-700"
-                        : "text-gray-700 bg-green-100 hover:bg-green-300"
+                        : "text-gray-700 bg-gray-200 hover:bg-green-300"
                     }`}
                   >
                     <Link to={link} key={id}>

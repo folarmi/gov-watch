@@ -36,7 +36,7 @@ const PendingPublications = () => {
             {pendingPublicationsData?.map(
               ({
                 title,
-                date,
+                submittedOn,
                 image,
                 section,
                 summary,
@@ -50,7 +50,7 @@ const PendingPublications = () => {
                     section={section}
                     articleTitle={title}
                     summary={summary}
-                    date={date}
+                    date={submittedOn}
                     promise={isPromise}
                     imageUrl={image}
                     deadline={promiseDeadline}
