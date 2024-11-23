@@ -5,9 +5,11 @@ import CustomTextArea from "../component/CustomTextArea";
 import CustomButton from "../component/CustomButton";
 import OuterPage from "../layouts/OuterPage";
 import { useCustomMutation } from "../hooks/apiCalls";
+import { useNavigate } from "react-router-dom";
 
 const ContactUs = () => {
   const { handleSubmit, control } = useForm<any>();
+  const navigate = useNavigate();
 
   const contactUsMutation = useCustomMutation({
     endpoint: "/ContactUsResponses/CreateContactUs",
@@ -15,7 +17,7 @@ const ContactUs = () => {
     errorMessage: (error: any) =>
       error?.response?.data?.remark || error?.response?.data,
     onSuccessCallback: () => {
-      window.location.reload();
+      navigate("/");
     },
   });
 

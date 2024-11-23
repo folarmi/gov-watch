@@ -17,7 +17,6 @@ const Signup = () => {
   const { handleSubmit, control } = useForm<RegisterFormValues>();
   const { handleSubmit: handleCorporateForm, control: controlCorporateForm } =
     useForm<RegisterFormValues>();
-  console.log("test");
   const { data: countriesData, isLoading: countriesDataIsLoading } =
     useCountriesData();
   const navigate = useNavigate();
