@@ -29,7 +29,7 @@ const AvatarDropdown = () => {
       /> */}
       <div
         onClick={toggleDropDown}
-        className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-primary rounded-full dark:bg-gray-600"
+        className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-primary rounded-full dark:bg-gray-600 cursor-pointer"
       >
         {userType !== userTypeObject.organization && (
           <span className="font-medium text-white dark:text-gray-300 uppercase">

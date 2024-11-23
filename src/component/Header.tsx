@@ -11,6 +11,7 @@ import { RootState } from "../lib/store";
 import { useAppSelector } from "../lib/hook";
 import { directUserToPageOnLogin } from "../utils";
 import AvatarDropdown from "./forms/AvatarDropdown";
+import UserRoleTag from "./UserRoleTag";
 
 const Header = () => {
   const { isAuthenticated } = useAuth();
@@ -88,10 +89,11 @@ const Header = () => {
           )}
 
           {isAuthenticated && (
-            <div>
+            <div className="flex items-center">
               {/* <Link className="hidden md:flex" to="/sign-in">
                 <CustomButton onClick={logout}>Sign Out</CustomButton>
               </Link> */}
+              <UserRoleTag role={userType} />
               <AvatarDropdown />
             </div>
           )}

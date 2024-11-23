@@ -68,7 +68,13 @@ const CustomInput: React.FC<CustomInputProps> = ({
           {...rest}
           value={field.value || (type === "date" ? null : "")}
           onChange={handleChange}
-          type={onlyNumbers ? "number" : showPassword ? "text" : "password"}
+          type={
+            onlyNumbers
+              ? "number"
+              : type === "password" && showPassword
+              ? "text"
+              : type
+          }
           inputMode={onlyNumbers ? "numeric" : "text"}
           pattern={onlyNumbers ? "[0-9]*" : undefined}
           disabled={readOnly}
