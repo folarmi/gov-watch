@@ -18,9 +18,11 @@ import {
   useUploadMutation,
 } from "../../hooks/apiCalls";
 import FileUploader from "../FileUploader";
+import { useQueryClient } from "@tanstack/react-query";
 
 const CreateLGA = ({ toggleModal }: any) => {
   const { control, handleSubmit } = useForm<any>();
+  const queryClient = useQueryClient();
   const { userId, userCountry } = useAppSelector(
     (state: RootState) => state.auth
   );
@@ -49,6 +51,10 @@ const CreateLGA = ({ toggleModal }: any) => {
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
       toggleModal();
+      queryClient.invalidateQueries({
+        queryKey: ["GetAllLgas"],
+        exact: false,
+      });
     },
   });
 

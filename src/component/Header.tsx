@@ -18,6 +18,8 @@ const Header = () => {
   const location = useLocation();
   const pathName = location.pathname;
 
+  console.log(isAuthenticated);
+
   // const { theme } = useTheme();
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const { userType } = useAppSelector((state: RootState) => state.auth);
@@ -33,15 +35,17 @@ const Header = () => {
       url: "/",
     },
     {
-      id: 2,
-      name: "Contact us",
-      url: "/contact-us",
-    },
-    {
       id: 3,
       name: "About us",
       url: "/about-us",
     },
+
+    {
+      id: 2,
+      name: "Contact us",
+      url: "/contact-us",
+    },
+
     {
       id: 4,
       name: "Dashboard",

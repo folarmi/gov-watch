@@ -7,9 +7,11 @@ import CustomButton from "../CustomButton";
 import { useAppSelector } from "../../lib/hook";
 import { RootState } from "../../lib/store";
 import { useCustomMutation } from "../../hooks/apiCalls";
+import { useQueryClient } from "@tanstack/react-query";
 
 const CreatePoliticalParty = ({ toggleModal }: any) => {
   const { control, handleSubmit } = useForm<any>();
+  const queryClient = useQueryClient();
   const { userId, userCountry } = useAppSelector(
     (state: RootState) => state.auth
   );
@@ -20,6 +22,10 @@ const CreatePoliticalParty = ({ toggleModal }: any) => {
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
       toggleModal();
+      queryClient.invalidateQueries({
+        queryKey: ["GetAllPoliticalPartiesTable"],
+        exact: false,
+      });
     },
   });
 

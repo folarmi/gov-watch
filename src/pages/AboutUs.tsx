@@ -95,10 +95,7 @@ const About = () => {
                 OUR MISSION
               </h1>
               <p className="text-sm">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Id
-                eius, corporis sed impedit nulla aut animi maiores dolorem
-                laboriosam quae facere sunt, hic voluptatum non facilis, officia
-                porro! Officia, impedit?
+                To end political apathy all over the world by 2030.
               </p>
             </div>
 
@@ -107,10 +104,8 @@ const About = () => {
                 OUR VISION
               </h1>
               <p className="text-sm">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Id
-                eius, corporis sed impedit nulla aut animi maiores dolorem
-                laboriosam quae facere sunt, hic voluptatum non facilis, officia
-                porro! Officia, impedit?
+                To sustain the principle that a nation is a construct built to
+                protect and promote the interests of children.
               </p>
             </div>
 

@@ -18,9 +18,12 @@ import {
   useUploadMutation,
 } from "../../hooks/apiCalls";
 import FileUploader from "../FileUploader";
+import { useQueryClient } from "@tanstack/react-query";
 
 const CreateMDA = ({ toggleModal }: any) => {
   const { control, handleSubmit } = useForm<any>();
+  const queryClient = useQueryClient();
+
   const { userId, userCountry } = useAppSelector(
     (state: RootState) => state.auth
   );
@@ -50,6 +53,10 @@ const CreateMDA = ({ toggleModal }: any) => {
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
       toggleModal();
+      queryClient.invalidateQueries({
+        queryKey: ["GetAllMdasTable"],
+        exact: false,
+      });
     },
   });
 

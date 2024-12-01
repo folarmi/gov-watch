@@ -14,9 +14,11 @@ import {
 } from "../../hooks/apiCalls";
 import { useAppSelector } from "../../lib/hook";
 import { RootState } from "../../lib/store";
+import { useQueryClient } from "@tanstack/react-query";
 
 const CreateCountry = ({ toggleModal }: any) => {
   const { control, handleSubmit } = useForm<any>();
+  const queryClient = useQueryClient();
   const handleSuccess = (data: any) => {
     setBackendPath(data?.filePath);
   };
@@ -44,6 +46,10 @@ const CreateCountry = ({ toggleModal }: any) => {
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
       toggleModal();
+      queryClient.invalidateQueries({
+        queryKey: ["GetCountriesTable"],
+        exact: false,
+      });
     },
   });
 

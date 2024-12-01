@@ -22,7 +22,7 @@ const LCDA = () => {
     url: `Lcdas/GetAllLcdas?pageNumber=${pagination.pageIndex + 1}&pageSize=${
       pagination.pageSize
     }`,
-    queryKey: ["GetAllLcdas", JSON.stringify(pagination)],
+    queryKey: ["GetAllLcdasTable", JSON.stringify(pagination)],
   });
 
   const columnHelper = createColumnHelper<any>();

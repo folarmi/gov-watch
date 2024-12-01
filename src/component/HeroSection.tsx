@@ -42,7 +42,7 @@ const HeroSection = () => {
         key={imageSrc}
         src={imageSrc}
         alt="Country flag"
-        className="w-full h-48 object-contain transition-transform duration-300 hover:scale-105 md:hidden"
+        className="hidden md:block w-full h-48 object-contain transition-transform duration-300 hover:scale-105"
       />
     </div>
   );

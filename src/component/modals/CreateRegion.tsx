@@ -5,10 +5,11 @@ import CustomButton from "../CustomButton";
 import { useAppSelector } from "../../lib/hook";
 import { RootState } from "../../lib/store";
 import { useCustomMutation } from "../../hooks/apiCalls";
+import { useQueryClient } from "@tanstack/react-query";
 
 const CreateRegion = ({ toggleModal }: any) => {
   const { control, handleSubmit } = useForm<any>();
-
+  const queryClient = useQueryClient();
   const { userId } = useAppSelector((state: RootState) => state.auth);
 
   const createRegionMutation = useCustomMutation({
@@ -17,6 +18,10 @@ const CreateRegion = ({ toggleModal }: any) => {
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
       toggleModal();
+      queryClient.invalidateQueries({
+        queryKey: ["GetAllRegionsTable"],
+        exact: false,
+      });
     },
   });
 

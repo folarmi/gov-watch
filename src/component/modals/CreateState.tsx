@@ -18,9 +18,12 @@ import {
   useUploadMutation,
 } from "../../hooks/apiCalls";
 import FileUploader from "../FileUploader";
+import { useQueryClient } from "@tanstack/react-query";
 
 const CreateState = ({ toggleModal }: any) => {
   const { control, handleSubmit } = useForm<any>();
+  const queryClient = useQueryClient();
+
   const { userId } = useAppSelector((state: RootState) => state.auth);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [backendPath, setBackendPath] = useState("");
@@ -47,6 +50,10 @@ const CreateState = ({ toggleModal }: any) => {
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
       toggleModal();
+      queryClient.invalidateQueries({
+        queryKey: ["GetAllStatesTable"],
+        exact: false,
+      });
     },
   });
 

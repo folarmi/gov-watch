@@ -21,8 +21,7 @@ const Region = () => {
     url: `Regions/GetRegions?page=${pagination.pageIndex + 1}&pageSize=${
       pagination.pageSize
     }`,
-    // url: "Regions/GetAllRegions",
-    queryKey: ["GetAllRegions", JSON.stringify(pagination)],
+    queryKey: ["GetAllRegionsTable", JSON.stringify(pagination)],
   });
 
   const columnHelper = createColumnHelper<any>();

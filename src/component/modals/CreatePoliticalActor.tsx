@@ -20,9 +20,11 @@ import {
 } from "../../hooks/apiCalls";
 import FileUploader from "../FileUploader";
 import { politicalLevelData } from "../../data";
+import { useQueryClient } from "@tanstack/react-query";
 
 const CreatePoliticalActor = ({ toggleModal }: any) => {
   const { control, handleSubmit } = useForm<any>();
+  const queryClient = useQueryClient();
   const { userId, userCountry } = useAppSelector(
     (state: RootState) => state.auth
   );
@@ -67,6 +69,10 @@ const CreatePoliticalActor = ({ toggleModal }: any) => {
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
       toggleModal();
+      queryClient.invalidateQueries({
+        queryKey: ["GetAllPoliticalActorsTable"],
+        exact: false,
+      });
     },
   });
 

@@ -19,9 +19,11 @@ import {
 } from "../../hooks/apiCalls";
 import CustomSelect from "../CustomSelect";
 import FileUploader from "../FileUploader";
+import { useQueryClient } from "@tanstack/react-query";
 
 const CreateLCDA = ({ toggleModal }: any) => {
   const { control, handleSubmit } = useForm<any>();
+  const queryClient = useQueryClient();
   const { userId, userCountry } = useAppSelector(
     (state: RootState) => state.auth
   );
@@ -51,6 +53,10 @@ const CreateLCDA = ({ toggleModal }: any) => {
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
       toggleModal();
+      queryClient.invalidateQueries({
+        queryKey: ["GetAllLcdasTable"],
+        exact: false,
+      });
     },
   });
 

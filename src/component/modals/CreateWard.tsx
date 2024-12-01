@@ -18,9 +18,12 @@ import {
   useUploadMutation,
 } from "../../hooks/apiCalls";
 import FileUploader from "../FileUploader";
+import { useQueryClient } from "@tanstack/react-query";
 
 const CreateWard = ({ toggleModal }: any) => {
   const { control, handleSubmit } = useForm<any>();
+  const queryClient = useQueryClient();
+
   const { userId, userCountry } = useAppSelector(
     (state: RootState) => state.auth
   );
@@ -50,6 +53,10 @@ const CreateWard = ({ toggleModal }: any) => {
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
       toggleModal();
+      queryClient.invalidateQueries({
+        queryKey: ["GetAllWardsTable"],
+        exact: false,
+      });
     },
   });
 

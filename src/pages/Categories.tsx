@@ -20,7 +20,7 @@ const Categories = () => {
     url: `Categories/GetAllCategories?page=${
       pagination.pageIndex + 1
     }&pageSize=${pagination.pageSize}`,
-    queryKey: ["GetAllCategories", JSON.stringify(pagination)],
+    queryKey: ["GetAllCategoriesTable", JSON.stringify(pagination)],
   });
 
   const columnHelper = createColumnHelper<any>();
