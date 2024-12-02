@@ -316,7 +316,7 @@ const CreateCountry = ({ toggleModal, selectedCountry }: any) => {
             {(uploadedFile || backendPath) && (
               <ImageDetails
                 fileName={uploadedFile?.name || "Existing File"}
-                fileSize={uploadedFile?.size || "Unknown"}
+                fileSize={uploadedFile?.size || 0}
               />
             )}
           </div>
