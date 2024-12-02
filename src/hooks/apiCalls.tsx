@@ -151,6 +151,75 @@ export const useUploadMutation = (
   });
 };
 
+// export const useCustomMutation = <
+//   TData = MutationResponse,
+//   TError = AxiosError,
+//   TVariables = unknown,
+//   TContext = unknown
+// >(
+//   options: CustomMutationOptions<TData, TError, TVariables, TContext>
+// ): UseMutationResult<TData, TError, TVariables, TContext> => {
+//   const {
+//     endpoint,
+//     successMessage,
+//     errorMessage,
+//     onSuccessCallback,
+//     method = "post",
+//     contentType = "application/json",
+//     ...mutationOptions
+//   } = options;
+
+//   return useMutation<TData, TError, TVariables, TContext>({
+//     mutationFn: async (variables: TVariables) => {
+//       if (contentType === "multipart/form-data") {
+//         const formData = new FormData();
+
+//         // Assuming variables is an object and needs to be appended to formData
+//         if (typeof variables === "object" && variables !== null) {
+//           for (const key in variables) {
+//             formData.append(key, (variables as any)[key]);
+//           }
+//         }
+
+//         const response = await api[method]<TData>(endpoint, formData, {
+//           headers: {
+//             "Content-Type": "multipart/form-data",
+//           },
+//         });
+//         return response.data;
+//       } else {
+//         // Default to JSON handling
+//         const response = await api[method]<TData>(endpoint, variables, {
+//           headers: {
+//             "Content-Type": "application/json",
+//           },
+//         });
+//         return response.data;
+//       }
+//     },
+//     onSuccess: (data: any) => {
+//       if (data?.statusCode === 201 || data?.statusCode === 200) {
+//         if (successMessage) {
+//           toast(successMessage(data));
+//         }
+//         if (onSuccessCallback) {
+//           onSuccessCallback(data);
+//         }
+//       }
+//     },
+//     onError: (error: any) => {
+//       if (errorMessage) {
+//         toast.error(errorMessage(error));
+//       } else if (error?.response?.data?.remark) {
+//         toast.error(error.response.data.remark);
+//       } else if (error?.response?.data) {
+//         toast.error(error?.response?.data);
+//       }
+//     },
+//     ...mutationOptions,
+//   });
+// };
+
 export const useCustomMutation = <
   TData = MutationResponse,
   TError = AxiosError,
@@ -169,63 +238,38 @@ export const useCustomMutation = <
     ...mutationOptions
   } = options;
 
-  // return useMutation<TData, TError, TVariables, TContext>({
-  //   mutationFn: async (variables: TVariables) => {
-  //     const response = await api[method]<TData>(endpoint, variables);
-  //     return response.data;
-  //   },
-  //   // onSuccess: (data: any, variables, context) => {
-  //   onSuccess: (data: any) => {
-  //     if (data?.statusCode === 201) {
-  //       if (successMessage) {
-  //         toast(successMessage(data));
-  //       }
-  //       if (onSuccessCallback) {
-  //         onSuccessCallback(data);
-  //       }
-  //     }
-  //   },
-  //   onError: (error: any) => {
-  //     console.log(error?.response?.data);
-  //     if (errorMessage) {
-  //       toast.error(errorMessage(error));
-  //     } else if (error?.response?.data?.remark) {
-  //       toast.error(error.response.data.remark);
-  //     } else if (error?.response?.data) {
-  //       toast.error(error?.response?.data);
-  //     }
-  //   },
-
-  //   ...mutationOptions,
-  // });
-
   return useMutation<TData, TError, TVariables, TContext>({
     mutationFn: async (variables: TVariables) => {
+      const config: Record<string, any> = {
+        headers: {
+          "Content-Type": contentType,
+        },
+      };
+
+      if (method.toLowerCase() === "delete") {
+        // Handle DELETE with a body
+        const response = await api[method]<TData>(endpoint, variables, config);
+        return response.data;
+      }
+
       if (contentType === "multipart/form-data") {
         const formData = new FormData();
-
-        // Assuming variables is an object and needs to be appended to formData
         if (typeof variables === "object" && variables !== null) {
           for (const key in variables) {
             formData.append(key, (variables as any)[key]);
           }
         }
-
         const response = await api[method]<TData>(endpoint, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
         return response.data;
-      } else {
-        // Default to JSON handling
-        const response = await api[method]<TData>(endpoint, variables, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        return response.data;
       }
+
+      // Default JSON handling
+      const response = await api[method]<TData>(endpoint, variables, config);
+      return response.data;
     },
     onSuccess: (data: any) => {
       if (data?.statusCode === 201 || data?.statusCode === 200) {

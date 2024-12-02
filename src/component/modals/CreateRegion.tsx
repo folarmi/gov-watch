@@ -9,6 +9,8 @@ import { useQueryClient } from "@tanstack/react-query";
 
 const CreateRegion = ({ toggleModal }: any) => {
   const { control, handleSubmit } = useForm<any>();
+  const { userCountry } = useAppSelector((state: RootState) => state.auth);
+
   const queryClient = useQueryClient();
   const { userId } = useAppSelector((state: RootState) => state.auth);
 
@@ -29,6 +31,7 @@ const CreateRegion = ({ toggleModal }: any) => {
     const formData: any = {
       ...data,
       createdBy: userId,
+      country: userCountry,
     };
 
     createRegionMutation.mutate(formData);
@@ -71,3 +74,5 @@ const CreateRegion = ({ toggleModal }: any) => {
 };
 
 export default CreateRegion;
+
+// https://www.govwatch.ng/api/v1/Countries/GetCountries?page=1&pageSize=5

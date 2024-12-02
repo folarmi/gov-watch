@@ -18,8 +18,6 @@ const Header = () => {
   const location = useLocation();
   const pathName = location.pathname;
 
-  console.log(isAuthenticated);
-
   // const { theme } = useTheme();
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const { userType } = useAppSelector((state: RootState) => state.auth);

@@ -1,18 +1,27 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 
 interface FileUploaderProps {
   maxSizeMB: number;
   acceptFormats: string[];
   onFileUpload: (file: File) => void;
+  defaultFile?: string;
 }
 
 const FileUploader: React.FC<FileUploaderProps> = ({
   maxSizeMB,
   acceptFormats,
   onFileUpload,
+  defaultFile,
 }) => {
   const [preview, setPreview] = useState<string | null>(null);
   const [error, setError] = useState<string>("");
+
+  useEffect(() => {
+    // Set initial preview for edit mode
+    if (defaultFile) {
+      setPreview(defaultFile);
+    }
+  }, [defaultFile]);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -42,7 +51,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
         setPreview(reader.result as string);
       };
       reader.readAsDataURL(file);
-      onFileUpload(file); // Call the onFileUpload callback with the file
+      onFileUpload(file);
     }
   };
 

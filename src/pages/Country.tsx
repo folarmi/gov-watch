@@ -4,13 +4,14 @@
 import { createColumnHelper, PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
 import { useGetData } from "../hooks/apiCalls";
-import IndeterminateCheckbox from "../component/InterdeterminateCheckbox";
+// import IndeterminateCheckbox from "../component/InterdeterminateCheckbox";
 import Loader from "../component/Loader";
 import AdminButton from "../component/forms/AdminButton";
 import Table from "../component/Table";
 import Modal from "../component/modals/Modal";
 import CreateCountry from "../component/modals/CreateCountry";
 import DashboardLayout from "../layouts/DashboardLayout";
+import ConfirmModuleDeletion from "../component/modals/ConfirmModuleDeletion";
 
 const Country = () => {
   const [createCountry, setCreateCountry] = useState(false);
@@ -18,27 +19,38 @@ const Country = () => {
     pageIndex: 0,
     pageSize: 5,
   });
+  const [deleteModule, setDeleteModule] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState("");
 
   const { data: countryData, isLoading: countryDataIsLoading } = useGetData({
-    url: `/Countries/GetCountries?page=${pagination.pageIndex + 1}&pageSize=${
-      pagination.pageSize
-    }`,
+    url: `/Countries/GetCountriesForAdmin?page=${
+      pagination.pageIndex + 1
+    }&pageSize=${pagination.pageSize}`,
     queryKey: ["GetCountriesTable", JSON.stringify(pagination)],
   });
+
+  const toggleModal = () => {
+    setSelectedCountry("");
+    setCreateCountry(!createCountry);
+  };
+
+  const toggleDeleteModal = () => {
+    setDeleteModule(!deleteModule);
+  };
 
   const columnHelper = createColumnHelper<any>();
   const columns = [
     // Display Column
-    columnHelper.display({
-      id: "checkbox",
-      cell: ({ table }) => (
-        <IndeterminateCheckbox
-          checked={table.getIsAllRowsSelected()}
-          indeterminate={table.getIsSomeRowsSelected()}
-          onChange={table.getToggleAllRowsSelectedHandler()}
-        />
-      ),
-    }),
+    // columnHelper.display({
+    //   id: "checkbox",
+    //   cell: ({ table }) => (
+    //     <IndeterminateCheckbox
+    //       checked={table.getIsAllRowsSelected()}
+    //       indeterminate={table.getIsSomeRowsSelected()}
+    //       onChange={table.getToggleAllRowsSelectedHandler()}
+    //     />
+    //   ),
+    // }),
     columnHelper.accessor("image", {
       header: "Image",
       cell: (info) => (
@@ -57,17 +69,54 @@ const Country = () => {
         <span className="text-sm font-normal">{info.getValue()}</span>
       ),
     }),
+    columnHelper.accessor("population", {
+      header: "Population",
+      cell: (info) => (
+        <span className="text-sm font-normal">{info.getValue()}</span>
+      ),
+    }),
+    columnHelper.accessor("gdp", {
+      header: "GDP",
+      cell: (info) => (
+        <span className="text-sm font-normal">{info.getValue()}</span>
+      ),
+    }),
     columnHelper.accessor("leaderName", {
       header: "Leader name",
       cell: (info) => (
         <span className="text-sm font-normal">{info.getValue()}</span>
       ),
     }),
-  ];
+    columnHelper.accessor("publicId", {
+      header: "Action",
+      cell: (info) => {
+        const rowData = info.row.original;
 
-  const toggleModal = () => {
-    setCreateCountry(!createCountry);
-  };
+        return (
+          <div className="flex space-x-4">
+            <button
+              onClick={() => {
+                toggleModal();
+                setSelectedCountry(rowData);
+              }}
+              className="px-6 py-1 text-sm bg-primary cursor-pointer text-white rounded"
+            >
+              Edit
+            </button>
+            {/* <button
+              onClick={() => {
+                toggleDeleteModal();
+                setSelectedCountry(rowData.publicId);
+              }}
+              className="px-2 py-1 text-sm bg-red-500 cursor-pointer text-white rounded"
+            >
+              Delete
+            </button> */}
+          </div>
+        );
+      },
+    }),
+  ];
 
   return (
     <DashboardLayout>
@@ -89,7 +138,21 @@ const Country = () => {
 
           <Modal show={createCountry} toggleModal={toggleModal}>
             <div className="p-4">
-              <CreateCountry toggleModal={toggleModal} />
+              <CreateCountry
+                toggleModal={toggleModal}
+                selectedCountry={selectedCountry}
+              />
+            </div>
+          </Modal>
+
+          <Modal show={deleteModule} toggleModal={toggleDeleteModal}>
+            <div className="p-4">
+              <ConfirmModuleDeletion
+                moduleName="Country"
+                toggleModal={toggleDeleteModal}
+                endpoint="Countries/DeleteCountry"
+                countryId={selectedCountry}
+              />
             </div>
           </Modal>
         </div>
