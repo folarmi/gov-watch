@@ -234,14 +234,15 @@ const CreateCountry = ({ toggleModal, selectedCountry }: any) => {
     };
 
     if (selectedCountry) {
-      formData.lastModifiedBy = userId;
+      // For PUT (Update), do not include `createdBy`
+      formData.updatedBy = userId; // Optional: You can add an `updatedBy` field
+    } else {
+      // For POST (Create), include `createdBy`
       formData.createdBy = userId;
     }
-
+    console.log(formData);
     countryMutation.mutate(formData);
   };
-
-  console.log("sdfgh", backendPath);
 
   return (
     <div className="bg-white rounded-xl p-6">
