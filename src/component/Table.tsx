@@ -32,41 +32,52 @@ const Table = ({
         <div className="text-center py-4">Loading data...</div>
       ) : table ? (
         <>
-          <table className="w-full">
-            <thead>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <th
-                      key={header.id}
-                      className="text-left pr-10 pl-2 whitespace-nowrap"
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody>
-              {table.getRowModel().rows.map((row) => (
-                <tr key={row.id} className="border-b-2 border-b-grey-100">
-                  {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} className="px-2 whitespace-nowrap py-3">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="w-full overflow-x-auto">
+            <table className="min-w-[600px] w-full table-auto border-collapse">
+              {/* Table Header */}
+              <thead className="bg-gray-200 sticky top-0 z-10">
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <tr key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <th
+                        key={header.id}
+                        className="px-6 text-xs py-4 text-left font-semibold text-gray-700 border-b"
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </th>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+
+              {/* Table Body */}
+              <tbody>
+                {table.getRowModel().rows.map((row) => (
+                  <tr
+                    key={row.id}
+                    className="hover:bg-gray-100 border-b even:bg-gray-50"
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <td
+                        key={cell.id}
+                        className="px-6 py-4 text-sm text-gray-600"
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
           {/* // Pagination */}
           {data && (
             <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-md shadow-sm">
