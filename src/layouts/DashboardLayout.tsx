@@ -95,16 +95,20 @@ const DashboardLayout = ({
       countOfPublicationsForAdminIsLoading ? (
         <Loader />
       ) : (
-        <section className=" px-8 md:px-24">
+        <section className="px-8 md:px-24">
           <Header />
 
           {userType !== userTypeObject.user &&
             userType !== userTypeObject.organization && (
               <InformationTab data={adminDashboard} />
             )}
+          {/* <div className="flex"> */}
           <div className="flex">
             {/* Sidebar */}
-            <section className="bg-green_100 text-white my-10 mr-8 rounded-lg max-h-screen overflow-y-scroll w-[400px]">
+            <section
+              className="bg-green_100 text-white my-10 mr-8 rounded-lg max-h-screen overflow-y-scroll w-[400px]"
+              style={{ minWidth: "250px", maxWidth: "400px" }}
+            >
               {filteredItems.map(({ category, items }, index) => (
                 <div
                   key={category}
@@ -137,7 +141,7 @@ const DashboardLayout = ({
             </section>
 
             {/* Main Content */}
-            <main className="w-full">{children}</main>
+            <main className="flex-grow">{children}</main>
           </div>
           {userType !== userTypeObject.organization && <CreatePublication />}
         </section>

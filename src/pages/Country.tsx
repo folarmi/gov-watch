@@ -17,7 +17,7 @@ const Country = () => {
   const [createCountry, setCreateCountry] = useState(false);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 5,
+    pageSize: 10,
   });
   const [deleteModule, setDeleteModule] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState("");
@@ -40,17 +40,6 @@ const Country = () => {
 
   const columnHelper = createColumnHelper<any>();
   const columns = [
-    // Display Column
-    // columnHelper.display({
-    //   id: "checkbox",
-    //   cell: ({ table }) => (
-    //     <IndeterminateCheckbox
-    //       checked={table.getIsAllRowsSelected()}
-    //       indeterminate={table.getIsSomeRowsSelected()}
-    //       onChange={table.getToggleAllRowsSelectedHandler()}
-    //     />
-    //   ),
-    // }),
     columnHelper.accessor("image", {
       header: "Image",
       cell: (info) => (

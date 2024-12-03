@@ -11,6 +11,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontSize: {
+        base: "16px",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
