@@ -10,8 +10,8 @@ import Table from "../component/Table";
 import Modal from "../component/modals/Modal";
 import CreateRegion from "../component/modals/CreateRegion";
 import DashboardLayout from "../layouts/DashboardLayout";
-import { useAppSelector } from "../lib/hook";
-import { RootState } from "../lib/store";
+// import { useAppSelector } from "../lib/hook";
+// import { RootState } from "../lib/store";
 
 const Region = () => {
   const [createRegion, setCreateRegion] = useState(false);
@@ -19,12 +19,11 @@ const Region = () => {
     pageIndex: 0,
     pageSize: 5,
   });
-  const { userCountry } = useAppSelector((state: RootState) => state.auth);
-
+  // const { userCountry } = useAppSelector((state: RootState) => state.auth);
   const { data: regionData, isLoading } = useGetData({
-    url: `Regions/GetRegions?country=${userCountry}page=${
-      pagination.pageIndex + 1
-    }&pageSize=${pagination.pageSize}`,
+    url: `Regions/GetRegions?page=${pagination.pageIndex + 1}&pageSize=${
+      pagination.pageSize
+    }`,
     queryKey: ["GetAllRegionsTable", JSON.stringify(pagination)],
   });
 

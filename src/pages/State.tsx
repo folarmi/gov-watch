@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useAppSelector } from "../lib/hook";
 import { RootState } from "../lib/store";
 import { useGetData } from "../hooks/apiCalls";
-import IndeterminateCheckbox from "../component/InterdeterminateCheckbox";
+// import IndeterminateCheckbox from "../component/InterdeterminateCheckbox";
 import Loader from "../component/Loader";
 import AdminButton from "../component/forms/AdminButton";
 import Table from "../component/Table";
@@ -17,8 +17,9 @@ const State = () => {
   const [createStateModal, setCreateStateModal] = useState(false);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 5,
+    pageSize: 36,
   });
+  const [selectedState, setSelectedState] = useState("");
 
   const { userCountry } = useAppSelector((state: RootState) => state.auth);
   const { data: stateData, isLoading } = useGetData({
@@ -31,17 +32,22 @@ const State = () => {
   const columnHelper = createColumnHelper<any>();
   const columns = [
     // Display Column
-    columnHelper.display({
-      id: "checkbox",
-      cell: ({ table }) => (
-        <IndeterminateCheckbox
-          checked={table.getIsAllRowsSelected()}
-          indeterminate={table.getIsSomeRowsSelected()}
-          onChange={table.getToggleAllRowsSelectedHandler()}
-        />
+    // columnHelper.display({
+    //   id: "checkbox",
+    //   cell: ({ table }) => (
+    //     <IndeterminateCheckbox
+    //       checked={table.getIsAllRowsSelected()}
+    //       indeterminate={table.getIsSomeRowsSelected()}
+    //       onChange={table.getToggleAllRowsSelectedHandler()}
+    //     />
+    //   ),
+    // }),
+    columnHelper.accessor("image", {
+      header: "Image",
+      cell: (info) => (
+        <img src={info.getValue()} className="rounded-full h-12 w-12" />
       ),
     }),
-
     columnHelper.accessor("name", {
       header: "State",
       cell: (info) => (
@@ -50,9 +56,7 @@ const State = () => {
     }),
     columnHelper.accessor("capital", {
       header: "Capital",
-      cell: (info) => (
-        <p className="text-sm font-normal w-[272px] ">{info.getValue()}</p>
-      ),
+      cell: (info) => <p className="text-sm font-normal ">{info.getValue()}</p>,
     }),
     columnHelper.accessor("governor", {
       header: "Governor",
@@ -60,9 +64,42 @@ const State = () => {
         <span className="text-sm font-normal">{info.getValue()}</span>
       ),
     }),
+    columnHelper.accessor("population", {
+      header: "Population",
+      cell: (info) => (
+        <span className="text-sm font-normal">{info.getValue()}</span>
+      ),
+    }),
+    columnHelper.accessor("landMass", {
+      header: "Land Mass",
+      cell: (info) => (
+        <span className="text-sm font-normal">{info.getValue()}</span>
+      ),
+    }),
+    columnHelper.accessor("publicId", {
+      header: "Action",
+      cell: (info) => {
+        const rowData = info.row.original;
+
+        return (
+          <div className="flex space-x-4">
+            <button
+              onClick={() => {
+                toggleModal();
+                setSelectedState(rowData);
+              }}
+              className="px-6 py-1 text-sm bg-primary cursor-pointer text-white rounded"
+            >
+              Edit
+            </button>
+          </div>
+        );
+      },
+    }),
   ];
 
   const toggleModal = () => {
+    setSelectedState("");
     setCreateStateModal(!createStateModal);
   };
 
@@ -72,7 +109,7 @@ const State = () => {
         {isLoading ? (
           <Loader />
         ) : (
-          <div className="mt-10">
+          <div className="mt-2">
             <div className="flex justify-end w-full mb-4">
               <AdminButton buttonText="Add State" onClick={toggleModal} />
             </div>
@@ -86,7 +123,10 @@ const State = () => {
 
             <Modal show={createStateModal} toggleModal={toggleModal}>
               <div className="p-4">
-                <CreateState toggleModal={toggleModal} />
+                <CreateState
+                  toggleModal={toggleModal}
+                  selectedState={selectedState}
+                />
               </div>
             </Modal>
           </div>

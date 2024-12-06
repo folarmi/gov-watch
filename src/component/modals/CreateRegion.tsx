@@ -74,5 +74,3 @@ const CreateRegion = ({ toggleModal }: any) => {
 };
 
 export default CreateRegion;
-
-// https://www.govwatch.ng/api/v1/Countries/GetCountries?page=1&pageSize=5

@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import { useGetDataById } from "../hooks/apiCalls";
 import Loader from "../component/Loader";
 import EmptyPage from "../component/EmptyPage";
+import moment from "moment";
 
 const StateDetails = () => {
   const params = useParams();
@@ -45,7 +46,7 @@ const StateDetails = () => {
           </Text>
 
           <section className="flex justify-between mx-6 mb-12">
-            <div>
+            <div className="w-[360px]">
               <TextAndValue title="Capital" value={stateDetailsData?.capital} />
               <TextAndValue
                 title="Governor"
@@ -65,7 +66,10 @@ const StateDetails = () => {
               />
               <TextAndValue
                 title="Date Founded"
-                value={stateDetailsData?.landMass}
+                value={
+                  moment(stateDetailsData?.dateFounded).format("YYYY-MM-DD") ||
+                  0
+                }
               />
               <TextAndValue
                 title="MDAs Count"

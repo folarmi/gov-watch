@@ -65,7 +65,7 @@ const Table = ({
                     {row.getVisibleCells().map((cell) => (
                       <td
                         key={cell.id}
-                        className="px-6 py-4 text-sm text-gray-600"
+                        className="px-2 py-2 text-sm text-gray-600"
                       >
                         {flexRender(
                           cell.column.columnDef.cell,
@@ -237,3 +237,41 @@ export default Table;
 //   ))}
 // </select>
 // </div>
+
+{
+  /* <table className="w-full">
+<thead>
+  {table.getHeaderGroups().map((headerGroup) => (
+    <tr key={headerGroup.id}>
+      {headerGroup.headers.map((header) => (
+        <th
+          key={header.id}
+          className="text-left pr-10 pl-2 whitespace-nowrap"
+        >
+          {header.isPlaceholder
+            ? null
+            : flexRender(
+                header.column.columnDef.header,
+                header.getContext()
+              )}
+        </th>
+      ))}
+    </tr>
+  ))}
+</thead>
+<tbody>
+  {table.getRowModel().rows.map((row) => (
+    <tr key={row.id} className="border-b-2 border-b-grey-100">
+      {row.getVisibleCells().map((cell) => (
+        <td key={cell.id} className="px-2 whitespace-nowrap py-3">
+          {flexRender(
+            cell.column.columnDef.cell,
+            cell.getContext()
+          )}
+        </td>
+      ))}
+    </tr>
+  ))}
+</tbody>
+</table> */
+}

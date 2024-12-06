@@ -20,8 +20,10 @@ import {
 import FileUploader from "../FileUploader";
 import { useQueryClient } from "@tanstack/react-query";
 
-const CreateState = ({ toggleModal }: any) => {
-  const { control, handleSubmit } = useForm<any>();
+const CreateState = ({ toggleModal, selectedState }: any) => {
+  const { control, handleSubmit } = useForm<any>({
+    defaultValues: selectedState || {},
+  });
   const queryClient = useQueryClient();
 
   const { userId } = useAppSelector((state: RootState) => state.auth);
@@ -45,8 +47,9 @@ const CreateState = ({ toggleModal }: any) => {
   };
 
   const createStateMutation = useCustomMutation({
-    endpoint: "States/CreateState",
+    endpoint: selectedState ? `States/UpdateState` : "States/CreateState",
     successMessage: (data: any) => data?.remark,
+    method: selectedState ? "put" : "post",
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
       toggleModal();
@@ -65,10 +68,17 @@ const CreateState = ({ toggleModal }: any) => {
 
     const formData: any = {
       ...data,
+      // population: Number(data.population),
+      population: Number(data.population.replace(/,/g, "")),
       image: backendPath,
-      createdBy: userId,
     };
 
+    console.log(formData);
+    if (selectedState) {
+      formData.lastModifiedBy = userId;
+    } else {
+      formData.createdBy = userId;
+    }
     createStateMutation.mutate(formData);
   };
 
@@ -102,7 +112,9 @@ const CreateState = ({ toggleModal }: any) => {
 
   return (
     <div className="bg-white rounded-xl p-6">
-      <p className="text-center font-medium text-xl font">Create New State</p>
+      <p className="text-center font-medium text-xl font">
+        {selectedState ? "Edit State" : "Create New State"}
+      </p>
 
       <form
         onSubmit={handleSubmit(submitForm)}
@@ -136,7 +148,7 @@ const CreateState = ({ toggleModal }: any) => {
           label="Political Party (Governor)"
           name="politicalPartyOfGovernor"
           control={control}
-          rules={{ required: "State governor is required" }}
+          // rules={{ required: "State governor is required" }}
           className="mt-4"
         />
 
@@ -146,7 +158,7 @@ const CreateState = ({ toggleModal }: any) => {
           control={control}
           type="number"
           onlyNumbers
-          rules={{ required: "Population is required" }}
+          // rules={{ required: "Population is required" }}
           className="mt-4"
         />
 
@@ -156,7 +168,7 @@ const CreateState = ({ toggleModal }: any) => {
           type="number"
           onlyNumbers
           control={control}
-          rules={{ required: "Financial Allocation is required" }}
+          // rules={{ required: "Financial Allocation is required" }}
           className="mt-4"
         />
 
@@ -166,7 +178,7 @@ const CreateState = ({ toggleModal }: any) => {
           type="number"
           onlyNumbers
           control={control}
-          rules={{ required: "Land Mass is required" }}
+          // rules={{ required: "Land Mass is required" }}
           className="mt-4"
         />
 
@@ -175,7 +187,7 @@ const CreateState = ({ toggleModal }: any) => {
           name="dateFounded"
           type="date"
           control={control}
-          rules={{ required: "Date Founded is required" }}
+          // rules={{ required: "Date Founded is required" }}
           className="mt-4"
         />
 
@@ -205,7 +217,7 @@ const CreateState = ({ toggleModal }: any) => {
           type="number"
           onlyNumbers
           control={control}
-          rules={{ required: "MDA Count is required" }}
+          // rules={{ required: "MDA Count is required" }}
           className="mt-4"
         />
 
@@ -215,7 +227,7 @@ const CreateState = ({ toggleModal }: any) => {
           type="number"
           onlyNumbers
           control={control}
-          rules={{ required: "LGA Count is required" }}
+          // rules={{ required: "LGA Count is required" }}
           className="mt-4"
         />
 
@@ -228,7 +240,7 @@ const CreateState = ({ toggleModal }: any) => {
 
           <FileUploader
             maxSizeMB={1}
-            acceptFormats={["png", "jpeg", "jpg", "gif"]}
+            acceptFormats={["png", "jpeg", "jpg", "gif", "svg"]}
             onFileUpload={handleFileUpload}
           />
           {uploadedFile && (
@@ -250,7 +262,7 @@ const CreateState = ({ toggleModal }: any) => {
             loading={uploadMutation.isPending || createStateMutation.isPending}
             variant="tertiary"
           >
-            Create State
+            {selectedState ? "Update State" : "Create State"}
           </CustomButton>
         </div>
       </form>

@@ -2,7 +2,7 @@ import Text from "./Text";
 
 type TextAndValueProp = {
   title: string;
-  value: string;
+  value: string | number;
 };
 
 const TextAndValue = ({ title, value }: TextAndValueProp) => {

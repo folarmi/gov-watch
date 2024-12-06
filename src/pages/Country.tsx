@@ -43,7 +43,7 @@ const Country = () => {
     columnHelper.accessor("image", {
       header: "Image",
       cell: (info) => (
-        <img src={info.getValue()} className="rounded-full h-16 w-16" />
+        <img src={info.getValue()} className="rounded-full h-12 w-12" />
       ),
     }),
     columnHelper.accessor("name", {
@@ -112,7 +112,7 @@ const Country = () => {
       {countryDataIsLoading ? (
         <Loader />
       ) : (
-        <div className="mt-10">
+        <div className="mt-2">
           <div className="flex justify-end w-full mb-4">
             <AdminButton buttonText="Add Country" onClick={toggleModal} />
           </div>

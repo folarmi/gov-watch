@@ -174,7 +174,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 const CreateCountry = ({ toggleModal, selectedCountry }: any) => {
   const { control, handleSubmit } = useForm<any>({
-    defaultValues: selectedCountry || {}, // Pre-fill form if editing
+    defaultValues: selectedCountry || {},
   });
 
   const queryClient = useQueryClient();
@@ -187,8 +187,6 @@ const CreateCountry = ({ toggleModal, selectedCountry }: any) => {
     setBackendPath(data?.filePath);
   };
 
-  // console.log(selectedCountry?.image);
-
   const handleError = (error: UploadError) => {
     console.error("Upload error:", error);
   };
@@ -199,7 +197,7 @@ const CreateCountry = ({ toggleModal, selectedCountry }: any) => {
     endpoint: selectedCountry
       ? `Countries/UpdateCountry`
       : "Countries/CreateCountry",
-    method: selectedCountry ? "put" : "post", // Use "put" for update, "post" for create
+    method: selectedCountry ? "put" : "post",
     successMessage: (data: any) => data?.remark,
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
@@ -234,13 +232,10 @@ const CreateCountry = ({ toggleModal, selectedCountry }: any) => {
     };
 
     if (selectedCountry) {
-      // For PUT (Update), do not include `createdBy`
-      formData.updatedBy = userId; // Optional: You can add an `updatedBy` field
+      formData.updatedBy = userId;
     } else {
-      // For POST (Create), include `createdBy`
       formData.createdBy = userId;
     }
-    console.log(formData);
     countryMutation.mutate(formData);
   };
 
@@ -256,7 +251,14 @@ const CreateCountry = ({ toggleModal, selectedCountry }: any) => {
             label="Country Name"
             name="name"
             control={control}
-            rules={{ required: "Country Name is required" }}
+            required
+            rules={{
+              required: "Country Name is required",
+              min: {
+                value: 4,
+                message: "Country name cannot be less than 4 letters",
+              },
+            }}
             className="mt-4"
           />
 
@@ -343,5 +345,3 @@ const CreateCountry = ({ toggleModal, selectedCountry }: any) => {
 };
 
 export default CreateCountry;
-
-// export default CreateCountry;
