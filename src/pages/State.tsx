@@ -111,7 +111,7 @@ const State = () => {
         ) : (
           <div className="mt-2">
             <div className="flex justify-end w-full mb-4">
-              <AdminButton buttonText="Add State" onClick={toggleModal} />
+              <AdminButton buttonText="Add Statess" onClick={toggleModal} />
             </div>
             <Table
               columns={columns}
