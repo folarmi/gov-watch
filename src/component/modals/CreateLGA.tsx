@@ -20,8 +20,10 @@ import {
 import FileUploader from "../FileUploader";
 import { useQueryClient } from "@tanstack/react-query";
 
-const CreateLGA = ({ toggleModal }: any) => {
-  const { control, handleSubmit } = useForm<any>();
+const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
+  const { control, handleSubmit } = useForm<any>({
+    defaultValues: selectedLGA || {},
+  });
   const queryClient = useQueryClient();
   const { userId, userCountry } = useAppSelector(
     (state: RootState) => state.auth
@@ -31,7 +33,7 @@ const CreateLGA = ({ toggleModal }: any) => {
   const handleSuccess = (data: any) => {
     setBackendPath(data?.filePath);
   };
-  console.log(userCountry);
+
   const handleError = (error: UploadError) => {
     console.error("Upload error:", error);
   };
@@ -46,7 +48,7 @@ const CreateLGA = ({ toggleModal }: any) => {
   };
 
   const createLGAMutation = useCustomMutation({
-    endpoint: "Lgas/CreateLga",
+    endpoint: selectedLGA ? `Lgas/UpdateLga` : `Lgas/CreateLga`,
     successMessage: (data: any) => data?.remark,
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
@@ -68,9 +70,13 @@ const CreateLGA = ({ toggleModal }: any) => {
       ...data,
       image: backendPath,
       country: userCountry,
-      createdBy: userId,
     };
 
+    if (selectedLGA) {
+      formData.lastModifiedBy = userId;
+    } else {
+      formData.createdBy = userId;
+    }
     createLGAMutation.mutate(formData);
   };
 
@@ -90,7 +96,9 @@ const CreateLGA = ({ toggleModal }: any) => {
 
   return (
     <div className="bg-white rounded-xl p-6">
-      <p className="text-center font-medium text-xl font">Create New LGA</p>
+      <p className="text-center font-medium text-xl font">
+        {selectedLGA ? "Edit LGA" : "Create New LGA"}
+      </p>
 
       <form
         onSubmit={handleSubmit(submitForm)}
@@ -109,7 +117,7 @@ const CreateLGA = ({ toggleModal }: any) => {
           name="dateFounded"
           type="date"
           control={control}
-          rules={{ required: "Date Founded is required" }}
+          // rules={{ required: "Date Founded is required" }}
           className="mt-4"
         />
 
@@ -117,7 +125,7 @@ const CreateLGA = ({ toggleModal }: any) => {
           label="Chairman"
           name="chairman"
           control={control}
-          rules={{ required: "Chairman Name is required" }}
+          // rules={{ required: "Chairman Name is required" }}
           className="mt-4"
         />
 
@@ -125,7 +133,7 @@ const CreateLGA = ({ toggleModal }: any) => {
           label="Political Party Of Chairman"
           name="politicalPartyOfChairman"
           control={control}
-          rules={{ required: "Political Party Of Chairman is required" }}
+          // rules={{ required: "Political Party Of Chairman is required" }}
           className="mt-4"
         />
 
@@ -155,7 +163,7 @@ const CreateLGA = ({ toggleModal }: any) => {
           type="number"
           onlyNumbers
           control={control}
-          rules={{ required: "Land Mass is required" }}
+          // rules={{ required: "Land Mass is required" }}
           className="mt-4"
         />
 
@@ -165,7 +173,7 @@ const CreateLGA = ({ toggleModal }: any) => {
           type="number"
           onlyNumbers
           control={control}
-          rules={{ required: "Ward Count is required" }}
+          // rules={{ required: "Ward Count is required" }}
           className="mt-4"
         />
 
@@ -175,7 +183,7 @@ const CreateLGA = ({ toggleModal }: any) => {
           type="number"
           onlyNumbers
           control={control}
-          rules={{ required: "Financial Allocation is required" }}
+          // rules={{ required: "Financial Allocation is required" }}
           className="mt-4 col-span-2"
         />
 
@@ -185,7 +193,7 @@ const CreateLGA = ({ toggleModal }: any) => {
           type="number"
           onlyNumbers
           control={control}
-          rules={{ required: "LCDA Count is required" }}
+          // rules={{ required: "LCDA Count is required" }}
           className="mt-4 col-span-2"
         />
 
@@ -220,7 +228,7 @@ const CreateLGA = ({ toggleModal }: any) => {
             loading={uploadMutation.isPending || createLGAMutation.isPending}
             variant="tertiary"
           >
-            Create LGA
+            {selectedLGA ? "Edit LGA" : "Create LGA"}
           </CustomButton>
         </div>
       </form>

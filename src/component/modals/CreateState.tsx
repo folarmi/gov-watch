@@ -21,8 +21,13 @@ import FileUploader from "../FileUploader";
 import { useQueryClient } from "@tanstack/react-query";
 
 const CreateState = ({ toggleModal, selectedState }: any) => {
+  const modifiedDefaultValues = {
+    ...selectedState,
+    population: Number(selectedState?.population?.replace(/,/g, "")),
+  };
+
   const { control, handleSubmit } = useForm<any>({
-    defaultValues: selectedState || {},
+    defaultValues: modifiedDefaultValues || {},
   });
   const queryClient = useQueryClient();
 
@@ -61,24 +66,24 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
   });
 
   const submitForm = (data: any) => {
-    if (backendPath === "") {
+    if (backendPath === "" && !selectedState) {
       toast("Please upload a file first");
       return;
     }
 
     const formData: any = {
       ...data,
-      // population: Number(data.population),
-      population: Number(data.population.replace(/,/g, "")),
-      image: backendPath,
     };
 
-    console.log(formData);
     if (selectedState) {
       formData.lastModifiedBy = userId;
+      formData.image = selectedState.image;
     } else {
+      formData.population = Number(data.population.replace(/,/g, ""));
       formData.createdBy = userId;
+      formData.image = backendPath;
     }
+
     createStateMutation.mutate(formData);
   };
 
@@ -154,7 +159,7 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
 
         <CustomInput
           label="Population"
-          name="Population"
+          name="population"
           control={control}
           type="number"
           onlyNumbers
@@ -242,6 +247,7 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
             maxSizeMB={1}
             acceptFormats={["png", "jpeg", "jpg", "gif", "svg"]}
             onFileUpload={handleFileUpload}
+            defaultFile={selectedState?.image}
           />
           {uploadedFile && (
             <ImageDetails

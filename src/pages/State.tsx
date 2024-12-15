@@ -17,13 +17,13 @@ const State = () => {
   const [createStateModal, setCreateStateModal] = useState(false);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 36,
+    pageSize: 10,
   });
   const [selectedState, setSelectedState] = useState("");
 
   const { userCountry } = useAppSelector((state: RootState) => state.auth);
   const { data: stateData, isLoading } = useGetData({
-    url: `States/GetAllStates?country=${userCountry}&page=${
+    url: `States/GetAllStates?country=${userCountry}&pageNumber=${
       pagination.pageIndex + 1
     }&pageSize=${pagination.pageSize}`,
     queryKey: ["GetAllStatesTable", JSON.stringify(pagination)],

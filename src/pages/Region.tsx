@@ -3,7 +3,7 @@
 import { createColumnHelper, PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
 import { useGetData } from "../hooks/apiCalls";
-import IndeterminateCheckbox from "../component/InterdeterminateCheckbox";
+// import IndeterminateCheckbox from "../component/InterdeterminateCheckbox";
 import Loader from "../component/Loader";
 import AdminButton from "../component/forms/AdminButton";
 import Table from "../component/Table";
@@ -17,11 +17,11 @@ const Region = () => {
   const [createRegion, setCreateRegion] = useState(false);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 5,
+    pageSize: 10,
   });
   // const { userCountry } = useAppSelector((state: RootState) => state.auth);
   const { data: regionData, isLoading } = useGetData({
-    url: `Regions/GetRegions?page=${pagination.pageIndex + 1}&pageSize=${
+    url: `Regions/GetAllRegions?page=${pagination.pageIndex + 1}&pageSize=${
       pagination.pageSize
     }`,
     queryKey: ["GetAllRegionsTable", JSON.stringify(pagination)],
@@ -30,16 +30,16 @@ const Region = () => {
   const columnHelper = createColumnHelper<any>();
   const columns = [
     // Display Column
-    columnHelper.display({
-      id: "checkbox",
-      cell: ({ table }) => (
-        <IndeterminateCheckbox
-          checked={table.getIsAllRowsSelected()}
-          indeterminate={table.getIsSomeRowsSelected()}
-          onChange={table.getToggleAllRowsSelectedHandler()}
-        />
-      ),
-    }),
+    // columnHelper.display({
+    //   id: "checkbox",
+    //   cell: ({ table }) => (
+    //     <IndeterminateCheckbox
+    //       checked={table.getIsAllRowsSelected()}
+    //       indeterminate={table.getIsSomeRowsSelected()}
+    //       onChange={table.getToggleAllRowsSelectedHandler()}
+    //     />
+    //   ),
+    // }),
     columnHelper.accessor("name", {
       header: "Name",
       cell: (info) => (

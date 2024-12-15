@@ -23,7 +23,7 @@ const Country = () => {
   const [selectedCountry, setSelectedCountry] = useState("");
 
   const { data: countryData, isLoading: countryDataIsLoading } = useGetData({
-    url: `/Countries/GetCountriesForAdmin?page=${
+    url: `/Countries/GetCountriesForAdmin?pageNumber=${
       pagination.pageIndex + 1
     }&pageSize=${pagination.pageSize}`,
     queryKey: ["GetCountriesTable", JSON.stringify(pagination)],

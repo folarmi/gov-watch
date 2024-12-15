@@ -21,6 +21,7 @@ const LGA = () => {
     pageIndex: 0,
     pageSize: 5,
   });
+  const [selectedLGA, setSelectedLGA] = useState("");
 
   const { userCountry } = useAppSelector((state: RootState) => state.auth);
   const { data: lgaData, isLoading } = useGetData({
@@ -76,9 +77,39 @@ const LGA = () => {
         </span>
       ),
     }),
+    columnHelper.accessor("publicId", {
+      header: "Action",
+      cell: (info) => {
+        const rowData = info.row.original;
+
+        return (
+          <div className="flex space-x-4">
+            <button
+              onClick={() => {
+                toggleModal();
+                setSelectedLGA(rowData);
+              }}
+              className="px-6 py-1 text-sm bg-primary cursor-pointer text-white rounded"
+            >
+              Edit
+            </button>
+            {/* <button
+              onClick={() => {
+                toggleDeleteModal();
+                setSelectedCountry(rowData.publicId);
+              }}
+              className="px-2 py-1 text-sm bg-red-500 cursor-pointer text-white rounded"
+            >
+              Delete
+            </button> */}
+          </div>
+        );
+      },
+    }),
   ];
 
   const toggleModal = () => {
+    setSelectedLGA("");
     setCreateLGAModal(!createLGAModal);
   };
 
@@ -103,7 +134,10 @@ const LGA = () => {
 
             <Modal show={createLGAModal} toggleModal={toggleModal}>
               <div className="p-4">
-                <CreateLGA toggleModal={toggleModal} />
+                <CreateLGA
+                  toggleModal={toggleModal}
+                  selectedLGA={selectedLGA}
+                />
               </div>
             </Modal>
           </div>

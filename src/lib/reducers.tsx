@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Reducer, combineReducers } from "@reduxjs/toolkit";
 import authSlice from "./features/auth/authSlice";
 
