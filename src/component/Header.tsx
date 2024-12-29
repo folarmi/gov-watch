@@ -46,7 +46,7 @@ const Header = () => {
 
     {
       id: 4,
-      name: "Dashboard",
+      name: `${isAuthenticated ? "Dashboard" : ""}`,
       // url: `${
       //   userType !== userTypeObject.contributor
       //     ? "/dashboard/manage-users"

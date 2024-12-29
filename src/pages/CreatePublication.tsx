@@ -20,7 +20,7 @@ const CreatePublication = () => {
   );
 
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [tags] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>([]);
   const [isDraft, setIsDraft] = useState(false);
 
   const createPublicationMutation = useCustomMutation({
@@ -65,7 +65,6 @@ const CreatePublication = () => {
       tags: tags.join(" , "),
       isDraft,
     };
-
     createPublicationMutation.mutate(formData);
   };
 
@@ -77,6 +76,8 @@ const CreatePublication = () => {
       handleFileUpload={handleFileUpload}
       setIsDraft={setIsDraft}
       isDraft={isDraft}
+      tags={tags}
+      setTags={setTags}
     />
   );
 };

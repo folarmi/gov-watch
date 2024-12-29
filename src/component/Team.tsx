@@ -3,7 +3,7 @@ import React from "react";
 interface TeamProps {
   img: string;
   name: string;
-  role: string;
+  role?: string;
 }
 
 const Team: React.FC<TeamProps> = ({ img, name, role }) => {
@@ -22,7 +22,7 @@ const Team: React.FC<TeamProps> = ({ img, name, role }) => {
       />
       <div className="py-4 pr-4">
         <h1 className="font-bold text-2xl mb-1 whitespace-nowrap">{name}</h1>
-        <p>{role}</p>
+        <p className="w-80">{role}</p>
       </div>
     </div>
   );

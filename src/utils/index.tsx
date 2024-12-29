@@ -77,11 +77,11 @@ export const calculateTimeDifference = (
   // Set time difference string and indicate whether it's past the deadline
   if (isPastDeadline) {
     setTimeDifference(
-      `${days}d ${hours}h ${minutes}m ${seconds}s past the deadline`
+      `${days}days ${hours}hours ${minutes}mins ${seconds}secs past deadline`
     );
   } else {
     setTimeDifference(
-      `${days}d ${hours}h ${minutes}m ${seconds}s to the deadline`
+      `${days}days ${hours}hours ${minutes}mins ${seconds}secs to deadline`
     );
   }
 };

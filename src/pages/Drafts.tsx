@@ -11,6 +11,7 @@ import {
   shouldFetchPublications,
   userTypeObject,
 } from "../utils";
+import EmptyPage from "../component/EmptyPage";
 
 const Drafts = () => {
   const { userId, userType } = useAppSelector((state: RootState) => state.auth);
@@ -25,6 +26,8 @@ const Drafts = () => {
     queryKey: ["GetAllPendingPublications", userType],
     enabled: shouldFetchPublications,
   });
+
+  console.log(pendingPublicationsData);
   return (
     <DashboardLayout>
       <div className="">
@@ -32,42 +35,51 @@ const Drafts = () => {
           <Loader />
         ) : (
           <div className="flex flex-wrap justify-between">
-            {pendingPublicationsData?.map(
-              ({
-                title,
-                date,
-                image,
-                section,
-                summary,
-                isPromise,
-                id,
-                publicId,
-                promiseDeadline,
-                category,
-              }: any) => {
-                return (
-                  <Link
-                    to={`/dashboard/pending/${id || publicId}`}
-                    key={id}
-                    className="w-full sm:w-1/2 md:w-1/3 mt-10"
-                  >
-                    <Card
-                      section={section}
-                      articleTitle={title}
-                      summary={summary}
-                      date={date}
-                      promise={isPromise}
-                      imageUrl={image}
-                      deadline={promiseDeadline}
-                      id={id}
-                      isPublished={false}
-                      category={category}
-                      // imageUrl={coatOfArms}
-                    />
-                  </Link>
-                );
-              }
-            )}
+            <>
+              {pendingPublicationsData?.length < 1 ? (
+                <EmptyPage />
+              ) : (
+                <>
+                  {" "}
+                  {pendingPublicationsData?.map(
+                    ({
+                      title,
+                      date,
+                      image,
+                      section,
+                      summary,
+                      isPromise,
+                      id,
+                      publicId,
+                      promiseDeadline,
+                      category,
+                    }: any) => {
+                      return (
+                        <Link
+                          to={`/dashboard/pending/${id || publicId}`}
+                          key={id}
+                          className="w-full sm:w-1/2 md:w-1/3 mt-10"
+                        >
+                          <Card
+                            section={section}
+                            articleTitle={title}
+                            summary={summary}
+                            date={date}
+                            promise={isPromise}
+                            imageUrl={image}
+                            deadline={promiseDeadline}
+                            id={id}
+                            isPublished={false}
+                            category={category}
+                            // imageUrl={coatOfArms}
+                          />
+                        </Link>
+                      );
+                    }
+                  )}
+                </>
+              )}
+            </>
           </div>
         )}
       </div>

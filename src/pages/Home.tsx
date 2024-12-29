@@ -5,7 +5,7 @@ import HeroSection from "../component/HeroSection";
 import ScrollableCategories from "../component/ScrollableCategories";
 import SearchBar from "../component/SearchBar";
 import ExploreButton from "../component/ExploreButton";
-import SeeAllPublications from "../component/SeeAllPublications";
+// import SeeAllPublications from "../component/SeeAllPublications";
 import EmptyPage from "../component/EmptyPage";
 import Loader from "../component/Loader";
 import { useCustomMutation, useGetData } from "../hooks/apiCalls";
@@ -33,10 +33,9 @@ const Home = () => {
     isLoading,
     error,
   } = useGetData({
-    url: `Publications/GetLatestPublications?categoryName=${categoryName}&?searcherId=${userId}&${queryParamsToAdd(
-      selectedFilter,
-      queryParam
-    )}`,
+    url: `Publications/GetLatestPublications?categoryName=${
+      categoryName === "all" ? "" : categoryName
+    }&?searcherId=${userId}&${queryParamsToAdd(selectedFilter, queryParam)}`,
     queryKey: ["publications", categoryName, queryParam],
   });
 
@@ -163,7 +162,7 @@ const Home = () => {
           )}
         </>
 
-        {articlesData?.length > 1 && <SeeAllPublications />}
+        {/* {articlesData?.length > 1 && <SeeAllPublications />} */}
         <ExploreButton />
       </div>
     </OuterPage>

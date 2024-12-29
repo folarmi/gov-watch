@@ -16,8 +16,8 @@ import EmptyPage from "../component/EmptyPage";
 const Rejected = () => {
   const { userId, userType } = useAppSelector((state: RootState) => state.auth);
   const {
-    data: pendingPublicationsData,
-    isLoading: pendingPublicationsLoading,
+    data: rejectedPublicationsData,
+    isLoading: rejectedPublicationsLoading,
   } = useGetData({
     url:
       userType === userTypeObject.contributor
@@ -29,15 +29,15 @@ const Rejected = () => {
   return (
     <DashboardLayout>
       <div className="">
-        {pendingPublicationsLoading ? (
+        {rejectedPublicationsLoading ? (
           <Loader />
         ) : (
           <>
-            {pendingPublicationsData?.length < 1 ? (
+            {rejectedPublicationsData?.length < 1 ? (
               <EmptyPage />
             ) : (
               <div className="flex flex-wrap justify-between">
-                {pendingPublicationsData?.map(
+                {rejectedPublicationsData?.map(
                   ({
                     title,
                     date,

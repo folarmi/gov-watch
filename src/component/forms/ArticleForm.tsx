@@ -33,6 +33,8 @@ const ArticleForm = ({
   handleFileUpload,
   uploadedFile,
   setIsDraft,
+  tags,
+  setTags,
 }: // initialTags,
 any) => {
   // const { isModalOpen, handleConfirm, handleCancel } = useConfirmNavigation(
@@ -45,7 +47,7 @@ any) => {
   const [selectedLGA, setSelectedLGA] = useState("");
   const [approveModal, setApproveModal] = useState(false);
   // const [previousPath, setPreviousPath] = useState("");
-  console.log(defaultValues);
+
   const toggleModal = () => {
     setReviewModal(!reviewModal);
     setSelectedArticleDetails((prev) => ({
@@ -110,7 +112,7 @@ any) => {
     console.log("Updated Tags:", newTags);
   };
 
-  const [tags, setTags] = useState<string[]>([]);
+  // const [tags, setTags] = useState<string[]>([]);
   const [isAdditionalInformation, setIsAdditionalInformation] = useState(true);
 
   const { userCountry, userType } = useAppSelector(

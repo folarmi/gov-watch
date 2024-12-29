@@ -58,10 +58,10 @@ const SignIn = () => {
   return (
     <AuthLayout
       header="Be informed, Engaged And Empowered"
-      text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum sequi
-      cupiditate voluptates blanditiis libero neque commodi quas quod
-      itaque nam, at delectus amet voluptatibus iure in quibusdam est
-      expedita corporis!"
+      // text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum sequi
+      // cupiditate voluptates blanditiis libero neque commodi quas quod
+      // itaque nam, at delectus amet voluptatibus iure in quibusdam est
+      // expedita corporis!"
       img="logo.svg"
       banner="Signin-Banner.svg"
     >

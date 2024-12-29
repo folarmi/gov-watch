@@ -9,7 +9,7 @@ const About = () => {
         <div className="mx-8 sm:mx-12 md:mx-16 lg:mx-28">
           <h1 className="font-bold text-4xl text-green-700 mb-14">ABOUT US</h1>
 
-          <div className="flex flex-row justify-between gap-8 sm:gap-16 md:gap-32 lg:gap-56">
+          {/* <div className="flex flex-row justify-between gap-8 sm:gap-16 md:gap-32 lg:gap-56">
             <div className="mr-17 mb-16">
               <h2 className="font-bold text-2xl mb-5">OUR STORY</h2>
               <p className="text-sm">
@@ -48,7 +48,7 @@ const About = () => {
                 height={2000}
               />
             </div>
-          </div>
+          </div> */}
         </div>
 
         <div className="flex mx-6 md:mx-10 lg:mx-20 gap-7 lg:flex-row md:flex-row flex-col">
@@ -62,17 +62,17 @@ const About = () => {
                 <Team
                   img="Olabayo.svg"
                   name="Olabayo Balogun"
-                  role="lorem ipsum dolor sit a met consectetur"
+                  // role="lorem ipsum dolor sit a met consectetur"
                 />
               </div>
               <div className="mb-8 lg:pl-44 md:pl-24">
                 <Team
                   img="Folashayo.svg"
                   name="Folashayo Akinyosoye"
-                  role="lorem ipsum dolor sit a met consectetur"
+                  role="A dedicated professional with a strong background in problem-solving and continuous learning, committed to delivering high-quality results and contributing meaningfully to projects and initiatives."
                 />
               </div>
-              <div className="mb-8">
+              {/* <div className="mb-8">
                 <Team
                   img="Phebe.svg"
                   name="Phebe Keshinro"
@@ -85,7 +85,7 @@ const About = () => {
                   name="Ayomide Gbebu"
                   role="lorem ipsum dolor sit a met consectetur"
                 />
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -114,10 +114,10 @@ const About = () => {
                 OUR OBJECTIVE
               </h1>
               <ul className="list-disc list-inside flex flex-col justify-center text-center gap-4 text-sm">
+                {/* <li>Lorem ipsum dolor sit amet</li>
                 <li>Lorem ipsum dolor sit amet</li>
                 <li>Lorem ipsum dolor sit amet</li>
-                <li>Lorem ipsum dolor sit amet</li>
-                <li>Lorem ipsum dolor sit amet</li>
+                <li>Lorem ipsum dolor sit amet</li> */}
               </ul>
             </div>
           </div>

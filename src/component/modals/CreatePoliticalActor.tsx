@@ -21,6 +21,7 @@ import {
 import FileUploader from "../FileUploader";
 import { politicalLevelData } from "../../data";
 import { useQueryClient } from "@tanstack/react-query";
+// import { CustomDatePicker } from "../forms/CustomDatePicker";
 
 const CreatePoliticalActor = ({ toggleModal }: any) => {
   const { control, handleSubmit } = useForm<any>();
@@ -107,7 +108,7 @@ const CreatePoliticalActor = ({ toggleModal }: any) => {
     });
 
   return (
-    <div className="bg-white rounded-xl p-6">
+    <div className="bg-white rounded-xl p-6 h-96 min-h-[600px] overflow-scroll">
       <p className="text-center font-medium text-xl font">
         Create New Political Actor
       </p>
@@ -116,6 +117,7 @@ const CreatePoliticalActor = ({ toggleModal }: any) => {
         onSubmit={handleSubmit(submitForm)}
         className="my-4 grid grid-cols-2 gap-x-4 w-full"
       >
+        {/* <CustomDatePicker /> */}
         <CustomInput
           label="Political Actor Name"
           name="name"

@@ -41,3 +41,4 @@ export * from "./Subscription";
 export * from "./UserSubscription";
 export * from "./TermsOfUse";
 export * from "./PrivacyPolicy";
+export * from "./SinglePublishedPublication";

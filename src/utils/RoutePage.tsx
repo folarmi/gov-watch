@@ -39,6 +39,7 @@ import {
   UserSubscription,
   PrivacyPolicy,
   TermsOfUse,
+  SinglePublishedPublication,
 } from "../pages";
 import Reviewed from "../pages/Reviewed";
 import { LCDA } from "../pages/Lcda";
@@ -114,6 +115,10 @@ const RoutePage = () => {
         <Route path="/dashboard/bookmarks" element={<BookMarks />} />
         <Route path="/dashboard/liked-articles" element={<LikedArticles />} />
         <Route path="/dashboard/pending/:id" element={<SinglePublication />} />
+        <Route
+          path="/dashboard/published/:id"
+          element={<SinglePublishedPublication />}
+        />
       </Routes>
     </div>
   );

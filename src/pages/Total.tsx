@@ -46,7 +46,7 @@ const TotalArticles = () => {
               }: any) => {
                 return (
                   <Link
-                    to={`/dashboard/pending/${id || publicId}`}
+                    to={`/dashboard/published/${id || publicId}`}
                     key={id}
                     className="w-full sm:w-1/2 md:w-1/3 mt-10"
                   >

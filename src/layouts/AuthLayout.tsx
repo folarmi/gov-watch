@@ -6,7 +6,7 @@ import OuterPage from "./OuterPage";
 
 interface AuthLayoutProps {
   children: ReactNode;
-  text: string;
+  text?: string;
   header: string;
   img: string;
   banner: string;

@@ -17,6 +17,12 @@ const ScrollableCategories: React.FC<ScrollableCategoriesProps> = ({
 }) => {
   return (
     <div className="overflow-x-auto whitespace-nowrap">
+      <span
+        onClick={() => onClick("all")}
+        className="inline-block px-4 py-2 mx-2 bg-gray-200 dark:bg-black_100 rounded-lg cursor-pointer"
+      >
+        All
+      </span>
       {categories.map((category) => (
         <span
           key={category.id}
