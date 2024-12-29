@@ -13,7 +13,7 @@ const SinglePublication = () => {
     useGetDataById({
       url:
         params?.id && userId
-          ? `/Publications/GetUserPublicationById?publicId=${params?.id}&userId=${userId}`
+          ? `/Publications/GetUserPublicationById?publicId=${params?.id}&userId=${userId}&isDraft=true`
           : "",
       queryKey: ["GetUserPublicationByIdForSinglePublication"],
       enabled: !!params?.id && !!userId,

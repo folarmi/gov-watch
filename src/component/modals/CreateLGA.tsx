@@ -19,8 +19,13 @@ import {
 } from "../../hooks/apiCalls";
 import FileUploader from "../FileUploader";
 import { useQueryClient } from "@tanstack/react-query";
+// import { lgaData } from "../../utils/lga";
 
 const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
+  // const test = () => {
+  //   return lgaData.filter((lga) => lga.state === "Adamawa State");
+  // };
+
   const { control, handleSubmit } = useForm<any>({
     defaultValues: selectedLGA || {},
   });
@@ -29,11 +34,12 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
     (state: RootState) => state.auth
   );
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  // const [backendPath, setBackendPath] = useState("");
   const [backendPath, setBackendPath] = useState("");
   const handleSuccess = (data: any) => {
     setBackendPath(data?.filePath);
   };
-
+  console.log(selectedLGA);
   const handleError = (error: UploadError) => {
     console.error("Upload error:", error);
   };
@@ -50,6 +56,7 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
   const createLGAMutation = useCustomMutation({
     endpoint: selectedLGA ? `Lgas/UpdateLga` : `Lgas/CreateLga`,
     successMessage: (data: any) => data?.remark,
+    method: selectedLGA ? "put" : "post",
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
       toggleModal();
@@ -60,24 +67,52 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
     },
   });
 
+  // const lgaRequests = test()[0].lgas.map((lga: any) => {
+  //   delete lga.dateFounded;
+  //   const formData: any = {
+  //     ...lga,
+  //     country: userCountry,
+  //     state: "Adamawa",
+  //     financialAllocation: 0,
+  //     population: lga.population || 0,
+  //     landMass: lga.landMass || 0,
+  //     wardCount: lga.wardCount || 0,
+  //     lcdaCount: lga.lcdaCount || 0,
+  //     chairman: lga.chairman || "N/A",
+  //     publicId: lga.publicId,
+  //     politicalPartyofChairman: lga.politicalPartyofChairman || "N/A",
+  //   };
+
+  //   // Add createdBy for new LGA or lastModifiedBy for updating
+  //   if (selectedLGA) {
+  //     formData.lastModifiedBy = userId;
+  //   } else {
+  //     formData.createdBy = userId;
+  //   }
+
+  //   return formData;
+  // });
+
   const submitForm = (data: any) => {
+    // Regular creation starts here
     if (backendPath === "") {
       toast("Please upload a file first");
       return;
     }
-
     const formData: any = {
       ...data,
       image: backendPath,
       country: userCountry,
     };
-
     if (selectedLGA) {
       formData.lastModifiedBy = userId;
     } else {
       formData.createdBy = userId;
     }
     createLGAMutation.mutate(formData);
+    // lgaRequests.forEach((formData: any) => {
+    //   createLGAMutation.mutate(formData);
+    // });
   };
 
   const { data: stateData, isLoading: stateDataIsLoading } = useGetData({
@@ -208,6 +243,7 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
             maxSizeMB={1}
             acceptFormats={["png", "jpeg", "jpg", "gif"]}
             onFileUpload={handleFileUpload}
+            defaultFile={selectedLGA?.image}
           />
           {uploadedFile && (
             <ImageDetails

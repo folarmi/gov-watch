@@ -21,7 +21,7 @@ const Drafts = () => {
     url:
       userType === userTypeObject.contributor
         ? `${getPublicationTypeByUserId}${userId}&fetchAllDraftPublication=true&page=1&pageSize=10`
-        : "Publications/GetAllPublications?fetchAllDraftPublication=true&page=1&pageSize=100",
+        : `Publications/GetAllPublications?fetchAllDraftPublication=true&page=1&pageSize=100`,
     queryKey: ["GetAllPendingPublications", userType],
     enabled: shouldFetchPublications,
   });

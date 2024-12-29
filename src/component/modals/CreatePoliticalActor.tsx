@@ -137,7 +137,7 @@ const CreatePoliticalActor = ({ toggleModal }: any) => {
           label="Social Media Link"
           name="socialMediaLink"
           control={control}
-          rules={{ required: "Social Media Link is required" }}
+          // rules={{ required: "Social Media Link is required" }}
           className="mt-4"
         />
 

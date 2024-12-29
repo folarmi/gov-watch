@@ -45,7 +45,7 @@ any) => {
   const [selectedLGA, setSelectedLGA] = useState("");
   const [approveModal, setApproveModal] = useState(false);
   // const [previousPath, setPreviousPath] = useState("");
-
+  console.log(defaultValues);
   const toggleModal = () => {
     setReviewModal(!reviewModal);
     setSelectedArticleDetails((prev) => ({
@@ -262,6 +262,7 @@ any) => {
             maxSizeMB={1}
             acceptFormats={["png", "jpeg", "jpg", "gif"]}
             onFileUpload={handleFileUpload}
+            defaultFile={defaultValues?.image}
           />
           {uploadedFile && (
             <ImageDetails

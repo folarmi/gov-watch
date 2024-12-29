@@ -5,7 +5,6 @@ import CustomInput from "../CustomInput";
 import { useForm } from "react-hook-form";
 import CustomTextArea from "../CustomTextArea";
 import CustomButton from "../CustomButton";
-import { toast } from "react-toastify";
 import CustomSelect from "../CustomSelect";
 import ImageDetails from "../ImageDetails";
 import CustomCheckBox from "../forms/CustomCheckBox";
@@ -20,8 +19,14 @@ import {
 import FileUploader from "../FileUploader";
 import { useQueryClient } from "@tanstack/react-query";
 
-const CreateMDA = ({ toggleModal }: any) => {
-  const { control, handleSubmit } = useForm<any>();
+const CreateMDA = ({ toggleModal, selectedMDA }: any) => {
+  const modifiedDefaultValues = {
+    ...selectedMDA,
+  };
+
+  const { control, handleSubmit } = useForm<any>({
+    defaultValues: modifiedDefaultValues || {},
+  });
   const queryClient = useQueryClient();
 
   const { userId, userCountry } = useAppSelector(
@@ -48,8 +53,9 @@ const CreateMDA = ({ toggleModal }: any) => {
   };
 
   const createMDAMutation = useCustomMutation({
-    endpoint: "Mdas/CreateMda",
+    endpoint: selectedMDA ? "Mdas/UpdateMda" : `Mdas/CreateMda`,
     successMessage: (data: any) => data?.remark,
+    method: selectedMDA ? "put" : "post",
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
       toggleModal();
@@ -60,21 +66,59 @@ const CreateMDA = ({ toggleModal }: any) => {
     },
   });
 
+  // const uniqueOrganizations = organizations.filter(
+  //   (org, index, self) =>
+  //     index === self.findIndex((t) => t.ministerialDept === org.ministerialDept)
+  // );
+
+  // const mdasRequests = uniqueOrganizations.map((mda: any) => {
+  //   const formData: any = {
+  //     name: mda.ministerialDept,
+  //     category: "N/A",
+  //     image: "N/A",
+  //     bio: "N/A",
+  //     // dateFounded: "",
+  //     leaderName: "N/A",
+  //     // isFederal: true,
+  //     financialAllocation: 0,
+  //     state: "",
+  //     createdBy: userId,
+  //     country: "string",
+  //     website: mda.website || "N/A",
+  //   };
+
+  //   return formData;
+  // });
+
   const submitForm = (data: any) => {
-    if (backendPath === "") {
-      toast("Please upload a file first");
-      return;
-    }
+    // if (backendPath === "") {
+    //   toast("Please upload a file first");
+    //   return;
+    // }
 
     const formData: any = {
       ...data,
-      image: backendPath,
-      country: userCountry,
-      isFederal,
-      createdBy: userId,
     };
 
+    if (selectedMDA) {
+      formData.lastModifiedBy = userId;
+      formData.image = selectedMDA.image;
+    } else {
+      formData.population = Number(data.population.replace(/,/g, ""));
+      formData.createdBy = userId;
+      formData.image = backendPath;
+      formData.country = userCountry;
+      formData.isFederal = true;
+    }
+
     createMDAMutation.mutate(formData);
+
+    // mdasRequests.slice(501, 506).forEach((formData: any) => {
+    //   // console.log(formData);
+    //   createMDAMutation.mutate(formData);
+    // });
+
+    // 1316
   };
 
   const { data: categoryData, isLoading: categoryDataIsLoading } = useGetData({
@@ -107,7 +151,9 @@ const CreateMDA = ({ toggleModal }: any) => {
 
   return (
     <div className="bg-white rounded-xl p-6">
-      <p className="text-center font-medium text-xl font">Create New MDA</p>
+      <p className="text-center font-medium text-xl font">
+        {selectedMDA ? "Edit MDA" : "Create New MDA"}
+      </p>
 
       <form
         onSubmit={handleSubmit(submitForm)}
@@ -117,7 +163,7 @@ const CreateMDA = ({ toggleModal }: any) => {
           label="MDA Name"
           name="name"
           control={control}
-          rules={{ required: "MDA Name is required" }}
+          // rules={{ required: "MDA Name is required" }}
           className="mt-4"
         />
 
@@ -126,7 +172,7 @@ const CreateMDA = ({ toggleModal }: any) => {
           name="dateFounded"
           type="date"
           control={control}
-          rules={{ required: "Date Founded is required" }}
+          // rules={{ required: "Date Founded is required" }}
           className="mt-4"
         />
 
@@ -134,7 +180,7 @@ const CreateMDA = ({ toggleModal }: any) => {
           label="Leader Name"
           name="leaderName"
           control={control}
-          rules={{ required: "Leader Name is required" }}
+          // rules={{ required: "Leader Name is required" }}
           className="mt-4"
         />
 
@@ -144,7 +190,7 @@ const CreateMDA = ({ toggleModal }: any) => {
           type="number"
           onlyNumbers
           control={control}
-          rules={{ required: "Financial Allocation is required" }}
+          // rules={{ required: "Financial Allocation is required" }}
           className="mt-4"
         />
 
@@ -208,7 +254,7 @@ const CreateMDA = ({ toggleModal }: any) => {
             loading={uploadMutation.isPending || createMDAMutation.isPending}
             variant="tertiary"
           >
-            Create MDA
+            {selectedMDA ? "Update MDA" : "Create MDA"}
           </CustomButton>
         </div>
       </form>
