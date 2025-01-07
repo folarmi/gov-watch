@@ -46,7 +46,6 @@ any) => {
   const [selectedState, setSelectedState] = useState("");
   const [selectedLGA, setSelectedLGA] = useState("");
   const [approveModal, setApproveModal] = useState(false);
-  // const [previousPath, setPreviousPath] = useState("");
 
   const toggleModal = () => {
     setReviewModal(!reviewModal);
@@ -112,7 +111,6 @@ any) => {
     console.log("Updated Tags:", newTags);
   };
 
-  // const [tags, setTags] = useState<string[]>([]);
   const [isAdditionalInformation, setIsAdditionalInformation] = useState(true);
 
   const { userCountry, userType } = useAppSelector(
@@ -277,6 +275,10 @@ any) => {
             name="imageCaption"
             control={control}
             className="mt-4"
+            required
+            rules={{
+              required: "Image caption is required",
+            }}
           />
         </div>
 
@@ -445,13 +447,17 @@ any) => {
         >
           {isEditing ? (
             <>
-              <CustomButton
-                variant="secondary"
-                className="w-full md:w-1/2"
-                onClick={toggleModal}
-              >
-                Review
-              </CustomButton>
+              {(userType === userTypeObject.admin ||
+                userType === userTypeObject.editor) && (
+                <CustomButton
+                  variant="secondary"
+                  className="w-full md:w-1/2"
+                  onClick={toggleModal}
+                >
+                  Review
+                </CustomButton>
+              )}
+
               {(userType === userTypeObject.admin ||
                 userType === userTypeObject.editor) && (
                 <CustomButton
@@ -463,6 +469,29 @@ any) => {
                   Approve
                 </CustomButton>
               )}
+
+              {userType === userTypeObject.contributor && (
+                <CustomButton
+                  variant="secondary"
+                  className="w-full md:w-1/2"
+                  onClick={() => {
+                    setIsDraft(true);
+                    onSubmit;
+                  }}
+                >
+                  Save to Drafts
+                </CustomButton>
+              )}
+
+              <CustomButton
+                variant="primary"
+                className="w-full md:w-1/2 cursor-pointer"
+                onClick={() => {
+                  onSubmit;
+                }}
+              >
+                Edit
+              </CustomButton>
             </>
           ) : (
             <>
@@ -476,6 +505,7 @@ any) => {
               >
                 Save to Drafts
               </CustomButton>
+
               <CustomButton
                 variant="primary"
                 className="w-full md:w-1/2"

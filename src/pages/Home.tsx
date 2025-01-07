@@ -21,7 +21,9 @@ import { useForm } from "react-hook-form";
 const Home = () => {
   const { control, handleSubmit } = useForm();
   const { isAuthenticated } = useAuth();
-  const { userId } = useAppSelector((state: RootState) => state.auth);
+  const { userId, userObject } = useAppSelector(
+    (state: RootState) => state.auth
+  );
   const [categoryName, setCategoryName] = useState("");
   const [isArticleBookMarked, setIsArticleBookMarked] =
     useState<boolean>(false);
@@ -35,8 +37,10 @@ const Home = () => {
   } = useGetData({
     url: `Publications/GetLatestPublications?categoryName=${
       categoryName === "all" ? "" : categoryName
-    }&?searcherId=${userId}&${queryParamsToAdd(selectedFilter, queryParam)}`,
-    queryKey: ["publications", categoryName, queryParam],
+    }&searcherId=${userId}${
+      userObject?.country ? `&countryName=${userObject.country}` : ""
+    }&${queryParamsToAdd(selectedFilter, queryParam)}`,
+    queryKey: ["publications", categoryName, queryParam, userObject?.country],
   });
 
   const { data: categoriesData, isLoading: categoriesDataisLoading } =

@@ -43,16 +43,16 @@ const Header = () => {
       name: "Contact us",
       url: "/contact-us",
     },
-
     {
       id: 4,
       name: `${isAuthenticated ? "Dashboard" : ""}`,
-      // url: `${
-      //   userType !== userTypeObject.contributor
-      //     ? "/dashboard/manage-users"
-      //     : "/dashboard/total"
-      // }`,
       url: directUserToPageOnLogin(userType),
+    },
+
+    {
+      id: 6,
+      name: `Pricing`,
+      url: "/pricing",
     },
     {
       id: 5,
@@ -69,11 +69,25 @@ const Header = () => {
         </Link>
 
         <>
-          {SidebarList.map(({ name, id, url }) => {
+          {/* {SidebarList.map(({ name, id, url }) => {
             return (
               <div className="hidden md:flex" key={id}>
                 <Link
                   className={`text-base font-medium pb-2  ${
+                    pathName === url ? "border-b-2 border-green_100" : ""
+                  }`}
+                  to={url}
+                >
+                  {name}
+                </Link>
+              </div>
+            );
+          })} */}
+          {SidebarList.filter(({ name }) => name).map(({ name, id, url }) => {
+            return (
+              <div className="hidden md:flex" key={id}>
+                <Link
+                  className={`text-base font-medium pb-2 ${
                     pathName === url ? "border-b-2 border-green_100" : ""
                   }`}
                   to={url}

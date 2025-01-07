@@ -47,7 +47,7 @@ const Signup = () => {
     onSuccess: (data) => {
       if (data?.data?.statusCode === 201) {
         toast("Kindly check your email for a verification link");
-        navigate("/verify-email");
+        navigate("/VerifyEmail");
       }
     },
     onError: (error: any) => {
@@ -79,8 +79,8 @@ const Signup = () => {
       ...data,
       isOrganization: true,
     };
-    console.log(formValues);
-    // signUpMutation.mutate(formValues);
+    // console.log(formValues);
+    signUpMutation.mutate(formValues);
   };
 
   return (

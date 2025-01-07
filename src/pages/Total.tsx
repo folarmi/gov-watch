@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useGetData } from "../hooks/apiCalls";
 import DashboardLayout from "../layouts/DashboardLayout";
 import { useAppSelector } from "../lib/hook";
@@ -58,6 +57,7 @@ const TotalArticles = () => {
                       promise={isPromise}
                       imageUrl={image}
                       id={id}
+                      link={`/dashboard/published/${id || publicId}`}
                       // imageUrl={coatOfArms}
                     />
                   </Link>

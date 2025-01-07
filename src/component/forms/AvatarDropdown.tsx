@@ -1,16 +1,35 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { avatarDropDown } from "../../data";
+
 import { useAppSelector } from "../../lib/hook";
 import { RootState } from "../../lib/store";
 import { Link } from "react-router-dom";
-import { userTypeObject } from "../../utils";
+import { directUserToPageOnLogin, userTypeObject } from "../../utils";
 
 const AvatarDropdown = () => {
+  const { userType } = useAppSelector((state: RootState) => state.auth);
+
+  const avatarDropDown = [
+    {
+      id: 1,
+      name: "Dashboard",
+      link: directUserToPageOnLogin(userType),
+    },
+    {
+      id: 2,
+      name: "Settings",
+      link: "/dashboard/settings",
+    },
+    // {
+    //   id: 3,
+    //   name: "Earnings",
+    //   link: "/dashboard/settings",
+    // },
+  ];
+
   const { logout } = useAuth();
   const { userObject } = useAppSelector((state: RootState) => state.auth);
   const [showDropdown, setShowDropdown] = useState(false);
-  const { userType } = useAppSelector((state: RootState) => state.auth);
 
   const toggleDropDown = () => {
     setShowDropdown(!showDropdown);

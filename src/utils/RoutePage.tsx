@@ -40,6 +40,7 @@ import {
   PrivacyPolicy,
   TermsOfUse,
   SinglePublishedPublication,
+  Pricing,
 } from "../pages";
 import Reviewed from "../pages/Reviewed";
 import { LCDA } from "../pages/Lcda";
@@ -56,12 +57,13 @@ const RoutePage = () => {
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<Signup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route path="/VerifyEmail" element={<VerifyEmail />} />
         <Route path="/explore" element={<Explore />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-of-use" element={<TermsOfUse />} />
         <Route path="/cookies-policy" element={<CookiesPolicy />} />
+        <Route path="/pricing" element={<Pricing />} />
         <Route
           path="/latest-publications/:id"
           element={<PublicationDetails />}

@@ -1,5 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link, useParams } from "react-router-dom";
-import { useGetDataById } from "../hooks/apiCalls";
+import { useCustomMutation, useGetDataById } from "../hooks/apiCalls";
 import OuterPage from "../layouts/OuterPage";
 import Loader from "../component/Loader";
 import backButton from "../assets/backButton.svg";
@@ -7,9 +9,11 @@ import eyeIcon from "../assets/eyeIcon.svg";
 import sampleWriter from "../assets/sampleWriter.webp";
 
 import { RenderArticle } from "../component/forms/RenderArticle";
+import { useEffect, useState } from "react";
 
 const PublicationDetails = () => {
   const params = useParams();
+  const [viewCount, setViewCount] = useState();
 
   const {
     data: publicationDetailsData,
@@ -20,7 +24,25 @@ const PublicationDetails = () => {
     enabled: !!params?.id,
   });
 
-  console.log(publicationDetailsData);
+  const UpdatePublicationViewCount = useCustomMutation({
+    endpoint: `Publications/UpdatePublicationViewCount?publicationId=${publicationDetailsData?.publicId}`,
+    method: "put",
+    // successMessage: (data: any) => data?.remark,
+    errorMessage: (error: any) =>
+      error?.response?.data?.remark || error?.response?.data,
+    onSuccessCallback: (data: any) => {
+      setViewCount(data?.viewCount);
+    },
+  });
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      UpdatePublicationViewCount.mutate({});
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <OuterPage>
       {publicationDetailsIsLoading ? (
@@ -39,7 +61,7 @@ const PublicationDetails = () => {
 
             <div className="flex items-center">
               <img src={eyeIcon} className="mr-2" />
-              <p>{publicationDetailsData?.viewCount} views</p>
+              <p>{viewCount || 0} views</p>
             </div>
             <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
             <p className="text-base text-black/90 font-medium">
@@ -58,11 +80,17 @@ const PublicationDetails = () => {
               {publicationDetailsData?.title}
             </p>
 
-            <img
-              src={publicationDetailsData?.image}
-              alt="Article placeholder image"
-              className="w-full h-64 md:h-80 lg:h-[680px] object-cover rounded-lg blur-xs my-4"
-            />
+            <div className="my-4">
+              <img
+                src={publicationDetailsData?.image}
+                alt="Article placeholder image"
+                className="w-full h-64 md:h-80 lg:h-[680px] object-cover rounded-lg blur-xs "
+              />
+
+              <p className="mt-2 text-sm text-gray-600 italic text-center underline">
+                {publicationDetailsData?.imageCaption}
+              </p>
+            </div>
 
             <RenderArticle articleContent={publicationDetailsData?.article} />
 
@@ -108,40 +136,46 @@ const PublicationDetails = () => {
                   </p>
                 </div>
 
-                <div className="flex items-center">
-                  <span className="font-semibold text-gray-700">
-                    Date Promise Made:
-                  </span>
-                  <p className="ml-2 text-gray-600">
-                    {new Date(
-                      publicationDetailsData?.datePromiseMade
-                    ).toLocaleDateString()}
-                  </p>
-                </div>
+                {publicationDetailsData?.isPromise && (
+                  <div className="flex items-center">
+                    <span className="font-semibold text-gray-700">
+                      Date Promise Made:
+                    </span>
+                    <p className="ml-2 text-gray-600">
+                      {new Date(
+                        publicationDetailsData?.datePromiseMade
+                      ).toLocaleDateString()}
+                    </p>
+                  </div>
+                )}
 
-                <div className="flex items-center">
-                  <span className="font-semibold text-gray-700">
-                    Promise Deadline:
-                  </span>
-                  <p className="ml-2 text-gray-600">
-                    {new Date(
-                      publicationDetailsData?.promiseDeadline
-                    ).toLocaleDateString()}
-                  </p>
-                </div>
+                {publicationDetailsData?.isPromise && (
+                  <div className="flex items-center">
+                    <span className="font-semibold text-gray-700">
+                      Promise Deadline:
+                    </span>
+                    <p className="ml-2 text-gray-600">
+                      {new Date(
+                        publicationDetailsData?.promiseDeadline
+                      ).toLocaleDateString()}
+                    </p>
+                  </div>
+                )}
 
-                <div className="flex items-center">
-                  <span className="font-semibold text-gray-700">
-                    Date Promise Fulfilled:
-                  </span>
-                  <p className="ml-2 text-gray-600">
-                    {publicationDetailsData?.datePromiseFulfilled
-                      ? new Date(
-                          publicationDetailsData?.datePromiseFulfilled
-                        ).toLocaleDateString()
-                      : "Not fulfilled"}
-                  </p>
-                </div>
+                {publicationDetailsData?.isPromise && (
+                  <div className="flex items-center">
+                    <span className="font-semibold text-gray-700">
+                      Date Promise Fulfilled:
+                    </span>
+                    <p className="ml-2 text-gray-600">
+                      {publicationDetailsData?.datePromiseFulfilled
+                        ? new Date(
+                            publicationDetailsData?.datePromiseFulfilled
+                          ).toLocaleDateString()
+                        : "Not fulfilled"}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -155,7 +189,13 @@ const PublicationDetails = () => {
             )}
 
             <p className="font-black my-2">References</p>
-            <p className="mb-8">{publicationDetailsData?.reference}</p>
+            <a
+              target="_blank"
+              href={publicationDetailsData?.reference}
+              className="mb-12 underline text-blue-800"
+            >
+              {publicationDetailsData?.reference}
+            </a>
 
             <p className="font-black mb-2">Tags</p>
             {publicationDetailsData &&
@@ -165,14 +205,14 @@ const PublicationDetails = () => {
                   return (
                     <span
                       key={index}
-                      className="bg-gray-100 capitalize text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300"
+                      className="bg-primary capitalize text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300 whitespace-nowrap"
                     >
                       {item}
                     </span>
                   );
                 })}
 
-            <div className="flex items-start my-8">
+            <div className="flex items-center my-8">
               <div className="w-36 h-36 overflow-hidden rounded-full">
                 <img
                   // src={publicationDetailsData?.image}

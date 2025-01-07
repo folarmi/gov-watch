@@ -53,7 +53,7 @@ const TagsInput: React.FC<TagsInputProps> = ({ onChange, tags, setTags }) => {
         className="h-12 rounded-lg px-4 border-2 border-black bg-gray-50 text-sm w-full"
       />
       <div className="flex gap-x-2 cursor-pointer">
-        {tags.map((tag: any, index: any) => (
+        {tags?.map((tag: any, index: any) => (
           <div key={index} className="tag">
             <span className="bg-primary text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded">
               {tag}

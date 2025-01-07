@@ -13,7 +13,7 @@ import {
   User,
   FileText,
   Hourglass,
-  Slash,
+  XCircleIcon,
   Globe,
   MapPin,
   Flag,
@@ -374,7 +374,7 @@ export const dashboardSideBarItems = [
       {
         id: 4,
         name: "Rejected",
-        image: Slash,
+        image: XCircleIcon,
         link: "/dashboard/rejected",
       },
     ],
@@ -488,7 +488,7 @@ export const dashboardSideBarItems = [
       {
         id: 8,
         name: "Rejected",
-        image: Slash,
+        image: XCircleIcon,
         link: "/dashboard/all-inbox",
       },
       {
@@ -542,24 +542,6 @@ export const dashboardSideBarItems = [
   },
 ];
 
-export const avatarDropDown = [
-  {
-    id: 1,
-    name: "Dashboard",
-    link: "/dashboard/settings",
-  },
-  {
-    id: 2,
-    name: "Settings",
-    link: "/dashboard/settings",
-  },
-  {
-    id: 3,
-    name: "Earnings",
-    link: "/dashboard/settings",
-  },
-];
-
 export const settingData = [
   {
     id: 1,
@@ -600,39 +582,39 @@ export const searchBarFilter = [
 export const dummyPlans = [
   {
     id: 1,
-    name: "2 team members",
+    name: "Bookmark publications",
     isActive: true,
   },
   {
     id: 2,
-    name: "20GB Cloud storage",
+    name: "Setup Reminders",
     isActive: true,
   },
   {
     id: 3,
-    name: "Integration help",
+    name: "No Ads",
     isActive: true,
   },
-  {
-    id: 4,
-    name: "Sketch Files",
-    isActive: false,
-  },
-  {
-    id: 5,
-    name: "API Access",
-    isActive: false,
-  },
-  {
-    id: 6,
-    name: "Complete documentation",
-    isActive: false,
-  },
-  {
-    id: 7,
-    name: "24×7 phone & email support",
-    isActive: false,
-  },
+  // {
+  //   id: 4,
+  //   name: "Sketch Files",
+  //   isActive: false,
+  // },
+  // {
+  //   id: 5,
+  //   name: "API Access",
+  //   isActive: false,
+  // },
+  // {
+  //   id: 6,
+  //   name: "Complete documentation",
+  //   isActive: false,
+  // },
+  // {
+  //   id: 7,
+  //   name: "24×7 phone & email support",
+  //   isActive: false,
+  // },
 ];
 
 <li className="flex line-through decoration-gray-500">

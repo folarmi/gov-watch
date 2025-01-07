@@ -23,7 +23,7 @@ const HeroSection = () => {
       <div>
         <Text
           variant="heading"
-          className="text-black_100 w-[319px] md:w-[908px] pb-3"
+          className="text-black_100 w-[319px] md:w-[908px] pb-3 capitalize"
         >
           Empowering Stakeholders with information and fostering citizen
           participation in governance.

@@ -24,13 +24,13 @@ const VerifyEmailPage = () => {
 
   const verifyEmailMutation = useMutation({
     mutationFn: async (data: FormData) => {
-      const response = await api.post("VerifyEmail", data);
+      const response = await api.post("Authentication/VerifyEmail", data);
       return response;
     },
     onSuccess: (data) => {
       if (data?.status === 200) {
         toast("Logged in sucessfully");
-        navigate("/signin");
+        navigate("/sign-in");
       }
     },
     onError: (error: any) => {
