@@ -12,6 +12,7 @@ import Table from "../component/Table";
 import Modal from "../component/modals/Modal";
 import CreateState from "../component/modals/CreateState";
 import DashboardLayout from "../layouts/DashboardLayout";
+import ConfirmModuleDeletion from "../component/modals/ConfirmModuleDeletion";
 
 const State = () => {
   const [createStateModal, setCreateStateModal] = useState(false);
@@ -20,6 +21,7 @@ const State = () => {
     pageSize: 10,
   });
   const [selectedState, setSelectedState] = useState("");
+  const [deleteState, setDeleteState] = useState(false);
 
   const { userCountry } = useAppSelector((state: RootState) => state.auth);
   const { data: stateData, isLoading } = useGetData({
@@ -92,6 +94,15 @@ const State = () => {
             >
               Edit
             </button>
+            <button
+              onClick={() => {
+                toggleDeleteModal();
+                setSelectedState(rowData.publicId);
+              }}
+              className="px-2 py-1 text-sm bg-red-500 cursor-pointer text-white rounded"
+            >
+              Delete
+            </button>
           </div>
         );
       },
@@ -103,6 +114,10 @@ const State = () => {
     setCreateStateModal(!createStateModal);
   };
 
+  const toggleDeleteModal = () => {
+    setDeleteState(!deleteState);
+  };
+
   return (
     <DashboardLayout>
       <>
@@ -111,7 +126,7 @@ const State = () => {
         ) : (
           <div className="mt-2">
             <div className="flex justify-end w-full mb-4">
-              <AdminButton buttonText="Add States" onClick={toggleModal} />
+              <AdminButton buttonText="Add State" onClick={toggleModal} />
             </div>
             <Table
               columns={columns}
@@ -126,6 +141,18 @@ const State = () => {
                 <CreateState
                   toggleModal={toggleModal}
                   selectedState={selectedState}
+                />
+              </div>
+            </Modal>
+
+            <Modal show={deleteState} toggleModal={toggleDeleteModal}>
+              <div className="p-4">
+                <ConfirmModuleDeletion
+                  moduleName="State"
+                  toggleModal={toggleDeleteModal}
+                  endpoint="States/DeleteState"
+                  id={selectedState}
+                  queryKey="GetAllStatesTable"
                 />
               </div>
             </Modal>

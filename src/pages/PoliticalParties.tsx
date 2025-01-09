@@ -10,6 +10,7 @@ import CreatePoliticalParty from "../component/modals/CreatePoliticalParty";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Loader from "../component/Loader";
 import moment from "moment";
+import ConfirmModuleDeletion from "../component/modals/ConfirmModuleDeletion";
 
 const PoliticalParties = () => {
   const [pagination, setPagination] = useState<PaginationState>({
@@ -18,6 +19,7 @@ const PoliticalParties = () => {
   });
   const [createPoliticalParty, setcreatePoliticalParty] = useState(false);
   const [selectedPoliticalParty, setSelectedPoliticalParty] = useState("");
+  const [deletePoliticalParty, setDeletePoliticalParty] = useState(false);
 
   const { data: politicalPartiesData, isLoading } = useGetData({
     url: `PoliticalParties/GetAllPoliticalParties?pageNumber=${
@@ -86,6 +88,15 @@ const PoliticalParties = () => {
             >
               Edit
             </button>
+            <button
+              onClick={() => {
+                toggleDeleteModal();
+                setSelectedPoliticalParty(rowData.publicId);
+              }}
+              className="px-2 py-1 text-sm bg-red-500 cursor-pointer text-white rounded"
+            >
+              Delete
+            </button>
           </div>
         );
       },
@@ -94,6 +105,10 @@ const PoliticalParties = () => {
 
   const toggleModal = () => {
     setcreatePoliticalParty(!createPoliticalParty);
+  };
+
+  const toggleDeleteModal = () => {
+    setDeletePoliticalParty(!deletePoliticalParty);
   };
 
   return (
@@ -123,6 +138,18 @@ const PoliticalParties = () => {
                 <CreatePoliticalParty
                   toggleModal={toggleModal}
                   selectedPoliticalParty={selectedPoliticalParty}
+                />
+              </div>
+            </Modal>
+
+            <Modal show={deletePoliticalParty} toggleModal={toggleDeleteModal}>
+              <div className="p-4">
+                <ConfirmModuleDeletion
+                  moduleName="Political party"
+                  toggleModal={toggleDeleteModal}
+                  endpoint="PoliticalParties/DeletePoliticalParty"
+                  id={selectedPoliticalParty}
+                  queryKey="GetAllPoliticalPartiesTable"
                 />
               </div>
             </Modal>

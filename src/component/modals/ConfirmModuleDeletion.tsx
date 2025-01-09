@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { useCustomMutation } from "../../hooks/apiCalls";
 import { useAppSelector } from "../../lib/hook";
 import { RootState } from "../../lib/store";
@@ -7,7 +8,8 @@ type Prop = {
   toggleModal: () => void;
   moduleName: string;
   endpoint: string;
-  countryId: string;
+  id: string;
+  queryKey: string;
 };
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -15,8 +17,10 @@ const ConfirmModuleDeletion = ({
   toggleModal,
   moduleName,
   endpoint,
-  countryId,
+  id,
+  queryKey,
 }: Prop) => {
+  const queryClient = useQueryClient();
   const { userId } = useAppSelector((state: RootState) => state.auth);
   const approveDeletionMutation = useCustomMutation({
     endpoint,
@@ -24,17 +28,20 @@ const ConfirmModuleDeletion = ({
     successMessage: (data: any) => data?.remark,
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
-      window.location.reload();
+      toggleModal();
+      queryClient.invalidateQueries({
+        queryKey: [queryKey],
+        exact: false,
+      });
     },
   });
 
   const approveDeletionFunction = () => {
     const data: any = {
-      countryId,
+      id,
       userId,
     };
 
-    console.log(data);
     approveDeletionMutation.mutate({ data });
   };
   return (

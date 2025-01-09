@@ -140,7 +140,8 @@ const Country = () => {
                 moduleName="Country"
                 toggleModal={toggleDeleteModal}
                 endpoint="Countries/DeleteCountry"
-                countryId={selectedCountry}
+                id={selectedCountry}
+                queryKey="GetCountriesTable"
               />
             </div>
           </Modal>

@@ -79,7 +79,7 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
       formData.lastModifiedBy = userId;
       formData.image = selectedState.image;
     } else {
-      formData.population = Number(data.population.replace(/,/g, ""));
+      // formData.population = Number(data?.population?.replaceAll(",", "") || 0);
       formData.createdBy = userId;
       formData.image = backendPath;
     }

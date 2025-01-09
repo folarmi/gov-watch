@@ -11,6 +11,7 @@ import CreatePoliticalActor from "../component/modals/CreatePoliticalActor";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Loader from "../component/Loader";
 import moment from "moment";
+import ConfirmModuleDeletion from "../component/modals/ConfirmModuleDeletion";
 
 const PoliticalActors = () => {
   const [pagination, setPagination] = useState<PaginationState>({
@@ -19,6 +20,7 @@ const PoliticalActors = () => {
   });
   const [createPoliticalActor, setCreatePoliticalActor] = useState(false);
   const [selectedPoliticalActor, setSelectedPoliticalActor] = useState("");
+  const [deletePoliticalActor, setDeletePoliticalActor] = useState(false);
 
   const { data: politicalActorsData, isLoading } = useGetData({
     url: `PoliticalActors/GetAllPoliticalActors?pageNumber=${
@@ -86,6 +88,15 @@ const PoliticalActors = () => {
             >
               Edit
             </button>
+            <button
+              onClick={() => {
+                toggleDeleteModal();
+                setSelectedPoliticalActor(rowData.publicId);
+              }}
+              className="px-2 py-1 text-sm bg-red-500 cursor-pointer text-white rounded"
+            >
+              Delete
+            </button>
           </div>
         );
       },
@@ -94,6 +105,10 @@ const PoliticalActors = () => {
 
   const toggleModal = () => {
     setCreatePoliticalActor(!createPoliticalActor);
+  };
+
+  const toggleDeleteModal = () => {
+    setDeletePoliticalActor(!deletePoliticalActor);
   };
 
   return (
@@ -123,6 +138,18 @@ const PoliticalActors = () => {
                 <CreatePoliticalActor
                   toggleModal={toggleModal}
                   selectedPoliticalActor={selectedPoliticalActor}
+                />
+              </div>
+            </Modal>
+
+            <Modal show={deletePoliticalActor} toggleModal={toggleDeleteModal}>
+              <div className="p-4">
+                <ConfirmModuleDeletion
+                  moduleName="Political Actor"
+                  toggleModal={toggleDeleteModal}
+                  endpoint="PoliticalActors/DeletePoliticalActor"
+                  id={selectedPoliticalActor}
+                  queryKey="GetAllPoliticalActorsTable"
                 />
               </div>
             </Modal>

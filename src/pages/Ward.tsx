@@ -10,6 +10,7 @@ import Modal from "../component/modals/Modal";
 import CreateWard from "../component/modals/CreateWard";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Loader from "../component/Loader";
+import ConfirmModuleDeletion from "../component/modals/ConfirmModuleDeletion";
 
 const Ward = () => {
   const [pagination, setPagination] = useState<PaginationState>({
@@ -17,6 +18,7 @@ const Ward = () => {
     pageSize: 5,
   });
   const [selectedWard, setSelectedWard] = useState("");
+  const [deleteWard, setDeleteWard] = useState(false);
 
   const { data: wardData, isLoading: wardDataIsLoading } = useGetData({
     url: `Wards/GetAllWards?pageNumber=${pagination.pageIndex + 1}&pageSize=${
@@ -30,6 +32,10 @@ const Ward = () => {
   const toggleModal = () => {
     setSelectedWard("");
     setCreateWardModal(!createWardModal);
+  };
+
+  const toggleDeleteModal = () => {
+    setDeleteWard(!deleteWard);
   };
 
   const columns = [
@@ -96,6 +102,15 @@ const Ward = () => {
             >
               Edit
             </button>
+            <button
+              onClick={() => {
+                toggleDeleteModal();
+                setSelectedWard(rowData.publicId);
+              }}
+              className="px-2 py-1 text-sm bg-red-500 cursor-pointer text-white rounded"
+            >
+              Delete
+            </button>
           </div>
         );
       },
@@ -126,6 +141,18 @@ const Ward = () => {
                 <CreateWard
                   toggleModal={toggleModal}
                   selectedWard={selectedWard}
+                />
+              </div>
+            </Modal>
+
+            <Modal show={deleteWard} toggleModal={toggleDeleteModal}>
+              <div className="p-4">
+                <ConfirmModuleDeletion
+                  moduleName="Ward"
+                  toggleModal={toggleDeleteModal}
+                  endpoint="Wards/DeleteWard"
+                  id={selectedWard}
+                  queryKey="GetAllWardsTable"
                 />
               </div>
             </Modal>

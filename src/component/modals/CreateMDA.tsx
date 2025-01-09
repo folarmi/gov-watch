@@ -104,7 +104,7 @@ const CreateMDA = ({ toggleModal, selectedMDA }: any) => {
       formData.lastModifiedBy = userId;
       formData.image = selectedMDA.image;
     } else {
-      formData.population = Number(data.population.replace(/,/g, ""));
+      // formData.population = Number(data.population.replace(/,/g, ""));
       formData.createdBy = userId;
       formData.image = backendPath;
       formData.country = userCountry;

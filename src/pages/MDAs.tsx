@@ -11,6 +11,7 @@ import Modal from "../component/modals/Modal";
 import CreateMDA from "../component/modals/CreateMDA";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Loader from "../component/Loader";
+import ConfirmModuleDeletion from "../component/modals/ConfirmModuleDeletion";
 
 const MDA = () => {
   const [createMDA, setCreateMDA] = useState(false);
@@ -19,6 +20,7 @@ const MDA = () => {
     pageSize: 20,
   });
   const [selectedMDA, setSelectedMDA] = useState("");
+  const [deleteMDA, setDeleteMDA] = useState(false);
 
   const { data: mdaData, isLoading } = useGetData({
     url: `/Mdas/GetAllMdas?pageNumber=${pagination.pageIndex + 1}&pageSize=${
@@ -82,6 +84,15 @@ const MDA = () => {
             >
               Edit
             </button>
+            <button
+              onClick={() => {
+                toggleDeleteModal();
+                setSelectedMDA(rowData.publicId);
+              }}
+              className="px-2 py-1 text-sm bg-red-500 cursor-pointer text-white rounded"
+            >
+              Delete
+            </button>
           </div>
         );
       },
@@ -91,6 +102,10 @@ const MDA = () => {
   const toggleModal = () => {
     setSelectedMDA("");
     setCreateMDA(!createMDA);
+  };
+
+  const toggleDeleteModal = () => {
+    setDeleteMDA(!deleteMDA);
   };
 
   return (
@@ -118,6 +133,18 @@ const MDA = () => {
                 <CreateMDA
                   toggleModal={toggleModal}
                   selectedMDA={selectedMDA}
+                />
+              </div>
+            </Modal>
+
+            <Modal show={deleteMDA} toggleModal={toggleDeleteModal}>
+              <div className="p-4">
+                <ConfirmModuleDeletion
+                  moduleName="MDA"
+                  toggleModal={toggleDeleteModal}
+                  endpoint="Mdas/DeleteMda"
+                  id={selectedMDA}
+                  queryKey="GetAllMdasTable"
                 />
               </div>
             </Modal>

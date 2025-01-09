@@ -10,6 +10,7 @@ import CreateCategory from "../component/modals/CreateCategory";
 import { useGetData } from "../hooks/apiCalls";
 import DashboardLayout from "../layouts/DashboardLayout";
 import moment from "moment";
+import ConfirmModuleDeletion from "../component/modals/ConfirmModuleDeletion";
 
 const Categories = () => {
   const [pagination, setPagination] = useState<PaginationState>({
@@ -23,6 +24,9 @@ const Categories = () => {
     queryKey: ["GetAllCategoriesTable", JSON.stringify(pagination)],
   });
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [deleteCategory, setDeleteCategory] = useState(false);
+
+  console.log(selectedCategory);
 
   const columnHelper = createColumnHelper<any>();
   const columns = [
@@ -73,6 +77,15 @@ const Categories = () => {
             >
               Edit
             </button>
+            <button
+              onClick={() => {
+                toggleDeleteModal();
+                setSelectedCategory(rowData.id);
+              }}
+              className="px-2 py-1 text-sm bg-red-500 cursor-pointer text-white rounded"
+            >
+              Delete
+            </button>
           </div>
         );
       },
@@ -82,6 +95,10 @@ const Categories = () => {
   const [createCategoryModal, setCreateCategoryModal] = useState(false);
   const toggleModal = () => {
     setCreateCategoryModal(!createCategoryModal);
+  };
+
+  const toggleDeleteModal = () => {
+    setDeleteCategory(!deleteCategory);
   };
 
   return (
@@ -108,6 +125,18 @@ const Categories = () => {
                 <CreateCategory
                   toggleModal={toggleModal}
                   selectedCategory={selectedCategory}
+                />
+              </div>
+            </Modal>
+
+            <Modal show={deleteCategory} toggleModal={toggleDeleteModal}>
+              <div className="p-4">
+                <ConfirmModuleDeletion
+                  moduleName="Category"
+                  toggleModal={toggleDeleteModal}
+                  endpoint="Categories/DeleteCategory"
+                  id={selectedCategory}
+                  queryKey="GetAllCategoriesTable"
                 />
               </div>
             </Modal>

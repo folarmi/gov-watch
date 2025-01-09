@@ -14,6 +14,7 @@ import CreateLGA from "../component/modals/CreateLGA";
 import Loader from "../component/Loader";
 import DashboardLayout from "../layouts/DashboardLayout";
 import moment from "moment";
+import ConfirmModuleDeletion from "../component/modals/ConfirmModuleDeletion";
 
 const LGA = () => {
   const [createLGAModal, setCreateLGAModal] = useState(false);
@@ -22,6 +23,7 @@ const LGA = () => {
     pageSize: 20,
   });
   const [selectedLGA, setSelectedLGA] = useState("");
+  const [deleteLGA, setDeleteLGA] = useState(false);
 
   const { userCountry } = useAppSelector((state: RootState) => state.auth);
   const { data: lgaData, isLoading } = useGetData({
@@ -93,15 +95,15 @@ const LGA = () => {
             >
               Edit
             </button>
-            {/* <button
+            <button
               onClick={() => {
                 toggleDeleteModal();
-                setSelectedCountry(rowData.publicId);
+                setSelectedLGA(rowData.publicId);
               }}
               className="px-2 py-1 text-sm bg-red-500 cursor-pointer text-white rounded"
             >
               Delete
-            </button> */}
+            </button>
           </div>
         );
       },
@@ -111,6 +113,10 @@ const LGA = () => {
   const toggleModal = () => {
     setSelectedLGA("");
     setCreateLGAModal(!createLGAModal);
+  };
+
+  const toggleDeleteModal = () => {
+    setDeleteLGA(!deleteLGA);
   };
 
   return (
@@ -137,6 +143,18 @@ const LGA = () => {
                 <CreateLGA
                   toggleModal={toggleModal}
                   selectedLGA={selectedLGA}
+                />
+              </div>
+            </Modal>
+
+            <Modal show={deleteLGA} toggleModal={toggleDeleteModal}>
+              <div className="p-4">
+                <ConfirmModuleDeletion
+                  moduleName="LGA"
+                  toggleModal={toggleDeleteModal}
+                  endpoint="Lgas/DeleteLga"
+                  id={selectedLGA}
+                  queryKey="GetAllLgas"
                 />
               </div>
             </Modal>

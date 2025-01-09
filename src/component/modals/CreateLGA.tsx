@@ -39,7 +39,7 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
   const handleSuccess = (data: any) => {
     setBackendPath(data?.filePath);
   };
-  console.log(selectedLGA);
+
   const handleError = (error: UploadError) => {
     console.error("Upload error:", error);
   };
