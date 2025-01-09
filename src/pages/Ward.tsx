@@ -16,6 +16,8 @@ const Ward = () => {
     pageIndex: 0,
     pageSize: 5,
   });
+  const [selectedWard, setSelectedWard] = useState("");
+
   const { data: wardData, isLoading: wardDataIsLoading } = useGetData({
     url: `Wards/GetAllWards?pageNumber=${pagination.pageIndex + 1}&pageSize=${
       pagination.pageSize
@@ -26,6 +28,7 @@ const Ward = () => {
   const [createWardModal, setCreateWardModal] = useState(false);
 
   const toggleModal = () => {
+    setSelectedWard("");
     setCreateWardModal(!createWardModal);
   };
 
@@ -77,6 +80,26 @@ const Ward = () => {
         <span className="text-sm font-normal">{info.getValue()}</span>
       ),
     }),
+    columnHelper.accessor("publicId", {
+      header: "Action",
+      cell: (info) => {
+        const rowData = info.row.original;
+
+        return (
+          <div className="flex space-x-4">
+            <button
+              onClick={() => {
+                toggleModal();
+                setSelectedWard(rowData);
+              }}
+              className="px-6 py-1 text-sm bg-primary cursor-pointer text-white rounded"
+            >
+              Edit
+            </button>
+          </div>
+        );
+      },
+    }),
   ];
 
   return (
@@ -100,7 +123,10 @@ const Ward = () => {
 
             <Modal show={createWardModal} toggleModal={toggleModal}>
               <div className="p-4">
-                <CreateWard toggleModal={toggleModal} />
+                <CreateWard
+                  toggleModal={toggleModal}
+                  selectedWard={selectedWard}
+                />
               </div>
             </Modal>
           </div>

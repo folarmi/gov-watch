@@ -65,7 +65,7 @@ const Header = () => {
     <>
       <nav className="sticky top-0 z-50 bg-white h-32 px-8 md:px-0 flex items-center justify-between md:justify-around">
         <Link to="/">
-          <img src="/logo.svg" alt="Company logo" className="w-8 md:w-20" />
+          <img src="/logo.svg" alt="Company logo" className="w-14 md:w-20" />
         </Link>
 
         <>

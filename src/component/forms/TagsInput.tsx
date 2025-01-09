@@ -2,13 +2,19 @@
 import React, { useState } from "react";
 
 type TagsInputProps = {
-  onChange: (tags: string[]) => void; // Callback to provide tags to parent
+  onChange: (tags: string[]) => void;
   tags: any;
   setTags: any;
+  defaultValues: any;
 };
 
-const TagsInput: React.FC<TagsInputProps> = ({ onChange, tags, setTags }) => {
-  const [inputValue, setInputValue] = useState<string>("");
+const TagsInput: React.FC<TagsInputProps> = ({
+  onChange,
+  tags,
+  setTags,
+  defaultValues,
+}) => {
+  const [inputValue, setInputValue] = useState<string>(defaultValues);
 
   // Handle input value change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,6 +53,7 @@ const TagsInput: React.FC<TagsInputProps> = ({ onChange, tags, setTags }) => {
       <input
         type="text"
         value={inputValue}
+        defaultValue={tags}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
         placeholder="Type and press Enter..."

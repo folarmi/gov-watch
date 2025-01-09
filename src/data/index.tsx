@@ -30,6 +30,7 @@ import {
   Check,
   BookMarkedIcon,
   Heart,
+  Edit2,
 } from "lucide-react";
 
 export const SidebarList: SidebarItemProp[] = [
@@ -468,7 +469,7 @@ export const dashboardSideBarItems = [
         link: "/dashboard/all-inbox",
       },
     ],
-    userRole: [userTypeObject.admin, userTypeObject.editor],
+    userRole: [userTypeObject.admin],
   },
   {
     category: "Publications",
@@ -486,19 +487,25 @@ export const dashboardSideBarItems = [
         link: "/dashboard/pending",
       },
       {
-        id: 8,
+        id: 12,
+        name: "Drafts",
+        image: Edit2,
+        link: "/dashboard/drafts",
+      },
+      {
+        id: 9,
         name: "Rejected",
         image: XCircleIcon,
         link: "/dashboard/all-inbox",
       },
       {
-        id: 8,
+        id: 10,
         name: "Approved",
         image: Check,
         link: "/dashboard/all-inbox",
       },
       {
-        id: 8,
+        id: 11,
         name: "Bookmarks",
         image: BookMarkedIcon,
         link: "/dashboard/all-inbox",
@@ -595,11 +602,11 @@ export const dummyPlans = [
     name: "No Ads",
     isActive: true,
   },
-  // {
-  //   id: 4,
-  //   name: "Sketch Files",
-  //   isActive: false,
-  // },
+  {
+    id: 4,
+    name: "Update comment on a post",
+    isActive: true,
+  },
   // {
   //   id: 5,
   //   name: "API Access",

@@ -110,9 +110,9 @@ const About = () => {
             </div>
 
             <div>
-              <h1 className="font-bold text-2xl text-green-700 mb-4 flex justify-center">
+              {/* <h1 className="font-bold text-2xl text-green-700 mb-4 flex justify-center">
                 OUR OBJECTIVE
-              </h1>
+              </h1> */}
               <ul className="list-disc list-inside flex flex-col justify-center text-center gap-4 text-sm">
                 {/* <li>Lorem ipsum dolor sit amet</li>
                 <li>Lorem ipsum dolor sit amet</li>

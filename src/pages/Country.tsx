@@ -92,7 +92,7 @@ const Country = () => {
             >
               Edit
             </button>
-            {/* <button
+            <button
               onClick={() => {
                 toggleDeleteModal();
                 setSelectedCountry(rowData.publicId);
@@ -100,7 +100,7 @@ const Country = () => {
               className="px-2 py-1 text-sm bg-red-500 cursor-pointer text-white rounded"
             >
               Delete
-            </button> */}
+            </button>
           </div>
         );
       },

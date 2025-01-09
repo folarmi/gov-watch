@@ -111,7 +111,7 @@ const State = () => {
         ) : (
           <div className="mt-2">
             <div className="flex justify-end w-full mb-4">
-              <AdminButton buttonText="Add Statess" onClick={toggleModal} />
+              <AdminButton buttonText="Add States" onClick={toggleModal} />
             </div>
             <Table
               columns={columns}
@@ -137,19 +137,3 @@ const State = () => {
 };
 
 export { State };
-
-// {
-//   "publicId": "18b128e4-aa1e-48bd-aa5e-ad68b92ea184",
-//   "name": "Abuja Securities And Commodity   Exchange Commission",
-//   "category": "N/A",
-//   "image": "N/A",
-//   "bio": "N/A",
-//   "dateFounded": "0001-01-01T00:00:00",
-//   "leaderName": "N/A",
-//   "isFederal": false,
-//   "financialAllocation": 0,
-//   "state": "",
-//   "country": "string",
-//   "website": "N/A",
-//   "lastModifiedBy": "27546f65-1410-40a3-8587-0c11964984f6"
-// }

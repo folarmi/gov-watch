@@ -17,8 +17,22 @@ import { useAppSelector } from "../../lib/hook";
 import { RootState } from "../../lib/store";
 import { useQueryClient } from "@tanstack/react-query";
 
-const CreateCategory = ({ toggleModal }: any) => {
-  const { control, handleSubmit } = useForm<any>();
+const CreateCategory = ({ toggleModal, selectedCategory }: any) => {
+  const modifiedDefaultValues = {
+    ...selectedCategory,
+    population: Number(
+      selectedCategory?.population
+        ? selectedCategory.population.toString().replace(/,/g, "")
+        : ""
+    ),
+    dateOfBirth: selectedCategory?.dateOfBirth
+      ? new Date(selectedCategory?.dateOfBirth).toISOString().split("T")[0]
+      : null,
+  };
+
+  const { control, handleSubmit } = useForm<any>({
+    defaultValues: modifiedDefaultValues || {},
+  });
   const queryClient = useQueryClient();
   const handleSuccess = (data: any) => {
     setBackendPath(data?.filePath);
@@ -42,8 +56,11 @@ const CreateCategory = ({ toggleModal }: any) => {
   };
 
   const createCategoryMutation = useCustomMutation({
-    endpoint: "Categories/CreateCategory",
+    endpoint: selectedCategory
+      ? "Categories/UpdateCategory"
+      : "Categories/CreateCategory",
     successMessage: (data: any) => data?.remark,
+    method: selectedCategory ? "put" : "post",
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
       toggleModal();
@@ -55,15 +72,23 @@ const CreateCategory = ({ toggleModal }: any) => {
   });
 
   const submitForm = (data: any) => {
-    if (backendPath === "") {
+    if (backendPath === "" && !selectedCategory) {
       toast("Please upload a file first");
     }
 
     const formData: any = {
       name: data?.name,
-      userId,
-      image: backendPath,
     };
+
+    if (selectedCategory) {
+      formData.lastModifiedBy = userId;
+      formData.image = selectedCategory.image;
+    } else {
+      formData.userId = userId;
+      formData.name = data?.name;
+      formData.image = backendPath;
+    }
+
     createCategoryMutation.mutate(formData);
   };
 
@@ -90,6 +115,7 @@ const CreateCategory = ({ toggleModal }: any) => {
                 maxSizeMB={1}
                 acceptFormats={["png", "jpeg", "jpg", "gif"]}
                 onFileUpload={handleFileUpload}
+                defaultFile={selectedCategory?.categoryImage}
               />
               {uploadedFile && (
                 <ImageDetails
@@ -99,7 +125,7 @@ const CreateCategory = ({ toggleModal }: any) => {
               )}
             </div>
 
-            <div className="flex  items-center">
+            <div className="flex items-center">
               <div className="mr-3">
                 <CustomButton onClick={toggleModal} variant="skeleton">
                   Cancel
@@ -112,7 +138,7 @@ const CreateCategory = ({ toggleModal }: any) => {
                 }
                 variant="tertiary"
               >
-                Create Category
+                {selectedCategory ? "Update Category" : "Create Category"}
               </CustomButton>
             </div>
           </div>

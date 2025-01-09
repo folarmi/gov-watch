@@ -23,7 +23,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({
 }) => {
   return (
     <OuterPage>
-      <div className="flex justify-center gap-16 py-10">
+      <div className="flex w-full justify-center gap-16 py-10">
         <div
           className="w-1/3 min-h-full bg-cover bg-center relative rounded-3xl hidden lg:block"
           style={{ backgroundImage: `url(${banner})` }}

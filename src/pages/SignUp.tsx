@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -91,7 +90,7 @@ const Signup = () => {
       banner="signup-Banner.svg"
       headerMarginTop="31rem"
     >
-      <div className="mb-24 md:mx-10 mx-6 w-96">
+      <div className="mb-24 md:mx-10 mx-6 md:w-96">
         <h1 className="font-bold text-4xl mb-2">Let's get started</h1>
         <p className="">Kindly fill in the required details below</p>
 

@@ -33,7 +33,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <section className="md:flex justify-center my-4 md:my-14">
-      <div className="flex items-center border border-gray-300 rounded-[50px] overflow-hidden w-[370px] md:w-[719px] h-[54px]">
+      <div className="flex items-center border border-gray-300 rounded-[50px] overflow-hidden w-auto md:w-[719px] h-[54px]">
         <div className="px-3 cursor-pointer">
           <img
             src="/filterIcon.svg"

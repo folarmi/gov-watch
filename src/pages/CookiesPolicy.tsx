@@ -231,17 +231,6 @@ const CookiesPolicy = () => {
               here
             </Link>
           </p>
-          <ul className="list-none ml-5 text-black">
-            <li>
-              <strong>Email:</strong> [YourEmail@example.com]
-            </li>
-            <li>
-              <strong>Address:</strong> [YourCompany Address]
-            </li>
-            <li>
-              <strong>Phone:</strong> [YourCompany Phone Number]
-            </li>
-          </ul>
         </section>
       </div>
     </OuterPage>

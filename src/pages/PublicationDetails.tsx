@@ -99,42 +99,52 @@ const PublicationDetails = () => {
               <h3 className="font-bold text-lg mb-2">Additional Information</h3>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="flex items-center">
-                  <span className="font-semibold text-gray-700">State:</span>
-                  <p className="ml-2 text-gray-600">
-                    {publicationDetailsData?.state}
-                  </p>
-                </div>
+                {publicationDetailsData?.state && (
+                  <div className="flex items-center">
+                    <span className="font-semibold text-gray-700">State:</span>
+                    <p className="ml-2 text-gray-600">
+                      {publicationDetailsData?.state}
+                    </p>
+                  </div>
+                )}
 
-                <div className="flex items-center">
-                  <span className="font-semibold text-gray-700">LGA:</span>
-                  <p className="ml-2 text-gray-600">
-                    {publicationDetailsData?.lga}
-                  </p>
-                </div>
+                {publicationDetailsData?.lga && (
+                  <div className="flex items-center">
+                    <span className="font-semibold text-gray-700">LGA:</span>
+                    <p className="ml-2 text-gray-600">
+                      {publicationDetailsData?.lga}
+                    </p>
+                  </div>
+                )}
 
-                <div className="flex items-center">
-                  <span className="font-semibold text-gray-700">
-                    Political Actor:
-                  </span>
-                  <p className="ml-2 text-gray-600">
-                    {publicationDetailsData?.politicalActorName}
-                  </p>
-                </div>
+                {publicationDetailsData?.politicalActorName && (
+                  <div className="flex items-center">
+                    <span className="font-semibold text-gray-700">
+                      Political Actor:
+                    </span>
+                    <p className="ml-2 text-gray-600">
+                      {publicationDetailsData?.politicalActorName}
+                    </p>
+                  </div>
+                )}
 
-                <div className="flex items-center">
-                  <span className="font-semibold text-gray-700">MDAs:</span>
-                  <p className="ml-2 text-gray-600">
-                    {publicationDetailsData?.mda}
-                  </p>
-                </div>
+                {publicationDetailsData?.mda && (
+                  <div className="flex items-center">
+                    <span className="font-semibold text-gray-700">MDAs:</span>
+                    <p className="ml-2 text-gray-600">
+                      {publicationDetailsData?.mda}
+                    </p>
+                  </div>
+                )}
 
-                <div className="flex items-center">
-                  <span className="font-semibold text-gray-700">Region:</span>
-                  <p className="ml-2 text-gray-600">
-                    {publicationDetailsData?.region}
-                  </p>
-                </div>
+                {publicationDetailsData?.region && (
+                  <div className="flex items-center">
+                    <span className="font-semibold text-gray-700">Region:</span>
+                    <p className="ml-2 text-gray-600">
+                      {publicationDetailsData?.region}
+                    </p>
+                  </div>
+                )}
 
                 {publicationDetailsData?.isPromise && (
                   <div className="flex items-center">
@@ -198,19 +208,21 @@ const PublicationDetails = () => {
             </a>
 
             <p className="font-black mb-2">Tags</p>
-            {publicationDetailsData &&
-              publicationDetailsData?.tags
-                .split(", ")
-                ?.map((item: string, index: string) => {
-                  return (
-                    <span
-                      key={index}
-                      className="bg-primary capitalize text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300 whitespace-nowrap"
-                    >
-                      {item}
-                    </span>
-                  );
-                })}
+            <div className="flex flex-wrap gap-2">
+              {publicationDetailsData &&
+                publicationDetailsData?.tags
+                  .split(", ")
+                  ?.map((item: string, index: string) => {
+                    return (
+                      <span
+                        key={index}
+                        className="bg-primary capitalize text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300 whitespace-nowrap"
+                      >
+                        {item}
+                      </span>
+                    );
+                  })}
+            </div>
 
             <div className="flex items-center my-8">
               <div className="w-36 h-36 overflow-hidden rounded-full">

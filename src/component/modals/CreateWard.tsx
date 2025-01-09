@@ -20,8 +20,19 @@ import {
 import FileUploader from "../FileUploader";
 import { useQueryClient } from "@tanstack/react-query";
 
-const CreateWard = ({ toggleModal }: any) => {
-  const { control, handleSubmit } = useForm<any>();
+const CreateWard = ({ toggleModal, selectedWard }: any) => {
+  const modifiedDefaultValues = {
+    ...selectedWard,
+    population: Number(
+      selectedWard?.population
+        ? selectedWard?.population.toString().replace(/,/g, "")
+        : ""
+    ),
+  };
+
+  const { control, handleSubmit } = useForm<any>({
+    defaultValues: modifiedDefaultValues || {},
+  });
   const queryClient = useQueryClient();
 
   const { userId, userCountry } = useAppSelector(
@@ -37,6 +48,7 @@ const CreateWard = ({ toggleModal }: any) => {
   const handleError = (error: UploadError) => {
     console.error("Upload error:", error);
   };
+
   const uploadMutation = useUploadMutation(handleSuccess, handleError);
 
   const handleFileUpload = (file: File) => {
@@ -48,8 +60,9 @@ const CreateWard = ({ toggleModal }: any) => {
   };
 
   const createWardMutation = useCustomMutation({
-    endpoint: "Wards/CreateWard",
+    endpoint: selectedWard ? `Wards/UpdateWard` : "Wards/CreateWard",
     successMessage: (data: any) => data?.remark,
+    method: selectedWard ? "put" : "post",
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
       toggleModal();
@@ -61,17 +74,24 @@ const CreateWard = ({ toggleModal }: any) => {
   });
 
   const submitForm = (data: any) => {
-    if (backendPath === "") {
+    if (backendPath === "" && !selectedWard) {
       toast("Please upload a file first");
       return;
     }
 
     const formData: any = {
       ...data,
-      image: backendPath,
-      createdBy: userId,
-      // regionId: data?.regionId?.value,
     };
+
+    if (selectedWard) {
+      formData.lastModifiedBy = userId;
+      formData.image = selectedWard.image;
+    } else {
+      formData.population = Number(data.population.replace(/,/g, ""));
+      formData.createdBy = userId;
+      formData.regionId = data?.regionId?.value;
+      formData.image = backendPath;
+    }
 
     createWardMutation.mutate(formData);
   };
@@ -107,7 +127,9 @@ const CreateWard = ({ toggleModal }: any) => {
 
   return (
     <div className="bg-white rounded-xl p-6">
-      <p className="text-center font-medium text-xl font">Create New Ward</p>
+      <p className="text-center font-medium text-xl font">
+        {selectedWard ? "Edit Ward" : "Create New Ward"}
+      </p>
 
       <form
         onSubmit={handleSubmit(submitForm)}
@@ -166,7 +188,7 @@ const CreateWard = ({ toggleModal }: any) => {
 
         <CustomInput
           label="Population"
-          name="Population"
+          name="population"
           control={control}
           type="number"
           onlyNumbers
@@ -216,6 +238,7 @@ const CreateWard = ({ toggleModal }: any) => {
             maxSizeMB={1}
             acceptFormats={["png", "jpeg", "jpg", "gif"]}
             onFileUpload={handleFileUpload}
+            defaultFile={selectedWard?.image}
           />
           {uploadedFile && (
             <ImageDetails
@@ -236,7 +259,7 @@ const CreateWard = ({ toggleModal }: any) => {
             loading={uploadMutation.isPending || createWardMutation.isPending}
             variant="tertiary"
           >
-            Create Ward
+            {selectedWard ? "Edit Ward" : "Create Ward"}
           </CustomButton>
         </div>
       </form>

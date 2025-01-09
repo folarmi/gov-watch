@@ -23,8 +23,6 @@ import { userTypeObject } from "../../utils";
 import Modal from "../modals/Modal";
 import ReviewModal from "../modals/ReviewModal";
 import ApprovePublication from "../modals/ApprovePublication";
-// import { WarningModal } from "../modals/WarningModal";
-// import { useConfirmNavigation } from "../../hooks/useConfirmNavigation";
 
 const ArticleForm = ({
   isEditing = false,
@@ -35,12 +33,7 @@ const ArticleForm = ({
   setIsDraft,
   tags,
   setTags,
-}: // initialTags,
-any) => {
-  // const { isModalOpen, handleConfirm, handleCancel } = useConfirmNavigation(
-  //   () => console.log("User confirmed navigation")
-  // );
-
+}: any) => {
   const [reviewModal, setReviewModal] = useState(false);
   const [selectedArticleDetails, setSelectedArticleDetails] = useState({});
   const [selectedState, setSelectedState] = useState("");
@@ -147,10 +140,15 @@ any) => {
     enabled: !!selectedLGA || isEditing,
   });
 
+  // const { data: mdaData, isLoading: mdaDataIsLoading } = useGetData({
+  //   url: `/Mdas/GetListOfMdas?stateName=${selectedState}&pageNumber=1&pageSize=100`,
+  //   queryKey: ["GetListOfMdas", selectedState],
+  //   enabled: !!selectedState || isEditing,
+  // });
+
   const { data: mdaData, isLoading: mdaDataIsLoading } = useGetData({
-    url: `/Mdas/GetListOfMdas?stateName=${selectedState}&pageNumber=1&pageSize=100`,
+    url: `/Mdas/GetListOfMdas?countryName=string&pageNumber=1&pageSize=100`,
     queryKey: ["GetListOfMdas", selectedState],
-    enabled: !!selectedState || isEditing,
   });
 
   const { data: politicalActorData, isLoading: politicalActorIsLoading } =
@@ -413,6 +411,7 @@ any) => {
                 onChange={handleTagsChange}
                 tags={tags}
                 setTags={setTags}
+                defaultValues={defaultValues?.tags?.split(/\s*,\s*/) || []}
               />
               <CustomInput
                 label="Reference"

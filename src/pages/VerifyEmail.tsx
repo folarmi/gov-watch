@@ -52,7 +52,7 @@ const VerifyEmailPage = () => {
       img="logo.svg"
       banner="Signin-Banner.svg"
     >
-      <div className="mb-64 md:mx-10 mx-12 w-[419px]">
+      <div className="mb-64 md:mx-10 mx-2 w-auto md:w-[419px]">
         <h1 className="font-bold text-4xl mb-2">Verify Email</h1>
         <p className="mb-9">Please verify your email account</p>
 
@@ -68,7 +68,7 @@ const VerifyEmailPage = () => {
 
           <CustomButton
             type="submit"
-            className={`mt-8 px-32 py-4 rounded-2xl w-full text-white ${
+            className={`mt-8 md:px-32 py-4 rounded-2xl w-full text-white ${
               true ? "bg-primary" : "bg-customgreen"
             }`}
             disabled={verifyEmailMutation.isPending}

@@ -27,7 +27,6 @@ const Drafts = () => {
     enabled: shouldFetchPublications,
   });
 
-  console.log(pendingPublicationsData);
   return (
     <DashboardLayout>
       <div className="">
@@ -71,6 +70,7 @@ const Drafts = () => {
                             id={id}
                             isPublished={false}
                             category={category}
+                            link={`/dashboard/drafts/${id || publicId}`}
                             // imageUrl={coatOfArms}
                           />
                         </Link>

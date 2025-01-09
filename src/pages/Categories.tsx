@@ -22,6 +22,7 @@ const Categories = () => {
     }&pageSize=${pagination.pageSize}`,
     queryKey: ["GetAllCategoriesTable", JSON.stringify(pagination)],
   });
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const columnHelper = createColumnHelper<any>();
   const columns = [
@@ -56,6 +57,26 @@ const Categories = () => {
         </span>
       ),
     }),
+    columnHelper.accessor("publicId", {
+      header: "Action",
+      cell: (info) => {
+        const rowData = info.row.original;
+
+        return (
+          <div className="flex space-x-4">
+            <button
+              onClick={() => {
+                toggleModal();
+                setSelectedCategory(rowData);
+              }}
+              className="px-6 py-1 text-sm bg-primary cursor-pointer text-white rounded"
+            >
+              Edit
+            </button>
+          </div>
+        );
+      },
+    }),
   ];
 
   const [createCategoryModal, setCreateCategoryModal] = useState(false);
@@ -84,7 +105,10 @@ const Categories = () => {
 
             <Modal show={createCategoryModal} toggleModal={toggleModal}>
               <div className="p-4">
-                <CreateCategory toggleModal={toggleModal} />
+                <CreateCategory
+                  toggleModal={toggleModal}
+                  selectedCategory={selectedCategory}
+                />
               </div>
             </Modal>
           </div>

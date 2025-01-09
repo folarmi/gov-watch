@@ -23,14 +23,32 @@ import { politicalLevelData } from "../../data";
 import { useQueryClient } from "@tanstack/react-query";
 // import { CustomDatePicker } from "../forms/CustomDatePicker";
 
-const CreatePoliticalActor = ({ toggleModal }: any) => {
-  const { control, handleSubmit } = useForm<any>();
+const CreatePoliticalActor = ({ toggleModal, selectedPoliticalActor }: any) => {
+  const modifiedDefaultValues = {
+    ...selectedPoliticalActor,
+    population: Number(
+      selectedPoliticalActor?.population
+        ? selectedPoliticalActor.population.toString().replace(/,/g, "")
+        : ""
+    ),
+    dateOfBirth: selectedPoliticalActor?.dateOfBirth
+      ? new Date(selectedPoliticalActor?.dateOfBirth)
+          .toISOString()
+          .split("T")[0]
+      : null,
+  };
+
+  const { control, handleSubmit } = useForm<any>({
+    defaultValues: modifiedDefaultValues || {},
+  });
+
   const queryClient = useQueryClient();
   const { userId, userCountry } = useAppSelector(
     (state: RootState) => state.auth
   );
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [backendPath, setBackendPath] = useState("");
+
   const handleSuccess = (data: any) => {
     setBackendPath(data?.filePath);
   };
@@ -65,8 +83,11 @@ const CreatePoliticalActor = ({ toggleModal }: any) => {
   };
 
   const createWardMutation = useCustomMutation({
-    endpoint: "PoliticalActors/CreatePoliticalActor",
+    endpoint: selectedPoliticalActor
+      ? "PoliticalActors/UpdatePoliticalActor"
+      : "PoliticalActors/CreatePoliticalActor",
     successMessage: (data: any) => data?.remark,
+    method: selectedPoliticalActor ? "put" : "post",
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
       toggleModal();
@@ -78,17 +99,23 @@ const CreatePoliticalActor = ({ toggleModal }: any) => {
   });
 
   const submitForm = (data: any) => {
-    if (backendPath === "") {
+    if (backendPath === "" && !selectedPoliticalActor) {
       toast("Please upload a file first");
       return;
     }
 
     const formData: any = {
       ...data,
-      image: backendPath,
-      country: userCountry,
-      createdBy: userId,
     };
+
+    if (selectedPoliticalActor) {
+      formData.lastModifiedBy = userId;
+      formData.image = selectedPoliticalActor.image;
+    } else {
+      formData.createdBy = userId;
+      formData.country = userCountry;
+      formData.image = backendPath;
+    }
 
     createWardMutation.mutate(formData);
   };
@@ -110,7 +137,9 @@ const CreatePoliticalActor = ({ toggleModal }: any) => {
   return (
     <div className="bg-white rounded-xl p-6 h-96 min-h-[600px] overflow-scroll">
       <p className="text-center font-medium text-xl font">
-        Create New Political Actor
+        {selectedPoliticalActor
+          ? "Edit Political Actor"
+          : "Create New Political Actor"}
       </p>
 
       <form
@@ -197,6 +226,7 @@ const CreatePoliticalActor = ({ toggleModal }: any) => {
             maxSizeMB={1}
             acceptFormats={["png", "jpeg", "jpg", "gif"]}
             onFileUpload={handleFileUpload}
+            defaultFile={selectedPoliticalActor?.image}
           />
           {uploadedFile && (
             <ImageDetails
@@ -225,7 +255,9 @@ const CreatePoliticalActor = ({ toggleModal }: any) => {
             loading={uploadMutation.isPending || createWardMutation.isPending}
             variant="tertiary"
           >
-            Create Political Actor
+            {selectedPoliticalActor
+              ? "Edit Political Actor"
+              : "Create Political Actor"}
           </CustomButton>
         </div>
       </form>

@@ -16,7 +16,8 @@ const PoliticalParties = () => {
     pageIndex: 0,
     pageSize: 5,
   });
-  const [createPoliticalActor, setCreatePoliticalActor] = useState(false);
+  const [createPoliticalParty, setcreatePoliticalParty] = useState(false);
+  const [selectedPoliticalParty, setSelectedPoliticalParty] = useState("");
 
   const { data: politicalPartiesData, isLoading } = useGetData({
     url: `PoliticalParties/GetAllPoliticalParties?pageNumber=${
@@ -69,10 +70,30 @@ const PoliticalParties = () => {
         <span className="text-sm font-normal">{info.getValue()}</span>
       ),
     }),
+    columnHelper.accessor("publicId", {
+      header: "Action",
+      cell: (info) => {
+        const rowData = info.row.original;
+
+        return (
+          <div className="flex space-x-4">
+            <button
+              onClick={() => {
+                toggleModal();
+                setSelectedPoliticalParty(rowData);
+              }}
+              className="px-6 py-1 text-sm bg-primary cursor-pointer text-white rounded"
+            >
+              Edit
+            </button>
+          </div>
+        );
+      },
+    }),
   ];
 
   const toggleModal = () => {
-    setCreatePoliticalActor(!createPoliticalActor);
+    setcreatePoliticalParty(!createPoliticalParty);
   };
 
   return (
@@ -97,9 +118,12 @@ const PoliticalParties = () => {
               setPagination={setPagination}
             />
 
-            <Modal show={createPoliticalActor} toggleModal={toggleModal}>
+            <Modal show={createPoliticalParty} toggleModal={toggleModal}>
               <div className="p-4">
-                <CreatePoliticalParty toggleModal={toggleModal} />
+                <CreatePoliticalParty
+                  toggleModal={toggleModal}
+                  selectedPoliticalParty={selectedPoliticalParty}
+                />
               </div>
             </Modal>
           </div>

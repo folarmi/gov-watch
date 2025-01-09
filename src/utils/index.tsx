@@ -120,3 +120,10 @@ export const directUserToPageOnLogin = (userType: UserType) => {
   }
   return pageToRedirect;
 };
+
+export const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth", // Smooth scroll animation
+  });
+};

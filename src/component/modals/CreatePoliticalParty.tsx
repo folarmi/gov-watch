@@ -9,16 +9,35 @@ import { RootState } from "../../lib/store";
 import { useCustomMutation } from "../../hooks/apiCalls";
 import { useQueryClient } from "@tanstack/react-query";
 
-const CreatePoliticalParty = ({ toggleModal }: any) => {
-  const { control, handleSubmit } = useForm<any>();
+const CreatePoliticalParty = ({ toggleModal, selectedPoliticalParty }: any) => {
+  const modifiedDefaultValues = {
+    ...selectedPoliticalParty,
+    population: Number(
+      selectedPoliticalParty?.population
+        ? selectedPoliticalParty?.population?.replace(/,/g, "")
+        : ""
+    ),
+    dateFounded: selectedPoliticalParty?.dateFounded
+      ? new Date(selectedPoliticalParty?.dateFounded)
+          .toISOString()
+          .split("T")[0]
+      : null,
+  };
+
+  const { control, handleSubmit } = useForm<any>({
+    defaultValues: modifiedDefaultValues || {},
+  });
   const queryClient = useQueryClient();
   const { userId, userCountry } = useAppSelector(
     (state: RootState) => state.auth
   );
 
   const createPoliticalPartyMutation = useCustomMutation({
-    endpoint: "PoliticalParties/CreatePoliticalParty",
+    endpoint: selectedPoliticalParty
+      ? "PoliticalParties/UpdatePoliticalParty"
+      : "PoliticalParties/CreatePoliticalParty",
     successMessage: (data: any) => data?.remark,
+    method: selectedPoliticalParty ? "put" : "post",
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
       toggleModal();
@@ -32,9 +51,15 @@ const CreatePoliticalParty = ({ toggleModal }: any) => {
   const submitForm = (data: any) => {
     const formData: any = {
       ...data,
-      country: userCountry,
-      createdBy: userId,
     };
+
+    if (selectedPoliticalParty) {
+      formData.lastModifiedBy = userId;
+      formData.image = selectedPoliticalParty.image;
+    } else {
+      formData.country = userCountry;
+      formData.createdBy = userId;
+    }
 
     createPoliticalPartyMutation.mutate(formData);
   };
@@ -42,7 +67,9 @@ const CreatePoliticalParty = ({ toggleModal }: any) => {
   return (
     <div className="bg-white rounded-xl p-6">
       <p className="text-center font-medium text-xl font">
-        Create New Political Party
+        {selectedPoliticalParty
+          ? "Edit Political Party"
+          : "Create New Political Party"}
       </p>
 
       <form
@@ -87,7 +114,9 @@ const CreatePoliticalParty = ({ toggleModal }: any) => {
             loading={createPoliticalPartyMutation.isPending}
             variant="tertiary"
           >
-            Create Political Party
+            {selectedPoliticalParty
+              ? "Edit Political Party"
+              : "Create Political Party"}
           </CustomButton>
         </div>
       </form>
@@ -96,30 +125,3 @@ const CreatePoliticalParty = ({ toggleModal }: any) => {
 };
 
 export default CreatePoliticalParty;
-
-// {
-//   "title": "Eius sapiente fugiat",
-//   "authorName": "Deirdre Carr",
-//   "snippet": "Deserunt elit volup",
-//   "category": 4,
-//   "imageCaption": "Dolor eum occaecat d",
-//   "state": "Ethan Spears",
-//   "lga": "Alexander Calderon",
-//   "lcda": "Lane Vincent",
-//   "ward": "Aidan Lara",
-//   "datePromiseMade": "1975-08-01",
-//   "promisedDeadline": "2003-07-26",
-//   "datePromiseFulfilled": "2017-05-10",
-//   "politicalActorName": "Aphrodite Douglas",
-//   "mda": "Talon Bell",
-//   "reference": "Consequuntur veritat",
-//   "link": "Doloremque ab vel to",
-//   "country": "Nigeria",
-//   "isFederal": true,
-//   "isPromise": true,
-//   "contributorPublicId": "a7e36778-2fec-4b6e-8569-dbe47778dff0",
-//   "image": "http://govwatch.runasp.net/Uploads/2d60d3e5-481d-4559-b749-9269f83f4a41_Screenshot 2024-08-16 at 10.57.26.png",
-//   "isPromiseFulfilled": false,
-//   "tags": "ggg , test , testing",
-//   "article": "<p>Voluptatem. Exceptur.</p>"
-// }

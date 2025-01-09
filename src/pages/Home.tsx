@@ -39,7 +39,7 @@ const Home = () => {
       categoryName === "all" ? "" : categoryName
     }&searcherId=${userId}${
       userObject?.country ? `&countryName=${userObject.country}` : ""
-    }&${queryParamsToAdd(selectedFilter, queryParam)}`,
+    }&${queryParamsToAdd(selectedFilter, queryParam)}&pageNumber=1&pageSize=36`,
     queryKey: ["publications", categoryName, queryParam, userObject?.country],
   });
 
@@ -120,7 +120,7 @@ const Home = () => {
           {articlesData?.length < 1 ? (
             <EmptyPage />
           ) : (
-            <section className="mt-10 flex flex-wrap justify-between">
+            <section className="mt-10 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {articlesData &&
                 articlesData?.map(
                   ({

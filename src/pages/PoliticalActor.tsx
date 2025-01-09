@@ -18,6 +18,7 @@ const PoliticalActors = () => {
     pageSize: 5,
   });
   const [createPoliticalActor, setCreatePoliticalActor] = useState(false);
+  const [selectedPoliticalActor, setSelectedPoliticalActor] = useState("");
 
   const { data: politicalActorsData, isLoading } = useGetData({
     url: `PoliticalActors/GetAllPoliticalActors?pageNumber=${
@@ -69,6 +70,26 @@ const PoliticalActors = () => {
         </span>
       ),
     }),
+    columnHelper.accessor("publicId", {
+      header: "Action",
+      cell: (info) => {
+        const rowData = info.row.original;
+
+        return (
+          <div className="flex space-x-4">
+            <button
+              onClick={() => {
+                toggleModal();
+                setSelectedPoliticalActor(rowData);
+              }}
+              className="px-6 py-1 text-sm bg-primary cursor-pointer text-white rounded"
+            >
+              Edit
+            </button>
+          </div>
+        );
+      },
+    }),
   ];
 
   const toggleModal = () => {
@@ -99,7 +120,10 @@ const PoliticalActors = () => {
 
             <Modal show={createPoliticalActor} toggleModal={toggleModal}>
               <div className="p-4">
-                <CreatePoliticalActor toggleModal={toggleModal} />
+                <CreatePoliticalActor
+                  toggleModal={toggleModal}
+                  selectedPoliticalActor={selectedPoliticalActor}
+                />
               </div>
             </Modal>
           </div>

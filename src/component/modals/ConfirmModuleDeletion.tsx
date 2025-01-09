@@ -33,7 +33,9 @@ const ConfirmModuleDeletion = ({
       countryId,
       userId,
     };
-    approveDeletionMutation.mutate(data);
+
+    console.log(data);
+    approveDeletionMutation.mutate({ data });
   };
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">

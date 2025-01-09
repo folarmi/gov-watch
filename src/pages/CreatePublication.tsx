@@ -12,10 +12,13 @@ import {
   useUploadMutation,
 } from "../hooks/apiCalls";
 import ArticleForm from "../component/forms/ArticleForm";
+import { useNavigate } from "react-router-dom";
+import { directUserToPageOnLogin } from "../utils";
 // import ArticleForm from "@/app/component/forms/ArticleForm";
 
 const CreatePublication = () => {
-  const { userCountry, userId } = useAppSelector(
+  const navigate = useNavigate();
+  const { userCountry, userId, userType } = useAppSelector(
     (state: RootState) => state.auth
   );
 
@@ -29,7 +32,7 @@ const CreatePublication = () => {
     errorMessage: (error: any) =>
       error?.response?.data?.remark || error?.response?.data,
     onSuccessCallback: () => {
-      window.location.reload();
+      navigate(directUserToPageOnLogin(userType));
     },
   });
 
@@ -83,3 +86,4 @@ const CreatePublication = () => {
 };
 
 export { CreatePublication };
+// dk9i5q1bg

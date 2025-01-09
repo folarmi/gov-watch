@@ -95,7 +95,7 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
 
   const submitForm = (data: any) => {
     // Regular creation starts here
-    if (backendPath === "") {
+    if (backendPath === "" && !selectedLGA) {
       toast("Please upload a file first");
       return;
     }
@@ -106,10 +106,13 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
     };
     if (selectedLGA) {
       formData.lastModifiedBy = userId;
+      formData.image = selectedLGA.image;
     } else {
       formData.createdBy = userId;
+      formData.image = backendPath;
     }
     createLGAMutation.mutate(formData);
+
     // lgaRequests.forEach((formData: any) => {
     //   createLGAMutation.mutate(formData);
     // });

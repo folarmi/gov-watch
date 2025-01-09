@@ -241,11 +241,6 @@ const PrivacyPolicy = () => {
               here
             </Link>
           </p>
-          <ul className="list-disc ml-5 text-black">
-            <li>Email: [YourEmail@example.com]</li>
-            <li>Address: [YourCompany Address]</li>
-            <li>Phone: [YourCompany Phone Number]</li>
-          </ul>
         </section>
       </div>
     </OuterPage>
