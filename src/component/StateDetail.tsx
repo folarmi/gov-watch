@@ -11,7 +11,7 @@ const TextAndValue = ({ title, value }: TextAndValueProp) => {
       <Text className="text-primary" variant="subheading">
         {title}
       </Text>
-      <p className="text-lg font-normal">{value}</p>
+      <p className="text-base md:text-lg font-normal">{value}</p>
     </div>
   );
 };

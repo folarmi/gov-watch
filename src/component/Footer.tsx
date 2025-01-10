@@ -21,9 +21,9 @@ const Footer = () => {
         )}
       </Link> */}
 
-      <Link to="/">
+      {/* <Link to="/">
         <img src="/logo.svg" alt="Company logo" className="w-8 md:w-20" />
-      </Link>
+      </Link> */}
 
       <div className="flex items-center justify-center gap-x-6 md:gap-x-12">
         {FooterList.map(({ name, id, url }) => {

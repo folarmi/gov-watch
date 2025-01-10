@@ -34,7 +34,8 @@ api.interceptors.response.use(
     // Any status codes that falls outside the range of 2xx causes this function to trigger
     if (error?.response?.status === 401) {
       // Handle unauthorized errors (e.g., redirect to login)
-      localStorage.removeItem("token");
+      localStorage.clear();
+      sessionStorage.removeItem("token");
       window.location.href = "/sign-in";
     }
     return Promise.reject(error);

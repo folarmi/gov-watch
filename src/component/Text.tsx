@@ -26,7 +26,7 @@ const Text: React.FC<TextProps> = ({
       textSize = "text-[19px] md:text-[40px] font-bold dark:text-white ";
       break;
     case "subheading":
-      textSize = "text-lg font-semibold dark:text-white";
+      textSize = "text-base md:text-lg font-semibold dark:text-white";
       break;
     case "body":
       textSize = "text-xs md:text-base font-normal dark:text-white";

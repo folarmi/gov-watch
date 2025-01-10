@@ -26,8 +26,6 @@ const Categories = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [deleteCategory, setDeleteCategory] = useState(false);
 
-  console.log(selectedCategory);
-
   const columnHelper = createColumnHelper<any>();
   const columns = [
     // Display Column
@@ -94,6 +92,7 @@ const Categories = () => {
 
   const [createCategoryModal, setCreateCategoryModal] = useState(false);
   const toggleModal = () => {
+    setSelectedCategory("");
     setCreateCategoryModal(!createCategoryModal);
   };
 

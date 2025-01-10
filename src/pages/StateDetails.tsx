@@ -35,17 +35,20 @@ const StateDetails = () => {
       {stateDetailsIsLoading || statePublicationsIsLoading ? (
         <Loader />
       ) : (
-        <div className="mx-24">
+        <div className="mx-2 md:mx-24">
           <Header />
           <Text variant="heading">
             Learn about <span className="text-primary">{params?.id}</span>{" "}
             State, Her MDAs and Political actors
           </Text>
-          <Text variant="bodyThree" className="pt-5 pb-12 text-">
+          <Text
+            variant="bodyThree"
+            className="pt-1 md:pt-5 pb-2 md:pb-12 text-"
+          >
             {stateDetailsData?.bio}
           </Text>
 
-          <section className="flex justify-between mx-6 mb-12">
+          <section className="md:flex justify-between md:mx-6 mb-4 md:mb-12">
             <div className="w-[360px]">
               <TextAndValue title="Capital" value={stateDetailsData?.capital} />
               <TextAndValue
@@ -80,10 +83,12 @@ const StateDetails = () => {
                 value={stateDetailsData?.lgaCount}
               />
             </div>
-            <img src="/lagos.svg" alt="lagos state logo" />
+            <div className="flex justify-center">
+              <img src={stateDetailsData?.image} alt="lagos state logo" />
+            </div>
           </section>
 
-          <p className="text-[28px] font-medium">
+          <p className="text-base md:text-[28px] font-medium">
             Publications by <span className="text-primary">{params?.id}</span>{" "}
             state
           </p>
@@ -95,7 +100,7 @@ const StateDetails = () => {
               // <div className="w-1/2">
               //   <img src="./emptyPage.svg" alt="emptyPageImage" />
               // </div>
-              <section className="mt-10 flex flex-wrap justify-between">
+              <section className="mt-4 md:mt-10 flex flex-wrap justify-between">
                 {statePublicationsData?.map(
                   ({
                     title,

@@ -81,14 +81,16 @@ const CreateCategory = ({ toggleModal, selectedCategory }: any) => {
     };
 
     if (selectedCategory) {
-      formData.lastModifiedBy = userId;
-      formData.image = selectedCategory.image;
+      formData.userId = userId;
+      formData.categoryImage = selectedCategory?.image;
+      // formData.categoryImage =
+      //   "https://res.cloudinary.com/dk9i5q1bg/image/upload/v1736507512/626f5a51-063a-4e01-8157-e56d46a194ae.png";
     } else {
       formData.userId = userId;
       formData.name = data?.name;
       formData.image = backendPath;
     }
-
+    console.log(formData);
     createCategoryMutation.mutate(formData);
   };
 

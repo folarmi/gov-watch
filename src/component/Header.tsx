@@ -105,7 +105,7 @@ const Header = () => {
           )}
 
           {isAuthenticated && (
-            <div className="flex items-center">
+            <div className="hidden md:flex items-center">
               <UserRoleTag role={userType} />
               <AvatarDropdown />
             </div>

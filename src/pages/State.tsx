@@ -18,7 +18,7 @@ const State = () => {
   const [createStateModal, setCreateStateModal] = useState(false);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: 12,
   });
   const [selectedState, setSelectedState] = useState("");
   const [deleteState, setDeleteState] = useState(false);

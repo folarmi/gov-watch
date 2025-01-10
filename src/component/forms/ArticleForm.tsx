@@ -78,7 +78,14 @@ const ArticleForm = ({
     name: "article",
     control,
   });
-
+  const { field: referenceField } = useController({
+    name: "reference",
+    control,
+  });
+  const { field: linkField } = useController({
+    name: "link",
+    control,
+  });
   const { field: isFederalField } = useController({
     name: "isFederal",
     control,
@@ -413,23 +420,39 @@ const ArticleForm = ({
                 setTags={setTags}
                 defaultValues={defaultValues?.tags?.split(/\s*,\s*/) || []}
               />
-              <CustomInput
-                label="Reference"
-                name="reference"
-                control={control}
-                className="mt-4"
+              <label htmlFor="Reference" className="text-sm mt-2 font-medium">
+                Reference
+              </label>
+              <ReactQuill
+                style={{ height: "10rem", marginBottom: "3rem" }}
+                theme="snow"
+                value={referenceField.value}
+                onChange={referenceField.onChange}
               />
-              <CustomInput
+              <label htmlFor="Link" className="text-sm font-medium">
+                Link
+              </label>
+              <ReactQuill
+                style={{ height: "10rem", marginBottom: "3rem" }}
+                theme="snow"
+                value={linkField.value}
+                onChange={linkField.onChange}
+              />
+              {/* <CustomInput
                 label="Link"
                 name="link"
                 control={control}
                 className="mt-4"
-              />
+              /> */}
             </div>
           )}
         </div>
 
         {/* Article Content */}
+
+        <label htmlFor="Article" className="text-sm mt-2 font-medium">
+          Article
+        </label>
         <ReactQuill
           style={{ height: "10rem", marginBottom: "5rem" }}
           theme="snow"
