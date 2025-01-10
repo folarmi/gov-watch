@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Card from "../component/Card";
@@ -10,7 +11,7 @@ import EmptyPage from "../component/EmptyPage";
 import Loader from "../component/Loader";
 import { useCustomMutation, useGetData } from "../hooks/apiCalls";
 import OuterPage from "../layouts/OuterPage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppSelector } from "../lib/hook";
 import { RootState } from "../lib/store";
 import { useAuth } from "../context/AuthContext";
@@ -19,6 +20,11 @@ import { queryParamsToAdd } from "../utils";
 import { useForm } from "react-hook-form";
 
 const Home = () => {
+  const [pageNumber, setPageNumber] = useState(1);
+  const [articles, setArticles] = useState<any>([]);
+  const [hasMore, setHasMore] = useState(true);
+  const pageSize = 36;
+
   const { control, handleSubmit } = useForm();
   const { isAuthenticated } = useAuth();
   const { userId, userObject } = useAppSelector(
@@ -39,9 +45,44 @@ const Home = () => {
       categoryName === "all" ? "" : categoryName
     }&searcherId=${userId}${
       userObject?.country ? `&countryName=${userObject.country}` : ""
-    }&${queryParamsToAdd(selectedFilter, queryParam)}&pageNumber=1&pageSize=36`,
-    queryKey: ["publications", categoryName, queryParam, userObject?.country],
+    }&${queryParamsToAdd(
+      selectedFilter,
+      queryParam
+    )}&pageNumber=${pageNumber}&pageSize=${pageSize}`,
+    queryKey: [
+      "publications",
+      categoryName,
+      queryParam,
+      userObject?.country,
+      pageNumber,
+    ],
   });
+
+  useEffect(() => {
+    if (articlesData?.length > 0) {
+      setArticles((prev: any) => [...prev, ...articlesData]);
+    }
+    // If the current fetch returns fewer items than pageSize, it means no more data
+    if (articlesData?.length < pageSize) {
+      setHasMore(false);
+    }
+  }, [articlesData]);
+
+  const handleScroll = () => {
+    const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
+    if (
+      scrollHeight - scrollTop <= clientHeight + 100 &&
+      hasMore &&
+      !isLoading
+    ) {
+      setPageNumber((prev) => prev + 1); // Load the next page
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [hasMore, isLoading]);
 
   const { data: categoriesData, isLoading: categoriesDataisLoading } =
     useGetData({
@@ -117,12 +158,12 @@ const Home = () => {
           categories={categoriesDataFormatted}
         />
         <>
-          {articlesData?.length < 1 ? (
+          {articles?.length < 1 ? (
             <EmptyPage />
           ) : (
             <section className="mt-10 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {articlesData &&
-                articlesData?.map(
+              {articles &&
+                articles?.map(
                   ({
                     title,
                     date,

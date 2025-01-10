@@ -24,6 +24,11 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
   const modifiedDefaultValues = {
     ...selectedState,
     population: Number(selectedState?.population?.replace(/,/g, "")),
+    financialAllocation: Number(
+      selectedState?.financialAllocation
+        ? selectedState?.financialAllocation?.replace(/,/g, "")
+        : ""
+    ),
   };
 
   const { control, handleSubmit } = useForm<any>({
