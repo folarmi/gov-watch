@@ -15,12 +15,16 @@ interface CardProps {
   deadline?: string;
   id: string;
   isArticleBookMarked?: any;
+  isArticleLiked?: any;
   setIsArticleBookMarked?: any;
   onBookMarkClick?: any;
+  onLikeClicked?: any;
+  onCommentClicked?: any;
   isBookMarked?: boolean;
   link?: string | Partial<Path>;
   isPublished?: boolean;
   category?: string;
+  selectedCard?: string;
 }
 
 const Card = ({
@@ -35,10 +39,14 @@ const Card = ({
   isBookMarked,
   onBookMarkClick,
   isArticleBookMarked,
+  onCommentClicked,
+  isArticleLiked,
+  onLikeClicked,
   setIsArticleBookMarked,
   isPublished,
   imageUrl,
   category,
+  selectedCard,
 }: CardProps) => {
   const [timeDifference, setTimeDifference] = useState<string>("");
 
@@ -99,15 +107,27 @@ const Card = ({
         {isPublished && (
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <img src="/heartOutline.svg" alt="Like" className="w-5 h-5" />
-              <img src="/comments.svg" alt="Comments" className="w-5 h-5" />
+              <img
+                src={isArticleLiked ? "/heartOutline.svg" : "/heartOutline.svg"}
+                alt="Like"
+                className="w-5 h-5 cursor-pointer"
+                onClick={() => onLikeClicked(id)}
+              />
+              <img
+                src="/comments.svg"
+                alt="Comments"
+                className="w-5 h-5 cursor-pointer"
+                onClick={() => onCommentClicked(id)}
+              />
             </div>
 
             <div className="">
               <img
                 onClick={() => onBookMarkClick(id)}
                 src={
-                  isArticleBookMarked ? "/filledBookMark.svg" : "/bookMark.svg"
+                  selectedCard === id && isArticleBookMarked
+                    ? "/filledBookMark.svg"
+                    : "/bookMark.svg"
                 }
                 alt="Bookmark"
                 className="w-5 h-5 cursor-pointer"

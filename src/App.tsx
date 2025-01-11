@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import GoogleAdScript from "./hooks/AdsScript";
 
 function App() {
-  const isSubscribed = true;
+  const isSubscribed = false;
   return (
     <>
       <StoreProvider>

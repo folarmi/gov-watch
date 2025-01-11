@@ -23,6 +23,12 @@ const Home = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [articles, setArticles] = useState<any>([]);
   const [hasMore, setHasMore] = useState(true);
+  const [categoryName, setCategoryName] = useState("");
+  const [isArticleBookMarked, setIsArticleBookMarked] =
+    useState<boolean>(false);
+  const [selectedFilter, setSelectedFilter] = useState("");
+  const [queryParam, setQueryParam] = useState("");
+  const [selectedCard, setSelectedCard] = useState("");
   const pageSize = 36;
 
   const { control, handleSubmit } = useForm();
@@ -30,11 +36,6 @@ const Home = () => {
   const { userId, userObject } = useAppSelector(
     (state: RootState) => state.auth
   );
-  const [categoryName, setCategoryName] = useState("");
-  const [isArticleBookMarked, setIsArticleBookMarked] =
-    useState<boolean>(false);
-  const [selectedFilter, setSelectedFilter] = useState("");
-  const [queryParam, setQueryParam] = useState("");
 
   const {
     data: articlesData,
@@ -120,12 +121,29 @@ const Home = () => {
       publicationPublicId: id,
     };
 
+    setSelectedCard(id);
     setIsArticleBookMarked((prev) => !prev);
 
     try {
       await createBookmarkMutation.mutateAsync(formData);
     } catch (error) {
       setIsArticleBookMarked((prev) => !prev);
+    }
+  };
+
+  const toggleLikedStatus = (id: string) => {
+    console.log(id);
+    if (!isAuthenticated) {
+      toast("Please sign in to like an article");
+      return;
+    }
+  };
+
+  const toggleComment = (id: string) => {
+    console.log(id);
+    if (!isAuthenticated) {
+      toast("Please sign in to comment");
+      return;
     }
   };
 
@@ -148,7 +166,7 @@ const Home = () => {
             setSelectedFilter={setSelectedFilter}
             setQueryParam={setQueryParam}
             control={control}
-            name="queryParams"
+            name="queryParam"
           />
         </form>
         <HeroSection />
@@ -189,9 +207,12 @@ const Home = () => {
                           imageUrl={image}
                           deadline={promiseDeadline}
                           id={publicId}
+                          selectedCard={selectedCard}
                           onBookMarkClick={(id: string) =>
                             toggleBookMarkStatus(id)
                           }
+                          onLikeClicked={(id: string) => toggleLikedStatus(id)}
+                          onCommentClicked={(id: string) => toggleComment(id)}
                           // imageUrl={coatOfArms}
                           isBookMarked={isBookmarked}
                           isArticleBookMarked={isArticleBookMarked}
