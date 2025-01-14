@@ -10644,7 +10644,7 @@ export const lgaData = [
 //   "totalCount": 31
 // }
 
-const test = [
+export const test = [
   {
     publicId: "34ee6a14-aa51-40b0-9206-1884d7dd7bcf",
     name: "Abia",

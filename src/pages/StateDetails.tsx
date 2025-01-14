@@ -3,7 +3,6 @@
 import Text from "../component/Text";
 import TextAndValue from "../component/StateDetail";
 import Card from "../component/Card";
-import SeeAllPublications from "../component/SeeAllPublications";
 import ExploreButton from "../component/ExploreButton";
 import { Header } from "../component/Header";
 import { useParams } from "react-router-dom";
@@ -83,8 +82,20 @@ const StateDetails = () => {
                 value={stateDetailsData?.lgaCount}
               />
             </div>
-            <div className="flex justify-center">
-              <img src={stateDetailsData?.image} alt="lagos state logo" />
+
+            {/* <div className="flex justify-center items-center max-w-lg">
+              <img
+                src={stateDetailsData?.image}
+                alt="Fetched from backend"
+                className="w-full h-auto object-cover transition-transform duration-300 hover:scale-105 hover:shadow-lg"
+              />
+            </div> */}
+            <div className="flex justify-center items-center max-w-lg">
+              <img
+                src={stateDetailsData?.image}
+                alt="Fetched from backend"
+                className="w-80 h-60 object-cover rounded-lg transition-transform duration-300 hover:scale-105 hover:shadow-lg"
+              />
             </div>
           </section>
 
@@ -158,8 +169,6 @@ const StateDetails = () => {
               }
             )}
           </section> */}
-
-          <SeeAllPublications />
 
           <ExploreButton />
         </div>

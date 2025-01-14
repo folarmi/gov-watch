@@ -62,13 +62,15 @@ const About = () => {
                 <Team
                   img="Olabayo.svg"
                   name="Olabayo Balogun"
+                  link="https://www.linkedin.com/in/olabayobalogun/"
                   // role="lorem ipsum dolor sit a met consectetur"
                 />
               </div>
               <div className="mb-8 lg:pl-44 md:pl-24">
                 <Team
+                  link="https://www.linkedin.com/in/folasayo-akinyosoye/"
                   img="Folashayo.svg"
-                  name="Folashayo Akinyosoye"
+                  name="Folasayo Akinyosoye"
                   role="A dedicated professional with a strong background in problem-solving and continuous learning, committed to delivering high-quality results and contributing meaningfully to projects and initiatives."
                 />
               </div>

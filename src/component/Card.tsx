@@ -67,87 +67,95 @@ const Card = ({
   }, [isBookMarked]);
 
   return (
-    <div className="max-w-sm w-[300px] min-h-[450px] h bg-white dark:bg-black_100 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer my-3 overflow-hidden">
+    <div className="flex flex-col max-w-sm w-[300px] min-h-[450px] bg-white dark:bg-black_100 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer my-3 overflow-hidden">
       <img
         src={imageUrl}
         // src="/coatOfArms.svg"
         alt="article thumbnail"
         className="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
       />
-      <div className="p-5">
-        <Text
-          variant="bodyTwo"
-          className="pb-1 uppercase text-xs tracking-wide text-primary dark:text-primary_light"
-        >
-          {section}
-        </Text>
+      <div className="flex-grow">
+        <div className="p-5">
+          <Text
+            variant="bodyTwo"
+            className="pb-1 uppercase text-xs tracking-wide text-primary dark:text-primary_light"
+          >
+            {section}
+          </Text>
 
-        <h3 className="font-semibold text-lg text-black_100 dark:text-white mb-2">
-          {truncateText(articleTitle, 6)}
-        </h3>
+          <h3 className="font-semibold text-lg text-black_100 dark:text-white mb-2">
+            {truncateText(articleTitle, 6)}
+          </h3>
 
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-          {truncateText(summary, 10)}
-        </p>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+            {truncateText(summary, 10)}
+          </p>
 
-        <div className="flex items-center justify-between mb-4">
-          {promise && deadline && (
-            <span
-              className={`text-white text-xs font-bold me-2 px-2.5 py-0.5 rounded ${
-                timeDifference.includes("past") ? "bg-red-500" : "bg-green-500"
-              }`}
-            >
-              {timeDifference}
-            </span>
+          <div className="flex items-center justify-between mb-4">
+            {promise && deadline && (
+              <span
+                className={`text-white text-xs font-bold me-2 px-2.5 py-0.5 rounded ${
+                  timeDifference.includes("past")
+                    ? "bg-red-500"
+                    : "bg-green-500"
+                }`}
+              >
+                {timeDifference}
+              </span>
+            )}
+          </div>
+
+          <p className="font-medium text-xs text-gray-500">{date}</p>
+
+          {isPublished && (
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <img
+                  src={
+                    isArticleLiked ? "/heartOutline.svg" : "/heartOutline.svg"
+                  }
+                  alt="Like"
+                  className="w-5 h-5 cursor-pointer"
+                  onClick={() => onLikeClicked(id)}
+                />
+                <img
+                  src="/comments.svg"
+                  alt="Comments"
+                  className="w-5 h-5 cursor-pointer"
+                  onClick={() => onCommentClicked(id)}
+                />
+              </div>
+
+              <div className="">
+                <img
+                  onClick={() => onBookMarkClick(id)}
+                  src={
+                    selectedCard === id && isArticleBookMarked
+                      ? "/filledBookMark.svg"
+                      : "/bookMark.svg"
+                  }
+                  alt="Bookmark"
+                  className="w-5 h-5 cursor-pointer"
+                />
+              </div>
+            </div>
+          )}
+
+          {category && (
+            <div className="tag">
+              <span className="bg-primary text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded">
+                {category}
+              </span>
+            </div>
           )}
         </div>
+      </div>
 
-        <p className="font-medium text-xs text-gray-500">{date}</p>
-
-        {isPublished && (
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <img
-                src={isArticleLiked ? "/heartOutline.svg" : "/heartOutline.svg"}
-                alt="Like"
-                className="w-5 h-5 cursor-pointer"
-                onClick={() => onLikeClicked(id)}
-              />
-              <img
-                src="/comments.svg"
-                alt="Comments"
-                className="w-5 h-5 cursor-pointer"
-                onClick={() => onCommentClicked(id)}
-              />
-            </div>
-
-            <div className="">
-              <img
-                onClick={() => onBookMarkClick(id)}
-                src={
-                  selectedCard === id && isArticleBookMarked
-                    ? "/filledBookMark.svg"
-                    : "/bookMark.svg"
-                }
-                alt="Bookmark"
-                className="w-5 h-5 cursor-pointer"
-              />
-            </div>
-          </div>
-        )}
-
-        {category && (
-          <div className="tag">
-            <span className="bg-primary text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded">
-              {category}
-            </span>
-          </div>
-        )}
-
+      <div className="mx-4">
         <Link
           to={link || ""}
           onClick={scrollToTop}
-          className="mt-5 inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary_dark focus:ring-4 focus:outline-none focus:ring-primary_light transition-colors"
+          className="mb-4  flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary_dark focus:ring-4 focus:outline-none focus:ring-primary_light transition-colors"
         >
           Read more
           <svg

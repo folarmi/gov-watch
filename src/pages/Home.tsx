@@ -59,15 +59,29 @@ const Home = () => {
     ],
   });
 
+  // useEffect(() => {
+  //   if (articlesData?.length > 0) {
+  //     setArticles((prev: any) => [...prev, ...articlesData]);
+  //   }
+  //   // If the current fetch returns fewer items than pageSize, it means no more data
+  //   if (articlesData?.length < pageSize) {
+  //     setHasMore(false);
+  //   }
+  // }, [articlesData]);
+
   useEffect(() => {
-    if (articlesData?.length > 0) {
-      setArticles((prev: any) => [...prev, ...articlesData]);
+    // Reset articles when categoryName or filters change
+    if (pageNumber === 1) {
+      setArticles(articlesData || []); // Replace articles with the new data
+    } else if (articlesData?.length > 0) {
+      setArticles((prev: any) => [...prev, ...articlesData]); // Append for infinite scrolling
     }
-    // If the current fetch returns fewer items than pageSize, it means no more data
+
+    // If the current fetch returns fewer items than pageSize, no more data
     if (articlesData?.length < pageSize) {
       setHasMore(false);
     }
-  }, [articlesData]);
+  }, [articlesData, pageNumber, categoryName, selectedFilter, queryParam]);
 
   const handleScroll = () => {
     const { scrollHeight, scrollTop, clientHeight } = document.documentElement;

@@ -339,6 +339,27 @@ const ArticleForm = ({
                 />
               </div>
 
+              <CustomInput
+                label="Published Date"
+                name="publishDate"
+                type="date"
+                control={control}
+              />
+
+              <CustomInput
+                label="Date Incident Started"
+                name="dateIncidentStarted"
+                type="date"
+                control={control}
+              />
+
+              <CustomInput
+                label="Date Incident Was Resolved"
+                name="dateIncidentResolved"
+                type="date"
+                control={control}
+              />
+
               {/* Promise Information */}
               <div className="space-y-4">
                 <CustomInput
