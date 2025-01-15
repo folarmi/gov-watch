@@ -4,10 +4,11 @@ import { RootState } from "../lib/store";
 import { useGetDataById } from "../hooks/apiCalls";
 import ArticleForm from "../component/forms/ArticleForm";
 import Loader from "../component/Loader";
+import { userTypeObject } from "../utils";
 
 const SinglePublication = () => {
   const params = useParams();
-  const { userId } = useAppSelector((state: RootState) => state.auth);
+  const { userId, userType } = useAppSelector((state: RootState) => state.auth);
 
   const { data: publicationData, isLoading: publicationDataIsLoading } =
     useGetDataById({
@@ -26,7 +27,7 @@ const SinglePublication = () => {
       ) : (
         <div>
           <ArticleForm
-            isEditing={true}
+            isEditing={userType === userTypeObject.admin ? false : true}
             // defaultValues={publicationData} // Pass the article data as default values
             defaultValues={publicationData}
             // onSubmit={handleEditSubmit}

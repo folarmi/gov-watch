@@ -23,6 +23,7 @@ import { userTypeObject } from "../../utils";
 import Modal from "../modals/Modal";
 import ReviewModal from "../modals/ReviewModal";
 import ApprovePublication from "../modals/ApprovePublication";
+import ConfirmModuleDeletion from "../modals/ConfirmModuleDeletion";
 
 const ArticleForm = ({
   isEditing = false,
@@ -39,6 +40,7 @@ const ArticleForm = ({
   const [selectedState, setSelectedState] = useState("");
   const [selectedLGA, setSelectedLGA] = useState("");
   const [approveModal, setApproveModal] = useState(false);
+  const [deletePublication, setDeletePublication] = useState(false);
 
   const toggleModal = () => {
     setReviewModal(!reviewModal);
@@ -51,6 +53,10 @@ const ArticleForm = ({
 
   const toggleApproveModal = () => {
     setApproveModal(!approveModal);
+  };
+
+  const toggleDeleteModal = () => {
+    setDeletePublication(!deletePublication);
   };
 
   const { control, handleSubmit } = useForm({
@@ -552,6 +558,15 @@ const ArticleForm = ({
               >
                 Publish
               </CustomButton>
+              <CustomButton
+                variant="delete"
+                className="w-full md:w-1/2"
+                // disabled={deletePublicationMutation.isPending}
+                // loading={deletePublicationMutation.isPending}
+                onClick={() => toggleDeleteModal()}
+              >
+                Delete
+              </CustomButton>
             </>
           )}
         </div>
@@ -574,14 +589,17 @@ const ArticleForm = ({
           </div>
         </Modal>
 
-        {/* <Modal show={isModalOpen} toggleModal={handleCancel}>
+        <Modal show={deletePublication} toggleModal={toggleDeleteModal}>
           <div className="p-4">
-            <WarningModal
-              toggleModal={handleCancel}
-              handleConfirm={handleConfirm}
+            <ConfirmModuleDeletion
+              moduleName="Publication"
+              toggleModal={toggleDeleteModal}
+              endpoint="Publications/DeletePublication"
+              id={defaultValues?.publicId}
+              queryKey="GetAllStatesTable"
             />
           </div>
-        </Modal> */}
+        </Modal>
       </form>
     </>
   );
