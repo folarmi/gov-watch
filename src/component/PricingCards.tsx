@@ -1,4 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState } from "react";
 import { dummyPlans } from "../data";
+import { useCustomMutation } from "../hooks/apiCalls";
+import { useAppSelector } from "../lib/hook";
+import { RootState } from "../lib/store";
+import CustomButton from "./CustomButton";
 
 type PricingCardProp = {
   planName: string;
@@ -6,6 +12,51 @@ type PricingCardProp = {
 };
 
 const PricingCard = ({ planName, amount }: PricingCardProp) => {
+  const { userId } = useAppSelector((state: RootState) => state.auth);
+  const [paymentDetails, setPaymentDetails] = useState({
+    url: "",
+    referenceNumber: "",
+  });
+
+  const handleOpenNewTab = (url: string) => {
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  const createPaymentMutation = useCustomMutation({
+    endpoint: "Payments/CreatePayment",
+    successMessage: (data: any) => data?.remark,
+    errorMessage: (error: any) =>
+      // error?.response?.data?.remark || error?.response?.data,
+      console.log(error),
+    onSuccessCallback: (data) => {
+      console.log(data?.checkoutUrl);
+      console.log(data?.paymentReferenceId);
+      setPaymentDetails((prev) => ({
+        ...prev,
+        url: data?.checkoutUrl,
+        referenceNumber: data?.paymentReferenceId,
+      }));
+      handleOpenNewTab(data?.checkoutUrl);
+    },
+  });
+
+  const submitForm = () => {
+    const formData: any = {
+      channel: "paystack",
+      paymentService: "Bank Transfer",
+      productName: planName,
+      numberOfProductUnits: 1,
+      numberOfStaffPaidFor: 0,
+      isSubscriptionForAllStaff: null,
+      staffUserId: null,
+      beneficiaryEmailAddress: null,
+      createdBy: userId,
+    };
+
+    // console.log(formData);
+    createPaymentMutation.mutate(formData);
+  };
+
   return (
     <div className="w-full max-w-xs p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 mr-8 mb-8">
       <h5 className="mb-4 text-xl font-medium text-gray-500 dark:text-gray-400">
@@ -48,12 +99,16 @@ const PricingCard = ({ planName, amount }: PricingCardProp) => {
           );
         })}
       </ul>
-      <button
+
+      <CustomButton
         type="button"
+        onClick={() => submitForm()}
+        loading={createPaymentMutation.isPending}
+        disabled={createPaymentMutation.isPending}
         className="text-white bg-primary hover:bg-green_300 focus:ring-4 focus:outline-none focus:ring-blue-200 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-900 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex justify-center w-full text-center"
       >
         Choose plan
-      </button>
+      </CustomButton>
     </div>
   );
 };

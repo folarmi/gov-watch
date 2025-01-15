@@ -459,12 +459,6 @@ const ArticleForm = ({
                 value={linkField.value}
                 onChange={linkField.onChange}
               />
-              {/* <CustomInput
-                label="Link"
-                name="link"
-                control={control}
-                className="mt-4"
-              /> */}
             </div>
           )}
         </div>
