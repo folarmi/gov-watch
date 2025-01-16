@@ -182,7 +182,7 @@ const ArticleForm = ({
 
   const lgaDataFormatted =
     lgaData &&
-    lgaData.map((item: string) => {
+    lgaData?.map((item: string) => {
       return {
         label: item,
         value: item,
@@ -411,29 +411,29 @@ const ArticleForm = ({
               {/* Checkboxes */}
               <div className="grid grid-cols-2 gap-4">
                 <CustomCheckBox
-                  checked={isFederalField.value}
-                  onChange={isFederalField.onChange}
+                  checked={isFederalField?.value}
+                  onChange={isFederalField?.onChange}
                   iflabel
                   name="isFederal"
                   labelText="Is this a Federal issue?"
                 />
                 <CustomCheckBox
-                  checked={isPromiseField.value}
-                  onChange={isPromiseField.onChange}
+                  checked={isPromiseField?.value}
+                  onChange={isPromiseField?.onChange}
                   iflabel
                   labelText="Is this a Promise?"
                   name="isPromise"
                 />
                 <CustomCheckBox
-                  checked={isPromiseFulfilledField.value}
-                  onChange={isPromiseFulfilledField.onChange}
+                  checked={isPromiseFulfilledField?.value}
+                  onChange={isPromiseFulfilledField?.onChange}
                   iflabel
                   labelText="Has this Promise been Fulfilled?"
                   name="isPromiseFulfilled"
                 />
                 <CustomCheckBox
-                  checked={isCredibleField.value}
-                  onChange={isCredibleField.onChange}
+                  checked={isCredibleField?.value}
+                  onChange={isCredibleField?.onChange}
                   iflabel
                   labelText="Is this Credible?"
                   name="isCredible"
@@ -453,8 +453,8 @@ const ArticleForm = ({
               <ReactQuill
                 style={{ height: "10rem", marginBottom: "3rem" }}
                 theme="snow"
-                value={referenceField.value}
-                onChange={referenceField.onChange}
+                value={referenceField?.value}
+                onChange={referenceField?.onChange}
               />
               <label htmlFor="Link" className="text-sm font-medium">
                 Link
@@ -462,8 +462,8 @@ const ArticleForm = ({
               <ReactQuill
                 style={{ height: "10rem", marginBottom: "3rem" }}
                 theme="snow"
-                value={linkField.value}
-                onChange={linkField.onChange}
+                value={linkField?.value}
+                onChange={linkField?.onChange}
               />
             </div>
           )}
@@ -477,8 +477,8 @@ const ArticleForm = ({
         <ReactQuill
           style={{ height: "10rem", marginBottom: "5rem" }}
           theme="snow"
-          value={field.value}
-          onChange={field.onChange}
+          value={field?.value}
+          onChange={field?.onChange}
         />
 
         {/* Actions */}
@@ -490,8 +490,8 @@ const ArticleForm = ({
         >
           {isEditing ? (
             <>
-              {(userType === userTypeObject.admin ||
-                userType === userTypeObject.editor) && (
+              {(userType === userTypeObject?.admin ||
+                userType === userTypeObject?.editor) && (
                 <CustomButton
                   variant="secondary"
                   className="w-full md:w-1/2"
@@ -501,8 +501,8 @@ const ArticleForm = ({
                 </CustomButton>
               )}
 
-              {(userType === userTypeObject.admin ||
-                userType === userTypeObject.editor) && (
+              {(userType === userTypeObject?.admin ||
+                userType === userTypeObject?.editor) && (
                 <CustomButton
                   variant="primary"
                   className="w-full md:w-1/2 cursor-pointer"
@@ -513,7 +513,7 @@ const ArticleForm = ({
                 </CustomButton>
               )}
 
-              {userType === userTypeObject.contributor && (
+              {userType === userTypeObject?.contributor && (
                 <CustomButton
                   variant="secondary"
                   className="w-full md:w-1/2"
@@ -596,7 +596,7 @@ const ArticleForm = ({
               toggleModal={toggleDeleteModal}
               endpoint="Publications/DeletePublication"
               id={defaultValues?.publicId}
-              queryKey="GetAllStatesTable"
+              queryKey=""
             />
           </div>
         </Modal>

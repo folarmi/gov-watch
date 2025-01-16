@@ -39,7 +39,7 @@ const SignIn = () => {
 
         dispatch(updateUserType(userType));
         dispatch(updateUserId(data?.data?.publicId));
-        dispatch(updateUserCountry(data?.data?.country));
+        dispatch(updateUserCountry(data?.data?.countryOfOrigin));
         dispatch(updateUserObject(data?.data));
         loginFromContext(data?.data?.token);
 

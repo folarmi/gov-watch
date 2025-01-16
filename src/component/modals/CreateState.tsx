@@ -26,7 +26,7 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
     population: Number(selectedState?.population?.replace(/,/g, "")),
     financialAllocation: Number(
       selectedState?.financialAllocation
-        ? selectedState?.financialAllocation?.replace(/,/g, "")
+        ? selectedState?.financialAllocation?.toString().replace(/,/g, "")
         : ""
     ),
   };

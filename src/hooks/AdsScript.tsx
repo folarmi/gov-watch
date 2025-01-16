@@ -23,7 +23,7 @@ const GoogleAdScript: React.FC<GoogleAdScriptProps> = ({ isSubscribed }) => {
       gtag("js", new Date());
       gtag("config", "YOUR_GOOGLE_ADS_ID");
 
-      console.log("Google Ads script loaded for unsubscribed user");
+      // console.log("Google Ads script loaded for unsubscribed user");
 
       // Cleanup the script when the component unmounts
       return () => {
