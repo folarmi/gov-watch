@@ -6,7 +6,7 @@ import { useAppSelector } from "../lib/hook";
 import { RootState } from "../lib/store";
 import CustomButton from "./CustomButton";
 import { updateReferenceNumber } from "../lib/features/auth/paymentSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type PricingCardProp = {
   planName: string;
@@ -50,13 +50,15 @@ const PricingCard = ({ planName, amount }: PricingCardProp) => {
   });
 
   // React to query success
-  if (isSuccess && verifyPaymentData) {
-    setVerificationStatus(
-      verifyPaymentData.success ? "Payment verified!" : "Verification failed."
-    );
-    dispatch(updateReferenceNumber(""));
-    setShouldFetch(false);
-  }
+  useEffect(() => {
+    if (isSuccess && verifyPaymentData) {
+      setVerificationStatus(
+        verifyPaymentData.success ? "Payment verified!" : "Verification failed."
+      );
+      dispatch(updateReferenceNumber(""));
+      setShouldFetch(false);
+    }
+  }, [isSuccess, verifyPaymentData, dispatch]);
 
   const handleVerifyPayment = () => {
     setShouldFetch(true);
@@ -128,7 +130,7 @@ const PricingCard = ({ planName, amount }: PricingCardProp) => {
         disabled={createPaymentMutation.isPending}
         className="text-white bg-primary hover:bg-green_300 focus:ring-4 focus:outline-none focus:ring-blue-200 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-900 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex justify-center w-full text-center"
       >
-        Choose planss
+        Choose plan
       </CustomButton>
 
       {referenceNumber !== "" && (

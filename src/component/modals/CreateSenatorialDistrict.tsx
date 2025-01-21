@@ -21,16 +21,25 @@ import FileUploader from "../FileUploader";
 import { useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 
-const CreateState = ({ toggleModal, selectedState }: any) => {
+const CreateSenatorialDistrict = ({
+  toggleModal,
+  selectedSenatorialDistrict,
+}: any) => {
   const modifiedDefaultValues = {
-    ...selectedState,
-    population: Number(selectedState?.population?.replace(/,/g, "")),
+    ...selectedSenatorialDistrict,
+    population: Number(
+      selectedSenatorialDistrict?.population?.replace(/,/g, "")
+    ),
     financialAllocation: Number(
-      selectedState?.financialAllocation
-        ? selectedState?.financialAllocation?.toString().replace(/,/g, "")
+      selectedSenatorialDistrict?.financialAllocation
+        ? selectedSenatorialDistrict?.financialAllocation
+            ?.toString()
+            .replace(/,/g, "")
         : ""
     ),
-    dateFounded: moment(selectedState?.dateFounded).format("YYYY-MM-DD"),
+    dateFounded: moment(selectedSenatorialDistrict?.dateFounded).format(
+      "YYYY-MM-DD"
+    ),
   };
 
   const { control, handleSubmit } = useForm<any>({
@@ -59,21 +68,23 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
   };
 
   const createStateMutation = useCustomMutation({
-    endpoint: selectedState ? `States/UpdateState` : "States/CreateState",
+    endpoint: selectedSenatorialDistrict
+      ? `SenatorialDistricts/UpdateSenatorialDistrict`
+      : "SenatorialDistricts/CreateSenatorialDistrict",
     successMessage: (data: any) => data?.remark,
-    method: selectedState ? "put" : "post",
+    method: selectedSenatorialDistrict ? "put" : "post",
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
       toggleModal();
       queryClient.invalidateQueries({
-        queryKey: ["GetAllStatesTable"],
+        queryKey: ["GetAllSenatorialDistrictTable"],
         exact: false,
       });
     },
   });
 
   const submitForm = (data: any) => {
-    if (backendPath === "" && !selectedState) {
+    if (backendPath === "" && !selectedSenatorialDistrict) {
       toast("Please upload a file first");
       return;
     }
@@ -82,9 +93,9 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
       ...data,
     };
 
-    if (selectedState) {
+    if (selectedSenatorialDistrict) {
       formData.lastModifiedBy = userId;
-      formData.image = selectedState.image;
+      formData.image = selectedSenatorialDistrict.image;
     } else {
       // formData.population = Number(data?.population?.replaceAll(",", "") || 0);
       formData.createdBy = userId;
@@ -94,24 +105,10 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
     createStateMutation.mutate(formData);
   };
 
-  const { data: regionData, isLoading: regionDataIsLoading } = useGetData({
-    url: "Regions/GetAllRegions",
-    queryKey: ["GetAllRegions"],
-  });
-
   const { data: countryData, isLoading: countryDataIsLoading } = useGetData({
     url: "Countries/GetListOfCountries",
     queryKey: ["GetListOfCountries"],
   });
-
-  const regionDataFormatted =
-    regionData?.regionViewModel &&
-    regionData?.regionViewModel.map((item: any) => {
-      return {
-        label: item?.name,
-        value: item?.id,
-      };
-    });
 
   const countriesDataFormatted =
     countryData &&
@@ -125,7 +122,9 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
   return (
     <div className="bg-white rounded-xl p-6">
       <p className="text-center font-medium text-xl font">
-        {selectedState ? "Edit State" : "Create New State"}
+        {selectedSenatorialDistrict
+          ? "Edit Senatorial District"
+          : "Create New Senatorial District"}
       </p>
 
       <form
@@ -133,7 +132,7 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
         className="my-4 grid grid-cols-4 gap-x-4 w-full"
       >
         <CustomInput
-          label="State Name"
+          label="Name"
           name="name"
           control={control}
           rules={{ required: "State Name is required" }}
@@ -141,24 +140,24 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
         />
 
         <CustomInput
-          label="State Capital"
-          name="capital"
+          label="Senator"
+          name="senator"
           control={control}
-          rules={{ required: "State Capital is required" }}
+          rules={{ required: "Senator is required" }}
           className="mt-4"
         />
 
         <CustomInput
-          label="State Governor"
-          name="governor"
+          label="State"
+          name="state"
           control={control}
-          rules={{ required: "State governor is required" }}
+          rules={{ required: "State is required" }}
           className="mt-4"
         />
 
         <CustomInput
-          label="Political Party (Governor)"
-          name="politicalPartyOfGovernor"
+          label="Political Party (Senator)"
+          name="politicalPartyOfSenator"
           control={control}
           // rules={{ required: "State governor is required" }}
           className="mt-4"
@@ -213,19 +212,17 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
           className="mt-4"
         />
 
-        <CustomSelect
-          name="regionId"
-          options={regionDataFormatted}
-          isLoading={regionDataIsLoading}
-          label="Region"
+        <CustomInput
+          label="Website"
+          name="website"
           control={control}
-          placeholder="Select Region"
+          // rules={{ required: "State governor is required" }}
           className="mt-4"
         />
 
         <CustomInput
-          label="MDA Count"
-          name="mdaCount"
+          label="Ward Count"
+          name="wardCount"
           type="number"
           onlyNumbers
           control={control}
@@ -234,8 +231,8 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
         />
 
         <CustomInput
-          label="LGA Count"
-          name="lgaCount"
+          label="LCDA Count"
+          name="lcdaCount"
           type="number"
           onlyNumbers
           control={control}
@@ -254,7 +251,7 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
             maxSizeMB={1}
             acceptFormats={["png", "jpeg", "jpg", "gif", "svg"]}
             onFileUpload={handleFileUpload}
-            defaultFile={selectedState?.image}
+            defaultFile={selectedSenatorialDistrict?.image}
           />
           {uploadedFile && (
             <ImageDetails
@@ -275,7 +272,9 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
             loading={uploadMutation.isPending || createStateMutation.isPending}
             variant="tertiary"
           >
-            {selectedState ? "Update State" : "Create State"}
+            {selectedSenatorialDistrict
+              ? "Update Senatorial District"
+              : "Create Senatorial District"}
           </CustomButton>
         </div>
       </form>
@@ -283,4 +282,4 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
   );
 };
 
-export default CreateState;
+export { CreateSenatorialDistrict };

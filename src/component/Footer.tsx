@@ -43,7 +43,7 @@ const Footer = () => {
       <div className="flex items-center justify-center mt-4 md:mt-14 mb-9">
         <img src="/copyright.svg" alt="copyright" />
         <p className="font-medium text-lg text-black_200 dark:text-white">
-          2024 GovWatch
+          2025 GovWatch
         </p>
       </div>
     </div>

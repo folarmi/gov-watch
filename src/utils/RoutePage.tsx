@@ -42,6 +42,7 @@ import {
   SinglePublishedPublication,
   Pricing,
   SingleDraftPublication,
+  SenatorialDistricts,
 } from "../pages";
 import Reviewed from "../pages/Reviewed";
 import { LCDA } from "../pages/Lcda";
@@ -105,6 +106,10 @@ const RoutePage = () => {
           element={<CreatePublication />}
         />
         <Route path="/dashboard/settings" element={<Setting />} />
+        <Route
+          path="/dashboard/senatorial-districts"
+          element={<SenatorialDistricts />}
+        />
         <Route
           path="/dashboard/settings/change-password"
           element={<ChangePassword />}

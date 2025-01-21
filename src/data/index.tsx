@@ -31,6 +31,7 @@ import {
   BookMarkedIcon,
   Heart,
   Edit2,
+  Shield,
 } from "lucide-react";
 
 export const SidebarList: SidebarItemProp[] = [
@@ -419,6 +420,12 @@ export const dashboardSideBarItems = [
         name: "LCDA",
         image: Building2,
         link: "/dashboard/lcda",
+      },
+      {
+        id: 30,
+        name: "Senatorial Districts",
+        image: Shield,
+        link: "/dashboard/senatorial-districts",
       },
     ],
     userRole: [userTypeObject.admin, userTypeObject.editor],
