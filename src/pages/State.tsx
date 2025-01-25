@@ -73,7 +73,7 @@ const State = () => {
       ),
     }),
     columnHelper.accessor("landMass", {
-      header: "Land Mass",
+      header: "Land Mass(km squared)",
       cell: (info) => (
         <span className="text-sm font-normal">{info.getValue()}</span>
       ),

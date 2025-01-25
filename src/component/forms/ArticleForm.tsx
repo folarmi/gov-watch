@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { useController, useForm } from "react-hook-form";
@@ -24,8 +23,12 @@ import Modal from "../modals/Modal";
 import ReviewModal from "../modals/ReviewModal";
 import ApprovePublication from "../modals/ApprovePublication";
 import ConfirmModuleDeletion from "../modals/ConfirmModuleDeletion";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
+import { InfoIcon } from "lucide-react";
 
 const ArticleForm = ({
+  isLoading,
   isEditing = false,
   defaultValues = {},
   onSubmit,
@@ -35,6 +38,9 @@ const ArticleForm = ({
   tags,
   setTags,
 }: any) => {
+  const { userCountry, userType, userId } = useAppSelector(
+    (state: RootState) => state.auth
+  );
   const [reviewModal, setReviewModal] = useState(false);
   const [selectedArticleDetails, setSelectedArticleDetails] = useState({});
   const [selectedState, setSelectedState] = useState("");
@@ -118,10 +124,6 @@ const ArticleForm = ({
   };
 
   const [isAdditionalInformation, setIsAdditionalInformation] = useState(true);
-
-  const { userCountry, userType } = useAppSelector(
-    (state: RootState) => state.auth
-  );
 
   const { data: categoriesData, isLoading: isCategoriesLoading } = useGetData({
     url: "Categories/GetAllCategories",
@@ -271,7 +273,7 @@ const ArticleForm = ({
           />
           <FileUploader
             maxSizeMB={1}
-            acceptFormats={["png", "jpeg", "jpg", "gif"]}
+            acceptFormats={["png", "jpeg", "jpg", "gif", "webp"]}
             onFileUpload={handleFileUpload}
             defaultFile={defaultValues?.image}
           />
@@ -344,28 +346,24 @@ const ArticleForm = ({
                   placeholder="Select Ward"
                 />
               </div>
-
               <CustomInput
                 label="Published Date"
                 name="publishDate"
                 type="date"
                 control={control}
               />
-
               <CustomInput
                 label="Date Incident Started"
                 name="dateIncidentStarted"
                 type="date"
                 control={control}
               />
-
               <CustomInput
                 label="Date Incident Was Resolved"
                 name="dateIncidentResolved"
                 type="date"
                 control={control}
               />
-
               {/* Promise Information */}
               <div className="space-y-4">
                 <CustomInput
@@ -387,7 +385,6 @@ const ArticleForm = ({
                   control={control}
                 />
               </div>
-
               {/* Political and MDA Information */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <CustomSelect
@@ -407,7 +404,6 @@ const ArticleForm = ({
                   placeholder="Select MDA"
                 />
               </div>
-
               {/* Checkboxes */}
               <div className="grid grid-cols-2 gap-4">
                 <CustomCheckBox
@@ -439,7 +435,6 @@ const ArticleForm = ({
                   name="isCredible"
                 />
               </div>
-
               {/* Tags and References */}
               <TagsInput
                 onChange={handleTagsChange}
@@ -450,12 +445,46 @@ const ArticleForm = ({
               <label htmlFor="Reference" className="text-sm mt-2 font-medium">
                 Reference
               </label>
-              <ReactQuill
-                style={{ height: "10rem", marginBottom: "3rem" }}
-                theme="snow"
-                value={referenceField?.value}
-                onChange={referenceField?.onChange}
-              />
+
+              <div style={{ position: "relative" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginBottom: "1rem",
+                  }}
+                >
+                  {/* Tooltip with an Icon */}
+                  <Tippy
+                    content="References should be provided in APA7 style"
+                    placement="right"
+                    theme="light"
+                    delay={[0, 200]}
+                  >
+                    <span
+                      style={{
+                        cursor: "pointer",
+                        marginRight: "0.5rem",
+                        color: "#106d44",
+                        fontSize: "1.2rem",
+                      }}
+                    >
+                      <InfoIcon />
+                    </span>
+                  </Tippy>
+                  <span style={{ fontSize: "0.875rem", color: "gray" }}>
+                    Hover over the icon for help.
+                  </span>
+                </div>
+
+                {/* ReactQuill Editor */}
+                <ReactQuill
+                  style={{ height: "10rem", marginBottom: "3rem" }}
+                  theme="snow"
+                  value={referenceField?.value}
+                  onChange={referenceField?.onChange}
+                />
+              </div>
               <label htmlFor="Link" className="text-sm font-medium">
                 Link
               </label>
@@ -482,92 +511,93 @@ const ArticleForm = ({
         />
 
         {/* Actions */}
-        <div
-          className="flex items-center gap-4 mb-10"
-          style={{
-            marginBottom: "5rem",
-          }}
-        >
+
+        <div className="flex flex-wrap gap-4 mb-10">
           {isEditing ? (
-            <>
-              {(userType === userTypeObject?.admin ||
-                userType === userTypeObject?.editor) && (
-                <CustomButton
-                  variant="secondary"
-                  className="w-full md:w-1/2"
-                  onClick={toggleModal}
-                >
-                  Review
-                </CustomButton>
+            <div className="flex items-center w-full gap-4">
+              {/* Admin & Editor Actions */}
+              {(userType === userTypeObject?.editor ||
+                (userType === userTypeObject?.admin &&
+                  userId !== defaultValues?.contributorPublicId)) && (
+                <>
+                  <CustomButton
+                    variant="secondary"
+                    className="w-full md:w-1/2"
+                    onClick={toggleModal}
+                  >
+                    Review
+                  </CustomButton>
+                  <CustomButton
+                    variant="primary"
+                    className="w-full md:w-1/2 cursor-pointer"
+                    onClick={toggleApproveModal}
+                  >
+                    Approve
+                  </CustomButton>
+                </>
               )}
 
-              {(userType === userTypeObject?.admin ||
-                userType === userTypeObject?.editor) && (
-                <CustomButton
-                  variant="primary"
-                  className="w-full md:w-1/2 cursor-pointer"
-                  // onClick={approvePublicationFunction}
-                  onClick={toggleApproveModal}
-                >
-                  Approve
-                </CustomButton>
-              )}
-
+              {/* Contributor Actions */}
               {userType === userTypeObject?.contributor && (
                 <CustomButton
                   variant="secondary"
                   className="w-full md:w-1/2"
                   onClick={() => {
                     setIsDraft(true);
-                    onSubmit;
+                    onSubmit();
                   }}
                 >
                   Save to Drafts
                 </CustomButton>
               )}
 
+              {/* Shared Edit Action */}
               <CustomButton
                 variant="primary"
                 className="w-full md:w-1/2 cursor-pointer"
-                onClick={() => {
-                  onSubmit;
-                }}
+                onClick={onSubmit}
               >
                 Edit
               </CustomButton>
-            </>
+
+              {/* {(userType === userTypeObject?.admin ||
+                userType === userTypeObject?.contributor) && ( */}
+              <CustomButton
+                variant="delete"
+                className="w-full md:w-1/2"
+                onClick={toggleDeleteModal}
+              >
+                Delete
+              </CustomButton>
+              {/* )} */}
+            </div>
           ) : (
-            <>
+            <div className="flex items-center w-full gap-4">
+              {/* Shared Save to Drafts Action */}
               <CustomButton
                 variant="secondary"
                 className="w-full md:w-1/2"
                 onClick={() => {
                   setIsDraft(true);
-                  onSubmit;
+                  onSubmit();
                 }}
               >
                 Save to Drafts
               </CustomButton>
 
+              {/* Publish Action */}
               <CustomButton
                 variant="primary"
                 className="w-full md:w-1/2"
+                disabled={isLoading}
+                loading={isLoading}
                 onClick={() => {
                   /* Publish logic */
                 }}
               >
                 Publish
               </CustomButton>
-              <CustomButton
-                variant="delete"
-                className="w-full md:w-1/2"
-                // disabled={deletePublicationMutation.isPending}
-                // loading={deletePublicationMutation.isPending}
-                onClick={() => toggleDeleteModal()}
-              >
-                Delete
-              </CustomButton>
-            </>
+            </div>
           )}
         </div>
 

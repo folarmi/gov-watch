@@ -169,7 +169,7 @@ const CreateCountry = ({ toggleModal, selectedCountry }: any) => {
             <p className="text-sm font-medium pb-2">Flag</p>
             <FileUploader
               maxSizeMB={1}
-              acceptFormats={["png", "jpeg", "jpg", "gif"]}
+              acceptFormats={["png", "jpeg", "jpg", "gif", "webp"]}
               onFileUpload={handleFileUpload}
               defaultFile={selectedCountry?.image}
             />

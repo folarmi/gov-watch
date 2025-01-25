@@ -100,6 +100,7 @@ const SinglePublishedPublication = () => {
             tags={tags}
             setTags={setTags}
             onSubmit={handleEditSubmit}
+            isLoading={updatePublicationMutation.isPending}
           />
         </div>
       )}

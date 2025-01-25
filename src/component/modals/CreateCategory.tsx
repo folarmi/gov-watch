@@ -115,7 +115,7 @@ const CreateCategory = ({ toggleModal, selectedCategory }: any) => {
               <p className="text-sm font-medium pb-2">Category Image</p>
               <FileUploader
                 maxSizeMB={1}
-                acceptFormats={["png", "jpeg", "jpg", "gif"]}
+                acceptFormats={["png", "jpeg", "jpg", "gif", "webp"]}
                 onFileUpload={handleFileUpload}
                 defaultFile={selectedCategory?.categoryImage}
               />

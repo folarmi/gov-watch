@@ -167,12 +167,12 @@ const CreateLCDA = ({ toggleModal }: any) => {
         />
 
         <CustomInput
-          label="Land Mass"
+          label="Land Mass(km squared)"
           name="landMass"
           type="number"
           onlyNumbers
           control={control}
-          rules={{ required: "Land Mass is required" }}
+          rules={{ required: "Land Mass(km squared) is required" }}
           className="mt-4"
         />
 
@@ -206,7 +206,7 @@ const CreateLCDA = ({ toggleModal }: any) => {
 
           <FileUploader
             maxSizeMB={1}
-            acceptFormats={["png", "jpeg", "jpg", "gif"]}
+            acceptFormats={["png", "jpeg", "jpg", "gif", "webp"]}
             onFileUpload={handleFileUpload}
           />
           {uploadedFile && (

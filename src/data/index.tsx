@@ -481,12 +481,12 @@ export const dashboardSideBarItems = [
   {
     category: "Publications",
     items: [
-      {
-        id: 13,
-        name: "Total",
-        image: Layers,
-        link: "/dashboard/total",
-      },
+      // {
+      //   id: 13,
+      //   name: "Total",
+      //   image: Layers,
+      //   link: "/dashboard/total",
+      // },
       {
         id: 8,
         name: "Pending",
@@ -503,13 +503,13 @@ export const dashboardSideBarItems = [
         id: 9,
         name: "Rejected",
         image: XCircleIcon,
-        link: "/dashboard/all-inbox",
+        link: "/dashboard/rejected",
       },
       {
         id: 10,
         name: "Approved",
         image: Check,
-        link: "/dashboard/all-inbox",
+        link: "/dashboard/total",
       },
       {
         id: 11,

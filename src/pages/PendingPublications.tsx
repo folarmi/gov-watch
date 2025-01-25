@@ -33,34 +33,35 @@ const PendingPublications = () => {
           <Loader />
         ) : (
           <div className="flex flex-wrap justify-between">
-            {pendingPublicationsData?.map(
-              ({
-                title,
-                submittedOn,
-                image,
-                section,
-                summary,
-                isPromise,
-                id,
-                publicId,
-                promiseDeadline,
-              }: any) => {
-                return (
-                  <Card
-                    section={section}
-                    articleTitle={title}
-                    summary={summary}
-                    date={submittedOn}
-                    promise={isPromise}
-                    imageUrl={image}
-                    deadline={promiseDeadline}
-                    link={`/dashboard/pending/${id || publicId}`}
-                    id={id || publicId}
-                    // imageUrl={coatOfArms}
-                  />
-                );
-              }
-            )}
+            {pendingPublicationsData &&
+              pendingPublicationsData?.map(
+                ({
+                  title,
+                  submittedOn,
+                  image,
+                  section,
+                  summary,
+                  isPromise,
+                  id,
+                  publicId,
+                  promiseDeadline,
+                }: any) => {
+                  return (
+                    <Card
+                      section={section}
+                      articleTitle={title}
+                      summary={summary}
+                      date={submittedOn}
+                      promise={isPromise}
+                      imageUrl={image}
+                      deadline={promiseDeadline}
+                      link={`/dashboard/pending/${id || publicId}`}
+                      id={id || publicId}
+                      // imageUrl={coatOfArms}
+                    />
+                  );
+                }
+              )}
           </div>
         )}
       </div>

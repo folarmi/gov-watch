@@ -81,6 +81,7 @@ const CreatePublication = () => {
       isDraft={isDraft}
       tags={tags}
       setTags={setTags}
+      isLoading={createPublicationMutation.isPending}
     />
   );
 };

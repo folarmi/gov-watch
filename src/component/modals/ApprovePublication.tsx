@@ -1,18 +1,21 @@
+import { useNavigate } from "react-router-dom";
 import { useCustomMutation } from "../../hooks/apiCalls";
 import { useAppSelector } from "../../lib/hook";
 import { RootState } from "../../lib/store";
 import CustomButton from "../CustomButton";
+import { directUserToPageOnLogin } from "../../utils";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const ApprovePublication = ({ toggleModal, defaultValues }: any) => {
-  const { userId } = useAppSelector((state: RootState) => state.auth);
+  const navigate = useNavigate();
+  const { userId, userType } = useAppSelector((state: RootState) => state.auth);
   const approvePublicationMutation = useCustomMutation({
     endpoint: "Publications/UpdatePublicationForAdmin",
     method: "put",
     successMessage: (data: any) => data?.remark,
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
-      window.location.reload();
+      navigate(directUserToPageOnLogin(userType));
     },
   });
 

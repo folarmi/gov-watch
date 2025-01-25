@@ -206,6 +206,7 @@ const Home = () => {
                     publicId,
                     promiseDeadline,
                     isBookmarked,
+                    isCredible,
                   }: any) => {
                     return (
                       <div
@@ -221,6 +222,7 @@ const Home = () => {
                           imageUrl={image}
                           deadline={promiseDeadline}
                           id={publicId}
+                          isCredible={isCredible}
                           selectedCard={selectedCard}
                           onBookMarkClick={(id: string) =>
                             toggleBookMarkStatus(id)

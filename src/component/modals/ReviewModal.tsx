@@ -27,7 +27,7 @@ const ReviewModal = ({ toggleModal, selectedArticleDetails }: any) => {
       createdBy: userId,
       //   superCommentId: 0,
     };
-    console.log(formData);
+
     createReviewMutation.mutate(formData);
   };
 

@@ -63,13 +63,13 @@ const StateDetails = () => {
                 value={stateDetailsData?.population}
               />
               <TextAndValue
-                title="Land Mass"
+                title="Land Mass(km squared)"
                 value={stateDetailsData?.landMass}
               />
               <TextAndValue
                 title="Date Founded"
                 value={
-                  moment(stateDetailsData?.dateFounded).format("YYYY-MM-DD") ||
+                  moment(stateDetailsData?.dateFounded).format("DD-MM-YYYY") ||
                   0
                 }
               />

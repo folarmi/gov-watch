@@ -144,10 +144,28 @@ const Signup = () => {
             />
 
             <CustomSelect
-              name="country"
+              name="countryOfOrigin"
               options={countriesDataFormatted}
               isLoading={countriesDataIsLoading}
-              label="Country"
+              label="Country Of Origin"
+              control={control}
+              placeholder="Select Country"
+            />
+
+            <CustomSelect
+              name="countryOfResidence"
+              options={countriesDataFormatted}
+              isLoading={countriesDataIsLoading}
+              label="Country Of Residence"
+              control={control}
+              placeholder="Select Country"
+            />
+
+            <CustomSelect
+              name="countryOfInterest"
+              options={countriesDataFormatted}
+              isLoading={countriesDataIsLoading}
+              label="Country Of Interest"
               control={control}
               placeholder="Select Country"
             />

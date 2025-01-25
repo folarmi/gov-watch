@@ -184,12 +184,12 @@ const CreateSenatorialDistrict = ({
         />
 
         <CustomInput
-          label="Land Mass"
+          label="Land Mass(km squared)"
           name="landMass"
           type="number"
           onlyNumbers
           control={control}
-          // rules={{ required: "Land Mass is required" }}
+          // rules={{ required: "Land Mass(km squared) is required" }}
           className="mt-4"
         />
 
@@ -249,7 +249,7 @@ const CreateSenatorialDistrict = ({
 
           <FileUploader
             maxSizeMB={1}
-            acceptFormats={["png", "jpeg", "jpg", "gif", "svg"]}
+            acceptFormats={["png", "jpeg", "jpg", "gif", "svg", "webp"]}
             onFileUpload={handleFileUpload}
             defaultFile={selectedSenatorialDistrict?.image}
           />

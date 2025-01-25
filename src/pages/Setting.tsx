@@ -176,7 +176,7 @@ const Setting = () => {
 
           <FileUploader
             maxSizeMB={1}
-            acceptFormats={["png", "jpeg", "jpg", "gif"]}
+            acceptFormats={["png", "jpeg", "jpg", "gif", "webp"]}
             onFileUpload={handleFileUpload}
           />
           {uploadedFile && (

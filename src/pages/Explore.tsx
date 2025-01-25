@@ -9,10 +9,10 @@ const Explore = () => {
   return (
     <OuterPage>
       <div className="px-8">
-        <p className="font-semibold text-2xl md:text-[40px] pt-4 md:pt-14">
+        <p className="font-semibold text-2xl md:text-[40px] pb-8 md:pb-0 pt-4 md:pt-14">
           Exploring Nigeria: Dive Deeper with our Interactive Map
         </p>
-        <p className="font-normal text-base md:text-xl py-2 md:py-5">
+        <p className="hidden md:block font-normal text-base md:text-xl py-2 md:py-5">
           Hover and click on any state to learn more about them.
         </p>
         <div className="hidden md:flex items-center justify-center">

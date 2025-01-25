@@ -25,6 +25,7 @@ interface CardProps {
   isPublished?: boolean;
   category?: string;
   selectedCard?: string;
+  isCredible?: string;
 }
 
 const Card = ({
@@ -47,6 +48,7 @@ const Card = ({
   imageUrl,
   category,
   selectedCard,
+  isCredible,
 }: CardProps) => {
   const [timeDifference, setTimeDifference] = useState<string>("");
 
@@ -67,7 +69,7 @@ const Card = ({
   }, [isBookMarked]);
 
   return (
-    <div className="flex flex-col max-w-sm w-[300px] min-h-[450px] bg-white dark:bg-black_100 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer my-3 overflow-hidden">
+    <div className="min-h-[550px] h-auto flex flex-col max-w-sm w-[300px]  bg-white dark:bg-black_100 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer my-3 overflow-hidden">
       <img
         src={imageUrl}
         // src="/coatOfArms.svg"
@@ -83,8 +85,15 @@ const Card = ({
             {section}
           </Text>
 
-          <h3 className="font-semibold text-lg text-black_100 dark:text-white mb-2">
-            {truncateText(articleTitle, 6)}
+          {isCredible && (
+            <span className="bg-green-500 text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-green-900 dark:text-green-300">
+              Credible
+            </span>
+          )}
+
+          <h3 className="font-semibold text-lg text-black_100 dark:text-white my-2">
+            {/* {truncateText(articleTitle, 6)} */}
+            {articleTitle}
           </h3>
 
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
