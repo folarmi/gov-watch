@@ -14,6 +14,7 @@ import {
 import ArticleForm from "../component/forms/ArticleForm";
 import { useNavigate } from "react-router-dom";
 import { directUserToPageOnLogin } from "../utils";
+
 // import ArticleForm from "@/app/component/forms/ArticleForm";
 
 const CreatePublication = () => {
@@ -30,7 +31,11 @@ const CreatePublication = () => {
     endpoint: "Publications/CreatePublication",
     successMessage: (data: any) => data?.remark,
     errorMessage: (error: any) =>
-      error?.response?.data?.remark || error?.response?.data,
+      error?.response?.data?.remark ||
+      error?.response?.data ||
+      error?.response?.data?.errors,
+    // console.log(error?.response?.data?.errors),
+
     onSuccessCallback: () => {
       navigate(directUserToPageOnLogin(userType));
     },

@@ -59,16 +59,6 @@ const Home = () => {
     ],
   });
 
-  // useEffect(() => {
-  //   if (articlesData?.length > 0) {
-  //     setArticles((prev: any) => [...prev, ...articlesData]);
-  //   }
-  //   // If the current fetch returns fewer items than pageSize, it means no more data
-  //   if (articlesData?.length < pageSize) {
-  //     setHasMore(false);
-  //   }
-  // }, [articlesData]);
-
   useEffect(() => {
     // Reset articles when categoryName or filters change
     if (pageNumber === 1) {
@@ -205,6 +195,7 @@ const Home = () => {
                     isPromise,
                     publicId,
                     promiseDeadline,
+                    isPromisedFulfilled,
                     isBookmarked,
                     isCredible,
                   }: any) => {
@@ -222,6 +213,7 @@ const Home = () => {
                           imageUrl={image}
                           deadline={promiseDeadline}
                           id={publicId}
+                          isPromisedFulfilled={isPromisedFulfilled}
                           isCredible={isCredible}
                           selectedCard={selectedCard}
                           onBookMarkClick={(id: string) =>

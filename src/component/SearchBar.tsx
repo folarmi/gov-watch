@@ -16,11 +16,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
   setSelectedFilter,
   name,
   control,
+  setQueryParam,
 }: SearchBarProps) => {
   const { field } = useController({
     name,
     control,
   });
+
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
   const toggleFilter = () => {
     setShowFilterDropdown(!showFilterDropdown);
@@ -31,6 +33,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
     toggleFilter();
   };
 
+  const setParam = (name: string) => {
+    setQueryParam(name);
+  };
   return (
     <section className="md:flex justify-center my-4 md:my-14">
       <div className="flex items-center border border-gray-300 rounded-[50px] overflow-hidden w-auto md:w-[719px] h-[54px]">
@@ -68,7 +73,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
           name={name}
           className="flex-1 px-2 focus:outline-none"
         />
-        <div className="bg-primary px-4 py-4">
+        <div
+          className="bg-primary px-4 py-4 cursor-pointer"
+          onClick={() => setParam(field.value)}
+        >
           <img src="searchIcon.svg" alt="filter icon" width={20} height={20} />
         </div>
       </div>

@@ -38,7 +38,7 @@ const CreateSenatorialDistrict = ({
         : ""
     ),
     dateFounded: moment(selectedSenatorialDistrict?.dateFounded).format(
-      "YYYY-MM-DD"
+      "DD-MM-YYYY"
     ),
   };
 

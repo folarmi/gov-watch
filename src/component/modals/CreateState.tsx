@@ -30,7 +30,7 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
         ? selectedState?.financialAllocation?.toString().replace(/,/g, "")
         : ""
     ),
-    dateFounded: moment(selectedState?.dateFounded).format("YYYY-MM-DD"),
+    dateFounded: moment(selectedState?.dateFounded).format("DD-MM-YYYY"),
   };
 
   const { control, handleSubmit } = useForm<any>({

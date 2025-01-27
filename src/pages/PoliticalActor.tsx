@@ -68,7 +68,7 @@ const PoliticalActors = () => {
       header: "Date of Birth",
       cell: (info) => (
         <span className="text-sm font-normal">
-          {moment(info.getValue()).format("YYYY-MM-DD")}
+          {moment(info.getValue()).format("DD-MM-YYYY")}
         </span>
       ),
     }),

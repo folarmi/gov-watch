@@ -5,10 +5,13 @@ import CustomButton from "../CustomButton";
 import { useCustomMutation } from "../../hooks/apiCalls";
 import { useAppSelector } from "../../lib/hook";
 import { RootState } from "../../lib/store";
+import { useNavigate } from "react-router-dom";
+import { directUserToPageOnLogin } from "../../utils";
 
 const ReviewModal = ({ toggleModal, selectedArticleDetails }: any) => {
+  const navigate = useNavigate();
   const { control, getValues } = useForm<any>();
-  const { userId } = useAppSelector((state: RootState) => state.auth);
+  const { userId, userType } = useAppSelector((state: RootState) => state.auth);
 
   const createReviewMutation = useCustomMutation({
     endpoint: "Reviews/CreateReview",
@@ -16,15 +19,24 @@ const ReviewModal = ({ toggleModal, selectedArticleDetails }: any) => {
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
       toggleModal();
+      navigate(directUserToPageOnLogin(userType));
     },
   });
 
+  // {
+  //   "createdBy": "string",
+  //   "comment": "string",
+  //   "publicationPublicId": "string",
+  //   "superCommentId": "string",
+  //   "publicationTitle": "string",
+  // }
+
   const submitForm = () => {
     const formData = {
-      comment: getValues("comment"),
-      articleTitle: selectedArticleDetails.articleTitle,
-      publicationId: selectedArticleDetails.publicationId,
       createdBy: userId,
+      comment: getValues("comment"),
+      publicationPublicId: selectedArticleDetails.publicationId,
+      publicationTitle: selectedArticleDetails.articleTitle,
       //   superCommentId: 0,
     };
 

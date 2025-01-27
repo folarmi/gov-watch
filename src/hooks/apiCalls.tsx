@@ -212,13 +212,37 @@ export const useCustomMutation = <
         }
       }
     },
+    // onError: (error: any) => {
+    //   if (errorMessage) {
+    //     toast.error(errorMessage(error));
+    //   } else if (error?.response?.data?.remark) {
+    //     toast.error(error.response.data.remark);
+    //   } else if (error?.response?.data) {
+    //     toast.error(error?.response?.data);
+    //   }
+    // },
     onError: (error: any) => {
+      // If an errorMessage function is provided, use it to show the error message
       if (errorMessage) {
         toast.error(errorMessage(error));
-      } else if (error?.response?.data?.remark) {
-        toast.error(error.response.data.remark);
-      } else if (error?.response?.data) {
-        toast.error(error?.response?.data);
+      } else {
+        // If errorMessage is not provided, handle different error formats
+
+        // Check if it's an array of errors and display them using toast
+        if (Array.isArray(error?.response?.data?.errors)) {
+          error?.response?.data?.errors.forEach((errorMessage: string) => {
+            toast.error(errorMessage);
+          });
+        } else if (error?.response?.data?.remark) {
+          // Display a single remark error
+          toast.error(error?.response?.data?.remark);
+        } else if (error?.response?.data) {
+          // Display the entire error object in toast
+          toast.error(JSON.stringify(error?.response?.data));
+        } else {
+          // Display a generic error message if no specific error data is available
+          toast.error("An error occurred.");
+        }
       }
     },
     ...mutationOptions,

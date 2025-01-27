@@ -42,7 +42,7 @@ const PublicationDetails = () => {
 
     return () => clearTimeout(timer);
   }, []);
-  // console.log(publicationDetailsData?.reference);
+
   return (
     <OuterPage>
       {publicationDetailsIsLoading ? (
@@ -199,15 +199,15 @@ const PublicationDetails = () => {
             )}
 
             <p className="font-black my-2">References</p>
-            {/* <RenderArticle articleContent={publicationDetailsData?.reference} /> */}
+            <RenderArticle articleContent={publicationDetailsData?.reference} />
 
-            <a
+            {/* <a
               target="_blank"
               href={publicationDetailsData?.reference}
               className="mb-12 underline text-blue-800"
             >
               {publicationDetailsData?.reference}
-            </a>
+            </a> */}
             {/* <p> {publicationDetailsData?.reference}</p> */}
 
             <p className="font-black mb-2">Tags</p>

@@ -26,6 +26,7 @@ interface CardProps {
   category?: string;
   selectedCard?: string;
   isCredible?: string;
+  isPromisedFulfilled?: boolean;
 }
 
 const Card = ({
@@ -49,6 +50,7 @@ const Card = ({
   category,
   selectedCard,
   isCredible,
+  isPromisedFulfilled,
 }: CardProps) => {
   const [timeDifference, setTimeDifference] = useState<string>("");
 
@@ -91,6 +93,12 @@ const Card = ({
             </span>
           )}
 
+          {!isCredible && (
+            <span className="bg-red-500 text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm ">
+              Not Credible
+            </span>
+          )}
+
           <h3 className="font-semibold text-lg text-black_100 dark:text-white my-2">
             {/* {truncateText(articleTitle, 6)} */}
             {articleTitle}
@@ -100,19 +108,27 @@ const Card = ({
             {truncateText(summary, 10)}
           </p>
 
-          <div className="flex items-center justify-between mb-4">
-            {promise && deadline && (
-              <span
-                className={`text-white text-xs font-bold me-2 px-2.5 py-0.5 rounded ${
-                  timeDifference.includes("past")
-                    ? "bg-red-500"
-                    : "bg-green-500"
-                }`}
-              >
-                {timeDifference}
-              </span>
-            )}
-          </div>
+          {!isPromisedFulfilled && (
+            <div className="flex items-center justify-between mb-4">
+              {promise && deadline && (
+                <span
+                  className={`text-white text-xs font-bold me-2 px-2.5 py-0.5 rounded ${
+                    timeDifference.includes("past")
+                      ? "bg-red-500"
+                      : "bg-green-500"
+                  }`}
+                >
+                  {timeDifference}
+                </span>
+              )}
+            </div>
+          )}
+
+          {isPromisedFulfilled && (
+            <span className="bg-green-500 text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-green-900 dark:text-green-300">
+              Promise Fulfilled
+            </span>
+          )}
 
           <p className="font-medium text-xs text-gray-500">{date}</p>
 

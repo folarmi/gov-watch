@@ -75,7 +75,7 @@ const LGA = () => {
       header: "Date Founded",
       cell: (info) => (
         <span className="text-sm font-normal">
-          {moment(info.getValue()).format("YYYY-MM-DD")}
+          {moment(info.getValue()).format("DD-MM-YYYY")}
         </span>
       ),
     }),
