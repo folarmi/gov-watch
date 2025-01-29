@@ -33,7 +33,7 @@ const CustomTextArea: React.FC<CustomTextAreaProps> = ({
         {label}
       </label>
       <textarea
-        className="h-36 rounded-2xl px-4 pt-4 border-2 border-black bg-gray-50 text-sm"
+        className="h-36 rounded-lg px-4 pt-4 border border-gray-300 bg-transparent text-sm focus:outline-none focus:ring-2 focus:ring-green-600"
         {...field}
         {...rest}
       />

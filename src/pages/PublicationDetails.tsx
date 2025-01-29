@@ -1,7 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link, useParams } from "react-router-dom";
-import { useCustomMutation, useGetDataById } from "../hooks/apiCalls";
+import {
+  useCustomMutation,
+  useGetData,
+  useGetDataById,
+} from "../hooks/apiCalls";
 import OuterPage from "../layouts/OuterPage";
 import Loader from "../component/Loader";
 import backButton from "../assets/backButton.svg";
@@ -10,10 +14,20 @@ import sampleWriter from "../assets/sampleWriter.webp";
 
 import { RenderArticle } from "../component/forms/RenderArticle";
 import { useEffect, useState } from "react";
+import { Comments } from "../component/Comments";
 
 const PublicationDetails = () => {
   const params = useParams();
   const [viewCount, setViewCount] = useState();
+
+  // const [comments, setComments] = useState([
+  //   { id: 1, text: "This is a great post!", author: "Alice" },
+  //   { id: 2, text: "Thanks for sharing!", author: "Bob" },
+  // ]);
+
+  // const handleAddComment = (newComment: any) => {
+  //   setComments((prevComments) => [...prevComments, newComment]);
+  // };
 
   const {
     data: publicationDetailsData,
@@ -22,6 +36,14 @@ const PublicationDetails = () => {
     url: `Publications/GetPublicationById?publicId=${params?.id}`,
     queryKey: ["GetAllUserBookmarksByUserId"],
     enabled: !!params?.id,
+  });
+
+  const {
+    data: publicationCommentsData,
+    isLoading: publicationCommentsIsLoading,
+  } = useGetData({
+    url: `PublicationComments/GetAllPublicationCommentsResponses?publicationId=${params?.id}&pageNumber=1&pageSize=10`,
+    queryKey: ["GetAllPublicationComments"],
   });
 
   const UpdatePublicationViewCount = useCustomMutation({
@@ -45,7 +67,7 @@ const PublicationDetails = () => {
 
   return (
     <OuterPage>
-      {publicationDetailsIsLoading ? (
+      {publicationDetailsIsLoading || publicationCommentsIsLoading ? (
         <Loader />
       ) : (
         <section className="w-full max-w-[680px] mt-4 mx-auto">
@@ -198,7 +220,14 @@ const PublicationDetails = () => {
               </p>
             )}
 
-            <p className="font-black my-2">References</p>
+            <Comments
+              comments={publicationCommentsData?.publicationCommentViewModel}
+              // comments={[]}
+              // onAddComment={handleAddComment}
+              publicationDetailsData={publicationDetailsData}
+            />
+
+            <p className="font-black mt-8 mb-4">References</p>
             <RenderArticle articleContent={publicationDetailsData?.reference} />
 
             {/* <a
@@ -251,3 +280,14 @@ const PublicationDetails = () => {
 };
 
 export { PublicationDetails };
+
+// {
+//   "publicId": "e208a36c-a9c8-4037-8e04-d6db28323937",
+//   "comment": "This is a great comment",
+//   "publicationPublicId": "3b34a689-a90a-460c-ab0f-f1948cfa3fa3",
+//   "superCommentPublicId": null,
+//   "publicationTitle": "Laboriosam sunt qua",
+//   "viewCount": 0,
+//   "likeCount": 0,
+//   "commenterId": "a7e36778-2fec-4b6e-8569-dbe47778dff0"
+// },

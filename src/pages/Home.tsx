@@ -195,16 +195,20 @@ const Home = () => {
                     isPromise,
                     publicId,
                     promiseDeadline,
-                    isPromisedFulfilled,
+                    isPromiseFulfilled,
                     isBookmarked,
                     isCredible,
-                  }: any) => {
+                    dateIncidentStarted,
+                    dateIncidentResolved,
+                  }: // category,
+                  any) => {
                     return (
                       <div
                         key={publicId}
                         className="w-full sm:w-1/2 md:w-1/3 mt-10"
                       >
                         <Card
+                          // category={category}
                           section={section}
                           articleTitle={title}
                           summary={summary}
@@ -213,7 +217,7 @@ const Home = () => {
                           imageUrl={image}
                           deadline={promiseDeadline}
                           id={publicId}
-                          isPromisedFulfilled={isPromisedFulfilled}
+                          isPromisedFulfilled={isPromiseFulfilled}
                           isCredible={isCredible}
                           selectedCard={selectedCard}
                           onBookMarkClick={(id: string) =>
@@ -221,11 +225,12 @@ const Home = () => {
                           }
                           onLikeClicked={(id: string) => toggleLikedStatus(id)}
                           onCommentClicked={(id: string) => toggleComment(id)}
-                          // imageUrl={coatOfArms}
                           isBookMarked={isBookmarked}
                           isArticleBookMarked={isArticleBookMarked}
                           setIsArticleBookMarked={setIsArticleBookMarked}
                           isPublished
+                          dateIncidentStarted={dateIncidentStarted}
+                          dateIncidentResolved={dateIncidentResolved}
                           link={`/latest-publications/${publicId}`}
                         />
                       </div>

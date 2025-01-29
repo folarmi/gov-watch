@@ -52,6 +52,7 @@ const Drafts = () => {
                       publicId,
                       promiseDeadline,
                       category,
+                      isCredible,
                     }: any) => {
                       return (
                         <Link
@@ -68,6 +69,7 @@ const Drafts = () => {
                             imageUrl={image}
                             deadline={promiseDeadline}
                             id={id}
+                            isCredible={isCredible}
                             isPublished={false}
                             category={category}
                             link={`/dashboard/drafts/${id || publicId}`}

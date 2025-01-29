@@ -1,13 +1,29 @@
+import { useState } from "react";
 import PricingCard from "../component/PricingCards";
+import { planTypes } from "../data";
 import OuterPage from "../layouts/OuterPage";
 
 const Pricing = () => {
+  const [selectedPlan, setSelectedPlan] = useState("");
+
   return (
     <OuterPage>
-      <div className="flex flex-wrap justify-center items-center">
-        <PricingCard planName="Monthly" amount="1000" />
-        <PricingCard planName="Biannual" amount="5800" />
-        <PricingCard planName="Yearly" amount="11000" />
+      <div className="flex justify-center items-center">
+        {planTypes?.map(({ amount, id, planName }) => {
+          return (
+            <div
+              className="mr-8"
+              key={id}
+              onClick={() => setSelectedPlan(planName)}
+            >
+              <PricingCard
+                planName={planName}
+                amount={amount}
+                selectedPlan={selectedPlan}
+              />
+            </div>
+          );
+        })}
       </div>
     </OuterPage>
   );

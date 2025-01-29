@@ -45,6 +45,7 @@ const PendingPublications = () => {
                   id,
                   publicId,
                   promiseDeadline,
+                  isCredible,
                 }: any) => {
                   return (
                     <Card
@@ -54,6 +55,7 @@ const PendingPublications = () => {
                       date={submittedOn}
                       promise={isPromise}
                       imageUrl={image}
+                      isCredible={isCredible}
                       deadline={promiseDeadline}
                       link={`/dashboard/pending/${id || publicId}`}
                       id={id || publicId}

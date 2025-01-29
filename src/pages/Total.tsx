@@ -42,6 +42,7 @@ const TotalArticles = () => {
                 isPromise,
                 id,
                 publicId,
+                isCredible,
               }: any) => {
                 return (
                   <Link
@@ -53,6 +54,7 @@ const TotalArticles = () => {
                       section={section}
                       articleTitle={title}
                       summary={summary}
+                      isCredible={isCredible}
                       date={date}
                       promise={isPromise}
                       imageUrl={image}

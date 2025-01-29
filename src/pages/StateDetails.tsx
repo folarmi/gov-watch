@@ -120,6 +120,11 @@ const StateDetails = () => {
                     section,
                     summary,
                     isPromise,
+                    publicId,
+                    promiseDeadline,
+                    isPromiseFulfilled,
+                    // isBookmarked,
+                    isCredible,
                     id,
                   }: any) => {
                     return (
@@ -134,7 +139,21 @@ const StateDetails = () => {
                           date={date}
                           promise={isPromise}
                           imageUrl={image}
-                          id={id}
+                          deadline={promiseDeadline}
+                          id={publicId}
+                          isPromisedFulfilled={isPromiseFulfilled}
+                          isCredible={isCredible}
+                          // selectedCard={selectedCard}
+                          // onBookMarkClick={(id: string) =>
+                          //   toggleBookMarkStatus(id)
+                          // }
+                          // onLikeClicked={(id: string) => toggleLikedStatus(id)}
+                          // onCommentClicked={(id: string) => toggleComment(id)}
+                          // isBookMarked={isBookmarked}
+                          // isArticleBookMarked={isArticleBookMarked}
+                          // setIsArticleBookMarked={setIsArticleBookMarked}
+                          isPublished
+                          link={`/latest-publications/${publicId}`}
                         />
                       </div>
                     );

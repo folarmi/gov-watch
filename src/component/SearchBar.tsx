@@ -5,7 +5,6 @@ import { searchBarFilter } from "../data";
 import { useController } from "react-hook-form";
 
 interface SearchBarProps {
-  // onSearch: (searchTerm: string) => void;
   setSelectedFilter: (searchTerm: string) => void;
   setQueryParam: (searchTerm: string) => void;
   name: string;

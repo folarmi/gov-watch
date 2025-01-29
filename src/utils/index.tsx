@@ -150,7 +150,7 @@ export const queryParamsToAdd = (param: string, filter: string) => {
 export const directUserToPageOnLogin = (userType: UserType) => {
   let pageToRedirect;
   if (userType === userTypeObject.contributor) {
-    pageToRedirect = "/dashboard/total";
+    pageToRedirect = "/dashboard/pending";
   } else if (userType === userTypeObject.admin) {
     pageToRedirect = "/dashboard/manage-users";
   } else if (userType === userTypeObject.editor) {

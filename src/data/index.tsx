@@ -646,6 +646,24 @@ export const dummyPlans = [
   </span>
 </li>;
 
+export const planTypes = [
+  {
+    id: 1,
+    planName: "Monthly",
+    amount: "1000",
+  },
+  {
+    id: 2,
+    planName: "Biannual",
+    amount: "5800",
+  },
+  {
+    id: 3,
+    planName: "Yearly",
+    amount: "11000",
+  },
+];
+
 export const politicalLevelData = [
   {
     label: "Local",
