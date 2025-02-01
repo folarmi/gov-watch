@@ -34,20 +34,6 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
   });
   console.log(imageDetails);
 
-  const updateImageMutation = useCustomMutation({
-    endpoint: `Lgas/UpdateLga`,
-    successMessage: (data: any) => data?.remark,
-    method: "put",
-    errorMessage: (error: any) => error?.response?.data?.remark,
-    onSuccessCallback: () => {
-      toggleModal();
-      queryClient.invalidateQueries({
-        queryKey: ["GetAllLgas"],
-        exact: false,
-      });
-    },
-  });
-
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
   const { control, handleSubmit } = useForm<any>({
@@ -58,6 +44,8 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
     console.error("Upload error:", error);
     toast.error("File upload failed. Please try again.");
   };
+
+  const updateUploadMutation = useUploadMutation(undefined, handleError, "put");
 
   const uploadMutation = useUploadMutation(undefined, handleError);
   const createLGAMutation = useCustomMutation({
