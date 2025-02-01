@@ -43,6 +43,7 @@ import {
   Pricing,
   SingleDraftPublication,
   SenatorialDistricts,
+  PaymentHistory,
 } from "../pages";
 import Reviewed from "../pages/Reviewed";
 import { LCDA } from "../pages/Lcda";
@@ -106,6 +107,10 @@ const RoutePage = () => {
           element={<CreatePublication />}
         />
         <Route path="/dashboard/settings" element={<Setting />} />
+        <Route
+          path="/dashboard/settings/payment-history"
+          element={<PaymentHistory />}
+        />
         <Route
           path="/dashboard/senatorial-districts"
           element={<SenatorialDistricts />}

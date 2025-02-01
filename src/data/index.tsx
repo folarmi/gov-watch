@@ -572,6 +572,11 @@ export const settingData = [
     name: "Subscription",
     link: "/dashboard/settings/subscription",
   },
+  {
+    id: 4,
+    name: "Payment History",
+    link: "/dashboard/settings/payment-history",
+  },
 ];
 
 export const searchBarFilter = [

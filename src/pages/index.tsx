@@ -45,3 +45,4 @@ export * from "./PrivacyPolicy";
 export * from "./SinglePublishedPublication";
 export * from "./Pricing";
 export * from "./SenatorialDistricts";
+export * from "./PaymentHistory";
