@@ -28,11 +28,25 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
     (state: RootState) => state.auth
   );
 
-  const { data: lgaData, isLoading } = useGetData({
+  const { data: imageDetails, isLoading } = useGetData({
     url: `Uploads/GetUpload?filePath=${selectedLGA?.image}`,
     queryKey: ["GetAllLgas"],
   });
-  console.log(lgaData);
+  console.log(imageDetails);
+
+  const updateImageMutation = useCustomMutation({
+    endpoint: `Lgas/UpdateLga`,
+    successMessage: (data: any) => data?.remark,
+    method: "put",
+    errorMessage: (error: any) => error?.response?.data?.remark,
+    onSuccessCallback: () => {
+      toggleModal();
+      queryClient.invalidateQueries({
+        queryKey: ["GetAllLgas"],
+        exact: false,
+      });
+    },
+  });
 
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
