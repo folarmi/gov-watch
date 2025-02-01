@@ -28,6 +28,12 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
     (state: RootState) => state.auth
   );
 
+  const { data: lgaData, isLoading } = useGetData({
+    url: `Uploads/GetUpload?filePath=${selectedLGA?.image}`,
+    queryKey: ["GetAllLgas"],
+  });
+  console.log(lgaData);
+
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
   const { control, handleSubmit } = useForm<any>({
