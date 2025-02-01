@@ -29,7 +29,7 @@ const VerifyEmailPage = () => {
     },
     onSuccess: (data) => {
       if (data?.status === 200) {
-        toast(data?.remark);
+        toast("Email Verified successfully");
         navigate("/sign-in");
       }
     },
