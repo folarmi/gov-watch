@@ -125,11 +125,12 @@ export const useGetDataById = ({
 
 export const useUploadMutation = (
   onSuccessHandler?: SuccessHandler,
-  onErrorHandler?: ErrorHandler
+  onErrorHandler?: ErrorHandler,
+  method: "post" | "put" = "post"
 ): UseMutationResult<UploadResponse, UploadError, FormData> => {
   return useMutation<UploadResponse, UploadError, FormData>({
     mutationFn: async (data: FormData) => {
-      const response = await api.post("Uploads/UploadImage", data, {
+      const response = await api[method]("Uploads/UploadImage", data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
