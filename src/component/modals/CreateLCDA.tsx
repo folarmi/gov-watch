@@ -13,6 +13,7 @@ import { useAppSelector } from "../../lib/hook";
 import { RootState } from "../../lib/store";
 import {
   UploadError,
+  uploadFile,
   useCustomMutation,
   useGetData,
   useUploadMutation,
@@ -28,24 +29,12 @@ const CreateLCDA = ({ toggleModal }: any) => {
     (state: RootState) => state.auth
   );
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [backendPath, setBackendPath] = useState("");
   const [selectedState, setSelectedState] = useState("");
-  const handleSuccess = (data: any) => {
-    setBackendPath(data?.filePath);
-  };
 
   const handleError = (error: UploadError) => {
     console.error("Upload error:", error);
   };
-  const uploadMutation = useUploadMutation(handleSuccess, handleError);
-
-  const handleFileUpload = (file: File) => {
-    setUploadedFile(file);
-    const formData = new FormData();
-    formData.append("uploadFile", file);
-    formData.append("createdBy", userId);
-    uploadMutation.mutate(formData);
-  };
+  const uploadMutation = useUploadMutation(undefined, handleError);
 
   const createLCDAMutation = useCustomMutation({
     endpoint: "Lcdas/CreateLcda",
@@ -60,20 +49,38 @@ const CreateLCDA = ({ toggleModal }: any) => {
     },
   });
 
-  const submitForm = (data: any) => {
-    if (backendPath === "") {
-      toast("Please upload a file first");
-      return;
+  const submitForm = async (data: any) => {
+    try {
+      if (!uploadedFile) {
+        toast("Please upload a file first");
+        return;
+      }
+
+      let uploadedFilePath;
+
+      if (uploadedFile) {
+        uploadedFilePath = await uploadFile(
+          uploadedFile,
+          userId,
+          uploadMutation
+        );
+        if (!uploadedFilePath) {
+          toast.error("File upload failed.");
+          return;
+        }
+      }
+
+      const formData: any = {
+        ...data,
+        image: uploadedFilePath,
+        createdBy: userId,
+        regionId: data?.regionId?.value,
+      };
+
+      createLCDAMutation.mutate(formData);
+    } catch (error) {
+      console.log(error);
     }
-
-    const formData: any = {
-      ...data,
-      image: backendPath,
-      createdBy: userId,
-      regionId: data?.regionId?.value,
-    };
-
-    createLCDAMutation.mutate(formData);
   };
 
   const { data: lgaData, isLoading: lgaDataIsLoading } = useGetData({
@@ -207,7 +214,7 @@ const CreateLCDA = ({ toggleModal }: any) => {
           <FileUploader
             maxSizeMB={1}
             acceptFormats={["png", "jpeg", "jpg", "gif", "webp"]}
-            onFileUpload={handleFileUpload}
+            onFileUpload={setUploadedFile}
           />
           {uploadedFile && (
             <ImageDetails

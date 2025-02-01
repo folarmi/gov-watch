@@ -23,11 +23,13 @@ interface UseGetDataByIdOptions {
 }
 
 export interface UploadResponse {
-  data: {
-    remark: string;
-    filePath: string;
-  };
+  // data: {
+  //   remark: string;
+  //   filePath: string;
+  // };
   status: number;
+  statusCode?: number;
+  filePath?: string;
 }
 
 export interface UploadError {
@@ -41,8 +43,8 @@ export interface UploadError {
   };
 }
 
-type SuccessHandler = (data: UploadResponse) => void;
-type ErrorHandler = (error: UploadError) => void;
+type SuccessHandler = ((data: UploadResponse) => void) | undefined;
+type ErrorHandler = ((error: UploadError) => void) | undefined;
 
 interface MutationResponse {
   status: number;
@@ -247,4 +249,27 @@ export const useCustomMutation = <
     },
     ...mutationOptions,
   });
+};
+
+export const uploadFile = async (
+  uploadedFile: File,
+  userId: string,
+  uploadMutation: UseMutationResult<UploadResponse, unknown, FormData, unknown>
+): Promise<string | null> => {
+  if (!uploadedFile) return null;
+
+  const formData = new FormData();
+  formData.append("uploadFile", uploadedFile);
+  formData.append("createdBy", userId);
+
+  try {
+    const uploadResponse = await uploadMutation.mutateAsync(formData);
+    if (uploadResponse.statusCode !== 201) {
+      throw new Error("File upload failed.");
+    }
+    return uploadResponse?.filePath || null;
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    return null;
+  }
 };

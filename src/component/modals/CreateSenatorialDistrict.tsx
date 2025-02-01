@@ -13,6 +13,7 @@ import { useAppSelector } from "../../lib/hook";
 import { RootState } from "../../lib/store";
 import {
   UploadError,
+  uploadFile,
   useCustomMutation,
   useGetData,
   useUploadMutation,
@@ -49,23 +50,11 @@ const CreateSenatorialDistrict = ({
 
   const { userId } = useAppSelector((state: RootState) => state.auth);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [backendPath, setBackendPath] = useState("");
-  const handleSuccess = (data: any) => {
-    setBackendPath(data?.filePath);
-  };
 
   const handleError = (error: UploadError) => {
     console.error("Upload error:", error);
   };
-  const uploadMutation = useUploadMutation(handleSuccess, handleError);
-
-  const handleFileUpload = (file: File) => {
-    setUploadedFile(file);
-    const formData = new FormData();
-    formData.append("uploadFile", file);
-    formData.append("createdBy", userId);
-    uploadMutation.mutate(formData);
-  };
+  const uploadMutation = useUploadMutation(undefined, handleError);
 
   const createStateMutation = useCustomMutation({
     endpoint: selectedSenatorialDistrict
@@ -83,26 +72,43 @@ const CreateSenatorialDistrict = ({
     },
   });
 
-  const submitForm = (data: any) => {
-    if (backendPath === "" && !selectedSenatorialDistrict) {
-      toast("Please upload a file first");
-      return;
+  const submitForm = async (data: any) => {
+    try {
+      if (!uploadedFile && !selectedSenatorialDistrict) {
+        toast("Please upload a file first");
+        return;
+      }
+      let uploadedFilePath;
+
+      if (uploadedFile) {
+        uploadedFilePath = await uploadFile(
+          uploadedFile,
+          userId,
+          uploadMutation
+        );
+        if (!uploadedFilePath) {
+          toast.error("File upload failed.");
+          return;
+        }
+      }
+
+      const formData: any = {
+        ...data,
+      };
+
+      if (selectedSenatorialDistrict) {
+        formData.lastModifiedBy = userId;
+        formData.image = selectedSenatorialDistrict.image;
+      } else {
+        // formData.population = Number(data?.population?.replaceAll(",", "") || 0);
+        formData.createdBy = userId;
+        formData.image = uploadedFilePath;
+      }
+
+      createStateMutation.mutate(formData);
+    } catch (error) {
+      console.log(error);
     }
-
-    const formData: any = {
-      ...data,
-    };
-
-    if (selectedSenatorialDistrict) {
-      formData.lastModifiedBy = userId;
-      formData.image = selectedSenatorialDistrict.image;
-    } else {
-      // formData.population = Number(data?.population?.replaceAll(",", "") || 0);
-      formData.createdBy = userId;
-      formData.image = backendPath;
-    }
-
-    createStateMutation.mutate(formData);
   };
 
   const { data: countryData, isLoading: countryDataIsLoading } = useGetData({
@@ -250,7 +256,7 @@ const CreateSenatorialDistrict = ({
           <FileUploader
             maxSizeMB={1}
             acceptFormats={["png", "jpeg", "jpg", "gif", "svg", "webp"]}
-            onFileUpload={handleFileUpload}
+            onFileUpload={setUploadedFile}
             defaultFile={selectedSenatorialDistrict?.image}
           />
           {uploadedFile && (

@@ -10,6 +10,7 @@ import CloseButton from "../forms/CloseButton";
 import ImageDetails from "../ImageDetails";
 import {
   UploadError,
+  uploadFile,
   useCustomMutation,
   useUploadMutation,
 } from "../../hooks/apiCalls";
@@ -34,26 +35,14 @@ const CreateCategory = ({ toggleModal, selectedCategory }: any) => {
     defaultValues: modifiedDefaultValues || {},
   });
   const queryClient = useQueryClient();
-  const handleSuccess = (data: any) => {
-    setBackendPath(data?.filePath);
-  };
 
   const handleError = (error: UploadError) => {
     console.error("Upload error:", error);
   };
 
-  const uploadMutation = useUploadMutation(handleSuccess, handleError);
+  const uploadMutation = useUploadMutation(undefined, handleError);
   const { userId } = useAppSelector((state: RootState) => state.auth);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [backendPath, setBackendPath] = useState("");
-
-  const handleFileUpload = (file: File) => {
-    setUploadedFile(file);
-    const formData = new FormData();
-    formData.append("uploadFile", file);
-    formData.append("createdBy", userId);
-    uploadMutation.mutate(formData);
-  };
 
   const createCategoryMutation = useCustomMutation({
     endpoint: selectedCategory
@@ -71,27 +60,43 @@ const CreateCategory = ({ toggleModal, selectedCategory }: any) => {
     },
   });
 
-  const submitForm = (data: any) => {
-    if (backendPath === "" && !selectedCategory) {
-      toast("Please upload a file first");
-    }
+  const submitForm = async (data: any) => {
+    try {
+      if (!uploadedFile && !selectedCategory) {
+        toast("Please upload a file first");
+      }
 
-    const formData: any = {
-      name: data?.name,
-    };
+      let uploadedFilePath;
 
-    if (selectedCategory) {
-      formData.userId = userId;
-      formData.categoryImage = selectedCategory?.image;
-      // formData.categoryImage =
-      //   "https://res.cloudinary.com/dk9i5q1bg/image/upload/v1736507512/626f5a51-063a-4e01-8157-e56d46a194ae.png";
-    } else {
-      formData.userId = userId;
-      formData.name = data?.name;
-      formData.image = backendPath;
+      // If there's a new file selected, upload it first
+      if (uploadedFile) {
+        uploadedFilePath = await uploadFile(
+          uploadedFile,
+          userId,
+          uploadMutation
+        );
+        if (!uploadedFilePath) {
+          toast.error("File upload failed.");
+          return;
+        }
+      }
+
+      const formData: any = {
+        name: data?.name,
+      };
+
+      if (selectedCategory) {
+        formData.userId = userId;
+        formData.categoryImage = selectedCategory?.image;
+      } else {
+        formData.userId = userId;
+        formData.name = data?.name;
+        formData.image = uploadedFilePath;
+      }
+      createCategoryMutation.mutate(formData);
+    } catch (error) {
+      console.log(error);
     }
-    console.log(formData);
-    createCategoryMutation.mutate(formData);
   };
 
   return (
@@ -116,7 +121,7 @@ const CreateCategory = ({ toggleModal, selectedCategory }: any) => {
               <FileUploader
                 maxSizeMB={1}
                 acceptFormats={["png", "jpeg", "jpg", "gif", "webp"]}
-                onFileUpload={handleFileUpload}
+                onFileUpload={setUploadedFile}
                 defaultFile={selectedCategory?.categoryImage}
               />
               {uploadedFile && (

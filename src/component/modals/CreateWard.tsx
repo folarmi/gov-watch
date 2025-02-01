@@ -13,6 +13,7 @@ import { useAppSelector } from "../../lib/hook";
 import { RootState } from "../../lib/store";
 import {
   UploadError,
+  uploadFile,
   useCustomMutation,
   useGetData,
   useUploadMutation,
@@ -39,25 +40,13 @@ const CreateWard = ({ toggleModal, selectedWard }: any) => {
     (state: RootState) => state.auth
   );
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [backendPath, setBackendPath] = useState("");
   const [selectedState, setSelectedState] = useState("");
-  const handleSuccess = (data: any) => {
-    setBackendPath(data?.filePath);
-  };
 
   const handleError = (error: UploadError) => {
     console.error("Upload error:", error);
   };
 
-  const uploadMutation = useUploadMutation(handleSuccess, handleError);
-
-  const handleFileUpload = (file: File) => {
-    setUploadedFile(file);
-    const formData = new FormData();
-    formData.append("uploadFile", file);
-    formData.append("createdBy", userId);
-    uploadMutation.mutate(formData);
-  };
+  const uploadMutation = useUploadMutation(undefined, handleError);
 
   const createWardMutation = useCustomMutation({
     endpoint: selectedWard ? `Wards/UpdateWard` : "Wards/CreateWard",
@@ -73,27 +62,45 @@ const CreateWard = ({ toggleModal, selectedWard }: any) => {
     },
   });
 
-  const submitForm = (data: any) => {
-    if (backendPath === "" && !selectedWard) {
-      toast("Please upload a file first");
-      return;
+  const submitForm = async (data: any) => {
+    try {
+      if (!uploadedFile && !selectedWard) {
+        toast("Please upload a file first");
+        return;
+      }
+
+      let uploadedFilePath;
+
+      if (uploadedFile) {
+        uploadedFilePath = await uploadFile(
+          uploadedFile,
+          userId,
+          uploadMutation
+        );
+        if (!uploadedFilePath) {
+          toast.error("File upload failed.");
+          return;
+        }
+      }
+
+      const formData: any = {
+        ...data,
+      };
+
+      if (selectedWard) {
+        formData.lastModifiedBy = userId;
+        formData.image = selectedWard.image;
+      } else {
+        // formData.population = Number(data.population.replace(/,/g, ""));
+        formData.createdBy = userId;
+        formData.regionId = data?.regionId?.value;
+        formData.image = uploadedFilePath;
+      }
+
+      createWardMutation.mutate(formData);
+    } catch (error) {
+      console.log(error);
     }
-
-    const formData: any = {
-      ...data,
-    };
-
-    if (selectedWard) {
-      formData.lastModifiedBy = userId;
-      formData.image = selectedWard.image;
-    } else {
-      formData.population = Number(data.population.replace(/,/g, ""));
-      formData.createdBy = userId;
-      formData.regionId = data?.regionId?.value;
-      formData.image = backendPath;
-    }
-
-    createWardMutation.mutate(formData);
   };
 
   const { data: lgaData, isLoading: lgaDataIsLoading } = useGetData({
@@ -237,7 +244,7 @@ const CreateWard = ({ toggleModal, selectedWard }: any) => {
           <FileUploader
             maxSizeMB={1}
             acceptFormats={["png", "jpeg", "jpg", "gif", "webp"]}
-            onFileUpload={handleFileUpload}
+            onFileUpload={setUploadedFile}
             defaultFile={selectedWard?.image}
           />
           {uploadedFile && (

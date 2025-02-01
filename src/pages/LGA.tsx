@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useAppSelector } from "../lib/hook";
 import { RootState } from "../lib/store";
 import { useGetData } from "../hooks/apiCalls";
-import IndeterminateCheckbox from "../component/InterdeterminateCheckbox";
+// import IndeterminateCheckbox from "../component/InterdeterminateCheckbox";
 import AdminButton from "../component/forms/AdminButton";
 import Table from "../component/Table";
 import Modal from "../component/modals/Modal";
@@ -36,16 +36,16 @@ const LGA = () => {
   const columnHelper = createColumnHelper<any>();
   const columns = [
     // Display Column
-    columnHelper.display({
-      id: "checkbox",
-      cell: ({ table }) => (
-        <IndeterminateCheckbox
-          checked={table.getIsAllRowsSelected()}
-          indeterminate={table.getIsSomeRowsSelected()}
-          onChange={table.getToggleAllRowsSelectedHandler()}
-        />
-      ),
-    }),
+    // columnHelper.display({
+    //   id: "checkbox",
+    //   cell: ({ table }) => (
+    //     <IndeterminateCheckbox
+    //       checked={table.getIsAllRowsSelected()}
+    //       indeterminate={table.getIsSomeRowsSelected()}
+    //       onChange={table.getToggleAllRowsSelectedHandler()}
+    //     />
+    //   ),
+    // }),
     columnHelper.accessor("image", {
       header: "Image",
       cell: (info) => (

@@ -13,6 +13,7 @@ import { useAppSelector } from "../../lib/hook";
 import { RootState } from "../../lib/store";
 import {
   UploadError,
+  uploadFile,
   useCustomMutation,
   useGetData,
   useUploadMutation,
@@ -22,37 +23,23 @@ import { useQueryClient } from "@tanstack/react-query";
 // import { lgaData } from "../../utils/lga";
 
 const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
-  // const test = () => {
-  //   return lgaData.filter((lga) => lga.state === "Adamawa State");
-  // };
-
-  const { control, handleSubmit } = useForm<any>({
-    defaultValues: selectedLGA || {},
-  });
   const queryClient = useQueryClient();
   const { userId, userCountry } = useAppSelector(
     (state: RootState) => state.auth
   );
+
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  // const [backendPath, setBackendPath] = useState("");
-  const [backendPath, setBackendPath] = useState("");
-  const handleSuccess = (data: any) => {
-    setBackendPath(data?.filePath);
-  };
+
+  const { control, handleSubmit } = useForm<any>({
+    defaultValues: selectedLGA || {},
+  });
 
   const handleError = (error: UploadError) => {
     console.error("Upload error:", error);
-  };
-  const uploadMutation = useUploadMutation(handleSuccess, handleError);
-
-  const handleFileUpload = (file: File) => {
-    setUploadedFile(file);
-    const formData = new FormData();
-    formData.append("uploadFile", file);
-    formData.append("createdBy", userId);
-    uploadMutation.mutate(formData);
+    toast.error("File upload failed. Please try again.");
   };
 
+  const uploadMutation = useUploadMutation(undefined, handleError);
   const createLGAMutation = useCustomMutation({
     endpoint: selectedLGA ? `Lgas/UpdateLga` : `Lgas/CreateLga`,
     successMessage: (data: any) => data?.remark,
@@ -93,29 +80,48 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
   //   return formData;
   // });
 
-  const submitForm = (data: any) => {
-    // Regular creation starts here
-    if (backendPath === "" && !selectedLGA) {
-      toast("Please upload a file first");
-      return;
-    }
-    const formData: any = {
-      ...data,
-      image: backendPath,
-      country: userCountry,
-    };
-    if (selectedLGA) {
-      formData.lastModifiedBy = userId;
-      formData.image = selectedLGA.image;
-    } else {
-      formData.createdBy = userId;
-      formData.image = backendPath;
-    }
-    createLGAMutation.mutate(formData);
+  const submitForm = async (data: any) => {
+    try {
+      if (!uploadedFile && !selectedLGA) {
+        toast.error("Please upload a file first.");
+        return;
+      }
 
-    // lgaRequests.forEach((formData: any) => {
-    //   createLGAMutation.mutate(formData);
-    // });
+      let uploadedFilePath;
+
+      // If there's a new file selected, upload it first
+      if (uploadedFile) {
+        uploadedFilePath = await uploadFile(
+          uploadedFile,
+          userId,
+          uploadMutation
+        );
+        if (!uploadedFilePath) {
+          toast.error("File upload failed.");
+          return;
+        }
+      }
+
+      // Prepare Form Data
+      const formPayload: any = {
+        ...data,
+        image: uploadedFilePath,
+        country: userCountry,
+      };
+
+      if (selectedLGA) {
+        formPayload.lastModifiedBy = userId;
+        formPayload.image = selectedLGA.image;
+      } else {
+        formPayload.createdBy = userId;
+        formPayload.image = uploadedFilePath;
+      }
+
+      // Submit form after successful image upload
+      createLGAMutation.mutate(formPayload);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const { data: stateData, isLoading: stateDataIsLoading } = useGetData({
@@ -238,14 +244,14 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
         <div className="col-span-2">
           <CustomTextArea name="bio" control={control} label="Bio" />
         </div>
-
         <div className="col-span-2 ">
           <p className="text-sm font-medium pb-2">Flag</p>
 
           <FileUploader
             maxSizeMB={1}
             acceptFormats={["png", "jpeg", "jpg", "gif", "webp"]}
-            onFileUpload={handleFileUpload}
+            // onUpload={(file: File) => handleFileChange(file)}
+            onFileUpload={setUploadedFile}
             defaultFile={selectedLGA?.image}
           />
           {uploadedFile && (

@@ -12,12 +12,14 @@ import { useAppSelector } from "../../lib/hook";
 import { RootState } from "../../lib/store";
 import {
   UploadError,
+  uploadFile,
   useCustomMutation,
   useGetData,
   useUploadMutation,
 } from "../../hooks/apiCalls";
 import FileUploader from "../FileUploader";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 const CreateMDA = ({ toggleModal, selectedMDA }: any) => {
   const modifiedDefaultValues = {
@@ -33,24 +35,12 @@ const CreateMDA = ({ toggleModal, selectedMDA }: any) => {
     (state: RootState) => state.auth
   );
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [backendPath, setBackendPath] = useState("");
   const [isFederal, setIsFederal] = useState(false);
-  const handleSuccess = (data: any) => {
-    setBackendPath(data?.filePath);
-  };
 
   const handleError = (error: UploadError) => {
     console.error("Upload error:", error);
   };
-  const uploadMutation = useUploadMutation(handleSuccess, handleError);
-
-  const handleFileUpload = (file: File) => {
-    setUploadedFile(file);
-    const formData = new FormData();
-    formData.append("uploadFile", file);
-    formData.append("createdBy", userId);
-    uploadMutation.mutate(formData);
-  };
+  const uploadMutation = useUploadMutation(undefined, handleError);
 
   const createMDAMutation = useCustomMutation({
     endpoint: selectedMDA ? "Mdas/UpdateMda" : `Mdas/CreateMda`,
@@ -90,28 +80,47 @@ const CreateMDA = ({ toggleModal, selectedMDA }: any) => {
   //   return formData;
   // });
 
-  const submitForm = (data: any) => {
-    // if (backendPath === "") {
-    //   toast("Please upload a file first");
-    //   return;
-    // }
+  const submitForm = async (data: any) => {
+    try {
+      if (!uploadedFile) {
+        toast.error("Please upload a file first");
+        return;
+      }
 
-    const formData: any = {
-      ...data,
-    };
+      let uploadedFilePath;
 
-    if (selectedMDA) {
-      formData.lastModifiedBy = userId;
-      formData.image = selectedMDA.image;
-    } else {
-      // formData.population = Number(data.population.replace(/,/g, ""));
-      formData.createdBy = userId;
-      formData.image = backendPath;
-      formData.country = userCountry;
-      formData.isFederal = true;
+      // If there's a new file selected, upload it first
+      if (uploadedFile) {
+        uploadedFilePath = await uploadFile(
+          uploadedFile,
+          userId,
+          uploadMutation
+        );
+        if (!uploadedFilePath) {
+          toast.error("File upload failed.");
+          return;
+        }
+      }
+
+      const formData: any = {
+        ...data,
+      };
+
+      if (selectedMDA) {
+        formData.lastModifiedBy = userId;
+        formData.image = selectedMDA.image;
+      } else {
+        // formData.population = Number(data.population.replace(/,/g, ""));
+        formData.createdBy = userId;
+        formData.image = uploadedFilePath;
+        formData.country = userCountry;
+        formData.isFederal = true;
+
+        createMDAMutation.mutate(formData);
+      }
+    } catch (error) {
+      console.log(error);
     }
-
-    createMDAMutation.mutate(formData);
 
     // mdasRequests.slice(501, 506).forEach((formData: any) => {
     //   // console.log(formData);
@@ -233,7 +242,7 @@ const CreateMDA = ({ toggleModal, selectedMDA }: any) => {
           <FileUploader
             maxSizeMB={1}
             acceptFormats={["png", "jpeg", "jpg", "gif", "webp"]}
-            onFileUpload={handleFileUpload}
+            onFileUpload={setUploadedFile}
           />
           {uploadedFile && (
             <ImageDetails

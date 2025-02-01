@@ -65,7 +65,7 @@ const ArticleForm = ({
     setDeletePublication(!deletePublication);
   };
 
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, getValues } = useForm({
     defaultValues: {
       ...defaultValues,
       datePromiseMade: defaultValues?.datePromiseMade
@@ -119,6 +119,11 @@ const ArticleForm = ({
     control,
   });
 
+  const { field: isIncidentField } = useController({
+    name: "isIncident",
+    control,
+  });
+
   const handleTagsChange = (newTags: string[]) => {
     console.log("Updated Tags:", newTags);
   };
@@ -154,12 +159,6 @@ const ArticleForm = ({
     queryKey: ["GetListOfWards", selectedLGA],
     enabled: !!selectedLGA || isEditing,
   });
-
-  // const { data: mdaData, isLoading: mdaDataIsLoading } = useGetData({
-  //   url: `/Mdas/GetListOfMdas?stateName=${selectedState}&pageNumber=1&pageSize=100`,
-  //   queryKey: ["GetListOfMdas", selectedState],
-  //   enabled: !!selectedState || isEditing,
-  // });
 
   const { data: mdaData, isLoading: mdaDataIsLoading } = useGetData({
     url: `/Mdas/GetListOfMdas?countryName=string&pageNumber=1&pageSize=100`,
@@ -346,24 +345,37 @@ const ArticleForm = ({
                   placeholder="Select Ward"
                 />
               </div>
+              <CustomCheckBox
+                checked={isIncidentField?.value}
+                onChange={isIncidentField?.onChange}
+                iflabel
+                labelText="Is this an Incident?"
+                name="isIncidentField"
+              />
+
               <CustomInput
                 label="Published Date"
                 name="publishDate"
                 type="date"
                 control={control}
               />
-              <CustomInput
-                label="Date Incident Started"
-                name="dateIncidentStarted"
-                type="date"
-                control={control}
-              />
-              <CustomInput
-                label="Date Incident Was Resolved"
-                name="dateIncidentResolved"
-                type="date"
-                control={control}
-              />
+
+              {getValues("isIncident") && (
+                <>
+                  <CustomInput
+                    label="Date Incident Started"
+                    name="dateIncidentStarted"
+                    type="date"
+                    control={control}
+                  />
+                  <CustomInput
+                    label="Date Incident Was Resolved"
+                    name="dateIncidentResolved"
+                    type="date"
+                    control={control}
+                  />
+                </>
+              )}
               {/* Promise Information */}
               <div className="space-y-4">
                 <CustomInput

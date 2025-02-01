@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import ImageDetails from "../ImageDetails";
 import {
   UploadError,
+  uploadFile,
   useCustomMutation,
   useUploadMutation,
 } from "../../hooks/apiCalls";
@@ -17,6 +18,11 @@ import { RootState } from "../../lib/store";
 import { useQueryClient } from "@tanstack/react-query";
 
 const CreateCountry = ({ toggleModal, selectedCountry }: any) => {
+  const queryClient = useQueryClient();
+  const { userId } = useAppSelector((state: RootState) => state.auth);
+
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+
   const modifiedDefaultValues = {
     ...selectedCountry,
     population: Number(selectedCountry?.population?.replace(/,/g, "")),
@@ -26,21 +32,12 @@ const CreateCountry = ({ toggleModal, selectedCountry }: any) => {
     defaultValues: modifiedDefaultValues || {},
   });
 
-  const queryClient = useQueryClient();
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [backendPath, setBackendPath] = useState(selectedCountry?.image || ""); // Use existing image path if editing
-
-  const { userId } = useAppSelector((state: RootState) => state.auth);
-
-  const handleSuccess = (data: any) => {
-    setBackendPath(data?.filePath);
-  };
-
   const handleError = (error: UploadError) => {
     console.error("Upload error:", error);
+    toast.error("File upload failed. Please try again.");
   };
 
-  const uploadMutation = useUploadMutation(handleSuccess, handleError);
+  const uploadMutation = useUploadMutation(undefined, handleError);
 
   const countryMutation = useCustomMutation({
     endpoint: selectedCountry
@@ -58,35 +55,43 @@ const CreateCountry = ({ toggleModal, selectedCountry }: any) => {
     },
   });
 
-  const handleFileUpload = (file: File) => {
-    setUploadedFile(file);
-    const formData = new FormData();
-    formData.append("uploadFile", file);
-    formData.append("createdBy", userId);
-    uploadMutation.mutate(formData);
-  };
+  const submitForm = async (data: any) => {
+    try {
+      if (!uploadedFile && !selectedCountry) {
+        toast("Please upload a file first");
+        return;
+      }
+      let uploadedFilePath;
 
-  const submitForm = (data: any) => {
-    if (backendPath === "" && !selectedCountry) {
-      toast("Please upload a file first");
-      return;
+      if (uploadedFile) {
+        uploadedFilePath = await uploadFile(
+          uploadedFile,
+          userId,
+          uploadMutation
+        );
+        if (!uploadedFilePath) {
+          toast.error("File upload failed.");
+          return;
+        }
+      }
+      const formData: any = {
+        ...data,
+        population: +data.population,
+        gdp: +data.gdp,
+        image: uploadedFilePath,
+      };
+
+      if (selectedCountry) {
+        formData.updatedBy = userId;
+        formData.image = selectedCountry.image;
+      } else {
+        formData.createdBy = userId;
+        formData.image = uploadedFilePath;
+      }
+      countryMutation.mutate(formData);
+    } catch (error) {
+      console.log(error);
     }
-
-    const formData: any = {
-      ...data,
-      population: +data.population,
-      gdp: +data.gdp,
-      image: backendPath,
-    };
-
-    if (selectedCountry) {
-      formData.updatedBy = userId;
-      formData.image = selectedCountry.image;
-    } else {
-      formData.createdBy = userId;
-      formData.image = backendPath;
-    }
-    countryMutation.mutate(formData);
   };
 
   return (
@@ -170,10 +175,10 @@ const CreateCountry = ({ toggleModal, selectedCountry }: any) => {
             <FileUploader
               maxSizeMB={1}
               acceptFormats={["png", "jpeg", "jpg", "gif", "webp"]}
-              onFileUpload={handleFileUpload}
+              onFileUpload={setUploadedFile}
               defaultFile={selectedCountry?.image}
             />
-            {(uploadedFile || backendPath) && (
+            {uploadedFile && (
               <ImageDetails
                 fileName={uploadedFile?.name || "Existing File"}
                 fileSize={uploadedFile?.size || 0}
