@@ -1,5 +1,5 @@
 // import Image from "next/image";
-import Team from "../component/Team";
+// import Team from "../component/Team";
 import OuterPage from "../layouts/OuterPage";
 
 const About = () => {
@@ -7,7 +7,7 @@ const About = () => {
     <OuterPage>
       <div className="mb-28">
         <div className="mx-8 sm:mx-12 md:mx-16 lg:mx-28">
-          <h1 className="font-bold text-4xl text-green-700 mb-14">ABOUT US</h1>
+          {/* <h1 className="font-bold text-4xl text-green-700 mb-14">ABOUT US</h1> */}
 
           {/* <div className="flex flex-row justify-between gap-8 sm:gap-16 md:gap-32 lg:gap-56">
             <div className="mr-17 mb-16">
@@ -52,51 +52,36 @@ const About = () => {
         </div>
 
         <div className="flex mx-6 md:mx-10 lg:mx-20 gap-7 lg:flex-row md:flex-row flex-col">
-          <div className="bg-green-200 rounded-2xl">
-            <h1 className="font-bold text-3xl text-green-700 mb-14 mt-11 flex justify-center">
+          {/* <div className="bg-green-200 rounded-2xl"> */}
+          {/* <h1 className="font-bold text-3xl text-green-700 mb-14 mt-11 flex justify-center">
               THE TEAM
-            </h1>
+            </h1> */}
 
-            <div className="mx-6">
-              <div className="mb-8">
+          <div className="mx-6">
+            {/* <div className="mb-8">
                 <Team
                   img="Olabayo.svg"
                   name="Olabayo Balogun"
                   link="https://www.linkedin.com/in/olabayobalogun/"
-                  // role="lorem ipsum dolor sit a met consectetur"
                 />
-              </div>
-              <div className="mb-8 lg:pl-44 md:pl-24">
+              </div> */}
+            {/* <div className="mb-8 lg:pl-44 md:pl-24">
                 <Team
                   link="https://www.linkedin.com/in/folasayo-akinyosoye/"
                   img="Folashayo.svg"
                   name="Folasayo Akinyosoye"
                   role="A dedicated professional with a strong background in problem-solving and continuous learning, committed to delivering high-quality results and contributing meaningfully to projects and initiatives."
                 />
-              </div>
-              {/* <div className="mb-8">
-                <Team
-                  img="Phebe.svg"
-                  name="Phebe Keshinro"
-                  role="lorem ipsum dolor sit a met consectetur"
-                />
-              </div>
-              <div className="mb-24 lg:pl-44 md:pl-24">
-                <Team
-                  img="Ayomide.svg"
-                  name="Ayomide Gbebu"
-                  role="lorem ipsum dolor sit a met consectetur"
-                />
               </div> */}
-            </div>
+            {/* </div> */}
           </div>
 
-          <div>
+          <div className="mt-8 flex flex-col w-full items-center justify-center">
             <div className="mb-14">
               <h1 className="font-bold text-2xl text-green-700 mb-4 flex justify-center">
                 OUR MISSION
               </h1>
-              <p className="text-sm">
+              <p className="text-sm text-center">
                 To end political apathy all over the world by 2030.
               </p>
             </div>
