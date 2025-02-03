@@ -171,3 +171,13 @@ export const scrollToTop = () => {
     behavior: "smooth", // Smooth scroll animation
   });
 };
+
+export const getUserInitials = (userObject: any, userType: string) => {
+  if (userType !== userTypeObject.organization) {
+    const firstInitial = userObject?.firstName?.[0] || "";
+    const lastInitial = userObject?.lastName?.[0] || "";
+    return `${firstInitial}${lastInitial}`.toUpperCase();
+  }
+
+  return userObject?.organizationName?.slice(0, 2)?.toUpperCase() || "";
+};

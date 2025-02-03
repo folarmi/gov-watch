@@ -17,11 +17,12 @@ import {
 import FileUploader from "../component/FileUploader";
 import ImageDetails from "../component/ImageDetails";
 import { useQueryClient } from "@tanstack/react-query";
+import { getUserInitials } from "../utils";
 
 const Setting = () => {
   const queryClient = useQueryClient();
 
-  const { userId } = useAppSelector((state: RootState) => state.auth);
+  const { userId, userType } = useAppSelector((state: RootState) => state.auth);
 
   const { data: userObject, isLoading } = useGetData({
     url: `Users/GetUserById?publicId=${userId}`,
@@ -117,13 +118,31 @@ const Setting = () => {
         <Loader />
       ) : (
         <form onSubmit={handleSubmit(submitForm)}>
-          <div className="flex items-center justify-center">
+          {/* <div className="flex items-center justify-center">
             <img
-              className="w-40 h-40 rounded-full object-cover"
+              className="w-20 h-20 rounded-full object-cover bg-red-900"
               src={userObject?.image}
-              alt="Rounded avatar"
+              alt="User avatar"
             />
-          </div>
+          </div> */}
+
+          <>
+            {userObject?.image !== null ? (
+              <div className="flex items-center justify-center w-20 h-20 rounded-full">
+                <img
+                  className="w-full h-full rounded-full object-cover"
+                  src={userObject.image}
+                  alt="User avatar"
+                />
+              </div>
+            ) : (
+              <div className="flex items-center justify-center">
+                <span className="font-medium text-white uppercase">
+                  {getUserInitials(userObject, userType)}
+                </span>
+              </div>
+            )}
+          </>
           <div>
             <CustomTextArea
               className="border border-gray-300 rounded-md p-2 w-full"
@@ -194,7 +213,7 @@ const Setting = () => {
               />
             )}
 
-            <div className="w-1/4 ml-auto">
+            <div className="w-full md:w-1/4 ml-auto">
               <CustomButton
                 type="submit"
                 className="mt-4"

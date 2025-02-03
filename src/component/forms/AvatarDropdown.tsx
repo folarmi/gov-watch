@@ -4,7 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useAppSelector } from "../../lib/hook";
 import { RootState } from "../../lib/store";
 import { Link } from "react-router-dom";
-import { directUserToPageOnLogin, userTypeObject } from "../../utils";
+import { directUserToPageOnLogin, getUserInitials } from "../../utils";
 
 const AvatarDropdown = () => {
   const { userType } = useAppSelector((state: RootState) => state.auth);
@@ -50,19 +50,7 @@ const AvatarDropdown = () => {
         onClick={toggleDropDown}
         className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-primary rounded-full dark:bg-gray-600 cursor-pointer"
       >
-        {userType !== userTypeObject.organization && (
-          <span className="font-medium text-white dark:text-gray-300 uppercase">
-            {userObject?.firstName && userObject?.firstName[0]}
-            {userObject?.lastName && userObject?.lastName[0]}
-          </span>
-        )}
-
-        {userType === userTypeObject.organization && (
-          <span className="font-medium text-white dark:text-gray-300 uppercase">
-            {userObject?.organizationName &&
-              userObject?.organizationName.slice(0, 2)}
-          </span>
-        )}
+        {getUserInitials(userObject, userType)}
       </div>
 
       {showDropdown && (

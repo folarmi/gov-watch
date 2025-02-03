@@ -32,7 +32,7 @@ const ChangePassword = () => {
   };
   return (
     <SettingsLayout>
-      <form onSubmit={handleSubmit(submitForm)} className="w-1/2">
+      <form onSubmit={handleSubmit(submitForm)} className="w-full md:w-1/2">
         <CustomInput
           className="mr-4"
           label="Old Password"

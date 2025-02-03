@@ -63,26 +63,12 @@ const Header = () => {
 
   return (
     <>
-      <nav className="sticky top-0 z-50 bg-gray-200 h-32 px-8 md:px-0 flex items-center justify-between md:justify-around">
+      <nav className="sticky top-0 z-50 bg-gray-200 h-24 md:h-32 px-8 md:px-0 flex items-center justify-between md:justify-around">
         <Link to="/" className="">
           <img src="/logo.svg" alt="Company logo" className="w-14 md:w-20" />
         </Link>
 
         <>
-          {/* {SidebarList.map(({ name, id, url }) => {
-            return (
-              <div className="hidden md:flex" key={id}>
-                <Link
-                  className={`text-base font-medium pb-2  ${
-                    pathName === url ? "border-b-2 border-green_100" : ""
-                  }`}
-                  to={url}
-                >
-                  {name}
-                </Link>
-              </div>
-            );
-          })} */}
           {SidebarList.filter(({ name }) => name).map(({ name, id, url }) => {
             return (
               <div className="hidden md:flex" key={id}>
@@ -112,12 +98,16 @@ const Header = () => {
           )}
         </>
 
-        <img
-          onClick={toggleSideBar}
-          className="md:hidden"
-          src="/harmburger.svg"
-          alt="harmburger menu"
-        />
+        <div className="md:hidden flex items-center">
+          {isAuthenticated && <AvatarDropdown />}
+
+          <img
+            onClick={toggleSideBar}
+            className=""
+            src="/harmburger.svg"
+            alt="harmburger menu"
+          />
+        </div>
       </nav>
 
       {isSideBarOpen && (
@@ -132,7 +122,7 @@ const Header = () => {
           initial={{ x: "100%" }}
           animate={{ x: isSideBarOpen ? "0%" : "100%" }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="fixed top-0 right-0 w-64 h-full bg-white md:hidden pl-8 z-50"
+          className="fixed top-0 right-0 w-64 h-full bg-white md:hidden pl-8 z-[150]"
         >
           <div className="flex justify-end mt-4">
             <img
@@ -156,6 +146,14 @@ const Header = () => {
               </div>
             );
           })}
+
+          {!isAuthenticated && (
+            <div onClick={toggleSideBar} className="pb-5">
+              <Link className={`font-medium text-[15px] `} to="/sign-in">
+                Sign in
+              </Link>
+            </div>
+          )}
         </motion.div>
       )}
     </>

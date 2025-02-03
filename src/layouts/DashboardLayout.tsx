@@ -100,7 +100,6 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           <InformationTab data={adminDashboard} />
         )} */}
       <div className="flex space-x-6">
-        {/* Sidebar */}
         <aside className="bg-green-700 text-white w-64 p-4 h-screen sticky top-0 overflow-y-auto">
           {filteredItems.map(({ category, items }) => (
             <div key={category} className="mb-6">
@@ -123,9 +122,35 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           ))}
         </aside>
 
-        {/* Main Content */}
         <main className="flex-1">{children}</main>
       </div>
+      {/* <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6">
+
+        <aside className="bg-green-700 text-white w-full md:w-64 p-4 h-auto md:h-screen md:sticky top-0 overflow-y-auto">
+          {filteredItems.map(({ category, items }) => (
+            <div key={category} className="mb-6">
+              <h3 className="text-sm font-semibold uppercase">{category}</h3>
+              {items.map(({ id, name, image: Icon, link }) => (
+                <Link
+                  key={id}
+                  className={`flex items-center gap-4 py-2 px-4 rounded-lg transition-all duration-200 ${
+                    pathName.startsWith(link)
+                      ? "bg-green-500"
+                      : "hover:bg-green-600"
+                  }`}
+                  to={link}
+                >
+                  <Icon className="w-5 h-5" />
+                  <span className="text-sm">{name}</span>
+                </Link>
+              ))}
+            </div>
+          ))}
+        </aside>
+
+
+        <main className="flex-1">{children}</main>
+      </div> */}
       {/* </section> */}
       {userType !== userTypeObject.organization && <CreatePublication />}
     </>

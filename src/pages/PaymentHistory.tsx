@@ -83,7 +83,7 @@ const PaymentHistory = () => {
               : "bg-red-300 text-red-700"
           }`}
         >
-          {info.getValue() === true ? "Active" : "Inactive"}
+          {info.getValue() === true ? "Verified" : "Unverified"}
         </span>
       ),
     }),

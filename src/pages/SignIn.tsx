@@ -58,10 +58,6 @@ const SignIn = () => {
   return (
     <AuthLayout
       header="Be informed, Engaged And Empowered"
-      // text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum sequi
-      // cupiditate voluptates blanditiis libero neque commodi quas quod
-      // itaque nam, at delectus amet voluptatibus iure in quibusdam est
-      // expedita corporis!"
       img="logo.svg"
       banner="Signin-Banner.svg"
     >
@@ -89,12 +85,12 @@ const SignIn = () => {
           />
 
           <Link to="/forgot-password">
-            <p className="font-bold text-sm ml-72 pb-3">Forgot Password?</p>
+            <p className="font-bold text-sm md:ml-72 pb-3">Forgot Password?</p>
           </Link>
 
           <CustomButton
             type="submit"
-            className={`mt-8 px-32 py-4 rounded-2xl w-full text-white ${
+            className={`mt-8 md:px-32 py-4 rounded-2xl w-full text-white ${
               true ? "bg-primary" : "bg-customgreen"
             }`}
             disabled={signInMutation.isPending}
