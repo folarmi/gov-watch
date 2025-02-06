@@ -20,15 +20,6 @@ const PublicationDetails = () => {
   const params = useParams();
   const [viewCount, setViewCount] = useState();
 
-  // const [comments, setComments] = useState([
-  //   { id: 1, text: "This is a great post!", author: "Alice" },
-  //   { id: 2, text: "Thanks for sharing!", author: "Bob" },
-  // ]);
-
-  // const handleAddComment = (newComment: any) => {
-  //   setComments((prevComments) => [...prevComments, newComment]);
-  // };
-
   const {
     data: publicationDetailsData,
     isLoading: publicationDetailsIsLoading,
@@ -106,7 +97,7 @@ const PublicationDetails = () => {
               <img
                 src={publicationDetailsData?.image}
                 alt="Article placeholder image"
-                className="w-full h-64 md:h-80 lg:h-[680px] object-cover rounded-lg blur-xs "
+                className="w-full h-64 md:h-80 lg:h-[680px] object-contain rounded-lg blur-xs "
               />
 
               <p className="mt-2 text-sm text-gray-600 italic text-center underline">
@@ -211,19 +202,8 @@ const PublicationDetails = () => {
               </div>
             </div>
 
-            {publicationDetailsData?.bio !== null && (
-              <p className="my-6 text-base font-normal">
-                <span className="font-semibold">
-                  {publicationDetailsData?.authorName}
-                </span>{" "}
-                is a {publicationDetailsData?.bio}
-              </p>
-            )}
-
             <Comments
               comments={publicationCommentsData?.publicationCommentViewModel}
-              // comments={[]}
-              // onAddComment={handleAddComment}
               publicationDetailsData={publicationDetailsData}
             />
 
@@ -256,11 +236,20 @@ const PublicationDetails = () => {
                   })}
             </div>
 
+            {/* {publicationDetailsData?.bio !== null && (
+              <p className="my-6 text-base font-normal">
+                <span className="font-semibold">
+                  {publicationDetailsData?.authorName}
+                </span>{" "}
+                is a {publicationDetailsData?.bio}
+              </p>
+            )}
+
             <div className="flex items-center my-8">
               <div className="w-36 h-36 overflow-hidden rounded-full">
                 <img
                   // src={publicationDetailsData?.image}
-                  src={sampleWriter}
+                  src={publicationDetailsData?.contributorImage || sampleWriter}
                   className="w-full h-full object-cover rounded-full"
                   alt="Writer"
                 />
@@ -269,6 +258,38 @@ const PublicationDetails = () => {
               <div className="ml-6">
                 <p className="font-bold text-3xl">
                   Written by {publicationDetailsData?.authorName}
+                </p>
+              </div>
+            </div> */}
+
+            {publicationDetailsData?.bio && (
+              <div className="bg-gray-50 p-6 rounded-lg shadow-md my-6">
+                <p className="text-lg text-gray-700">
+                  <span className="font-semibold text-gray-900">
+                    {publicationDetailsData?.authorName}
+                  </span>{" "}
+                  is {publicationDetailsData?.bio}.
+                </p>
+              </div>
+            )}
+
+            <div className="flex items-center space-x-8 my-8">
+              {/* Profile Image */}
+              <div className="w-36 h-36 overflow-hidden rounded-full shadow-lg">
+                <img
+                  src={publicationDetailsData?.contributorImage || sampleWriter}
+                  className="w-full h-full object-cover"
+                  alt="Writer"
+                />
+              </div>
+
+              {/* Author Information */}
+              <div>
+                <p className="font-bold text-3xl text-gray-800">
+                  Written by {publicationDetailsData?.authorName}
+                </p>
+                <p className="text-gray-600 mt-2 text-base">
+                  {publicationDetailsData?.bio}
                 </p>
               </div>
             </div>

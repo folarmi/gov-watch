@@ -85,7 +85,7 @@ const CreateWard = ({ toggleModal, selectedWard }: any) => {
 
     if (selectedWard) {
       formData.lastModifiedBy = userId;
-      formData.image = selectedWard.image;
+      formData.image = backendPath || selectedWard.image;
     } else {
       formData.population = Number(data.population.replace(/,/g, ""));
       formData.createdBy = userId;

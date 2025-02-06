@@ -5,19 +5,43 @@ import { RootState } from "../lib/store";
 import { useAppSelector } from "../lib/hook";
 import { useForm } from "react-hook-form";
 import CustomTextArea from "./CustomTextArea";
-import { Eye, ThumbsUp } from "lucide-react";
+import { Eye, MessageCircle, ThumbsUp } from "lucide-react";
 
 type Prop = {
   comments: any;
-  // onAddComment: any;
   publicationDetailsData: any;
 };
 
 const Comments = ({ comments, publicationDetailsData }: Prop) => {
-  const { control, handleSubmit, setValue } = useForm<any>({});
-
   const queryClient = useQueryClient();
   const { userId } = useAppSelector((state: RootState) => state.auth);
+
+  const likeCommentMutation = useCustomMutation({
+    endpoint: "PublicationComments/UpdatePublicationCommentLikeCount",
+    method: "put",
+    successMessage: (data: any) => data?.remark,
+    errorMessage: (error: any) =>
+      error?.response?.data?.remark || error?.response?.data,
+    onSuccessCallback: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["GetAllUserBookmarksByUserId"],
+        exact: false,
+      });
+    },
+  });
+
+  const toggleLikeComment = (id: string) => {
+    console.log(id);
+    const formData = {
+      userPublicId: userId,
+      commentPublicId: id,
+      isLike: true,
+      publicationPublicId: publicationDetailsData?.publicId,
+    };
+    likeCommentMutation.mutate(formData);
+  };
+
+  const { control, handleSubmit, setValue } = useForm<any>({});
 
   const createCommentMutation = useCustomMutation({
     endpoint: `PublicationComments/CreatePublicationComment`,
@@ -33,8 +57,6 @@ const Comments = ({ comments, publicationDetailsData }: Prop) => {
   });
 
   const onSubmit = (data: any) => {
-    // if (!commentText.trim()) return;
-
     const newComment = {
       comment: data?.comment,
       publicationPublicId: publicationDetailsData?.publicId,
@@ -64,8 +86,8 @@ const Comments = ({ comments, publicationDetailsData }: Prop) => {
 
             <div className="flex items-center space-x-4 mt-2">
               <button
-                className="flex items-center space-x-1 text-primary hover:text-green-700"
-                // onClick={() => handleLike(comment.id)}
+                className="flex items-center space-x-1 text-primary hover:text-green-700 cursor-pointer"
+                onClick={() => toggleLikeComment(comment.id)}
               >
                 <ThumbsUp className="text-primary" />
                 <span>{comment?.likeCount}</span>
@@ -78,6 +100,11 @@ const Comments = ({ comments, publicationDetailsData }: Prop) => {
               >
                 <Eye />
                 <span>{comment?.viewCount}</span>
+              </button>
+
+              {/* Reply icon */}
+              <button className="flex items-center space-x-1 text-primary_DM hover:text-blue-700 cursor-pointer">
+                <MessageCircle />
               </button>
             </div>
           </li>

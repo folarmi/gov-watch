@@ -238,6 +238,7 @@ import { useAuth } from "../context/AuthContext";
 import { toast } from "react-toastify";
 import { useAppSelector } from "../lib/hook";
 import { RootState } from "../lib/store";
+import { Heart } from "lucide-react";
 
 interface CardProps {
   section: string;
@@ -249,11 +250,7 @@ interface CardProps {
   deadline?: string;
   id: string;
   isBookMarked?: boolean;
-  isArticleBookMarked?: boolean;
-  onBookMarkClick?: (id: string) => void;
-  onLikeClicked?: (id: string) => void;
-  onCommentClicked?: (id: string) => void;
-  setIsArticleBookMarked?: any;
+  isLiked?: boolean;
   link?: string | Partial<Path>;
   isPublished?: boolean;
   category?: string;
@@ -272,24 +269,40 @@ const Card = ({
   id,
   link,
   deadline,
-  onCommentClicked,
   isPublished,
   imageUrl,
   category,
   isCredible,
   isPromisedFulfilled,
+  isLiked,
+  isBookMarked,
 }: CardProps) => {
   const queryClient = useQueryClient();
   const { isAuthenticated } = useAuth();
   const { userId } = useAppSelector((state: RootState) => state.auth);
 
   const [timeDifference, setTimeDifference] = useState<string>("");
-  const [isPublicationLiked, setIsPublicationLiked] = useState(false);
-  const [isArticleBookMarked, setIsArticleBookMarked] =
-    useState<boolean>(false);
+  const [isPublicationLiked, setIsPublicationLiked] = useState(isLiked);
+  const [isArticleBookMarked, setIsArticleBookMarked] = useState<
+    boolean | undefined
+  >(isBookMarked);
 
   const createBookmarkMutation = useCustomMutation({
     endpoint: "UserBookmarks/CreateUserBookmark",
+    // successMessage: (data: any) => data?.remark,
+    successMessage: (data: any) => data?.remark,
+    errorMessage: (error: any) =>
+      error?.response?.data?.remark || error?.response?.data,
+    onSuccessCallback: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["GetlatestPublications"],
+        exact: false,
+      });
+    },
+  });
+
+  const likeBookmarkMutation = useCustomMutation({
+    endpoint: "PublicationLikers/LikePublication",
     successMessage: (data: any) => data?.remark,
     errorMessage: (error: any) =>
       error?.response?.data?.remark || error?.response?.data,
@@ -328,7 +341,7 @@ const Card = ({
     }
 
     const formData = {
-      userId: userId,
+      userPublicId: userId,
       publicationPublicId: id,
       isLike: true,
     };
@@ -336,7 +349,7 @@ const Card = ({
     setIsPublicationLiked((prev) => !prev);
 
     try {
-      await createBookmarkMutation.mutateAsync(formData);
+      await likeBookmarkMutation.mutateAsync(formData);
     } catch (error) {
       setIsPublicationLiked((prev) => !prev);
     }
@@ -375,19 +388,20 @@ const Card = ({
           // <div className="flex items-center justify-between mt-4">
           <div className="flex items-center justify-between pb-4 mt-auto">
             <div className="flex items-center space-x-2">
-              <img
-                src="/heartOutline.svg"
-                alt="Like"
-                className="w-5 h-5 cursor-pointer"
-                // onClick={() => onLikeClicked?.(id)}
+              <Heart
                 onClick={() => toggleLikedStatus()}
+                className={`w-5 h-5 ${
+                  isPublicationLiked
+                    ? "fill-primary text-primary cursor-pointer"
+                    : "text-gray-500"
+                }`}
               />
-              {/* <HeartIcon isFilled={false} onC/> */}
+
               <img
                 src="/comments.svg"
                 alt="Comments"
                 className="w-5 h-5 cursor-pointer"
-                onClick={() => onCommentClicked?.(id)}
+                // onClick={() => onCommentClicked?.(id)}
               />
             </div>
 

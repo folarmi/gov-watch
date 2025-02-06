@@ -110,7 +110,7 @@ const CreatePoliticalActor = ({ toggleModal, selectedPoliticalActor }: any) => {
 
     if (selectedPoliticalActor) {
       formData.lastModifiedBy = userId;
-      formData.image = selectedPoliticalActor.image;
+      formData.image = backendPath || selectedPoliticalActor.image;
     } else {
       formData.createdBy = userId;
       formData.country = userCountry;

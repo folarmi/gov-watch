@@ -102,7 +102,7 @@ const CreateMDA = ({ toggleModal, selectedMDA }: any) => {
 
     if (selectedMDA) {
       formData.lastModifiedBy = userId;
-      formData.image = selectedMDA.image;
+      formData.image = backendPath || selectedMDA.image;
     } else {
       // formData.population = Number(data.population.replace(/,/g, ""));
       formData.createdBy = userId;

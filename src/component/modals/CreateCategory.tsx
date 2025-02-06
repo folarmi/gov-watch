@@ -88,7 +88,7 @@ const CreateCategory = ({ toggleModal, selectedCategory }: any) => {
     } else {
       formData.userId = userId;
       formData.name = data?.name;
-      formData.image = backendPath;
+      formData.image = backendPath || backendPath;
     }
     console.log(formData);
     createCategoryMutation.mutate(formData);

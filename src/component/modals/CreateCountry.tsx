@@ -81,7 +81,7 @@ const CreateCountry = ({ toggleModal, selectedCountry }: any) => {
 
     if (selectedCountry) {
       formData.updatedBy = userId;
-      formData.image = selectedCountry.image;
+      formData.image = backendPath || selectedCountry.image;
     } else {
       formData.createdBy = userId;
       formData.image = backendPath;

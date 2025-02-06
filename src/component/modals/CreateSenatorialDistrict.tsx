@@ -95,7 +95,7 @@ const CreateSenatorialDistrict = ({
 
     if (selectedSenatorialDistrict) {
       formData.lastModifiedBy = userId;
-      formData.image = selectedSenatorialDistrict.image;
+      formData.image = backendPath || selectedSenatorialDistrict.image;
     } else {
       // formData.population = Number(data?.population?.replaceAll(",", "") || 0);
       formData.createdBy = userId;

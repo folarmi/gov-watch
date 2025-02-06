@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Card from "../component/Card";
 import HeroSection from "../component/HeroSection";
@@ -14,8 +14,7 @@ import OuterPage from "../layouts/OuterPage";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../lib/hook";
 import { RootState } from "../lib/store";
-import { useAuth } from "../context/AuthContext";
-import { toast } from "react-toastify";
+
 import { queryParamsToAdd } from "../utils";
 import { useForm } from "react-hook-form";
 
@@ -30,7 +29,6 @@ const Home = () => {
   const pageSize = 36;
 
   const { control, handleSubmit } = useForm();
-  const { isAuthenticated } = useAuth();
   const { userId, userObject } = useAppSelector(
     (state: RootState) => state.auth
   );
@@ -102,21 +100,21 @@ const Home = () => {
       };
     });
 
-  const toggleLikedStatus = (id: string) => {
-    console.log(id);
-    if (!isAuthenticated) {
-      toast("Please sign in to like an article");
-      return;
-    }
-  };
+  // const toggleLikedStatus = (id: string) => {
+  //   console.log(id);
+  //   if (!isAuthenticated) {
+  //     toast("Please sign in to like an article");
+  //     return;
+  //   }
+  // };
 
-  const toggleComment = (id: string) => {
-    console.log(id);
-    if (!isAuthenticated) {
-      toast("Please sign in to comment");
-      return;
-    }
-  };
+  // const toggleComment = (id: string) => {
+  //   console.log(id);
+  //   if (!isAuthenticated) {
+  //     toast("Please sign in to comment");
+  //     return;
+  //   }
+  // };
 
   if (isLoading || categoriesDataisLoading) return <Loader />;
   if (error) return <div>Error loading data</div>;
@@ -167,6 +165,7 @@ const Home = () => {
                     isCredible,
                     dateIncidentStarted,
                     dateIncidentResolved,
+                    isLiked,
                   }: // category,
                   any) => {
                     return (
@@ -186,9 +185,8 @@ const Home = () => {
                           id={publicId}
                           isPromisedFulfilled={isPromiseFulfilled}
                           isCredible={isCredible}
-                          onLikeClicked={(id: string) => toggleLikedStatus(id)}
-                          onCommentClicked={(id: string) => toggleComment(id)}
                           isBookMarked={isBookmarked}
+                          isLiked={isLiked}
                           isPublished
                           dateIncidentStarted={dateIncidentStarted}
                           dateIncidentResolved={dateIncidentResolved}

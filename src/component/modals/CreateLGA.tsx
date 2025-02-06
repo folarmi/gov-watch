@@ -106,7 +106,7 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
     };
     if (selectedLGA) {
       formData.lastModifiedBy = userId;
-      formData.image = selectedLGA.image;
+      formData.image = backendPath || selectedLGA.image;
     } else {
       formData.createdBy = userId;
       formData.image = backendPath;
