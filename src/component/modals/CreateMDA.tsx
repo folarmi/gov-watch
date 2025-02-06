@@ -234,6 +234,7 @@ const CreateMDA = ({ toggleModal, selectedMDA }: any) => {
             maxSizeMB={1}
             acceptFormats={["png", "jpeg", "jpg", "gif", "webp"]}
             onFileUpload={handleFileUpload}
+            defaultFile={selectedMDA?.image}
           />
           {uploadedFile && (
             <ImageDetails

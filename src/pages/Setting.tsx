@@ -111,27 +111,21 @@ const Setting = () => {
       reset(userObject);
     }
   }, [userObject, reset]);
-
+  {
+    console.log(userObject);
+  }
   return (
     <SettingsLayout>
       {isLoading ? (
         <Loader />
       ) : (
         <form onSubmit={handleSubmit(submitForm)}>
-          {/* <div className="flex items-center justify-center">
-            <img
-              className="w-20 h-20 rounded-full object-cover bg-red-900"
-              src={userObject?.image}
-              alt="User avatar"
-            />
-          </div> */}
-
           <>
             {userObject?.image !== null ? (
               <div className="flex items-center justify-center w-20 h-20 rounded-full">
                 <img
                   className="w-full h-full rounded-full object-cover"
-                  src={userObject.image}
+                  src={userObject?.image}
                   alt="User avatar"
                 />
               </div>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // /* eslint-disable react-hooks/exhaustive-deps */
 // /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -231,6 +232,13 @@ import { useEffect, useState } from "react";
 import Text from "./Text";
 import { calculateTimeDifference, scrollToTop, truncateText } from "../utils";
 import { Link, Path } from "react-router-dom";
+import { HeartIcon } from "./images/HeartOutline";
+import { useCustomMutation } from "../hooks/apiCalls";
+import { useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "../context/AuthContext";
+import { toast } from "react-toastify";
+import { useAppSelector } from "../lib/hook";
+import { RootState } from "../lib/store";
 
 interface CardProps {
   section: string;
@@ -276,7 +284,48 @@ const Card = ({
   isCredible,
   isPromisedFulfilled,
 }: CardProps) => {
+  const queryClient = useQueryClient();
+  const { isAuthenticated } = useAuth();
+  const { userId, userObject } = useAppSelector(
+    (state: RootState) => state.auth
+  );
+
   const [timeDifference, setTimeDifference] = useState<string>("");
+  const [isPublicationLiked, setIsPublicationLiked] = useState(false);
+
+  const createBookmarkMutation = useCustomMutation({
+    endpoint: "PublicationLikers/LikePublication",
+    successMessage: (data: any) => data?.remark,
+    errorMessage: (error: any) =>
+      error?.response?.data?.remark || error?.response?.data,
+    onSuccessCallback: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["GetlatestPublications"],
+        exact: false,
+      });
+    },
+  });
+
+  const toggleLikedStatus = async () => {
+    if (!isAuthenticated) {
+      toast("Please sign in to like an article");
+      return;
+    }
+
+    const formData = {
+      userId: userId,
+      publicationPublicId: id,
+      isLike: true,
+    };
+
+    setIsPublicationLiked((prev) => !prev);
+
+    try {
+      await createBookmarkMutation.mutateAsync(formData);
+    } catch (error) {
+      setIsPublicationLiked((prev) => !prev);
+    }
+  };
 
   useEffect(() => {
     if (deadline) {
@@ -315,8 +364,10 @@ const Card = ({
                 src="/heartOutline.svg"
                 alt="Like"
                 className="w-5 h-5 cursor-pointer"
-                onClick={() => onLikeClicked?.(id)}
+                // onClick={() => onLikeClicked?.(id)}
+                onClick={() => toggleLikedStatus()}
               />
+              {/* <HeartIcon isFilled={false} onC/> */}
               <img
                 src="/comments.svg"
                 alt="Comments"

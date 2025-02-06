@@ -6,7 +6,9 @@ import Text from "./Text";
 
 const HeroSection = () => {
   const { isAuthenticated } = useAuth();
-  const [imageSrc, setImageSrc] = useState("/coatOfArms.svg");
+  const [imageSrc, setImageSrc] = useState(
+    "https://res.cloudinary.com/dk9i5q1bg/image/upload/v1738827704/7313a891-8f32-4678-938c-35f861d09de5.svg"
+  );
 
   const { userObject } = useAppSelector((state: RootState) => state.auth);
 
@@ -14,7 +16,9 @@ const HeroSection = () => {
     if (isAuthenticated && userObject?.countryImage) {
       setImageSrc(`${userObject.countryImage}?t=${Date.now()}`);
     } else {
-      setImageSrc("/coatOfArms.svg");
+      setImageSrc(
+        "https://res.cloudinary.com/dk9i5q1bg/image/upload/v1738827704/7313a891-8f32-4678-938c-35f861d09de5.svg"
+      );
     }
   }, [isAuthenticated, userObject]);
 

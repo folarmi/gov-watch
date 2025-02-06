@@ -59,7 +59,8 @@ const SignIn = () => {
     <AuthLayout
       header="Be informed, Engaged And Empowered"
       img="logo.svg"
-      banner="Signin-Banner.svg"
+      // banner="Signin-Banner.svg"
+      banner="https://res.cloudinary.com/dk9i5q1bg/image/upload/v1738829966/633158a5-d253-43b7-9148-98d368dc31e0.png"
     >
       <div className="mb-24 md:mx-10 mx-12">
         <h1 className="font-bold text-4xl mb-2">Welcome Back</h1>

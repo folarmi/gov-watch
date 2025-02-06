@@ -48,7 +48,7 @@ const AvatarDropdown = () => {
       /> */}
       <div
         onClick={toggleDropDown}
-        className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-primary rounded-full dark:bg-gray-600 cursor-pointer"
+        className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-primary rounded-full dark:bg-gray-600 cursor-pointer text-white"
       >
         {getUserInitials(userObject, userType)}
       </div>

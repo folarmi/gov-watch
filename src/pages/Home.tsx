@@ -18,8 +18,10 @@ import { useAuth } from "../context/AuthContext";
 import { toast } from "react-toastify";
 import { queryParamsToAdd } from "../utils";
 import { useForm } from "react-hook-form";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Home = () => {
+  const queryClient = useQueryClient();
   const [pageNumber, setPageNumber] = useState(1);
   const [articles, setArticles] = useState<any>([]);
   const [hasMore, setHasMore] = useState(true);
@@ -51,7 +53,7 @@ const Home = () => {
       queryParam
     )}&pageNumber=${pageNumber}&pageSize=${pageSize}`,
     queryKey: [
-      "publications",
+      "GetlatestPublications",
       categoryName,
       queryParam,
       userObject?.country,
@@ -110,7 +112,10 @@ const Home = () => {
     errorMessage: (error: any) =>
       error?.response?.data?.remark || error?.response?.data,
     onSuccessCallback: () => {
-      // window.location.reload();
+      queryClient.invalidateQueries({
+        queryKey: ["GetlatestPublications"],
+        exact: false,
+      });
     },
   });
 

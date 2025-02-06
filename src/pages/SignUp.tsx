@@ -87,7 +87,7 @@ const Signup = () => {
       header="Empowering Netizens with information fostering citizenship participation in governance"
       text=""
       img="logo.svg"
-      banner="signup-Banner.svg"
+      banner="https://res.cloudinary.com/dk9i5q1bg/image/upload/v1738828125/7c56a603-6a84-4269-b3be-30dda624b0ad.svg"
       headerMarginTop="31rem"
     >
       <div className="mb-24 md:mx-10 mx-6 md:w-96">

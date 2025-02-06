@@ -1,9 +1,10 @@
+import moment from "moment";
 import Loader from "../component/Loader";
-import PricingCard from "../component/PricingCards";
 import { useGetData } from "../hooks/apiCalls";
 import { SettingsLayout } from "../layouts/SettingsLayout";
 import { useAppSelector } from "../lib/hook";
 import { RootState } from "../lib/store";
+import { SubscriptionInfo } from "../utils/SubscriptionInfo";
 
 const Subscription = () => {
   const { userId } = useAppSelector((state: RootState) => state.auth);
@@ -20,8 +21,14 @@ const Subscription = () => {
         <Loader />
       ) : (
         <SettingsLayout>
-          <div className="flex flex-wrap items-center">
-            <PricingCard planName="Monthly" amount="1000" />
+          <div className="flex items-center">
+            <SubscriptionInfo
+              isSubscribed={userObject?.isSubscribed}
+              expirationDate={moment(
+                userObject?.subscriptionExpirationDate
+              ).format("DD-MM-YYYY")}
+            />
+            {/* <PricingCard planName="Monthly" amount="1000" /> */}
           </div>
         </SettingsLayout>
       )}
