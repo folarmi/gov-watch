@@ -289,7 +289,7 @@ const Card = ({
     useState<boolean>(false);
 
   const createBookmarkMutation = useCustomMutation({
-    endpoint: "PublicationLikers/LikePublication",
+    endpoint: "UserBookmarks/CreateUserBookmark",
     successMessage: (data: any) => data?.remark,
     errorMessage: (error: any) =>
       error?.response?.data?.remark || error?.response?.data,
