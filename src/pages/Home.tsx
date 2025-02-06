@@ -9,7 +9,7 @@ import ExploreButton from "../component/ExploreButton";
 // import SeeAllPublications from "../component/SeeAllPublications";
 import EmptyPage from "../component/EmptyPage";
 import Loader from "../component/Loader";
-import { useCustomMutation, useGetData } from "../hooks/apiCalls";
+import { useGetData } from "../hooks/apiCalls";
 import OuterPage from "../layouts/OuterPage";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../lib/hook";
@@ -18,19 +18,15 @@ import { useAuth } from "../context/AuthContext";
 import { toast } from "react-toastify";
 import { queryParamsToAdd } from "../utils";
 import { useForm } from "react-hook-form";
-import { useQueryClient } from "@tanstack/react-query";
 
 const Home = () => {
-  const queryClient = useQueryClient();
   const [pageNumber, setPageNumber] = useState(1);
   const [articles, setArticles] = useState<any>([]);
   const [hasMore, setHasMore] = useState(true);
   const [categoryName, setCategoryName] = useState("");
-  const [isArticleBookMarked, setIsArticleBookMarked] =
-    useState<boolean>(false);
+
   const [selectedFilter, setSelectedFilter] = useState("");
   const [queryParam, setQueryParam] = useState("");
-  const [selectedCard, setSelectedCard] = useState("");
   const pageSize = 36;
 
   const { control, handleSubmit } = useForm();
@@ -105,40 +101,6 @@ const Home = () => {
         name: item?.name,
       };
     });
-
-  const createBookmarkMutation = useCustomMutation({
-    endpoint: "UserBookmarks/CreateUserBookmark",
-    successMessage: (data: any) => data?.remark,
-    errorMessage: (error: any) =>
-      error?.response?.data?.remark || error?.response?.data,
-    onSuccessCallback: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["GetlatestPublications"],
-        exact: false,
-      });
-    },
-  });
-
-  const toggleBookMarkStatus = async (id: string) => {
-    if (!isAuthenticated) {
-      toast("Please sign in to bookmark an article");
-      return;
-    }
-
-    const formData = {
-      userPublicId: userId,
-      publicationPublicId: id,
-    };
-
-    setSelectedCard(id);
-    setIsArticleBookMarked((prev) => !prev);
-
-    try {
-      await createBookmarkMutation.mutateAsync(formData);
-    } catch (error) {
-      setIsArticleBookMarked((prev) => !prev);
-    }
-  };
 
   const toggleLikedStatus = (id: string) => {
     console.log(id);
@@ -224,15 +186,9 @@ const Home = () => {
                           id={publicId}
                           isPromisedFulfilled={isPromiseFulfilled}
                           isCredible={isCredible}
-                          selectedCard={selectedCard}
-                          onBookMarkClick={(id: string) =>
-                            toggleBookMarkStatus(id)
-                          }
                           onLikeClicked={(id: string) => toggleLikedStatus(id)}
                           onCommentClicked={(id: string) => toggleComment(id)}
                           isBookMarked={isBookmarked}
-                          isArticleBookMarked={isArticleBookMarked}
-                          setIsArticleBookMarked={setIsArticleBookMarked}
                           isPublished
                           dateIncidentStarted={dateIncidentStarted}
                           dateIncidentResolved={dateIncidentResolved}

@@ -232,7 +232,6 @@ import { useEffect, useState } from "react";
 import Text from "./Text";
 import { calculateTimeDifference, scrollToTop, truncateText } from "../utils";
 import { Link, Path } from "react-router-dom";
-import { HeartIcon } from "./images/HeartOutline";
 import { useCustomMutation } from "../hooks/apiCalls";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "../context/AuthContext";
@@ -248,7 +247,6 @@ interface CardProps {
   promise: boolean;
   imageUrl: string;
   deadline?: string;
-  selectedCard?: string;
   id: string;
   isBookMarked?: boolean;
   isArticleBookMarked?: boolean;
@@ -274,10 +272,7 @@ const Card = ({
   id,
   link,
   deadline,
-  isBookMarked,
-  onBookMarkClick,
   onCommentClicked,
-  onLikeClicked,
   isPublished,
   imageUrl,
   category,
@@ -286,12 +281,12 @@ const Card = ({
 }: CardProps) => {
   const queryClient = useQueryClient();
   const { isAuthenticated } = useAuth();
-  const { userId, userObject } = useAppSelector(
-    (state: RootState) => state.auth
-  );
+  const { userId } = useAppSelector((state: RootState) => state.auth);
 
   const [timeDifference, setTimeDifference] = useState<string>("");
   const [isPublicationLiked, setIsPublicationLiked] = useState(false);
+  const [isArticleBookMarked, setIsArticleBookMarked] =
+    useState<boolean>(false);
 
   const createBookmarkMutation = useCustomMutation({
     endpoint: "PublicationLikers/LikePublication",
@@ -305,6 +300,26 @@ const Card = ({
       });
     },
   });
+
+  const toggleBookMarkStatus = async () => {
+    if (!isAuthenticated) {
+      toast("Please sign in to bookmark an article");
+      return;
+    }
+
+    const formData = {
+      userPublicId: userId,
+      publicationPublicId: id,
+    };
+
+    setIsArticleBookMarked((prev) => !prev);
+
+    try {
+      await createBookmarkMutation.mutateAsync(formData);
+    } catch (error) {
+      setIsArticleBookMarked((prev) => !prev);
+    }
+  };
 
   const toggleLikedStatus = async () => {
     if (!isAuthenticated) {
@@ -377,10 +392,12 @@ const Card = ({
             </div>
 
             <img
-              src={isBookMarked ? "/filledBookMark.svg" : "/bookMark.svg"}
+              src={
+                isArticleBookMarked ? "/filledBookMark.svg" : "/bookMark.svg"
+              }
               alt="Bookmark"
               className="w-5 h-5 cursor-pointer"
-              onClick={() => onBookMarkClick?.(id)}
+              onClick={() => toggleBookMarkStatus()}
             />
           </div>
         )}
