@@ -102,7 +102,7 @@ const SignIn = () => {
           <Link to="/sign-up">
             <p className="flex justify-center mt-5 text-sm">
               Don't have an account?{" "}
-              <span className="font-bold text-primary">Sign Up</span>
+              <span className="font-bold text-primary ml-2">Sign Up</span>
             </p>
           </Link>
         </form>

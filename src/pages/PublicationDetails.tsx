@@ -262,7 +262,7 @@ const PublicationDetails = () => {
               </div>
             </div> */}
 
-            {publicationDetailsData?.bio && (
+            {/* {publicationDetailsData?.bio && (
               <div className="bg-gray-50 p-6 rounded-lg shadow-md my-6">
                 <p className="text-lg text-gray-700">
                   <span className="font-semibold text-gray-900">
@@ -271,7 +271,7 @@ const PublicationDetails = () => {
                   is {publicationDetailsData?.bio}.
                 </p>
               </div>
-            )}
+            )} */}
 
             <div className="flex items-center space-x-8 my-8">
               {/* Profile Image */}
@@ -301,14 +301,3 @@ const PublicationDetails = () => {
 };
 
 export { PublicationDetails };
-
-// {
-//   "publicId": "e208a36c-a9c8-4037-8e04-d6db28323937",
-//   "comment": "This is a great comment",
-//   "publicationPublicId": "3b34a689-a90a-460c-ab0f-f1948cfa3fa3",
-//   "superCommentPublicId": null,
-//   "publicationTitle": "Laboriosam sunt qua",
-//   "viewCount": 0,
-//   "likeCount": 0,
-//   "commenterId": "a7e36778-2fec-4b6e-8569-dbe47778dff0"
-// },

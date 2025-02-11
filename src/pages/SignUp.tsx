@@ -197,8 +197,8 @@ const Signup = () => {
 
             <Link to="/sign-in" className="cursor-pointer">
               <p className="flex justify-center mt-5 text-sm">
-                Already have an account?
-                <span className="font-bold text-primary"> Sign In</span>
+                Already have an account?{" "}
+                <span className="font-bold text-primary ml-2">Sign In</span>
               </p>
             </Link>
           </form>
