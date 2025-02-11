@@ -13,16 +13,40 @@ import { RootState } from "../lib/store";
 
 import { useForm } from "react-hook-form";
 import InfiniteScrollArticles from "../component/InfiniteScrolling";
+import { queryParamsToAdd } from "../utils";
 
 const Home = () => {
   const [categoryName, setCategoryName] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("");
   const [queryParam, setQueryParam] = useState("");
+  const [pageNumber, setPageNumber] = useState<any>(1);
 
   const { control, handleSubmit } = useForm();
   const { userId, userObject } = useAppSelector(
     (state: RootState) => state.auth
   );
+
+  const {
+    data: articlesData,
+    isLoading,
+    error,
+  } = useGetData({
+    url: `Publications/GetLatestPublications?categoryName=${
+      categoryName === "all" ? "" : categoryName
+    }&searcherId=${userId}${
+      userObject?.country ? `&countryName=${userObject.country}` : ""
+    }&${queryParamsToAdd(
+      selectedFilter,
+      queryParam
+    )}&pageNumber=${pageNumber}&pageSize=12`,
+    queryKey: [
+      "GetlatestPublications",
+      categoryName,
+      queryParam,
+      userObject?.country,
+      JSON.stringify(pageNumber),
+    ],
+  });
 
   const { data: categoriesData, isLoading: categoriesDataisLoading } =
     useGetData({
@@ -68,12 +92,10 @@ const Home = () => {
         />
 
         <InfiniteScrollArticles
-          categoryName={categoryName}
-          userId={userId}
-          userObject={{ country: userObject?.country }}
-          selectedFilter={selectedFilter}
-          queryParam={queryParam}
-          pageSize={12}
+          articlesData={articlesData}
+          setPageNumber={setPageNumber}
+          isLoading={isLoading}
+          error={error}
         />
         {/* {articlesData?.length > 1 && <SeeAllPublications />} */}
         <ExploreButton />
