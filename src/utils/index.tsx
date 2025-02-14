@@ -52,40 +52,6 @@ export const userTypeObject = {
   organization: "Organization",
 };
 
-// export const calculateTimeDifference = (
-//   deadline: string,
-//   setTimeDifference: any
-// ) => {
-//   if (!deadline) return;
-
-//   const currentDate = new Date();
-//   const deadlineDate = new Date(deadline);
-
-//   const difference = deadlineDate.getTime() - currentDate.getTime();
-
-//   const isPastDeadline = difference < 0;
-
-//   // Convert the difference to absolute value for formatting
-//   const diff = Math.abs(difference);
-
-//   // Calculate days, hours, and minutes
-//   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-//   const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-//   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-//   const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-//   // Set time difference string and indicate whether it's past the deadline
-//   if (isPastDeadline) {
-//     setTimeDifference(
-//       `${days}days ${hours}hours ${minutes}mins ${seconds}secs past deadline`
-//     );
-//   } else {
-//     setTimeDifference(
-//       `${days}days ${hours}hours ${minutes}mins ${seconds}secs to deadline`
-//     );
-//   }
-// };
-
 export const calculateTimeDifference = (
   deadline: string,
   setTimeDifference: any
@@ -127,6 +93,50 @@ export const calculateTimeDifference = (
     setTimeDifference(`${timeString} past deadline`);
   } else {
     setTimeDifference(`${timeString} to deadline`);
+  }
+};
+
+// utils/calculateIncidentDuration.ts
+export const calculateIncidentDuration = (
+  startDate: string | undefined,
+  resolvedDate: string | null | undefined // Allow resolvedDate to be null
+): string => {
+  if (!startDate) return "No start date provided";
+
+  const start = new Date(startDate);
+  const resolved = resolvedDate === null ? new Date() : new Date(resolvedDate); // Use current date if resolvedDate is null
+
+  const difference = resolved.getTime() - start.getTime();
+  const isResolved = resolvedDate !== null; // Check if resolvedDate is not null
+
+  // Convert the difference to absolute value for formatting
+  const diff = Math.abs(difference);
+
+  // Calculate days, hours, minutes, and seconds
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+  // Helper function to add singular/plural labels
+  const pluralize = (value: number, label: string) =>
+    `${value} ${label}${value === 1 ? "" : "s"}`;
+
+  // Create the time difference string with proper pluralization
+  const timeString = [
+    days > 0 && pluralize(days, "day"),
+    hours > 0 && pluralize(hours, "hour"),
+    minutes > 0 && pluralize(minutes, "minute"),
+    seconds > 0 && pluralize(seconds, "second"),
+  ]
+    .filter(Boolean) // Remove empty values
+    .join(" ");
+
+  // Return the formatted string based on whether the incident is resolved
+  if (isResolved) {
+    return `${timeString} since resolution`;
+  } else {
+    return `${timeString} since incident started`;
   }
 };
 

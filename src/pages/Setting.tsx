@@ -82,7 +82,7 @@ const Setting = () => {
     const formData = {
       ...data,
       lastModifiedBy: userId,
-      image: backendPath,
+      image: backendPath || userObject?.image,
     };
 
     updateUserMutation.mutate(formData);
@@ -111,9 +111,7 @@ const Setting = () => {
       reset(userObject);
     }
   }, [userObject, reset]);
-  {
-    console.log(userObject);
-  }
+
   return (
     <SettingsLayout>
       {isLoading ? (
@@ -122,9 +120,9 @@ const Setting = () => {
         <form onSubmit={handleSubmit(submitForm)}>
           <>
             {userObject?.image !== null ? (
-              <div className="flex items-center justify-center w-20 h-20 rounded-full">
+              <div className="flex items-center w-full justify-center rounded-full">
                 <img
-                  className="w-full h-full rounded-full object-cover"
+                  className=" w-20 h-20 rounded-full object-cover"
                   src={userObject?.image}
                   alt="User avatar"
                 />

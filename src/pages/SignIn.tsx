@@ -23,7 +23,7 @@ import { directUserToPageOnLogin } from "../utils";
 const SignIn = () => {
   const navigate = useNavigate();
   // const { userType } = useAppSelector((state: RootState) => state.auth);
-  const { handleSubmit, control } = useForm();
+  const { handleSubmit, control, reset } = useForm();
   const { loginFromContext } = useAuth();
   const dispatch = useAppDispatch();
 
@@ -47,7 +47,10 @@ const SignIn = () => {
       }
     },
     onError: (error: any) => {
-      toast.error(error?.response?.data?.remark);
+      toast.error(error?.response?.data?.remark, {
+        autoClose: 6000,
+      });
+      reset();
     },
   });
 

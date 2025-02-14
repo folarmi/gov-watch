@@ -47,6 +47,7 @@ const ArticleForm = ({
   const [selectedLGA, setSelectedLGA] = useState("");
   const [approveModal, setApproveModal] = useState(false);
   const [deletePublication, setDeletePublication] = useState(false);
+  const today = new Date().toISOString().split("T")[0];
 
   const toggleModal = () => {
     setReviewModal(!reviewModal);
@@ -65,7 +66,7 @@ const ArticleForm = ({
     setDeletePublication(!deletePublication);
   };
 
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, getValues } = useForm({
     defaultValues: {
       ...defaultValues,
       datePromiseMade: defaultValues?.datePromiseMade
@@ -119,6 +120,11 @@ const ArticleForm = ({
     control,
   });
 
+  const { field: isIncidentField } = useController({
+    name: "isIncident",
+    control,
+  });
+
   const handleTagsChange = (newTags: string[]) => {
     console.log("Updated Tags:", newTags);
   };
@@ -155,14 +161,8 @@ const ArticleForm = ({
     enabled: !!selectedLGA || isEditing,
   });
 
-  // const { data: mdaData, isLoading: mdaDataIsLoading } = useGetData({
-  //   url: `/Mdas/GetListOfMdas?stateName=${selectedState}&pageNumber=1&pageSize=100`,
-  //   queryKey: ["GetListOfMdas", selectedState],
-  //   enabled: !!selectedState || isEditing,
-  // });
-
   const { data: mdaData, isLoading: mdaDataIsLoading } = useGetData({
-    url: `/Mdas/GetListOfMdas?countryName=string&pageNumber=1&pageSize=100`,
+    url: `/Mdas/GetListOfMdas?countryName=${userCountry}&pageNumber=1&pageSize=100`,
     queryKey: ["GetListOfMdas", selectedState],
   });
 
@@ -346,45 +346,105 @@ const ArticleForm = ({
                   placeholder="Select Ward"
                 />
               </div>
+
+              {/* Checkboxes */}
+
+              <div className="grid grid-cols-2 gap-4">
+                <CustomCheckBox
+                  checked={isIncidentField?.value}
+                  onChange={isIncidentField?.onChange}
+                  iflabel
+                  labelText="Is this an Incident?"
+                  name="isIncidentField"
+                />
+
+                <CustomCheckBox
+                  checked={isPromiseField?.value}
+                  onChange={isPromiseField?.onChange}
+                  iflabel
+                  labelText="Is this a Promise?"
+                  name="isPromise"
+                />
+
+                {getValues("isPromise") && (
+                  <CustomCheckBox
+                    checked={isPromiseFulfilledField?.value}
+                    onChange={isPromiseFulfilledField?.onChange}
+                    iflabel
+                    labelText="Has this Promise been Fulfilled?"
+                    name="isPromiseFulfilled"
+                  />
+                )}
+
+                <CustomCheckBox
+                  checked={isFederalField?.value}
+                  onChange={isFederalField?.onChange}
+                  iflabel
+                  name="isFederal"
+                  labelText="Is this a Federal issue?"
+                />
+
+                <CustomCheckBox
+                  checked={isCredibleField?.value}
+                  onChange={isCredibleField?.onChange}
+                  iflabel
+                  labelText="Is this Credible?"
+                  name="isCredible"
+                />
+              </div>
               <CustomInput
                 label="Published Date"
                 name="publishDate"
                 type="date"
                 control={control}
               />
-              <CustomInput
-                label="Date Incident Started"
-                name="dateIncidentStarted"
-                type="date"
-                control={control}
-              />
-              <CustomInput
-                label="Date Incident Was Resolved"
-                name="dateIncidentResolved"
-                type="date"
-                control={control}
-              />
+
+              {getValues("isIncident") && (
+                <>
+                  <CustomInput
+                    label="Date Incident Started"
+                    name="dateIncidentStarted"
+                    type="date"
+                    control={control}
+                    max={today}
+                  />
+                  <CustomInput
+                    label="Date Incident Was Resolved"
+                    name="dateIncidentResolved"
+                    type="date"
+                    control={control}
+                  />
+                </>
+              )}
               {/* Promise Information */}
-              <div className="space-y-4">
-                <CustomInput
-                  label="Date Promise was Made"
-                  name="datePromiseMade"
-                  type="date"
-                  control={control}
-                />
-                <CustomInput
-                  label="Promised Deadline"
-                  name="promiseDeadline"
-                  type="date"
-                  control={control}
-                />
+              {getValues("isPromise") && (
+                <>
+                  <div className="space-y-4">
+                    <CustomInput
+                      label="Date Promise was Made"
+                      name="datePromiseMade"
+                      type="date"
+                      control={control}
+                    />
+                    <CustomInput
+                      label="Promised Deadline"
+                      name="promiseDeadline"
+                      type="date"
+                      control={control}
+                    />
+                  </div>
+                </>
+              )}
+
+              {getValues("isPromiseFulfilled") && (
                 <CustomInput
                   label="Date Promise was Fulfilled"
                   name="datePromiseFulfilled"
                   type="date"
                   control={control}
                 />
-              </div>
+              )}
+
               {/* Political and MDA Information */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <CustomSelect
@@ -404,37 +464,7 @@ const ArticleForm = ({
                   placeholder="Select MDA"
                 />
               </div>
-              {/* Checkboxes */}
-              <div className="grid grid-cols-2 gap-4">
-                <CustomCheckBox
-                  checked={isFederalField?.value}
-                  onChange={isFederalField?.onChange}
-                  iflabel
-                  name="isFederal"
-                  labelText="Is this a Federal issue?"
-                />
-                <CustomCheckBox
-                  checked={isPromiseField?.value}
-                  onChange={isPromiseField?.onChange}
-                  iflabel
-                  labelText="Is this a Promise?"
-                  name="isPromise"
-                />
-                <CustomCheckBox
-                  checked={isPromiseFulfilledField?.value}
-                  onChange={isPromiseFulfilledField?.onChange}
-                  iflabel
-                  labelText="Has this Promise been Fulfilled?"
-                  name="isPromiseFulfilled"
-                />
-                <CustomCheckBox
-                  checked={isCredibleField?.value}
-                  onChange={isCredibleField?.onChange}
-                  iflabel
-                  labelText="Is this Credible?"
-                  name="isCredible"
-                />
-              </div>
+              <div className="grid grid-cols-2 gap-4"></div>
               {/* Tags and References */}
               <TagsInput
                 onChange={handleTagsChange}

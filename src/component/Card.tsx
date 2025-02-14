@@ -230,7 +230,12 @@
 
 import { useEffect, useState } from "react";
 import Text from "./Text";
-import { calculateTimeDifference, scrollToTop, truncateText } from "../utils";
+import {
+  calculateIncidentDuration,
+  calculateTimeDifference,
+  scrollToTop,
+  truncateText,
+} from "../utils";
 import { Link, Path } from "react-router-dom";
 import { useCustomMutation } from "../hooks/apiCalls";
 import { useQueryClient } from "@tanstack/react-query";
@@ -276,12 +281,15 @@ const Card = ({
   isPromisedFulfilled,
   isLiked,
   isBookMarked,
+  dateIncidentStarted,
+  dateIncidentResolved,
 }: CardProps) => {
   const queryClient = useQueryClient();
   const { isAuthenticated } = useAuth();
   const { userId } = useAppSelector((state: RootState) => state.auth);
 
   const [timeDifference, setTimeDifference] = useState<string>("");
+  const [incidentTimeDiff, setIncidentTimeDiff] = useState<string>("");
   const [isPublicationLiked, setIsPublicationLiked] = useState(isLiked);
   const [isArticleBookMarked, setIsArticleBookMarked] = useState<
     boolean | undefined
@@ -365,8 +373,31 @@ const Card = ({
     }
   }, [deadline]);
 
+  useEffect(() => {
+    // Calculate the duration immediately
+    const durationString = calculateIncidentDuration(
+      dateIncidentStarted,
+      dateIncidentResolved
+    );
+    setIncidentTimeDiff(durationString);
+
+    // If the incident is ongoing (no resolvedDate), set up an interval to update the duration every second
+    if (!dateIncidentResolved) {
+      const interval = setInterval(() => {
+        const updatedDuration = calculateIncidentDuration(
+          dateIncidentStarted,
+          dateIncidentResolved
+        );
+        setIncidentTimeDiff(updatedDuration);
+      }, 1000);
+
+      // Clean up the interval when the component unmounts or the resolvedDate changes
+      return () => clearInterval(interval);
+    }
+  }, [dateIncidentStarted, dateIncidentResolved]);
+
   return (
-    <div className="min-h-[550px] w-[300px] h-auto bg-white dark:bg-black_100 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer my-3 flex flex-col">
+    <div className="min-h-[650px] w-[300px] h-auto bg-white dark:bg-black_100 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer my-3 flex flex-col">
       {/* Article Image */}
       <img
         src={imageUrl}
@@ -457,11 +488,33 @@ const Card = ({
           </div>
         )}
 
+        {/* Incident Status */}
+        {dateIncidentStarted !== null && dateIncidentResolved === null && (
+          <div className="flex items-center justify-between mb-4">
+            <span
+              className={`text-white text-xs font-bold px-2.5 py-0.5 rounded ${
+                incidentTimeDiff.includes("past")
+                  ? "bg-green-500"
+                  : "bg-red-500"
+              }`}
+            >
+              {incidentTimeDiff}
+            </span>
+          </div>
+        )}
+
         <div className="flex justify-between">
           {/* Fulfilled Promise */}
           {isPromisedFulfilled && (
             <span className="bg-green-500 text-white text-xs font-medium px-2.5 py-0.5 rounded-sm">
               Promise Fulfilled
+            </span>
+          )}
+
+          {/* Resolved Incident */}
+          {new Date(dateIncidentResolved) >= new Date() && (
+            <span className="bg-green-500 text-white text-xs font-medium px-2.5 py-0.5 rounded-sm">
+              Incident Resolved
             </span>
           )}
 

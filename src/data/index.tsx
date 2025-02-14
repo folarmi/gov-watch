@@ -476,7 +476,7 @@ export const dashboardSideBarItems = [
         link: "/dashboard/all-inbox",
       },
     ],
-    userRole: [userTypeObject.admin],
+    userRole: [userTypeObject.admin, userTypeObject.editor],
   },
   {
     category: "Publications",
