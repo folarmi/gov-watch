@@ -22,6 +22,8 @@ import FileUploader from "../FileUploader";
 import { useQueryClient } from "@tanstack/react-query";
 
 const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+
   const queryClient = useQueryClient();
   const { userId, userCountry } = useAppSelector(
     (state: RootState) => state.auth
@@ -32,7 +34,6 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
     queryKey: ["GetImageDetails"],
   });
 
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   console.log(uploadedFile);
 
   const { control, handleSubmit } = useForm<any>({
@@ -118,7 +119,10 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
 
       if (selectedLGA) {
         formPayload.lastModifiedBy = userId;
-        formPayload.image = selectedLGA.image;
+        formPayload.image =
+          uploadedFile === null
+            ? selectedLGA.image
+            : updateUploadMutation.mutate();
       } else {
         formPayload.createdBy = userId;
         formPayload.image = uploadedFilePath;
