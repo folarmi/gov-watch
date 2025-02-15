@@ -20,7 +20,6 @@ import {
 } from "../../hooks/apiCalls";
 import FileUploader from "../FileUploader";
 import { useQueryClient } from "@tanstack/react-query";
-// import { lgaData } from "../../utils/lga";
 
 const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
   const queryClient = useQueryClient();
@@ -28,13 +27,13 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
     (state: RootState) => state.auth
   );
 
-  const { data: imageDetails, isLoading } = useGetData({
+  const { data: imageDetails } = useGetData({
     url: `Uploads/GetUpload?filePath=${selectedLGA?.image}`,
-    queryKey: ["GetAllLgas"],
+    queryKey: ["GetImageDetails"],
   });
-  console.log(imageDetails);
 
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  console.log(uploadedFile);
 
   const { control, handleSubmit } = useForm<any>({
     defaultValues: selectedLGA || {},
@@ -124,9 +123,9 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
         formPayload.createdBy = userId;
         formPayload.image = uploadedFilePath;
       }
-
+      console.log(formPayload);
       // Submit form after successful image upload
-      createLGAMutation.mutate(formPayload);
+      // createLGAMutation.mutate(formPayload);
     } catch (error) {
       console.log(error);
     }
