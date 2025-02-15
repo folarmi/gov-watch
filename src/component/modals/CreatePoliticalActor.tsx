@@ -13,9 +13,12 @@ import CustomCheckBox from "../forms/CustomCheckBox";
 import { useAppSelector } from "../../lib/hook";
 import { RootState } from "../../lib/store";
 import {
+  updateFileHandler,
   UploadError,
+  uploadFile,
   useCustomMutation,
   useGetData,
+  useGetImageDetails,
   useUploadMutation,
 } from "../../hooks/apiCalls";
 import FileUploader from "../FileUploader";
@@ -28,7 +31,7 @@ const CreatePoliticalActor = ({ toggleModal, selectedPoliticalActor }: any) => {
     ...selectedPoliticalActor,
     population: Number(
       selectedPoliticalActor?.population
-        ? selectedPoliticalActor.population.toString().replace(/,/g, "")
+        ? selectedPoliticalActor.population?.toString().replace(/,/g, "")
         : ""
     ),
     dateOfBirth: selectedPoliticalActor?.dateOfBirth
@@ -46,18 +49,17 @@ const CreatePoliticalActor = ({ toggleModal, selectedPoliticalActor }: any) => {
   const { userId, userCountry } = useAppSelector(
     (state: RootState) => state.auth
   );
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [backendPath, setBackendPath] = useState("");
+  const { data: imageDetails } = useGetImageDetails(selectedPoliticalActor);
 
-  const handleSuccess = (data: any) => {
-    setBackendPath(data?.filePath);
-  };
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+
   const [isInPoliticalParty, setIsInPoliticalParty] = useState(false);
 
   const handleError = (error: UploadError) => {
     console.error("Upload error:", error);
   };
-  const uploadMutation = useUploadMutation(handleSuccess, handleError);
+  const uploadMutation = useUploadMutation(undefined, handleError);
+  const updateUploadMutation = useUploadMutation(undefined, handleError, "put");
 
   const { data: politicalActorData, isLoading: politicalActorDataIsLoading } =
     useGetData({
@@ -73,14 +75,6 @@ const CreatePoliticalActor = ({ toggleModal, selectedPoliticalActor }: any) => {
         value: item,
       };
     });
-
-  const handleFileUpload = (file: File) => {
-    setUploadedFile(file);
-    const formData = new FormData();
-    formData.append("uploadFile", file);
-    formData.append("createdBy", userId);
-    uploadMutation.mutate(formData);
-  };
 
   const createWardMutation = useCustomMutation({
     endpoint: selectedPoliticalActor
@@ -98,26 +92,59 @@ const CreatePoliticalActor = ({ toggleModal, selectedPoliticalActor }: any) => {
     },
   });
 
-  const submitForm = (data: any) => {
-    if (backendPath === "" && !selectedPoliticalActor) {
-      toast("Please upload a file first");
-      return;
+  const submitForm = async (data: any) => {
+    try {
+      if (!uploadedFile && !selectedPoliticalActor) {
+        toast("Please upload a file first");
+        return;
+      }
+
+      let uploadedFilePath;
+
+      if (!selectedPoliticalActor && uploadedFile) {
+        uploadedFilePath = await uploadFile(
+          uploadedFile,
+          userId,
+          uploadMutation
+        );
+        if (!uploadedFilePath) {
+          toast.error("File upload failed.");
+          return;
+        }
+      }
+
+      const formData: any = {
+        ...data,
+      };
+
+      if (selectedPoliticalActor) {
+        if (uploadedFile) {
+          // If a new file is uploaded during edit, update the file and use the new path
+          const newFilePath = await updateFileHandler(
+            uploadedFile,
+            userId,
+            imageDetails?.publicId,
+            updateUploadMutation
+          );
+          formData.image = newFilePath;
+        } else {
+          // If no new file is uploaded, use the existing image from selectedLGA
+          formData.image = selectedPoliticalActor?.image;
+        }
+
+        // Add lastModifiedBy for edit actions
+        formData.lastModifiedBy = userId;
+      } else {
+        // For create actions, use the uploaded file path
+        formData.image = uploadedFilePath;
+        formData.createdBy = userId;
+        formData.country = userCountry;
+      }
+
+      await createWardMutation.mutateAsync(formData);
+    } catch (error) {
+      console.log(error);
     }
-
-    const formData: any = {
-      ...data,
-    };
-
-    if (selectedPoliticalActor) {
-      formData.lastModifiedBy = userId;
-      formData.image = backendPath || selectedPoliticalActor.image;
-    } else {
-      formData.createdBy = userId;
-      formData.country = userCountry;
-      formData.image = backendPath;
-    }
-
-    createWardMutation.mutate(formData);
   };
 
   const { data: stateData, isLoading: stateDataIsLoading } = useGetData({
@@ -225,7 +252,7 @@ const CreatePoliticalActor = ({ toggleModal, selectedPoliticalActor }: any) => {
           <FileUploader
             maxSizeMB={1}
             acceptFormats={["png", "jpeg", "jpg", "gif", "webp"]}
-            onFileUpload={handleFileUpload}
+            onFileUpload={setUploadedFile}
             defaultFile={selectedPoliticalActor?.image}
           />
           {uploadedFile && (
@@ -252,7 +279,11 @@ const CreatePoliticalActor = ({ toggleModal, selectedPoliticalActor }: any) => {
           </div>
 
           <CustomButton
-            loading={uploadMutation.isPending || createWardMutation.isPending}
+            loading={
+              uploadMutation.isPending ||
+              createWardMutation.isPending ||
+              updateUploadMutation.isPending
+            }
             variant="tertiary"
           >
             {selectedPoliticalActor

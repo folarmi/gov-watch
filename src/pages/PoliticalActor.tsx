@@ -3,7 +3,6 @@
 import { createColumnHelper, PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
 import { useGetData } from "../hooks/apiCalls";
-import IndeterminateCheckbox from "../component/InterdeterminateCheckbox";
 import AdminButton from "../component/forms/AdminButton";
 import Table from "../component/Table";
 import Modal from "../component/modals/Modal";
@@ -32,14 +31,10 @@ const PoliticalActors = () => {
   const columnHelper = createColumnHelper<any>();
   const columns = [
     // Display Column
-    columnHelper.display({
-      id: "checkbox",
-      cell: ({ table }) => (
-        <IndeterminateCheckbox
-          checked={table.getIsAllRowsSelected()}
-          indeterminate={table.getIsSomeRowsSelected()}
-          onChange={table.getToggleAllRowsSelectedHandler()}
-        />
+    columnHelper.accessor("image", {
+      header: "Image",
+      cell: (info) => (
+        <img src={info.getValue()} className="rounded-full h-12 w-12" />
       ),
     }),
     columnHelper.accessor("name", {

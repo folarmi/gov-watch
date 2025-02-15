@@ -8,8 +8,11 @@ import CustomTextArea from "../CustomTextArea";
 import { toast } from "react-toastify";
 import ImageDetails from "../ImageDetails";
 import {
+  updateFileHandler,
   UploadError,
+  uploadFile,
   useCustomMutation,
+  useGetImageDetails,
   useUploadMutation,
 } from "../../hooks/apiCalls";
 import { useAppSelector } from "../../lib/hook";
@@ -17,6 +20,12 @@ import { RootState } from "../../lib/store";
 import { useQueryClient } from "@tanstack/react-query";
 
 const CreateCountry = ({ toggleModal, selectedCountry }: any) => {
+  const queryClient = useQueryClient();
+  const { userId } = useAppSelector((state: RootState) => state.auth);
+  const { data: imageDetails } = useGetImageDetails(selectedCountry);
+
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+
   const modifiedDefaultValues = {
     ...selectedCountry,
     population: Number(selectedCountry?.population?.replace(/,/g, "")),
@@ -26,21 +35,15 @@ const CreateCountry = ({ toggleModal, selectedCountry }: any) => {
     defaultValues: modifiedDefaultValues || {},
   });
 
-  const queryClient = useQueryClient();
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [backendPath, setBackendPath] = useState(selectedCountry?.image || ""); // Use existing image path if editing
-
-  const { userId } = useAppSelector((state: RootState) => state.auth);
-
-  const handleSuccess = (data: any) => {
-    setBackendPath(data?.filePath);
-  };
-
   const handleError = (error: UploadError) => {
     console.error("Upload error:", error);
+    toast.error("File upload failed. Please try again.");
   };
 
-  const uploadMutation = useUploadMutation(handleSuccess, handleError);
+  console.log(imageDetails);
+
+  const updateUploadMutation = useUploadMutation(undefined, handleError, "put");
+  const uploadMutation = useUploadMutation(undefined, handleError);
 
   const countryMutation = useCustomMutation({
     endpoint: selectedCountry
@@ -58,35 +61,58 @@ const CreateCountry = ({ toggleModal, selectedCountry }: any) => {
     },
   });
 
-  const handleFileUpload = (file: File) => {
-    setUploadedFile(file);
-    const formData = new FormData();
-    formData.append("uploadFile", file);
-    formData.append("createdBy", userId);
-    uploadMutation.mutate(formData);
-  };
+  const submitForm = async (data: any) => {
+    try {
+      if (!uploadedFile && !selectedCountry) {
+        toast("Please upload a file first");
+        return;
+      }
+      let uploadedFilePath;
 
-  const submitForm = (data: any) => {
-    if (backendPath === "" && !selectedCountry) {
-      toast("Please upload a file first");
-      return;
+      if (!selectedCountry && uploadedFile) {
+        uploadedFilePath = await uploadFile(
+          uploadedFile,
+          userId,
+          uploadMutation
+        );
+        if (!uploadedFilePath) {
+          toast.error("File upload failed.");
+          return;
+        }
+      }
+      const formData: any = {
+        ...data,
+        population: +data.population,
+        gdp: +data.gdp,
+      };
+
+      // Handle image logic for edit mode
+      if (selectedCountry) {
+        if (uploadedFile) {
+          // If a new file is uploaded during edit, update the file and use the new path
+          const newFilePath = await updateFileHandler(
+            uploadedFile,
+            userId,
+            imageDetails?.publicId,
+            updateUploadMutation
+          );
+          formData.image = newFilePath;
+        } else {
+          // If no new file is uploaded, use the existing image from selectedLGA
+          formData.image = selectedCountry?.image;
+        }
+        // Add lastModifiedBy for edit actions
+        formData.lastModifiedBy = userId;
+      } else {
+        // For create actions, use the uploaded file path
+        formData.image = uploadedFilePath;
+        formData.createdBy = userId;
+      }
+
+      await countryMutation.mutateAsync(formData);
+    } catch (error) {
+      console.log(error);
     }
-
-    const formData: any = {
-      ...data,
-      population: +data.population,
-      gdp: +data.gdp,
-      image: backendPath,
-    };
-
-    if (selectedCountry) {
-      formData.updatedBy = userId;
-      formData.image = backendPath || selectedCountry.image;
-    } else {
-      formData.createdBy = userId;
-      formData.image = backendPath;
-    }
-    countryMutation.mutate(formData);
   };
 
   return (
@@ -170,10 +196,10 @@ const CreateCountry = ({ toggleModal, selectedCountry }: any) => {
             <FileUploader
               maxSizeMB={1}
               acceptFormats={["png", "jpeg", "jpg", "gif", "webp"]}
-              onFileUpload={handleFileUpload}
+              onFileUpload={setUploadedFile}
               defaultFile={selectedCountry?.image}
             />
-            {(uploadedFile || backendPath) && (
+            {uploadedFile && (
               <ImageDetails
                 fileName={uploadedFile?.name || "Existing File"}
                 fileSize={uploadedFile?.size || 0}
@@ -190,7 +216,11 @@ const CreateCountry = ({ toggleModal, selectedCountry }: any) => {
           </div>
 
           <CustomButton
-            loading={uploadMutation.isPending || countryMutation.isPending}
+            loading={
+              uploadMutation.isPending ||
+              countryMutation.isPending ||
+              updateUploadMutation.isPending
+            }
             variant="tertiary"
           >
             {selectedCountry ? "Update Country" : "Create Country"}

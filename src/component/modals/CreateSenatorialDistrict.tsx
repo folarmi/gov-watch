@@ -12,9 +12,12 @@ import ImageDetails from "../ImageDetails";
 import { useAppSelector } from "../../lib/hook";
 import { RootState } from "../../lib/store";
 import {
+  updateFileHandler,
   UploadError,
+  uploadFile,
   useCustomMutation,
   useGetData,
+  useGetImageDetails,
   useUploadMutation,
 } from "../../hooks/apiCalls";
 import FileUploader from "../FileUploader";
@@ -28,7 +31,9 @@ const CreateSenatorialDistrict = ({
   const modifiedDefaultValues = {
     ...selectedSenatorialDistrict,
     population: Number(
-      selectedSenatorialDistrict?.population?.replace(/,/g, "")
+      typeof selectedSenatorialDistrict.population === "string"
+        ? selectedSenatorialDistrict?.population?.replace(/,/g, "")
+        : selectedSenatorialDistrict?.population
     ),
     financialAllocation: Number(
       selectedSenatorialDistrict?.financialAllocation
@@ -46,26 +51,16 @@ const CreateSenatorialDistrict = ({
     defaultValues: modifiedDefaultValues || {},
   });
   const queryClient = useQueryClient();
+  const { data: imageDetails } = useGetImageDetails(selectedSenatorialDistrict);
 
   const { userId } = useAppSelector((state: RootState) => state.auth);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [backendPath, setBackendPath] = useState("");
-  const handleSuccess = (data: any) => {
-    setBackendPath(data?.filePath);
-  };
 
   const handleError = (error: UploadError) => {
     console.error("Upload error:", error);
   };
-  const uploadMutation = useUploadMutation(handleSuccess, handleError);
-
-  const handleFileUpload = (file: File) => {
-    setUploadedFile(file);
-    const formData = new FormData();
-    formData.append("uploadFile", file);
-    formData.append("createdBy", userId);
-    uploadMutation.mutate(formData);
-  };
+  const uploadMutation = useUploadMutation(undefined, handleError);
+  const updateUploadMutation = useUploadMutation(undefined, handleError, "put");
 
   const createStateMutation = useCustomMutation({
     endpoint: selectedSenatorialDistrict
@@ -83,26 +78,58 @@ const CreateSenatorialDistrict = ({
     },
   });
 
-  const submitForm = (data: any) => {
-    if (backendPath === "" && !selectedSenatorialDistrict) {
-      toast("Please upload a file first");
-      return;
+  const submitForm = async (data: any) => {
+    try {
+      if (!uploadedFile && !selectedSenatorialDistrict) {
+        toast("Please upload a file first");
+        return;
+      }
+      let uploadedFilePath;
+
+      if (!selectedSenatorialDistrict && uploadedFile) {
+        uploadedFilePath = await uploadFile(
+          uploadedFile,
+          userId,
+          uploadMutation
+        );
+        if (!uploadedFilePath) {
+          toast.error("File upload failed.");
+          return;
+        }
+      }
+
+      const formData: any = {
+        ...data,
+      };
+
+      // Handle image logic for edit mode
+      if (selectedSenatorialDistrict) {
+        if (uploadedFile) {
+          // If a new file is uploaded during edit, update the file and use the new path
+          const newFilePath = await updateFileHandler(
+            uploadedFile,
+            userId,
+            imageDetails?.publicId,
+            updateUploadMutation
+          );
+          formData.image = newFilePath;
+        } else {
+          // If no new file is uploaded, use the existing image from selectedLGA
+          formData.image = selectedSenatorialDistrict?.image;
+        }
+
+        // Add lastModifiedBy for edit actions
+        formData.lastModifiedBy = userId;
+      } else {
+        // For create actions, use the uploaded file path
+        formData.image = uploadedFilePath;
+        formData.createdBy = userId;
+      }
+
+      await createStateMutation.mutateAsync(formData);
+    } catch (error) {
+      console.log(error);
     }
-
-    const formData: any = {
-      ...data,
-    };
-
-    if (selectedSenatorialDistrict) {
-      formData.lastModifiedBy = userId;
-      formData.image = backendPath || selectedSenatorialDistrict.image;
-    } else {
-      // formData.population = Number(data?.population?.replaceAll(",", "") || 0);
-      formData.createdBy = userId;
-      formData.image = backendPath;
-    }
-
-    createStateMutation.mutate(formData);
   };
 
   const { data: countryData, isLoading: countryDataIsLoading } = useGetData({
@@ -250,7 +277,7 @@ const CreateSenatorialDistrict = ({
           <FileUploader
             maxSizeMB={1}
             acceptFormats={["png", "jpeg", "jpg", "gif", "svg", "webp"]}
-            onFileUpload={handleFileUpload}
+            onFileUpload={setUploadedFile}
             defaultFile={selectedSenatorialDistrict?.image}
           />
           {uploadedFile && (
@@ -269,7 +296,11 @@ const CreateSenatorialDistrict = ({
           </div>
 
           <CustomButton
-            loading={uploadMutation.isPending || createStateMutation.isPending}
+            loading={
+              uploadMutation.isPending ||
+              createStateMutation.isPending ||
+              updateUploadMutation.isPending
+            }
             variant="tertiary"
           >
             {selectedSenatorialDistrict

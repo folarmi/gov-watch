@@ -12,46 +12,37 @@ import ImageDetails from "../ImageDetails";
 import { useAppSelector } from "../../lib/hook";
 import { RootState } from "../../lib/store";
 import {
+  updateFileHandler,
   UploadError,
+  uploadFile,
   useCustomMutation,
   useGetData,
+  useGetImageDetails,
   useUploadMutation,
 } from "../../hooks/apiCalls";
 import FileUploader from "../FileUploader";
 import { useQueryClient } from "@tanstack/react-query";
-// import { lgaData } from "../../utils/lga";
 
 const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
-  // const test = () => {
-  //   return lgaData.filter((lga) => lga.state === "Adamawa State");
-  // };
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
-  const { control, handleSubmit } = useForm<any>({
-    defaultValues: selectedLGA || {},
-  });
   const queryClient = useQueryClient();
   const { userId, userCountry } = useAppSelector(
     (state: RootState) => state.auth
   );
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  // const [backendPath, setBackendPath] = useState("");
-  const [backendPath, setBackendPath] = useState("");
-  const handleSuccess = (data: any) => {
-    setBackendPath(data?.filePath);
-  };
+  const { data: imageDetails } = useGetImageDetails(selectedLGA);
+
+  const { control, handleSubmit } = useForm<any>({
+    defaultValues: selectedLGA || {},
+  });
 
   const handleError = (error: UploadError) => {
     console.error("Upload error:", error);
+    toast.error("File upload failed. Please try again.");
   };
-  const uploadMutation = useUploadMutation(handleSuccess, handleError);
 
-  const handleFileUpload = (file: File) => {
-    setUploadedFile(file);
-    const formData = new FormData();
-    formData.append("uploadFile", file);
-    formData.append("createdBy", userId);
-    uploadMutation.mutate(formData);
-  };
+  const uploadMutation = useUploadMutation(undefined, handleError);
+  const updateUploadMutation = useUploadMutation(undefined, handleError, "put");
 
   const createLGAMutation = useCustomMutation({
     endpoint: selectedLGA ? `Lgas/UpdateLga` : `Lgas/CreateLga`,
@@ -67,55 +58,64 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
     },
   });
 
-  // const lgaRequests = test()[0].lgas.map((lga: any) => {
-  //   delete lga.dateFounded;
-  //   const formData: any = {
-  //     ...lga,
-  //     country: userCountry,
-  //     state: "Adamawa",
-  //     financialAllocation: 0,
-  //     population: lga.population || 0,
-  //     landMass: lga.landMass || 0,
-  //     wardCount: lga.wardCount || 0,
-  //     lcdaCount: lga.lcdaCount || 0,
-  //     chairman: lga.chairman || "N/A",
-  //     publicId: lga.publicId,
-  //     politicalPartyofChairman: lga.politicalPartyofChairman || "N/A",
-  //   };
+  const submitForm = async (data: any) => {
+    try {
+      if (!uploadedFile && !selectedLGA) {
+        toast.error("Please upload a file first.");
+        return;
+      }
 
-  //   // Add createdBy for new LGA or lastModifiedBy for updating
-  //   if (selectedLGA) {
-  //     formData.lastModifiedBy = userId;
-  //   } else {
-  //     formData.createdBy = userId;
-  //   }
+      let uploadedFilePath;
 
-  //   return formData;
-  // });
+      // Upload file only if it's not an edit action (i.e., no selectedLGA)
+      if (!selectedLGA && uploadedFile) {
+        uploadedFilePath = await uploadFile(
+          uploadedFile,
+          userId,
+          uploadMutation
+        );
+        if (!uploadedFilePath) {
+          toast.error("File upload failed.");
+          return;
+        }
+      }
 
-  const submitForm = (data: any) => {
-    // Regular creation starts here
-    if (backendPath === "" && !selectedLGA) {
-      toast("Please upload a file first");
-      return;
+      // Prepare Form Data
+      const formPayload: any = {
+        ...data,
+        country: userCountry,
+      };
+
+      // Handle image logic for edit mode
+      if (selectedLGA) {
+        if (uploadedFile) {
+          // If a new file is uploaded during edit, update the file and use the new path
+          const newFilePath = await updateFileHandler(
+            uploadedFile,
+            userId,
+            imageDetails?.publicId,
+            updateUploadMutation
+          );
+          formPayload.image = newFilePath;
+        } else {
+          // If no new file is uploaded, use the existing image from selectedLGA
+          formPayload.image = selectedLGA?.image;
+        }
+
+        // Add lastModifiedBy for edit actions
+        formPayload.lastModifiedBy = userId;
+      } else {
+        // For create actions, use the uploaded file path
+        formPayload.image = uploadedFilePath;
+        formPayload.createdBy = userId;
+      }
+
+      // Submit form after successful image upload
+      await createLGAMutation.mutateAsync(formPayload);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error("An error occurred while submitting the form.");
     }
-    const formData: any = {
-      ...data,
-      image: backendPath,
-      country: userCountry,
-    };
-    if (selectedLGA) {
-      formData.lastModifiedBy = userId;
-      formData.image = backendPath || selectedLGA.image;
-    } else {
-      formData.createdBy = userId;
-      formData.image = backendPath;
-    }
-    createLGAMutation.mutate(formData);
-
-    // lgaRequests.forEach((formData: any) => {
-    //   createLGAMutation.mutate(formData);
-    // });
   };
 
   const { data: stateData, isLoading: stateDataIsLoading } = useGetData({
@@ -238,14 +238,14 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
         <div className="col-span-2">
           <CustomTextArea name="bio" control={control} label="Bio" />
         </div>
-
         <div className="col-span-2 ">
           <p className="text-sm font-medium pb-2">Flag</p>
 
           <FileUploader
             maxSizeMB={1}
             acceptFormats={["png", "jpeg", "jpg", "gif", "webp"]}
-            onFileUpload={handleFileUpload}
+            // onUpload={(file: File) => handleFileChange(file)}
+            onFileUpload={setUploadedFile}
             defaultFile={selectedLGA?.image}
           />
           {uploadedFile && (
@@ -264,7 +264,11 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
           </div>
 
           <CustomButton
-            loading={uploadMutation.isPending || createLGAMutation.isPending}
+            loading={
+              uploadMutation.isPending ||
+              createLGAMutation.isPending ||
+              updateUploadMutation.isPending
+            }
             variant="tertiary"
           >
             {selectedLGA ? "Edit LGA" : "Create LGA"}

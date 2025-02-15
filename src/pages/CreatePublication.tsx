@@ -8,6 +8,7 @@ import { RootState } from "../lib/store";
 import { useAppSelector } from "../lib/hook";
 import {
   UploadError,
+  uploadFile,
   useCustomMutation,
   useUploadMutation,
 } from "../hooks/apiCalls";
@@ -41,39 +42,44 @@ const CreatePublication = () => {
     },
   });
 
-  const [backendPath, setBackendPath] = useState("");
-  const handleSuccess = (data: any) => {
-    setBackendPath(data?.filePath);
-  };
-
   const handleError = (error: UploadError) => {
     console.error("Upload error:", error);
   };
-  const uploadMutation = useUploadMutation(handleSuccess, handleError);
+  const uploadMutation = useUploadMutation(undefined, handleError);
 
-  const handleFileUpload = (file: File) => {
-    setUploadedFile(file);
-    const formData = new FormData();
-    formData.append("uploadFile", file);
-    formData.append("createdBy", userId);
-    uploadMutation.mutate(formData);
-  };
+  const submitForm = async (data: any) => {
+    try {
+      if (!uploadedFile) {
+        toast("Please upload a file first");
+        return;
+      }
 
-  const submitForm = (data: any) => {
-    if (backendPath === "") {
-      toast("Please upload a file first");
-      return;
+      let uploadedFilePath;
+
+      if (uploadedFile) {
+        uploadedFilePath = await uploadFile(
+          uploadedFile,
+          userId,
+          uploadMutation
+        );
+        if (!uploadedFilePath) {
+          toast.error("File upload failed.");
+          return;
+        }
+      }
+
+      const formData: any = {
+        ...data,
+        country: userCountry,
+        contributorPublicId: userId,
+        image: uploadedFilePath,
+        tags: tags.join(" , "),
+        isDraft,
+      };
+      createPublicationMutation.mutate(formData);
+    } catch (error) {
+      console.log(error);
     }
-
-    const formData: any = {
-      ...data,
-      country: userCountry,
-      contributorPublicId: userId,
-      image: backendPath,
-      tags: tags.join(" , "),
-      isDraft,
-    };
-    createPublicationMutation.mutate(formData);
   };
 
   return (
@@ -81,7 +87,7 @@ const CreatePublication = () => {
       onSubmit={submitForm}
       isEditing={false}
       uploadedFile={uploadedFile}
-      handleFileUpload={handleFileUpload}
+      handleFileUpload={setUploadedFile}
       setIsDraft={setIsDraft}
       isDraft={isDraft}
       tags={tags}

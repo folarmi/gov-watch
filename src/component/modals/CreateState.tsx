@@ -12,9 +12,12 @@ import ImageDetails from "../ImageDetails";
 import { useAppSelector } from "../../lib/hook";
 import { RootState } from "../../lib/store";
 import {
+  updateFileHandler,
   UploadError,
+  uploadFile,
   useCustomMutation,
   useGetData,
+  useGetImageDetails,
   useUploadMutation,
 } from "../../hooks/apiCalls";
 import FileUploader from "../FileUploader";
@@ -22,9 +25,14 @@ import { useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 
 const CreateState = ({ toggleModal, selectedState }: any) => {
+  const queryClient = useQueryClient();
+  const { data: imageDetails } = useGetImageDetails(selectedState);
+  const { userId } = useAppSelector((state: RootState) => state.auth);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+
   const modifiedDefaultValues = {
     ...selectedState,
-    population: Number(selectedState?.population?.replace(/,/g, "")),
+    population: Number(selectedState?.population?.toString().replace(/,/g, "")),
     financialAllocation: Number(
       selectedState?.financialAllocation
         ? selectedState?.financialAllocation?.toString().replace(/,/g, "")
@@ -36,27 +44,13 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
   const { control, handleSubmit } = useForm<any>({
     defaultValues: modifiedDefaultValues || {},
   });
-  const queryClient = useQueryClient();
-
-  const { userId } = useAppSelector((state: RootState) => state.auth);
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [backendPath, setBackendPath] = useState("");
-  const handleSuccess = (data: any) => {
-    setBackendPath(data?.filePath);
-  };
 
   const handleError = (error: UploadError) => {
     console.error("Upload error:", error);
   };
-  const uploadMutation = useUploadMutation(handleSuccess, handleError);
 
-  const handleFileUpload = (file: File) => {
-    setUploadedFile(file);
-    const formData = new FormData();
-    formData.append("uploadFile", file);
-    formData.append("createdBy", userId);
-    uploadMutation.mutate(formData);
-  };
+  const uploadMutation = useUploadMutation(undefined, handleError);
+  const updateUploadMutation = useUploadMutation(undefined, handleError, "put");
 
   const createStateMutation = useCustomMutation({
     endpoint: selectedState ? `States/UpdateState` : "States/CreateState",
@@ -72,26 +66,57 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
     },
   });
 
-  const submitForm = (data: any) => {
-    if (backendPath === "" && !selectedState) {
-      toast("Please upload a file first");
-      return;
+  const submitForm = async (data: any) => {
+    try {
+      if (!uploadedFile && !selectedState) {
+        toast("Please upload a file first");
+        return;
+      }
+
+      let uploadedFilePath;
+
+      if (!selectedState && uploadedFile) {
+        uploadedFilePath = await uploadFile(
+          uploadedFile,
+          userId,
+          uploadMutation
+        );
+        if (!uploadedFilePath) {
+          toast.error("File upload failed.");
+          return;
+        }
+      }
+
+      const formData: any = {
+        ...data,
+      };
+
+      if (selectedState) {
+        if (uploadedFile) {
+          const newFilePath = await updateFileHandler(
+            uploadedFile,
+            userId,
+            imageDetails?.publicId,
+            updateUploadMutation
+          );
+          formData.image = newFilePath;
+        } else {
+          // If no new file is uploaded, use the existing image from selectedLGA
+          formData.image = selectedState?.image;
+        }
+
+        // Add lastModifiedBy for edit actions
+        formData.lastModifiedBy = userId;
+      } else {
+        // For create actions, use the uploaded file path
+        formData.image = uploadedFilePath;
+        formData.createdBy = userId;
+      }
+
+      await createStateMutation.mutateAsync(formData);
+    } catch (error) {
+      console.log(error);
     }
-
-    const formData: any = {
-      ...data,
-    };
-
-    if (selectedState) {
-      formData.lastModifiedBy = userId;
-      formData.image = backendPath || selectedState.image;
-    } else {
-      // formData.population = Number(data?.population?.replaceAll(",", "") || 0);
-      formData.createdBy = userId;
-      formData.image = backendPath;
-    }
-
-    createStateMutation.mutate(formData);
   };
 
   const { data: regionData, isLoading: regionDataIsLoading } = useGetData({
@@ -253,7 +278,7 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
           <FileUploader
             maxSizeMB={1}
             acceptFormats={["png", "jpeg", "jpg", "gif", "svg", "webp"]}
-            onFileUpload={handleFileUpload}
+            onFileUpload={setUploadedFile}
             defaultFile={selectedState?.image}
           />
           {uploadedFile && (
@@ -272,7 +297,11 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
           </div>
 
           <CustomButton
-            loading={uploadMutation.isPending || createStateMutation.isPending}
+            loading={
+              uploadMutation.isPending ||
+              createStateMutation.isPending ||
+              updateUploadMutation.isPending
+            }
             variant="tertiary"
           >
             {selectedState ? "Update State" : "Create State"}

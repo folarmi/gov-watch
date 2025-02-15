@@ -11,15 +11,21 @@ import CustomCheckBox from "../forms/CustomCheckBox";
 import { useAppSelector } from "../../lib/hook";
 import { RootState } from "../../lib/store";
 import {
+  updateFileHandler,
   UploadError,
+  uploadFile,
   useCustomMutation,
   useGetData,
+  useGetImageDetails,
   useUploadMutation,
 } from "../../hooks/apiCalls";
 import FileUploader from "../FileUploader";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 const CreateMDA = ({ toggleModal, selectedMDA }: any) => {
+  const { data: imageDetails } = useGetImageDetails(selectedMDA);
+
   const modifiedDefaultValues = {
     ...selectedMDA,
   };
@@ -33,24 +39,13 @@ const CreateMDA = ({ toggleModal, selectedMDA }: any) => {
     (state: RootState) => state.auth
   );
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [backendPath, setBackendPath] = useState("");
   const [isFederal, setIsFederal] = useState(false);
-  const handleSuccess = (data: any) => {
-    setBackendPath(data?.filePath);
-  };
 
   const handleError = (error: UploadError) => {
     console.error("Upload error:", error);
   };
-  const uploadMutation = useUploadMutation(handleSuccess, handleError);
-
-  const handleFileUpload = (file: File) => {
-    setUploadedFile(file);
-    const formData = new FormData();
-    formData.append("uploadFile", file);
-    formData.append("createdBy", userId);
-    uploadMutation.mutate(formData);
-  };
+  const uploadMutation = useUploadMutation(undefined, handleError);
+  const updateUploadMutation = useUploadMutation(undefined, handleError, "put");
 
   const createMDAMutation = useCustomMutation({
     endpoint: selectedMDA ? "Mdas/UpdateMda" : `Mdas/CreateMda`,
@@ -65,61 +60,6 @@ const CreateMDA = ({ toggleModal, selectedMDA }: any) => {
       });
     },
   });
-
-  // const uniqueOrganizations = organizations.filter(
-  //   (org, index, self) =>
-  //     index === self.findIndex((t) => t.ministerialDept === org.ministerialDept)
-  // );
-
-  // const mdasRequests = uniqueOrganizations.map((mda: any) => {
-  //   const formData: any = {
-  //     name: mda.ministerialDept,
-  //     category: "N/A",
-  //     image: "N/A",
-  //     bio: "N/A",
-  //     // dateFounded: "",
-  //     leaderName: "N/A",
-  //     // isFederal: true,
-  //     financialAllocation: 0,
-  //     state: "",
-  //     createdBy: userId,
-  //     country: "string",
-  //     website: mda.website || "N/A",
-  //   };
-
-  //   return formData;
-  // });
-
-  const submitForm = (data: any) => {
-    // if (backendPath === "") {
-    //   toast("Please upload a file first");
-    //   return;
-    // }
-
-    const formData: any = {
-      ...data,
-    };
-
-    if (selectedMDA) {
-      formData.lastModifiedBy = userId;
-      formData.image = backendPath || selectedMDA.image;
-    } else {
-      // formData.population = Number(data.population.replace(/,/g, ""));
-      formData.createdBy = userId;
-      formData.image = backendPath;
-      formData.country = userCountry;
-      formData.isFederal = true;
-    }
-
-    createMDAMutation.mutate(formData);
-
-    // mdasRequests.slice(501, 506).forEach((formData: any) => {
-    //   // console.log(formData);
-    //   createMDAMutation.mutate(formData);
-    // });
-
-    // 1316
-  };
 
   const { data: categoryData, isLoading: categoryDataIsLoading } = useGetData({
     url: `Categories/GetAllCategories`,
@@ -148,6 +88,80 @@ const CreateMDA = ({ toggleModal, selectedMDA }: any) => {
         value: item?.name,
       };
     });
+
+  const submitForm = async (data: any) => {
+    try {
+      if (!uploadedFile && !selectedMDA) {
+        toast.error("Please upload a file first");
+        return;
+      }
+
+      let uploadedFilePath;
+
+      // If there's a new file selected, upload it first
+      if (!selectedMDA && uploadedFile) {
+        uploadedFilePath = await uploadFile(
+          uploadedFile,
+          userId,
+          uploadMutation
+        );
+        if (!uploadedFilePath) {
+          toast.error("File upload failed.");
+          return;
+        }
+      }
+
+      const formData: any = {
+        ...data,
+      };
+
+      // Handle image logic for edit mode
+      if (selectedMDA) {
+        if (uploadedFile) {
+          // If a new file is uploaded during edit, update the file and use the new path
+          const newFilePath = await updateFileHandler(
+            uploadedFile,
+            userId,
+            imageDetails?.publicId,
+            updateUploadMutation
+          );
+          formData.image = newFilePath;
+        } else {
+          // If no new file is uploaded, use the existing image from selectedLGA
+          formData.image = selectedMDA?.image;
+        }
+
+        // Add lastModifiedBy for edit actions
+        formData.lastModifiedBy = userId;
+      } else {
+        // For create actions, use the uploaded file path
+        formData.createdBy = userId;
+        formData.image = uploadedFilePath;
+        formData.country = userCountry;
+        formData.isFederal = true;
+      }
+      // if (selectedMDA) {
+      //   formData.lastModifiedBy = userId;
+      //   formData.image = selectedMDA.image;
+      // } else {
+      //   // formData.population = Number(data.population.replace(/,/g, ""));
+      //   formData.createdBy = userId;
+      //   formData.image = uploadedFilePath;
+      // formData.country = userCountry;
+      // formData.isFederal = true;
+
+      await createMDAMutation.mutateAsync(formData);
+    } catch (error) {
+      console.log(error);
+    }
+
+    // mdasRequests.slice(501, 506).forEach((formData: any) => {
+    //   // console.log(formData);
+    //   createMDAMutation.mutate(formData);
+    // });
+
+    // 1316
+  };
 
   return (
     <div className="bg-white rounded-xl p-6">
@@ -233,7 +247,7 @@ const CreateMDA = ({ toggleModal, selectedMDA }: any) => {
           <FileUploader
             maxSizeMB={1}
             acceptFormats={["png", "jpeg", "jpg", "gif", "webp"]}
-            onFileUpload={handleFileUpload}
+            onFileUpload={setUploadedFile}
             defaultFile={selectedMDA?.image}
           />
           {uploadedFile && (
@@ -252,7 +266,11 @@ const CreateMDA = ({ toggleModal, selectedMDA }: any) => {
           </div>
 
           <CustomButton
-            loading={uploadMutation.isPending || createMDAMutation.isPending}
+            loading={
+              uploadMutation.isPending ||
+              createMDAMutation.isPending ||
+              updateUploadMutation.isPending
+            }
             variant="tertiary"
           >
             {selectedMDA ? "Update MDA" : "Create MDA"}
