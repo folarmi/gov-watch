@@ -31,21 +31,12 @@ const MDA = () => {
 
   const columnHelper = createColumnHelper<any>();
   const columns = [
-    // Display Column
-    // columnHelper.display({
-    //   id: "checkbox",
-    //   cell: ({ table }) => (
-    //     <IndeterminateCheckbox
-    //       checked={table.getIsAllRowsSelected()}
-    //       indeterminate={table.getIsSomeRowsSelected()}
-    //       onChange={table.getToggleAllRowsSelectedHandler()}
-    //     />
-    //   ),
-    // }),
-    // columnHelper.accessor("image", {
-    //   header: "Image",
-    //   cell: (info) => <span className="text-sm font-normal">hgfhfhf</span>,
-    // }),
+    columnHelper.accessor("image", {
+      header: "Image",
+      cell: (info) => (
+        <img src={info.getValue()} className="rounded-full h-12 w-12" />
+      ),
+    }),
     columnHelper.accessor("name", {
       header: "Name",
       cell: (info) => (

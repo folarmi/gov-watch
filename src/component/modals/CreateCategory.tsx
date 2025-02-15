@@ -9,9 +9,11 @@ import CustomButton from "../CustomButton";
 import CloseButton from "../forms/CloseButton";
 import ImageDetails from "../ImageDetails";
 import {
+  updateFileHandler,
   UploadError,
   uploadFile,
   useCustomMutation,
+  useGetImageDetails,
   useUploadMutation,
 } from "../../hooks/apiCalls";
 import { useAppSelector } from "../../lib/hook";
@@ -31,6 +33,8 @@ const CreateCategory = ({ toggleModal, selectedCategory }: any) => {
       : null,
   };
 
+  const { data: imageDetails } = useGetImageDetails(selectedCategory);
+
   const { control, handleSubmit } = useForm<any>({
     defaultValues: modifiedDefaultValues || {},
   });
@@ -41,6 +45,8 @@ const CreateCategory = ({ toggleModal, selectedCategory }: any) => {
   };
 
   const uploadMutation = useUploadMutation(undefined, handleError);
+  const updateUploadMutation = useUploadMutation(undefined, handleError, "put");
+
   const { userId } = useAppSelector((state: RootState) => state.auth);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
@@ -69,7 +75,7 @@ const CreateCategory = ({ toggleModal, selectedCategory }: any) => {
       let uploadedFilePath;
 
       // If there's a new file selected, upload it first
-      if (uploadedFile) {
+      if (!selectedCategory && uploadedFile) {
         uploadedFilePath = await uploadFile(
           uploadedFile,
           userId,
@@ -86,14 +92,30 @@ const CreateCategory = ({ toggleModal, selectedCategory }: any) => {
       };
 
       if (selectedCategory) {
+        if (uploadedFile) {
+          // If a new file is uploaded during edit, update the file and use the new path
+          const newFilePath = await updateFileHandler(
+            uploadedFile,
+            userId,
+            imageDetails?.publicId,
+            updateUploadMutation
+          );
+          formData.categoryImage = newFilePath;
+        } else {
+          // If no new file is uploaded, use the existing image from selectedLGA
+          formData.categoryImage = selectedCategory?.image;
+          formData.id = selectedCategory?.id;
+        }
+
+        // Add lastModifiedBy for edit actions
         formData.userId = userId;
-        formData.categoryImage = selectedCategory?.image;
       } else {
+        // For create actions, use the uploaded file path
+        formData.image = uploadedFilePath;
         formData.userId = userId;
         formData.name = data?.name;
-        formData.image = uploadedFilePath;
       }
-      createCategoryMutation.mutate(formData);
+      await createCategoryMutation.mutateAsync(formData);
     } catch (error) {
       console.log(error);
     }
@@ -141,7 +163,9 @@ const CreateCategory = ({ toggleModal, selectedCategory }: any) => {
 
               <CustomButton
                 loading={
-                  uploadMutation.isPending || createCategoryMutation.isPending
+                  uploadMutation.isPending ||
+                  createCategoryMutation.isPending ||
+                  updateUploadMutation.isPending
                 }
                 variant="tertiary"
               >

@@ -292,7 +292,11 @@ const CreateWard = ({ toggleModal, selectedWard }: any) => {
           </div>
 
           <CustomButton
-            loading={uploadMutation.isPending || createWardMutation.isPending}
+            loading={
+              uploadMutation.isPending ||
+              createWardMutation.isPending ||
+              updateUploadMutation.isPending
+            }
             variant="tertiary"
           >
             {selectedWard ? "Edit Ward" : "Create Ward"}

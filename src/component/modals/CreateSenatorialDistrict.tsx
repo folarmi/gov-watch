@@ -31,7 +31,9 @@ const CreateSenatorialDistrict = ({
   const modifiedDefaultValues = {
     ...selectedSenatorialDistrict,
     population: Number(
-      selectedSenatorialDistrict?.population?.replace(/,/g, "")
+      typeof selectedSenatorialDistrict.population === "string"
+        ? selectedSenatorialDistrict?.population?.replace(/,/g, "")
+        : selectedSenatorialDistrict?.population
     ),
     financialAllocation: Number(
       selectedSenatorialDistrict?.financialAllocation
@@ -124,7 +126,7 @@ const CreateSenatorialDistrict = ({
         formData.createdBy = userId;
       }
 
-      createStateMutation.mutate(formData);
+      await createStateMutation.mutateAsync(formData);
     } catch (error) {
       console.log(error);
     }
@@ -294,7 +296,11 @@ const CreateSenatorialDistrict = ({
           </div>
 
           <CustomButton
-            loading={uploadMutation.isPending || createStateMutation.isPending}
+            loading={
+              uploadMutation.isPending ||
+              createStateMutation.isPending ||
+              updateUploadMutation.isPending
+            }
             variant="tertiary"
           >
             {selectedSenatorialDistrict

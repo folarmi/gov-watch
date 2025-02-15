@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createColumnHelper, PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
-import IndeterminateCheckbox from "../component/InterdeterminateCheckbox";
 import Loader from "../component/Loader";
 import AdminButton from "../component/forms/AdminButton";
 import Table from "../component/Table";
@@ -29,20 +28,10 @@ const Categories = () => {
   const columnHelper = createColumnHelper<any>();
   const columns = [
     // Display Column
-    columnHelper.display({
-      id: "checkbox",
-      cell: ({ table }) => (
-        <IndeterminateCheckbox
-          checked={table.getIsAllRowsSelected()}
-          indeterminate={table.getIsSomeRowsSelected()}
-          onChange={table.getToggleAllRowsSelectedHandler()}
-        />
-      ),
-    }),
-    columnHelper.accessor("image", {
+    columnHelper.accessor("categoryImage", {
       header: "Image",
       cell: (info) => (
-        <img src={info.getValue()} className="rounded-full h-16 w-16" />
+        <img src={info.getValue()} className="rounded-full h-12 w-12" />
       ),
     }),
     columnHelper.accessor("name", {

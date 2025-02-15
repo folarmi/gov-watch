@@ -32,7 +32,7 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
 
   const modifiedDefaultValues = {
     ...selectedState,
-    population: Number(selectedState?.population?.replace(/,/g, "")),
+    population: Number(selectedState?.population?.toString().replace(/,/g, "")),
     financialAllocation: Number(
       selectedState?.financialAllocation
         ? selectedState?.financialAllocation?.toString().replace(/,/g, "")
@@ -297,7 +297,11 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
           </div>
 
           <CustomButton
-            loading={uploadMutation.isPending || createStateMutation.isPending}
+            loading={
+              uploadMutation.isPending ||
+              createStateMutation.isPending ||
+              updateUploadMutation.isPending
+            }
             variant="tertiary"
           >
             {selectedState ? "Update State" : "Create State"}

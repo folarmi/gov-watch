@@ -216,7 +216,11 @@ const CreateCountry = ({ toggleModal, selectedCountry }: any) => {
           </div>
 
           <CustomButton
-            loading={uploadMutation.isPending || countryMutation.isPending}
+            loading={
+              uploadMutation.isPending ||
+              countryMutation.isPending ||
+              updateUploadMutation.isPending
+            }
             variant="tertiary"
           >
             {selectedCountry ? "Update Country" : "Create Country"}

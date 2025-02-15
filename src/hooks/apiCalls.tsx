@@ -301,7 +301,7 @@ export const useGetImageDetails = (module: any) => {
     queryKey: ["GetImageDetails"],
     queryFn: async () => {
       const response = await api.get(
-        `Uploads/GetUpload?filePath=${module?.image}`
+        `Uploads/GetUpload?filePath=${module?.image || module?.categoryImage}`
       );
       return response?.data;
     },
