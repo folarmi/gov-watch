@@ -12,10 +12,12 @@ import ImageDetails from "../ImageDetails";
 import { useAppSelector } from "../../lib/hook";
 import { RootState } from "../../lib/store";
 import {
+  updateFileHandler,
   UploadError,
   uploadFile,
   useCustomMutation,
   useGetData,
+  useGetImageDetails,
   useUploadMutation,
 } from "../../hooks/apiCalls";
 import FileUploader from "../FileUploader";
@@ -35,6 +37,7 @@ const CreateWard = ({ toggleModal, selectedWard }: any) => {
     defaultValues: modifiedDefaultValues || {},
   });
   const queryClient = useQueryClient();
+  const { data: imageDetails } = useGetImageDetails(selectedWard);
 
   const { userId, userCountry } = useAppSelector(
     (state: RootState) => state.auth
@@ -47,6 +50,7 @@ const CreateWard = ({ toggleModal, selectedWard }: any) => {
   };
 
   const uploadMutation = useUploadMutation(undefined, handleError);
+  const updateUploadMutation = useUploadMutation(undefined, handleError, "put");
 
   const createWardMutation = useCustomMutation({
     endpoint: selectedWard ? `Wards/UpdateWard` : "Wards/CreateWard",
@@ -71,7 +75,7 @@ const CreateWard = ({ toggleModal, selectedWard }: any) => {
 
       let uploadedFilePath;
 
-      if (uploadedFile) {
+      if (!selectedWard && uploadedFile) {
         uploadedFilePath = await uploadFile(
           uploadedFile,
           userId,
@@ -87,15 +91,40 @@ const CreateWard = ({ toggleModal, selectedWard }: any) => {
         ...data,
       };
 
+      // Handle image logic for edit mode
       if (selectedWard) {
+        if (uploadedFile) {
+          // If a new file is uploaded during edit, update the file and use the new path
+          const newFilePath = await updateFileHandler(
+            uploadedFile,
+            userId,
+            imageDetails?.publicId,
+            updateUploadMutation
+          );
+          formData.image = newFilePath;
+        } else {
+          // If no new file is uploaded, use the existing image from selectedLGA
+          formData.image = selectedWard?.image;
+        }
+
+        // Add lastModifiedBy for edit actions
         formData.lastModifiedBy = userId;
-        formData.image = selectedWard.image;
       } else {
-        // formData.population = Number(data.population.replace(/,/g, ""));
-        formData.createdBy = userId;
-        formData.regionId = data?.regionId?.value;
+        // For create actions, use the uploaded file path
         formData.image = uploadedFilePath;
+        formData.regionId = data?.regionId?.value;
+        formData.createdBy = userId;
       }
+
+      // if (selectedWard) {
+      //   formData.lastModifiedBy = userId;
+      //   formData.image = selectedWard.image;
+      // } else {
+      //   // formData.population = Number(data.population.replace(/,/g, ""));
+      //   formData.createdBy = userId;
+      //   formData.regionId = data?.regionId?.value;
+      //   formData.image = uploadedFilePath;
+      // }
 
       createWardMutation.mutate(formData);
     } catch (error) {

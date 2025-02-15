@@ -12,10 +12,12 @@ import ImageDetails from "../ImageDetails";
 import { useAppSelector } from "../../lib/hook";
 import { RootState } from "../../lib/store";
 import {
+  updateFileHandler,
   UploadError,
   uploadFile,
   useCustomMutation,
   useGetData,
+  useGetImageDetails,
   useUploadMutation,
 } from "../../hooks/apiCalls";
 import FileUploader from "../FileUploader";
@@ -47,6 +49,7 @@ const CreateSenatorialDistrict = ({
     defaultValues: modifiedDefaultValues || {},
   });
   const queryClient = useQueryClient();
+  const { data: imageDetails } = useGetImageDetails(selectedSenatorialDistrict);
 
   const { userId } = useAppSelector((state: RootState) => state.auth);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -55,6 +58,7 @@ const CreateSenatorialDistrict = ({
     console.error("Upload error:", error);
   };
   const uploadMutation = useUploadMutation(undefined, handleError);
+  const updateUploadMutation = useUploadMutation(undefined, handleError, "put");
 
   const createStateMutation = useCustomMutation({
     endpoint: selectedSenatorialDistrict
@@ -80,7 +84,7 @@ const CreateSenatorialDistrict = ({
       }
       let uploadedFilePath;
 
-      if (uploadedFile) {
+      if (!selectedSenatorialDistrict && uploadedFile) {
         uploadedFilePath = await uploadFile(
           uploadedFile,
           userId,
@@ -96,13 +100,28 @@ const CreateSenatorialDistrict = ({
         ...data,
       };
 
+      // Handle image logic for edit mode
       if (selectedSenatorialDistrict) {
+        if (uploadedFile) {
+          // If a new file is uploaded during edit, update the file and use the new path
+          const newFilePath = await updateFileHandler(
+            uploadedFile,
+            userId,
+            imageDetails?.publicId,
+            updateUploadMutation
+          );
+          formData.image = newFilePath;
+        } else {
+          // If no new file is uploaded, use the existing image from selectedLGA
+          formData.image = selectedSenatorialDistrict?.image;
+        }
+
+        // Add lastModifiedBy for edit actions
         formData.lastModifiedBy = userId;
-        formData.image = selectedSenatorialDistrict.image;
       } else {
-        // formData.population = Number(data?.population?.replaceAll(",", "") || 0);
-        formData.createdBy = userId;
+        // For create actions, use the uploaded file path
         formData.image = uploadedFilePath;
+        formData.createdBy = userId;
       }
 
       createStateMutation.mutate(formData);

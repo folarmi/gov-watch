@@ -130,11 +130,15 @@ export const useUploadMutation = (
 ): UseMutationResult<UploadResponse, UploadError, FormData> => {
   return useMutation<UploadResponse, UploadError, FormData>({
     mutationFn: async (data: FormData) => {
-      const response = await api[method]("Uploads/UploadImage", data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await api[method](
+        method === "post" ? "Uploads/UploadImage" : "Uploads/UpdateImage",
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       return response.data;
     },
     onSuccess: (data: any) => {
@@ -273,4 +277,37 @@ export const uploadFile = async (
     console.error("Error uploading file:", error);
     return null;
   }
+};
+
+export const updateFileHandler = async (
+  file: File | null,
+  userId: string,
+  publicId: string | undefined,
+  updateUploadMutation: any
+): Promise<string | null> => {
+  if (!file) return null;
+
+  const formData = new FormData();
+  formData.append("publicId", publicId || "");
+  formData.append("uploadFile", file);
+  formData.append("lastModifiedBy", userId);
+
+  const result = await updateUploadMutation.mutateAsync(formData);
+  return result.filePath; // Assuming the mutation returns the new file path
+};
+
+export const useGetImageDetails = (module: any) => {
+  return useQuery<any>({
+    queryKey: ["GetImageDetails"],
+    queryFn: async () => {
+      const response = await api.get(
+        `Uploads/GetUpload?filePath=${module?.image}`
+      );
+      return response?.data;
+    },
+    retry: false,
+    refetchOnMount: true,
+    refetchOnWindowFocus: false,
+    staleTime: 0,
+  });
 };

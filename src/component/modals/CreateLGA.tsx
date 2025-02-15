@@ -12,10 +12,12 @@ import ImageDetails from "../ImageDetails";
 import { useAppSelector } from "../../lib/hook";
 import { RootState } from "../../lib/store";
 import {
+  updateFileHandler,
   UploadError,
   uploadFile,
   useCustomMutation,
   useGetData,
+  useGetImageDetails,
   useUploadMutation,
 } from "../../hooks/apiCalls";
 import FileUploader from "../FileUploader";
@@ -28,13 +30,7 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
   const { userId, userCountry } = useAppSelector(
     (state: RootState) => state.auth
   );
-
-  const { data: imageDetails } = useGetData({
-    url: `Uploads/GetUpload?filePath=${selectedLGA?.image}`,
-    queryKey: ["GetImageDetails"],
-  });
-
-  console.log(uploadedFile);
+  const { data: imageDetails } = useGetImageDetails(selectedLGA);
 
   const { control, handleSubmit } = useForm<any>({
     defaultValues: selectedLGA || {},
@@ -45,9 +41,9 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
     toast.error("File upload failed. Please try again.");
   };
 
+  const uploadMutation = useUploadMutation(undefined, handleError);
   const updateUploadMutation = useUploadMutation(undefined, handleError, "put");
 
-  const uploadMutation = useUploadMutation(undefined, handleError);
   const createLGAMutation = useCustomMutation({
     endpoint: selectedLGA ? `Lgas/UpdateLga` : `Lgas/CreateLga`,
     successMessage: (data: any) => data?.remark,
@@ -62,32 +58,6 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
     },
   });
 
-  // const lgaRequests = test()[0].lgas.map((lga: any) => {
-  //   delete lga.dateFounded;
-  //   const formData: any = {
-  //     ...lga,
-  //     country: userCountry,
-  //     state: "Adamawa",
-  //     financialAllocation: 0,
-  //     population: lga.population || 0,
-  //     landMass: lga.landMass || 0,
-  //     wardCount: lga.wardCount || 0,
-  //     lcdaCount: lga.lcdaCount || 0,
-  //     chairman: lga.chairman || "N/A",
-  //     publicId: lga.publicId,
-  //     politicalPartyofChairman: lga.politicalPartyofChairman || "N/A",
-  //   };
-
-  //   // Add createdBy for new LGA or lastModifiedBy for updating
-  //   if (selectedLGA) {
-  //     formData.lastModifiedBy = userId;
-  //   } else {
-  //     formData.createdBy = userId;
-  //   }
-
-  //   return formData;
-  // });
-
   const submitForm = async (data: any) => {
     try {
       if (!uploadedFile && !selectedLGA) {
@@ -97,8 +67,8 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
 
       let uploadedFilePath;
 
-      // If there's a new file selected, upload it first
-      if (uploadedFile) {
+      // Upload file only if it's not an edit action (i.e., no selectedLGA)
+      if (!selectedLGA && uploadedFile) {
         uploadedFilePath = await uploadFile(
           uploadedFile,
           userId,
@@ -113,25 +83,38 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
       // Prepare Form Data
       const formPayload: any = {
         ...data,
-        image: uploadedFilePath,
         country: userCountry,
       };
 
+      // Handle image logic for edit mode
       if (selectedLGA) {
+        if (uploadedFile) {
+          // If a new file is uploaded during edit, update the file and use the new path
+          const newFilePath = await updateFileHandler(
+            uploadedFile,
+            userId,
+            imageDetails?.publicId,
+            updateUploadMutation
+          );
+          formPayload.image = newFilePath;
+        } else {
+          // If no new file is uploaded, use the existing image from selectedLGA
+          formPayload.image = selectedLGA?.image;
+        }
+
+        // Add lastModifiedBy for edit actions
         formPayload.lastModifiedBy = userId;
-        formPayload.image =
-          uploadedFile === null
-            ? selectedLGA.image
-            : updateUploadMutation.mutate();
       } else {
-        formPayload.createdBy = userId;
+        // For create actions, use the uploaded file path
         formPayload.image = uploadedFilePath;
+        formPayload.createdBy = userId;
       }
-      console.log(formPayload);
+
       // Submit form after successful image upload
-      // createLGAMutation.mutate(formPayload);
+      await createLGAMutation.mutateAsync(formPayload);
     } catch (error) {
-      console.log(error);
+      console.error("Error submitting form:", error);
+      toast.error("An error occurred while submitting the form.");
     }
   };
 
@@ -281,7 +264,11 @@ const CreateLGA = ({ toggleModal, selectedLGA }: any) => {
           </div>
 
           <CustomButton
-            loading={uploadMutation.isPending || createLGAMutation.isPending}
+            loading={
+              uploadMutation.isPending ||
+              createLGAMutation.isPending ||
+              updateUploadMutation.isPending
+            }
             variant="tertiary"
           >
             {selectedLGA ? "Edit LGA" : "Create LGA"}

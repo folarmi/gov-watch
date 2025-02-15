@@ -12,10 +12,12 @@ import ImageDetails from "../ImageDetails";
 import { useAppSelector } from "../../lib/hook";
 import { RootState } from "../../lib/store";
 import {
+  updateFileHandler,
   UploadError,
   uploadFile,
   useCustomMutation,
   useGetData,
+  useGetImageDetails,
   useUploadMutation,
 } from "../../hooks/apiCalls";
 import FileUploader from "../FileUploader";
@@ -24,6 +26,9 @@ import moment from "moment";
 
 const CreateState = ({ toggleModal, selectedState }: any) => {
   const queryClient = useQueryClient();
+  const { data: imageDetails } = useGetImageDetails(selectedState);
+  const { userId } = useAppSelector((state: RootState) => state.auth);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
   const modifiedDefaultValues = {
     ...selectedState,
@@ -40,13 +45,12 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
     defaultValues: modifiedDefaultValues || {},
   });
 
-  const { userId } = useAppSelector((state: RootState) => state.auth);
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-
   const handleError = (error: UploadError) => {
     console.error("Upload error:", error);
   };
+
   const uploadMutation = useUploadMutation(undefined, handleError);
+  const updateUploadMutation = useUploadMutation(undefined, handleError, "put");
 
   const createStateMutation = useCustomMutation({
     endpoint: selectedState ? `States/UpdateState` : "States/CreateState",
@@ -71,11 +75,7 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
 
       let uploadedFilePath;
 
-      const formData: any = {
-        ...data,
-      };
-
-      if (uploadedFile) {
+      if (!selectedState && uploadedFile) {
         uploadedFilePath = await uploadFile(
           uploadedFile,
           userId,
@@ -87,16 +87,33 @@ const CreateState = ({ toggleModal, selectedState }: any) => {
         }
       }
 
+      const formData: any = {
+        ...data,
+      };
+
       if (selectedState) {
+        if (uploadedFile) {
+          const newFilePath = await updateFileHandler(
+            uploadedFile,
+            userId,
+            imageDetails?.publicId,
+            updateUploadMutation
+          );
+          formData.image = newFilePath;
+        } else {
+          // If no new file is uploaded, use the existing image from selectedLGA
+          formData.image = selectedState?.image;
+        }
+
+        // Add lastModifiedBy for edit actions
         formData.lastModifiedBy = userId;
-        formData.image = selectedState.image;
       } else {
-        // formData.population = Number(data?.population?.replaceAll(",", "") || 0);
-        formData.createdBy = userId;
+        // For create actions, use the uploaded file path
         formData.image = uploadedFilePath;
+        formData.createdBy = userId;
       }
 
-      createStateMutation.mutate(formData);
+      await createStateMutation.mutateAsync(formData);
     } catch (error) {
       console.log(error);
     }

@@ -8,9 +8,11 @@ import CustomTextArea from "../CustomTextArea";
 import { toast } from "react-toastify";
 import ImageDetails from "../ImageDetails";
 import {
+  updateFileHandler,
   UploadError,
   uploadFile,
   useCustomMutation,
+  useGetImageDetails,
   useUploadMutation,
 } from "../../hooks/apiCalls";
 import { useAppSelector } from "../../lib/hook";
@@ -20,6 +22,7 @@ import { useQueryClient } from "@tanstack/react-query";
 const CreateCountry = ({ toggleModal, selectedCountry }: any) => {
   const queryClient = useQueryClient();
   const { userId } = useAppSelector((state: RootState) => state.auth);
+  const { data: imageDetails } = useGetImageDetails(selectedCountry);
 
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
@@ -37,6 +40,9 @@ const CreateCountry = ({ toggleModal, selectedCountry }: any) => {
     toast.error("File upload failed. Please try again.");
   };
 
+  console.log(imageDetails);
+
+  const updateUploadMutation = useUploadMutation(undefined, handleError, "put");
   const uploadMutation = useUploadMutation(undefined, handleError);
 
   const countryMutation = useCustomMutation({
@@ -63,7 +69,7 @@ const CreateCountry = ({ toggleModal, selectedCountry }: any) => {
       }
       let uploadedFilePath;
 
-      if (uploadedFile) {
+      if (!selectedCountry && uploadedFile) {
         uploadedFilePath = await uploadFile(
           uploadedFile,
           userId,
@@ -78,17 +84,32 @@ const CreateCountry = ({ toggleModal, selectedCountry }: any) => {
         ...data,
         population: +data.population,
         gdp: +data.gdp,
-        image: uploadedFilePath,
       };
 
+      // Handle image logic for edit mode
       if (selectedCountry) {
-        formData.updatedBy = userId;
-        formData.image = selectedCountry.image;
+        if (uploadedFile) {
+          // If a new file is uploaded during edit, update the file and use the new path
+          const newFilePath = await updateFileHandler(
+            uploadedFile,
+            userId,
+            imageDetails?.publicId,
+            updateUploadMutation
+          );
+          formData.image = newFilePath;
+        } else {
+          // If no new file is uploaded, use the existing image from selectedLGA
+          formData.image = selectedCountry?.image;
+        }
+        // Add lastModifiedBy for edit actions
+        formData.lastModifiedBy = userId;
       } else {
-        formData.createdBy = userId;
+        // For create actions, use the uploaded file path
         formData.image = uploadedFilePath;
+        formData.createdBy = userId;
       }
-      countryMutation.mutate(formData);
+
+      await countryMutation.mutateAsync(formData);
     } catch (error) {
       console.log(error);
     }
