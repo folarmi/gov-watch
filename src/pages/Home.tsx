@@ -7,7 +7,7 @@ import ExploreButton from "../component/ExploreButton";
 import Loader from "../component/Loader";
 import { useGetData } from "../hooks/apiCalls";
 import OuterPage from "../layouts/OuterPage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppSelector } from "../lib/hook";
 import { RootState } from "../lib/store";
 
@@ -45,6 +45,7 @@ const Home = () => {
       queryParam,
       userObject?.country,
       JSON.stringify(pageNumber),
+      // pageNumber,
     ],
   });
 
@@ -53,6 +54,10 @@ const Home = () => {
       url: "Categories/GetAllCategories",
       queryKey: ["GetAllCategories", "homePage"],
     });
+
+  useEffect(() => {
+    setPageNumber(1);
+  }, [queryParam, selectedFilter]);
 
   const categoriesDataFormatted =
     categoriesData?.categoryViewModel &&
@@ -93,11 +98,11 @@ const Home = () => {
 
         <InfiniteScrollArticles
           articlesData={articlesData}
+          pageNumber={pageNumber}
           setPageNumber={setPageNumber}
           isLoading={isLoading}
           error={error}
         />
-        {/* {articlesData?.length > 1 && <SeeAllPublications />} */}
         <ExploreButton />
       </div>
     </OuterPage>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // /* eslint-disable @typescript-eslint/no-explicit-any */
 // import { useState, useEffect } from "react";
@@ -147,6 +148,7 @@ type Props = {
   articlesData: Article[];
   setPageNumber: (prevPageNumber: any) => void;
   isLoading: boolean;
+  pageNumber: number;
   error: Error | null;
 };
 
@@ -155,15 +157,34 @@ const InfiniteScrollArticles = ({
   setPageNumber,
   isLoading,
   error,
+  pageNumber,
 }: Props) => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [hasMore, setHasMore] = useState(true);
 
+  // useEffect(() => {
+  //   if (articlesData) {
+  //     if (articlesData.length > 0) {
+  //       setArticles((prevArticles) => [...prevArticles, ...articlesData]);
+  //     } else {
+  //       setHasMore(false);
+  //     }
+  //   }
+  // }, [articlesData]);
+
   useEffect(() => {
     if (articlesData) {
-      if (articlesData.length > 0) {
-        setArticles((prevArticles) => [...prevArticles, ...articlesData]);
+      // Reset articles when pageNumber is 1 (new search)
+      if (pageNumber === 1) {
+        setArticles(articlesData);
+        setHasMore(true); // Reset pagination state
       } else {
+        // Append for infinite scroll
+        setArticles((prevArticles) => [...prevArticles, ...articlesData]);
+      }
+
+      // Detect no more articles
+      if (articlesData.length === 0) {
         setHasMore(false);
       }
     }
