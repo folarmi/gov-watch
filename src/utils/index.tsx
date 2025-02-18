@@ -104,8 +104,8 @@ export const calculateIncidentDuration = (
   if (!startDate) return "No start date provided";
 
   const start = new Date(startDate);
-  const resolved = resolvedDate === null ? new Date() : new Date(resolvedDate); // Use current date if resolvedDate is null
-
+  // const resolved = resolvedDate === null ? new Date() : new Date(resolvedDate); // Use current date if resolvedDate is null
+  const resolved = resolvedDate ? new Date(resolvedDate) : new Date();
   const difference = resolved.getTime() - start.getTime();
   const isResolved = resolvedDate !== null; // Check if resolvedDate is not null
 

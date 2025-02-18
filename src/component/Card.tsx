@@ -512,11 +512,12 @@ const Card = ({
           )}
 
           {/* Resolved Incident */}
-          {new Date(dateIncidentResolved) >= new Date() && (
-            <span className="bg-green-500 text-white text-xs font-medium px-2.5 py-0.5 rounded-sm">
-              Incident Resolved
-            </span>
-          )}
+          {dateIncidentResolved &&
+            new Date(dateIncidentResolved) >= new Date() && (
+              <span className="bg-green-500 text-white text-xs font-medium px-2.5 py-0.5 rounded-sm">
+                Incident Resolved
+              </span>
+            )}
 
           {/* Category Tag */}
           {category && (

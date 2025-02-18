@@ -178,7 +178,10 @@ const InfiniteScrollArticles = ({
   return (
     <div className="p-4">
       <InfiniteScroll
-        dataLength={articles.length}
+        dataLength={articles?.length}
+        style={{
+          overflow: "hidden",
+        }}
         next={fetchMoreData}
         hasMore={hasMore}
         loader={
