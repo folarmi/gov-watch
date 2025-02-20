@@ -78,8 +78,14 @@ const Home = () => {
     setQueryParam(data?.queryParams);
   };
 
+  const resetState = () => {
+    setQueryParam("");
+    setSelectedFilter("");
+    setPageNumber(1);
+  };
+
   return (
-    <OuterPage>
+    <OuterPage resetState={resetState}>
       <div className="px-8 md:px-24">
         <form onSubmit={handleSubmit(submitForm)}>
           <SearchBar

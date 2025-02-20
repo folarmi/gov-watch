@@ -32,7 +32,7 @@ const ScrollableCategories: React.FC<ScrollableCategoriesProps> = ({
       >
         All
       </span>
-      {categories.map((category) => (
+      {categories?.map((category) => (
         <span
           key={category.id}
           onClick={() => handleClick(category.name)}

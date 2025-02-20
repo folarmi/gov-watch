@@ -1,21 +1,21 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 
 import CustomButton from "./CustomButton";
 import { motion } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import { SidebarItemProp } from "../types/generalTypes";
-// import { useAppSelector } from "../lib/hook";
-// import { RootState } from "../lib/store";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { RootState } from "../lib/store";
 import { useAppSelector } from "../lib/hook";
 import { directUserToPageOnLogin } from "../utils";
 import AvatarDropdown from "./forms/AvatarDropdown";
 import UserRoleTag from "./UserRoleTag";
 
-const Header = () => {
+const Header = ({ resetState }: any) => {
   const { isAuthenticated } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   const pathName = location.pathname;
 
   // const { theme } = useTheme();
@@ -64,9 +64,18 @@ const Header = () => {
   return (
     <>
       <nav className="sticky top-0 z-50 bg-gray-200 h-24 md:h-32 px-8 md:px-0 flex items-center justify-between md:justify-around">
-        <Link to="/" className="">
+        {/* <Link to="/" className="">
           <img src="/logo.svg" alt="Company logo" className="w-14 md:w-20" />
-        </Link>
+        </Link> */}
+        <div
+          onClick={() => {
+            resetState();
+            navigate("/");
+          }}
+          className=""
+        >
+          <img src="/logo.svg" alt="Company logo" className="w-14 md:w-20" />
+        </div>
 
         <>
           {SidebarList.filter(({ name }) => name).map(({ name, id, url }) => {
