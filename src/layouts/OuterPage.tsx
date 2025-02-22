@@ -5,7 +5,7 @@ import Footer from "../component/Footer";
 
 interface LayoutProps {
   children: ReactNode;
-  resetState: any;
+  resetState?: any;
 }
 
 const OuterPage: React.FC<LayoutProps> = ({ children, resetState }) => {
