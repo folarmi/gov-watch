@@ -169,6 +169,7 @@ const Comments = ({ comments, publicationDetailsData }: Prop) => {
   const { userId } = useAppSelector((state: RootState) => state.auth);
   const [createCommentModal, setCreateCommentModal] = useState(false);
   const [replyingTo, setReplyingTo] = useState(null);
+  // const [showReplyInput, setShowReplyInput] = useState(false);
 
   const likeCommentMutation = useCustomMutation({
     endpoint: "PublicationComments/UpdatePublicationCommentLikeCount",
@@ -234,6 +235,8 @@ const Comments = ({ comments, publicationDetailsData }: Prop) => {
                 <span>{comment?.viewCount}</span>
               </button>
             </div>
+
+            <p>view 1 reply</p>
           </li>
         ))}
       </ul>
@@ -248,19 +251,6 @@ const Comments = ({ comments, publicationDetailsData }: Prop) => {
             <MessageCircle />
             <span>Reply</span>
           </button>
-
-          {/* <button
-            className="flex items-center space-x-1 text-primary hover:text-green-700 cursor-pointer"
-            onClick={() => toggleLikeComment()} 
-          >
-            <ThumbsUp className="text-primary" />
-            <span>0</span>
-          </button>
-
-          <button className="flex items-center space-x-1 text-primary_DM">
-            <Eye />
-            <span>0</span>
-          </button> */}
         </div>
       )}
 
