@@ -15,10 +15,12 @@ import sampleWriter from "../assets/sampleWriter.webp";
 import { RenderArticle } from "../component/forms/RenderArticle";
 import { useEffect, useState } from "react";
 import { Comments } from "../component/Comments";
+import InfiniteScrollArticles from "../component/InfiniteScrolling";
 
 const PublicationDetails = () => {
   const params = useParams();
   const [viewCount, setViewCount] = useState();
+  const [pageNumber, setPageNumber] = useState<any>(1);
 
   const {
     data: publicationDetailsData,
@@ -32,6 +34,7 @@ const PublicationDetails = () => {
   const {
     data: publicationCommentsData,
     isLoading: publicationCommentsIsLoading,
+    error,
   } = useGetData({
     url: `PublicationComments/GetAllPublicationCommentsResponses?publicationId=${params?.id}&pageNumber=1&pageSize=10`,
     queryKey: ["GetAllPublicationComments"],
@@ -202,9 +205,26 @@ const PublicationDetails = () => {
               </div>
             </div>
 
-            <Comments
+            {/* <Comments
               comments={publicationCommentsData?.publicationCommentViewModel}
               publicationDetailsData={publicationDetailsData}
+            /> */}
+
+            <InfiniteScrollArticles
+              data={publicationCommentsData?.publicationCommentViewModel}
+              pageNumber={pageNumber}
+              setPageNumber={setPageNumber}
+              isLoading={publicationCommentsIsLoading}
+              error={error}
+              keyExtractor={(comment: any) => comment?.publicId}
+              renderItem={() => (
+                <Comments
+                  comments={
+                    publicationCommentsData?.publicationCommentViewModel
+                  }
+                  publicationDetailsData={publicationDetailsData}
+                />
+              )}
             />
 
             <p className="font-black mt-8 mb-4">References</p>

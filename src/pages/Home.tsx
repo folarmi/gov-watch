@@ -14,6 +14,24 @@ import { RootState } from "../lib/store";
 import { useForm } from "react-hook-form";
 import InfiniteScrollArticles from "../component/InfiniteScrolling";
 import { queryParamsToAdd } from "../utils";
+import Card from "../component/Card";
+
+interface Article {
+  title: string;
+  date: string;
+  image: string;
+  section: string;
+  summary: string;
+  isPromise: boolean;
+  publicId: string;
+  promiseDeadline?: string;
+  isPromiseFulfilled?: boolean;
+  isBookmarked?: boolean;
+  isCredible?: boolean;
+  dateIncidentStarted?: string;
+  dateIncidentResolved?: string;
+  isLiked?: boolean;
+}
 
 const Home = () => {
   const [categoryName, setCategoryName] = useState("");
@@ -103,12 +121,34 @@ const Home = () => {
         />
 
         <InfiniteScrollArticles
-          articlesData={articlesData}
+          data={articlesData}
           pageNumber={pageNumber}
           setPageNumber={setPageNumber}
           isLoading={isLoading}
           error={error}
+          keyExtractor={(article) => article?.publicId}
+          renderItem={(article: Article) => (
+            <Card
+              section={article?.section}
+              articleTitle={article?.title}
+              summary={article?.summary}
+              date={article?.date}
+              promise={article?.isPromise}
+              imageUrl={article?.image}
+              deadline={article?.promiseDeadline}
+              id={article?.publicId}
+              isPromisedFulfilled={article?.isPromiseFulfilled}
+              isCredible={article?.isCredible}
+              isBookMarked={article?.isBookmarked}
+              isLiked={article?.isLiked}
+              isPublished
+              dateIncidentStarted={article?.dateIncidentStarted}
+              dateIncidentResolved={article?.dateIncidentResolved}
+              link={`/latest-publications/${article?.publicId}`}
+            />
+          )}
         />
+
         <ExploreButton />
       </div>
     </OuterPage>
