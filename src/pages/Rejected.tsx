@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Link } from "react-router-dom";
-import Loader from "../component/Loader";
 import { useGetData } from "../hooks/apiCalls";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Card from "../component/Card";
@@ -11,24 +8,66 @@ import {
   shouldFetchPublications,
   userTypeObject,
 } from "../utils";
-import EmptyPage from "../component/EmptyPage";
+import { InfiniteScrolling } from "../component/InfiniteScrolling";
+import { useState } from "react";
+import { Article } from "../types/generalTypes";
 
 const Rejected = () => {
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const pageSize = 12;
+
   const { userId, userType } = useAppSelector((state: RootState) => state.auth);
   const {
     data: rejectedPublicationsData,
     isLoading: rejectedPublicationsLoading,
+    error,
   } = useGetData({
     url:
       userType === userTypeObject.contributor
-        ? `${getPublicationTypeByUserId}${userId}&isRejected=true&page=1&pageSize=10`
-        : "Publications/GetAllPublications?isRejected=true&page=1&pageSize=100",
-    queryKey: ["GetAllPendingPublications", userType],
+        ? `${getPublicationTypeByUserId}${userId}&isRejected=true&pageNumber=${pageNumber}&pageSize=${pageSize}`
+        : `Publications/GetAllPublications?isRejected=true&pageNumber=${pageNumber}&pageSize=${pageSize}`,
+    queryKey: ["GetAllPendingPublications", userType, pageNumber],
     enabled: shouldFetchPublications,
   });
   return (
     <DashboardLayout>
-      <div className="">
+      <InfiniteScrolling
+        data={rejectedPublicationsData}
+        pageNumber={pageNumber}
+        setPageNumber={setPageNumber}
+        isLoading={rejectedPublicationsLoading}
+        error={error}
+        pageSize={pageSize}
+        keyExtractor={(article) => article?.publicId}
+        renderItem={(article: Article) => (
+          <Card
+            section={article?.section}
+            articleTitle={article?.title}
+            summary={article?.summary}
+            date={article?.date}
+            promise={article?.isPromise}
+            imageUrl={article?.image}
+            deadline={article?.promiseDeadline}
+            id={article?.publicId}
+            isPromisedFulfilled={article?.isPromiseFulfilled}
+            isCredible={article?.isCredible}
+            isBookMarked={article?.isBookmarked}
+            isLiked={article?.isLiked}
+            isPublished
+            dateIncidentStarted={article?.dateIncidentStarted}
+            dateIncidentResolved={article?.dateIncidentResolved}
+            link={`/dashboard/published/${article?.id || article?.publicId}`}
+          />
+        )}
+      />
+    </DashboardLayout>
+  );
+};
+
+export { Rejected };
+
+{
+  /* <div className="">
         {rejectedPublicationsLoading ? (
           <Loader />
         ) : (
@@ -74,9 +113,5 @@ const Rejected = () => {
             )}
           </>
         )}
-      </div>
-    </DashboardLayout>
-  );
-};
-
-export { Rejected };
+      </div> */
+}

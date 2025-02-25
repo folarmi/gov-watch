@@ -58,17 +58,20 @@ export type InboxType = {
   subject: string;
 };
 
-export type Article = {
-  publicId: string;
-  image: string;
-  category: string;
+export interface Article {
+  id?: string;
   title: string;
-  content: string;
   date: string;
+  image: string;
+  section: string;
+  summary: string;
   isPromise: boolean;
-  isBookmarked: boolean;
-  isPromisedFulfilled: boolean;
-  datePromiseMade: string;
-  promiseDeadline: string;
-  datePromiseFulfilled: string;
-};
+  publicId: string;
+  promiseDeadline?: string;
+  isPromiseFulfilled?: boolean;
+  isBookmarked?: boolean;
+  isCredible?: boolean;
+  dateIncidentStarted?: string;
+  dateIncidentResolved?: string;
+  isLiked?: boolean;
+}

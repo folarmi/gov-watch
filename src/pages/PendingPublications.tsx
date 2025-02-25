@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import Loader from "../component/Loader";
 import { useGetData } from "../hooks/apiCalls";
 import Card from "../component/Card";
 import DashboardLayout from "../layouts/DashboardLayout";
@@ -10,25 +9,71 @@ import {
   shouldFetchPublications,
   userTypeObject,
 } from "../utils";
+import { InfiniteScrolling } from "../component/InfiniteScrolling";
+import { useState } from "react";
+import { Article } from "../types/generalTypes";
 
 const PendingPublications = () => {
+  const [pageNumber, setPageNumber] = useState<any>(1);
+  const pageSize = 12;
   const { userId, userType } = useAppSelector((state: RootState) => state.auth);
 
   const {
     data: pendingPublicationsData,
     isLoading: pendingPublicationsLoading,
+    error,
   } = useGetData({
     url:
       userType === userTypeObject.contributor
-        ? `${getPublicationTypeByUserId}${userId}&fetchAllSubmittedPublication=true&page=1&pageSize=10`
-        : "Publications/GetAllPublications?fetchAllSubmittedPublication=true&page=1&pageSize=100",
-    queryKey: ["GetAllPendingPublications", userType],
+        ? `${getPublicationTypeByUserId}${userId}&fetchAllSubmittedPublication=true&pageNumber=${pageNumber}&pageSize=${pageSize}`
+        : `Publications/GetAllPublications?fetchAllSubmittedPublication=true&pageNumber=${pageNumber}&pageSize=${pageSize}`,
+    queryKey: [
+      "GetAllPendingPublications",
+      userType,
+      JSON.stringify(pageNumber),
+    ],
     enabled: shouldFetchPublications,
   });
 
   return (
     <DashboardLayout>
-      <div className="">
+      <InfiniteScrolling
+        data={pendingPublicationsData}
+        pageNumber={pageNumber}
+        setPageNumber={setPageNumber}
+        isLoading={pendingPublicationsLoading}
+        error={error}
+        pageSize={pageSize}
+        keyExtractor={(article) => article?.publicId}
+        renderItem={(article: Article) => (
+          <Card
+            section={article?.section}
+            articleTitle={article?.title}
+            summary={article?.summary}
+            date={article?.date}
+            promise={article?.isPromise}
+            imageUrl={article?.image}
+            deadline={article?.promiseDeadline}
+            id={article?.publicId}
+            isPromisedFulfilled={article?.isPromiseFulfilled}
+            isCredible={article?.isCredible}
+            isBookMarked={article?.isBookmarked}
+            isLiked={article?.isLiked}
+            isPublished
+            dateIncidentStarted={article?.dateIncidentStarted}
+            dateIncidentResolved={article?.dateIncidentResolved}
+            link={`/dashboard/pending/${article?.id || article?.publicId}`}
+          />
+        )}
+      />
+    </DashboardLayout>
+  );
+};
+
+export { PendingPublications };
+
+{
+  /* <div className="">
         {pendingPublicationsLoading ? (
           <Loader />
         ) : (
@@ -66,9 +111,5 @@ const PendingPublications = () => {
               )}
           </div>
         )}
-      </div>
-    </DashboardLayout>
-  );
-};
-
-export { PendingPublications };
+      </div> */
+}

@@ -1,37 +1,78 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useGetData } from "../hooks/apiCalls";
 import DashboardLayout from "../layouts/DashboardLayout";
 import { useAppSelector } from "../lib/hook";
 import { RootState } from "../lib/store";
-import Loader from "../component/Loader";
 import Card from "../component/Card";
-import { Link } from "react-router-dom";
+
 import {
   getPublicationTypeByUserId,
   shouldFetchPublications,
   userTypeObject,
 } from "../utils";
+import { InfiniteScrolling } from "../component/InfiniteScrolling";
+import { useState } from "react";
+import { Article } from "../types/generalTypes";
 
 const TotalArticles = () => {
-  const { userId, userType } = useAppSelector((state: RootState) => state.auth);
+  const [pageNumber, setPageNumber] = useState<number>(1);
 
-  const { data: totalPublicationsData, isLoading: totalPublicationsLoading } =
-    useGetData({
-      url:
-        userType === userTypeObject.contributor
-          ? `${getPublicationTypeByUserId}${userId}&fetchAllPublication=true&page=1&pageSize=10`
-          : "Publications/GetAllPublications?fetchAllPublication=true&page=1&pageSize=10",
-      queryKey: ["GetAllTotalPublications", userType],
-      enabled: shouldFetchPublications,
-    });
+  const { userId, userType } = useAppSelector((state: RootState) => state.auth);
+  const pageSize = 12;
+
+  const {
+    data: totalPublicationsData,
+    isLoading: totalPublicationsLoading,
+    error,
+  } = useGetData({
+    url:
+      userType === userTypeObject.contributor
+        ? `${getPublicationTypeByUserId}${userId}&fetchAllPublication=true&pageNumber=${pageNumber}&pageSize=${pageSize}`
+        : `Publications/GetAllPublications?fetchAllPublication=true&pageNumber=${pageNumber}&pageSize=${pageSize}`,
+    queryKey: ["GetAllTotalPublications", userType, pageNumber],
+    enabled: shouldFetchPublications,
+  });
 
   return (
     <>
-      {totalPublicationsLoading ? (
-        <Loader />
-      ) : (
-        <DashboardLayout>
-          <div className="flex flex-wrap justify-between">
+      <DashboardLayout>
+        <InfiniteScrolling
+          data={totalPublicationsData}
+          pageNumber={pageNumber}
+          setPageNumber={setPageNumber}
+          isLoading={totalPublicationsLoading}
+          error={error}
+          pageSize={pageSize}
+          keyExtractor={(article) => article?.publicId}
+          renderItem={(article: Article) => (
+            <Card
+              section={article?.section}
+              articleTitle={article?.title}
+              summary={article?.summary}
+              date={article?.date}
+              promise={article?.isPromise}
+              imageUrl={article?.image}
+              deadline={article?.promiseDeadline}
+              id={article?.publicId}
+              isPromisedFulfilled={article?.isPromiseFulfilled}
+              isCredible={article?.isCredible}
+              isBookMarked={article?.isBookmarked}
+              isLiked={article?.isLiked}
+              isPublished
+              dateIncidentStarted={article?.dateIncidentStarted}
+              dateIncidentResolved={article?.dateIncidentResolved}
+              link={`/dashboard/published/${article?.id || article?.publicId}`}
+            />
+          )}
+        />
+      </DashboardLayout>
+    </>
+  );
+};
+
+export { TotalArticles };
+
+{
+  /* <div className="flex flex-wrap justify-between">
             {totalPublicationsData?.map(
               ({
                 title,
@@ -66,11 +107,5 @@ const TotalArticles = () => {
                 );
               }
             )}
-          </div>
-        </DashboardLayout>
-      )}
-    </>
-  );
-};
-
-export { TotalArticles };
+          </div> */
+}

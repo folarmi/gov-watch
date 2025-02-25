@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Link } from "react-router-dom";
-import Loader from "../component/Loader";
+// import { Link } from "react-router-dom";
+// import Loader from "../component/Loader";
 import { useGetData } from "../hooks/apiCalls";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Card from "../component/Card";
@@ -11,25 +11,71 @@ import {
   shouldFetchPublications,
   userTypeObject,
 } from "../utils";
-import EmptyPage from "../component/EmptyPage";
+import { InfiniteScrolling } from "../component/InfiniteScrolling";
+import { Article } from "../types/generalTypes";
+import { useState } from "react";
 
 const Drafts = () => {
+  const [pageNumber, setPageNumber] = useState<any>(1);
+  const pageSize = 12;
+
   const { userId, userType } = useAppSelector((state: RootState) => state.auth);
   const {
     data: pendingPublicationsData,
     isLoading: pendingPublicationsLoading,
+    error,
   } = useGetData({
     url:
       userType === userTypeObject.contributor
-        ? `${getPublicationTypeByUserId}${userId}&fetchAllDraftPublication=true&page=1&pageSize=10`
-        : `Publications/GetAllPublications?fetchAllDraftPublication=true&pageNumber=1&pageSize=12`,
-    queryKey: ["GetAllPendingPublications", userType],
+        ? `${getPublicationTypeByUserId}${userId}&fetchAllDraftPublication=true&pageNumber=${pageNumber}&pageSize=${pageSize}`
+        : `Publications/GetAllPublications?fetchAllDraftPublication=true&pageNumber=${pageNumber}&pageSize=${pageSize}`,
+    queryKey: [
+      "GetAllPendingPublications",
+      userType,
+      JSON.stringify(pageNumber),
+    ],
     enabled: shouldFetchPublications,
   });
 
   return (
     <DashboardLayout>
-      <div className="">
+      <InfiniteScrolling
+        data={pendingPublicationsData}
+        pageNumber={pageNumber}
+        setPageNumber={setPageNumber}
+        isLoading={pendingPublicationsLoading}
+        error={error}
+        pageSize={pageSize}
+        keyExtractor={(article) => article?.publicId}
+        renderItem={(article: Article) => (
+          <Card
+            section={article?.section}
+            articleTitle={article?.title}
+            summary={article?.summary}
+            date={article?.date}
+            promise={article?.isPromise}
+            imageUrl={article?.image}
+            deadline={article?.promiseDeadline}
+            id={article?.publicId}
+            isPromisedFulfilled={article?.isPromiseFulfilled}
+            isCredible={article?.isCredible}
+            isBookMarked={article?.isBookmarked}
+            isLiked={article?.isLiked}
+            isPublished
+            dateIncidentStarted={article?.dateIncidentStarted}
+            dateIncidentResolved={article?.dateIncidentResolved}
+            link={`/dashboard/drafts/${article?.id || article?.publicId}`}
+          />
+        )}
+      />
+    </DashboardLayout>
+  );
+};
+
+export { Drafts };
+
+{
+  /* <div className="">
         {pendingPublicationsLoading ? (
           <Loader />
         ) : (
@@ -84,9 +130,5 @@ const Drafts = () => {
             </>
           </div>
         )}
-      </div>
-    </DashboardLayout>
-  );
-};
-
-export { Drafts };
+      </div> */
+}

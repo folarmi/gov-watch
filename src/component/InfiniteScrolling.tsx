@@ -13,9 +13,11 @@ type Props<T> = {
   error: Error | null;
   renderItem: (item: T) => React.ReactNode;
   keyExtractor: (item: T) => string;
+  pageSize: number;
+  colSize?: number;
 };
 
-const InfiniteScrollArticles = <T,>({
+const InfiniteScrolling = <T,>({
   data,
   setPageNumber,
   isLoading,
@@ -23,6 +25,8 @@ const InfiniteScrollArticles = <T,>({
   pageNumber,
   renderItem,
   keyExtractor,
+  pageSize,
+  colSize = 3,
 }: Props<T>) => {
   const [items, setItems] = useState<T[]>([]);
   const [hasMore, setHasMore] = useState(true);
@@ -39,7 +43,7 @@ const InfiniteScrollArticles = <T,>({
       }
 
       // Detect no more articles
-      if (data.length === 0) {
+      if (data.length === 0 || data.length < pageSize) {
         setHasMore(false);
       }
     }
@@ -74,7 +78,9 @@ const InfiniteScrollArticles = <T,>({
         {!isLoading && !error && items.length < 1 ? (
           <EmptyPage />
         ) : (
-          <section className="mt-10 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <section
+            className={`mt-10 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-${colSize}`}
+          >
             {items.map((item) => (
               <div key={keyExtractor(item)} className="w-full">
                 {renderItem(item)}
@@ -92,4 +98,4 @@ const InfiniteScrollArticles = <T,>({
   );
 };
 
-export default InfiniteScrollArticles;
+export { InfiniteScrolling };

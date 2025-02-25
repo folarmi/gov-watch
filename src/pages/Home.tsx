@@ -12,32 +12,17 @@ import { useAppSelector } from "../lib/hook";
 import { RootState } from "../lib/store";
 
 import { useForm } from "react-hook-form";
-import InfiniteScrollArticles from "../component/InfiniteScrolling";
+import { InfiniteScrolling } from "../component/InfiniteScrolling";
 import { queryParamsToAdd } from "../utils";
 import Card from "../component/Card";
-
-interface Article {
-  title: string;
-  date: string;
-  image: string;
-  section: string;
-  summary: string;
-  isPromise: boolean;
-  publicId: string;
-  promiseDeadline?: string;
-  isPromiseFulfilled?: boolean;
-  isBookmarked?: boolean;
-  isCredible?: boolean;
-  dateIncidentStarted?: string;
-  dateIncidentResolved?: string;
-  isLiked?: boolean;
-}
+import { Article } from "../types/generalTypes";
 
 const Home = () => {
   const [categoryName, setCategoryName] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("");
   const [queryParam, setQueryParam] = useState("");
   const [pageNumber, setPageNumber] = useState<any>(1);
+  const pageSize = 12;
 
   const { control, handleSubmit } = useForm();
   const { userId, userObject } = useAppSelector(
@@ -56,7 +41,7 @@ const Home = () => {
     }&${queryParamsToAdd(
       selectedFilter,
       queryParam
-    )}&pageNumber=${pageNumber}&pageSize=12`,
+    )}&pageNumber=${pageNumber}&pageSize=${pageSize}`,
     queryKey: [
       "GetlatestPublications",
       categoryName,
@@ -120,13 +105,15 @@ const Home = () => {
           categories={categoriesDataFormatted}
         />
 
-        <InfiniteScrollArticles
+        <InfiniteScrolling
           data={articlesData}
           pageNumber={pageNumber}
           setPageNumber={setPageNumber}
           isLoading={isLoading}
           error={error}
           keyExtractor={(article) => article?.publicId}
+          pageSize={pageSize}
+          colSize={4}
           renderItem={(article: Article) => (
             <Card
               section={article?.section}
