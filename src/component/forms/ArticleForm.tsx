@@ -80,6 +80,16 @@ const ArticleForm = ({
             .toISOString()
             .split("T")[0]
         : null,
+      dateIncidentStarted: defaultValues?.dateIncidentStarted
+        ? new Date(defaultValues?.dateIncidentStarted)
+            .toISOString()
+            .split("T")[0]
+        : null,
+      dateIncidentResolved: defaultValues?.dateIncidentResolved
+        ? new Date(defaultValues?.dateIncidentResolved)
+            .toISOString()
+            .split("T")[0]
+        : null,
       article: defaultValues?.article || "",
       isFederal: defaultValues?.isFederal || false,
       isPromiseFulfilled: defaultValues?.isPromiseFulfilled || false,
@@ -235,6 +245,7 @@ const ArticleForm = ({
         value: item,
       };
     });
+  // if it is checked, show
 
   return (
     <>
@@ -399,7 +410,27 @@ const ArticleForm = ({
                 control={control}
               />
 
-              {getValues("isIncident") && (
+              {/* {getValues("isIncident") ||
+                (defaultValues?.dateIncidentStarted !== null && (
+                  <>
+                    <CustomInput
+                      label="Date Incident Started"
+                      name="dateIncidentStarted"
+                      type="date"
+                      control={control}
+                      max={today}
+                    />
+                    <CustomInput
+                      label="Date Incident Was Resolved"
+                      name="dateIncidentResolved"
+                      type="date"
+                      control={control}
+                    />
+                  </>
+                ))} */}
+
+              {(getValues("isIncident") ||
+                defaultValues?.dateIncidentStarted !== null) && (
                 <>
                   <CustomInput
                     label="Date Incident Started"

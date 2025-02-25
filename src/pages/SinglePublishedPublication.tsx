@@ -64,6 +64,8 @@ const SinglePublishedPublication = () => {
       "datePromiseMade",
       "promiseDeadline",
       "datePromiseFulfilled",
+      "dateIncidentResolved",
+      "dateIncidentStarted",
       "politicalActorName",
       "lga",
       "country",
@@ -85,6 +87,8 @@ const SinglePublishedPublication = () => {
       // isDraftUpdate: true,
       isSubmission: true,
     };
+
+    console.log(formData);
     updatePublicationMutation.mutate(formData);
   };
 
@@ -109,3 +113,36 @@ const SinglePublishedPublication = () => {
 };
 
 export { SinglePublishedPublication };
+
+// {
+//   "publicId": "846b2464-db56-4d00-888d-17330e7fff8c",
+//   "snippet": "fdjkfjkdf",
+//   "article": "<p>skdnfjknsjdfn</p>",
+//   "image": "https://res.cloudinary.com/dk9i5q1bg/image/upload/v1740471211/1e706917-3557-4fe2-ad0d-1a75958a08ef.png",
+//   "imageCaption": "this is an image",
+//   "contributorPublicId": "a7e36778-2fec-4b6e-8569-dbe47778dff0",
+//   "category": "Brady Hampton",
+//   "state": "Abia",
+//   "ward": null,
+//   "lcda": "Ifeoma Noble",
+//   "isFederal": false,
+//   "title": "Update date incident started",
+//   "mda": "Nadine Burke",
+//   "tags": "test , red , blur",
+//   "reference": "<p>smdnfjksndf</p>",
+//   "authorName": "Folacodes",
+//   "link": "<p>skndfksnfksdfnskjndf</p>",
+//   "isPromise": false,
+//   "isCredible": false,
+//   "isPromisedFulfilled": null,
+//   "datePromiseMade": null,
+//   "promiseDeadline": null,
+//   "datePromiseFulfilled": null,
+//   "dateIncidentResolved": null,
+//   "dateIncidentStarted": "2025-02-14",
+//   "politicalActorName": "Aphrodite Douglas",
+//   "lga": "Brock Boothasdfghjk",
+//   "country": "Nigeria",
+//   "isSubmission": true,
+//   "lastModifiedBy": "a7e36778-2fec-4b6e-8569-dbe47778dff0"
+// }

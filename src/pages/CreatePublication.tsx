@@ -76,6 +76,8 @@ const CreatePublication = () => {
         tags: tags.join(" , "),
         isDraft,
       };
+
+      console.log(formData);
       createPublicationMutation.mutate(formData);
     } catch (error) {
       console.log(error);
