@@ -79,7 +79,7 @@ const InfiniteScrolling = <T,>({
           <EmptyPage />
         ) : (
           <section
-            className={`mt-10 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-${colSize}`}
+            className={`mt-10 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-${colSize} xl:grid-cols-${colSize}`}
           >
             {items.map((item) => (
               <div key={keyExtractor(item)} className="w-full">
