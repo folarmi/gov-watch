@@ -1,20 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 
 type TagsInputProps = {
-  onChange: (tags: string[]) => void;
-  tags: any;
-  setTags: any;
-  defaultValues: any;
+  onChange?: (tags: string[]) => void;
+  defaultTags?: string[];
+  tags: string[];
+  setTags: (tags: string[]) => void;
 };
 
-const TagsInput: React.FC<TagsInputProps> = ({
-  onChange,
-  tags,
-  setTags,
-  defaultValues,
-}) => {
-  const [inputValue, setInputValue] = useState<string>(defaultValues);
+const TagsInput: React.FC<TagsInputProps> = ({ tags, setTags }) => {
+  const [inputValue, setInputValue] = useState<string>("");
 
   // Handle input value change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,52 +18,61 @@ const TagsInput: React.FC<TagsInputProps> = ({
   // Handle key press event to create tags
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && inputValue.trim()) {
-      e.preventDefault(); // Prevent form submission or default behavior
-      setTags((prevTags: any) => {
-        const newTags = [...prevTags, inputValue.trim()];
-        onChange(newTags); // Notify parent component about the new tags
-        return newTags;
-      });
-      setInputValue(""); // Clear the input field
+      e.preventDefault();
+      if (!tags.includes(inputValue.trim())) {
+        const newTags = [...tags, inputValue.trim()];
+        setTags(newTags);
+        // onChange(newTags); // Notify parent only when a tag is added
+      }
+      setInputValue("");
     }
   };
 
   // Handle removing a tag
   const removeTag = (indexToRemove: number) => {
-    setTags((prevTags: any) => {
-      const newTags = prevTags.filter(
-        (_: any, index: any) => index !== indexToRemove
-      );
-      onChange(newTags);
-      return newTags;
-    });
+    const newTags = tags.filter((_, index) => index !== indexToRemove);
+    setTags(newTags);
+    // onChange(newTags); // Notify parent only when a tag is removed
   };
 
   return (
     <div className="tag-input-container mt-4">
-      <label htmlFor="Article Tags" className="text-sm font-medium">
+      <label htmlFor="article-tags" className="text-sm font-medium">
         Article Tags
       </label>
       <input
         type="text"
+        id="article-tags"
         value={inputValue}
-        defaultValue={tags}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
         placeholder="Type and press Enter..."
         className="h-12 rounded-lg px-4 border-2 border-black bg-gray-50 text-sm w-full"
+        aria-describedby="tag-instructions"
       />
-      <div className="flex gap-x-2 cursor-pointer">
-        {tags?.map((tag: any, index: any) => (
-          <div key={index} className="tag">
-            <span className="bg-primary text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded">
-              {tag}
-            </span>
-            <button type="button" onClick={() => removeTag(index)}>
-              &times;
-            </button>
-          </div>
-        ))}
+      <div id="tag-instructions" className="text-sm text-gray-500 mt-1">
+        Press Enter to add a tag.
+      </div>
+
+      {/* Display Tags */}
+      <div className="flex flex-wrap gap-2 mt-2">
+        {Array.isArray(tags) &&
+          tags?.map((tag, index) => (
+            <div
+              key={index}
+              className="flex items-center bg-primary text-white text-xs font-medium px-2.5 py-0.5 rounded"
+            >
+              <span>{tag}</span>
+              <button
+                type="button"
+                onClick={() => removeTag(index)}
+                className="ml-2 focus:outline-none"
+                aria-label={`Remove tag: ${tag}`}
+              >
+                &times;
+              </button>
+            </div>
+          ))}
       </div>
     </div>
   );

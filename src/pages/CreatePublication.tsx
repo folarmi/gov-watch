@@ -77,7 +77,7 @@ const CreatePublication = () => {
         isDraft,
       };
 
-      console.log(formData);
+      // console.log(formData);
       createPublicationMutation.mutate(formData);
     } catch (error) {
       console.log(error);
@@ -100,4 +100,3 @@ const CreatePublication = () => {
 };
 
 export { CreatePublication };
-// dk9i5q1bg

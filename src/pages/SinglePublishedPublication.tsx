@@ -5,12 +5,13 @@ import { RootState } from "../lib/store";
 import { useCustomMutation, useGetDataById } from "../hooks/apiCalls";
 import ArticleForm from "../component/forms/ArticleForm";
 import Loader from "../component/Loader";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { convertToISOString, userTypeObject } from "../utils";
 
 const SinglePublishedPublication = () => {
   const params = useParams();
-  const [tags, setTags] = useState<string[]>([]);
-  const { userId } = useAppSelector((state: RootState) => state.auth);
+  const { userId, userType } = useAppSelector((state: RootState) => state.auth);
+  const [isDraft, setIsDraft] = useState(false);
 
   const { data: publicationData, isLoading: publicationDataIsLoading } =
     useGetDataById({
@@ -22,6 +23,17 @@ const SinglePublishedPublication = () => {
       queryKey: ["GetUserPublicationByIdForSinglePublication"],
       enabled: !!params?.id && !!userId,
     });
+
+  const [tags, setTags] = useState<string[]>([]);
+
+  // Update tags when publicationData is fetched
+  useEffect(() => {
+    if (publicationData?.tags) {
+      // Split the tags string into an array
+      const tagsArray = publicationData.tags.split(/\s*,\s*/);
+      setTags(tagsArray);
+    }
+  }, [publicationData]);
 
   const updatePublicationMutation = useCustomMutation({
     endpoint: "Publications/UpdatePublication",
@@ -79,16 +91,26 @@ const SinglePublishedPublication = () => {
       ])
     );
 
+    const latestTags = tags.join(", ");
     const formData: any = {
       ...filteredObject,
+      tags: latestTags,
       lastModifiedBy: userId,
-      // Change this when working with a normal user
-
-      // isDraftUpdate: true,
-      isSubmission: true,
+      dateIncidentResolved:
+        data?.dateIncidentResolved &&
+        convertToISOString(data?.dateIncidentResolved),
+      dateIncidentStarted:
+        data?.dateIncidentStarted &&
+        convertToISOString(data?.dateIncidentStarted),
+      isDraftUpdate:
+        userType === userTypeObject?.admin || userType === userTypeObject.editor
+          ? false
+          : isDraft
+          ? true
+          : false,
+      isSubmission: isDraft ? false : true,
     };
 
-    console.log(formData);
     updatePublicationMutation.mutate(formData);
   };
 
@@ -105,6 +127,8 @@ const SinglePublishedPublication = () => {
             setTags={setTags}
             onSubmit={handleEditSubmit}
             isLoading={updatePublicationMutation.isPending}
+            setIsDraft={setIsDraft}
+            isDraft={isDraft}
           />
         </div>
       )}
@@ -113,36 +137,3 @@ const SinglePublishedPublication = () => {
 };
 
 export { SinglePublishedPublication };
-
-// {
-//   "publicId": "846b2464-db56-4d00-888d-17330e7fff8c",
-//   "snippet": "fdjkfjkdf",
-//   "article": "<p>skdnfjknsjdfn</p>",
-//   "image": "https://res.cloudinary.com/dk9i5q1bg/image/upload/v1740471211/1e706917-3557-4fe2-ad0d-1a75958a08ef.png",
-//   "imageCaption": "this is an image",
-//   "contributorPublicId": "a7e36778-2fec-4b6e-8569-dbe47778dff0",
-//   "category": "Brady Hampton",
-//   "state": "Abia",
-//   "ward": null,
-//   "lcda": "Ifeoma Noble",
-//   "isFederal": false,
-//   "title": "Update date incident started",
-//   "mda": "Nadine Burke",
-//   "tags": "test , red , blur",
-//   "reference": "<p>smdnfjksndf</p>",
-//   "authorName": "Folacodes",
-//   "link": "<p>skndfksnfksdfnskjndf</p>",
-//   "isPromise": false,
-//   "isCredible": false,
-//   "isPromisedFulfilled": null,
-//   "datePromiseMade": null,
-//   "promiseDeadline": null,
-//   "datePromiseFulfilled": null,
-//   "dateIncidentResolved": null,
-//   "dateIncidentStarted": "2025-02-14",
-//   "politicalActorName": "Aphrodite Douglas",
-//   "lga": "Brock Boothasdfghjk",
-//   "country": "Nigeria",
-//   "isSubmission": true,
-//   "lastModifiedBy": "a7e36778-2fec-4b6e-8569-dbe47778dff0"
-// }

@@ -191,3 +191,27 @@ export const getUserInitials = (userObject: any, userType: string) => {
 
   return userObject?.organizationName?.slice(0, 2)?.toUpperCase() || "";
 };
+
+/**
+ * Converts a date string (e.g., "2021-11-09") to an ISO 8601 string.
+ * @param {string} dateString - The date string in the format "YYYY-MM-DD".
+ * @returns {string} - The date in ISO 8601 format (e.g., "2021-11-09T00:00:00.000Z").
+ */
+
+export function convertToISOString(dateString: string) {
+  // Validate the input format
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+    throw new Error("Invalid date format. Expected format: YYYY-MM-DD");
+  }
+
+  // Create a Date object from the input string
+  const date = new Date(dateString);
+
+  // Check if the date is valid
+  if (isNaN(date.getTime())) {
+    throw new Error("Invalid date.");
+  }
+
+  // Convert to ISO 8601 string
+  return date.toISOString();
+}

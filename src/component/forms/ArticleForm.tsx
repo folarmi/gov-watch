@@ -27,6 +27,19 @@ import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import { InfoIcon } from "lucide-react";
 
+// interface ArticleFormProps {
+//   isLoading?: boolean; // Indicates if the form is in a loading state
+//   isEditing?: boolean; // Indicates if the form is in edit mode (optional, default: false)
+//   defaultValues?: Record<string, any>; // Default values for the form fields (optional, default: {})
+//   onSubmit?: (data: any) => void; // Function to handle form submission
+//   handleFileUpload?: (file: File) => void; // Function to handle file upload
+//   uploadedFile?: File | null; // The uploaded file (can be null if no file is uploaded)
+//   setIsDraft?: (isDraft: boolean) => void; // Function to set the draft status
+//   tags: string[]; // Array of tags
+//   setTags: (tags: string[]) => void; // Function to update the tags
+//   isPending?: boolean; // Indicates if the form submission is pending (optional, default: false)
+// }
+
 const ArticleForm = ({
   isLoading,
   isEditing = false,
@@ -37,6 +50,7 @@ const ArticleForm = ({
   setIsDraft,
   tags,
   setTags,
+  isPending = false,
 }: any) => {
   const { userCountry, userType, userId } = useAppSelector(
     (state: RootState) => state.auth
@@ -48,6 +62,7 @@ const ArticleForm = ({
   const [approveModal, setApproveModal] = useState(false);
   const [deletePublication, setDeletePublication] = useState(false);
   const today = new Date().toISOString().split("T")[0];
+  const [isAdditionalInformation, setIsAdditionalInformation] = useState(true);
 
   const toggleModal = () => {
     setReviewModal(!reviewModal);
@@ -134,12 +149,6 @@ const ArticleForm = ({
     name: "isIncident",
     control,
   });
-
-  const handleTagsChange = (newTags: string[]) => {
-    console.log("Updated Tags:", newTags);
-  };
-
-  const [isAdditionalInformation, setIsAdditionalInformation] = useState(true);
 
   const { data: categoriesData, isLoading: isCategoriesLoading } = useGetData({
     url: "Categories/GetAllCategories",
@@ -245,14 +254,13 @@ const ArticleForm = ({
         value: item,
       };
     });
-  // if it is checked, show
 
   return (
     <>
       <Header />
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="px-8 w-3/5 md:px-24 mx-auto mt-4 space-y-6"
+        className="px-8 w-3/5 md:px-24 mx-auto mt-4 space-y-6 mb-20"
       >
         {/* Publication Details */}
         <div className="space-y-4">
@@ -429,7 +437,7 @@ const ArticleForm = ({
                   </>
                 ))} */}
 
-              {(getValues("isIncident") ||
+              {(!getValues("isIncident") ||
                 defaultValues?.dateIncidentStarted !== null) && (
                 <>
                   <CustomInput
@@ -497,11 +505,12 @@ const ArticleForm = ({
               </div>
               <div className="grid grid-cols-2 gap-4"></div>
               {/* Tags and References */}
+
               <TagsInput
-                onChange={handleTagsChange}
                 tags={tags}
                 setTags={setTags}
-                defaultValues={defaultValues?.tags?.split(/\s*,\s*/) || []}
+                defaultTags={defaultValues?.tags?.split(/\s*,\s*/) || []}
+                // defaultTags={defaultValues?.tags}
               />
               <label htmlFor="Reference" className="text-sm mt-2 font-medium">
                 Reference
@@ -571,96 +580,100 @@ const ArticleForm = ({
           onChange={field?.onChange}
         />
 
-        {/* Actions */}
+        {/* Button Actions */}
 
-        <div className="flex flex-wrap gap-4 mb-10">
-          {isEditing ? (
-            <div className="flex items-center w-full gap-4">
-              {/* Admin & Editor Actions */}
-              {(userType === userTypeObject?.editor ||
-                (userType === userTypeObject?.admin &&
-                  userId !== defaultValues?.contributorPublicId)) && (
-                <>
-                  <CustomButton
-                    variant="secondary"
-                    className="w-full md:w-1/2"
-                    onClick={toggleModal}
-                  >
-                    Review
-                  </CustomButton>
+        <>
+          {!isPending && (
+            <div className="flex flex-wrap gap-4 mb-10">
+              {isEditing ? (
+                <div className="flex items-center w-full gap-4">
+                  {/* Admin & Editor Actions */}
+                  {(userType === userTypeObject?.editor ||
+                    (userType === userTypeObject?.admin &&
+                      userId !== defaultValues?.contributorPublicId)) && (
+                    <>
+                      <CustomButton
+                        variant="secondary"
+                        className="w-full md:w-1/2"
+                        onClick={toggleModal}
+                      >
+                        Review
+                      </CustomButton>
+                      <CustomButton
+                        variant="primary"
+                        className="w-full md:w-1/2 cursor-pointer"
+                        onClick={toggleApproveModal}
+                      >
+                        Approve
+                      </CustomButton>
+                    </>
+                  )}
+
+                  {/* Contributor Actions */}
+                  {userType === userTypeObject?.contributor && (
+                    <CustomButton
+                      variant="secondary"
+                      className="w-full md:w-1/2"
+                      onClick={() => {
+                        setIsDraft(true);
+                        onSubmit();
+                      }}
+                    >
+                      Save to Drafts
+                    </CustomButton>
+                  )}
+
+                  {/* Shared Edit Action */}
                   <CustomButton
                     variant="primary"
                     className="w-full md:w-1/2 cursor-pointer"
-                    onClick={toggleApproveModal}
+                    onClick={onSubmit}
                   >
-                    Approve
+                    Edit
                   </CustomButton>
-                </>
-              )}
 
-              {/* Contributor Actions */}
-              {userType === userTypeObject?.contributor && (
-                <CustomButton
-                  variant="secondary"
-                  className="w-full md:w-1/2"
-                  onClick={() => {
-                    setIsDraft(true);
-                    onSubmit();
-                  }}
-                >
-                  Save to Drafts
-                </CustomButton>
-              )}
-
-              {/* Shared Edit Action */}
-              <CustomButton
-                variant="primary"
-                className="w-full md:w-1/2 cursor-pointer"
-                onClick={onSubmit}
-              >
-                Edit
-              </CustomButton>
-
-              {/* {(userType === userTypeObject?.admin ||
+                  {/* {(userType === userTypeObject?.admin ||
                 userType === userTypeObject?.contributor) && ( */}
-              <CustomButton
-                variant="delete"
-                className="w-full md:w-1/2"
-                onClick={toggleDeleteModal}
-              >
-                Delete
-              </CustomButton>
-              {/* )} */}
-            </div>
-          ) : (
-            <div className="flex items-center w-full gap-4">
-              {/* Shared Save to Drafts Action */}
-              <CustomButton
-                variant="secondary"
-                className="w-full md:w-1/2"
-                onClick={() => {
-                  setIsDraft(true);
-                  onSubmit();
-                }}
-              >
-                Save to Drafts
-              </CustomButton>
+                  <CustomButton
+                    variant="delete"
+                    className="w-full md:w-1/2"
+                    onClick={toggleDeleteModal}
+                  >
+                    Delete
+                  </CustomButton>
+                  {/* )} */}
+                </div>
+              ) : (
+                <div className="flex items-center w-full gap-4">
+                  {/* Shared Save to Drafts Action */}
+                  <CustomButton
+                    variant="secondary"
+                    className="w-full md:w-1/2"
+                    onClick={() => {
+                      setIsDraft(true);
+                      onSubmit();
+                    }}
+                  >
+                    Save to Drafts
+                  </CustomButton>
 
-              {/* Publish Action */}
-              <CustomButton
-                variant="primary"
-                className="w-full md:w-1/2"
-                disabled={isLoading}
-                loading={isLoading}
-                onClick={() => {
-                  /* Publish logic */
-                }}
-              >
-                Publish
-              </CustomButton>
+                  {/* Publish Action */}
+                  <CustomButton
+                    variant="primary"
+                    className="w-full md:w-1/2"
+                    disabled={isLoading}
+                    loading={isLoading}
+                    onClick={() => {
+                      /* Publish logic */
+                    }}
+                  >
+                    Publish
+                  </CustomButton>
+                </div>
+              )}
             </div>
           )}
-        </div>
+        </>
 
         <Modal show={reviewModal} toggleModal={toggleModal}>
           <div className="p-4">
