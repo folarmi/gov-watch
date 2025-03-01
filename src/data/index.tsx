@@ -515,7 +515,7 @@ export const dashboardSideBarItems = [
         id: 11,
         name: "Bookmarks",
         image: BookMarkedIcon,
-        link: "/dashboard/all-inbox",
+        link: "/dashboard/bookmarks",
       },
     ],
     userRole: [userTypeObject.contributor],

@@ -29,6 +29,7 @@ const Rejected = () => {
     queryKey: ["GetAllPendingPublications", userType, pageNumber],
     enabled: shouldFetchPublications,
   });
+
   return (
     <DashboardLayout>
       <InfiniteScrolling
