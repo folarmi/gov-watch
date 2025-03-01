@@ -70,8 +70,8 @@ const InfiniteScrolling = <T,>({
           </div>
         }
         endMessage={
-          <p className="text-center py-4">
-            <b>You have gotten to the end of the articles.</b>
+          <p className="text-center py-6 text-gray-600 font-semibold text-lg italic">
+            You've reached the end 🎉
           </p>
         }
       >
