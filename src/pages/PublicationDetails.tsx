@@ -15,12 +15,13 @@ import sampleWriter from "../assets/sampleWriter.webp";
 import { RenderArticle } from "../component/forms/RenderArticle";
 import { useEffect, useState } from "react";
 import { Comments } from "../component/Comments";
-import { InfiniteScrolling } from "../component/InfiniteScrolling";
+// import { InfiniteScrolling } from "../component/InfiniteScrolling";
 
 const PublicationDetails = () => {
   const params = useParams();
   const [viewCount, setViewCount] = useState();
   const [pageNumber, setPageNumber] = useState<any>(1);
+  const pageSize = 12;
 
   const {
     data: publicationDetailsData,
@@ -34,10 +35,10 @@ const PublicationDetails = () => {
   const {
     data: publicationCommentsData,
     isLoading: publicationCommentsIsLoading,
-    error: publicationCommentError,
+    // error: publicationCommentError,
     // error,
   } = useGetData({
-    url: `PublicationComments/GetAllPublicationCommentsResponses?publicationId=${params?.id}&pageNumber=1&pageSize=10`,
+    url: `PublicationComments/GetAllPublicationCommentsResponses?publicationId=${params?.id}&pageNumber=${pageNumber}&pageSize=${pageSize}`,
     queryKey: ["GetAllPublicationComments"],
   });
 
@@ -206,12 +207,15 @@ const PublicationDetails = () => {
               </div>
             </div>
 
-            {/* <Comments
+            <Comments
               comments={publicationCommentsData?.publicationCommentViewModel}
               publicationDetailsData={publicationDetailsData}
-            /> */}
+              setPageNumber={setPageNumber}
+              pageNumber={pageNumber}
+              pageSize={pageSize}
+            />
 
-            <InfiniteScrolling
+            {/* <InfiniteScrolling
               data={publicationCommentsData?.publicationCommentViewModel}
               pageNumber={pageNumber}
               setPageNumber={setPageNumber}
@@ -219,6 +223,7 @@ const PublicationDetails = () => {
               error={publicationCommentError}
               pageSize={12}
               keyExtractor={(comment: any) => comment?.publicId}
+              ifGrid={false}
               renderItem={() => (
                 <Comments
                   comments={
@@ -227,7 +232,7 @@ const PublicationDetails = () => {
                   publicationDetailsData={publicationDetailsData}
                 />
               )}
-            />
+            /> */}
 
             <p className="font-black mt-8 mb-4">References</p>
             <RenderArticle articleContent={publicationDetailsData?.reference} />

@@ -215,3 +215,27 @@ export function convertToISOString(dateString: string) {
   // Convert to ISO 8601 string
   return date.toISOString();
 }
+
+export const processCommentsOptimized = (data: any) => {
+  const replyCountMap = new Map<string, number>();
+
+  // First pass: Count replies for each comment
+  data?.forEach((item: any) => {
+    if (item.superCommentPublicId !== null) {
+      replyCountMap.set(
+        item.superCommentPublicId,
+        (replyCountMap.get(item.superCommentPublicId) || 0) + 1
+      );
+    }
+  });
+
+  // Second pass: Add replyCount to comments
+  const comments = data
+    .filter((comment: any) => comment.superCommentPublicId === null)
+    .map((comment: any) => ({
+      ...comment,
+      replyCount: replyCountMap.get(comment.publicId) || 0,
+    }));
+
+  return comments;
+};

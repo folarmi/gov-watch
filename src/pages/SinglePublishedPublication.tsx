@@ -1,14 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "../lib/hook";
 import { RootState } from "../lib/store";
 import { useCustomMutation, useGetDataById } from "../hooks/apiCalls";
 import ArticleForm from "../component/forms/ArticleForm";
 import Loader from "../component/Loader";
 import { useEffect, useState } from "react";
-import { convertToISOString, userTypeObject } from "../utils";
+import {
+  convertToISOString,
+  directUserToPageOnLogin,
+  userTypeObject,
+} from "../utils";
 
 const SinglePublishedPublication = () => {
+  const navigate = useNavigate();
   const params = useParams();
   const { userId, userType } = useAppSelector((state: RootState) => state.auth);
   const [isDraft, setIsDraft] = useState(false);
@@ -42,7 +47,7 @@ const SinglePublishedPublication = () => {
     errorMessage: (error: any) =>
       error?.response?.data?.remark || error?.response?.data,
     onSuccessCallback: () => {
-      window.location.reload();
+      navigate(directUserToPageOnLogin(userType));
     },
   });
 

@@ -24,7 +24,10 @@ const CommentBox = ({
     onSuccessCallback: () => {
       toggleModal();
       queryClient.invalidateQueries({
-        queryKey: ["GetAllPublicationComments"],
+        queryKey: [
+          "GetAllPublicationComments",
+          "GetAllPublicationCommentsReplies",
+        ],
         exact: false,
       });
     },

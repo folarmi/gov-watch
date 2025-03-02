@@ -85,25 +85,25 @@ const ArticleForm = ({
     defaultValues: {
       ...defaultValues,
       datePromiseMade: defaultValues?.datePromiseMade
-        ? new Date(defaultValues?.datePromiseMade).toISOString().split("T")[0]
+        ? new Date(defaultValues?.datePromiseMade).toLocaleDateString("en-CA")
         : null,
       promiseDeadline: defaultValues?.promiseDeadline
         ? new Date(defaultValues?.promiseDeadline).toISOString().split("T")[0]
         : null,
       datePromiseFulfilled: defaultValues?.datePromiseFulfilled
-        ? new Date(defaultValues?.datePromiseFulfilled)
-            .toISOString()
-            .split("T")[0]
+        ? new Date(defaultValues?.datePromiseFulfilled).toLocaleDateString(
+            "en-CA"
+          )
         : null,
       dateIncidentStarted: defaultValues?.dateIncidentStarted
-        ? new Date(defaultValues?.dateIncidentStarted)
-            .toISOString()
-            .split("T")[0]
+        ? new Date(defaultValues?.dateIncidentStarted).toLocaleDateString(
+            "en-CA"
+          )
         : null,
       dateIncidentResolved: defaultValues?.dateIncidentResolved
-        ? new Date(defaultValues?.dateIncidentResolved)
-            .toISOString()
-            .split("T")[0]
+        ? new Date(defaultValues?.dateIncidentResolved).toLocaleDateString(
+            "en-CA"
+          )
         : null,
       article: defaultValues?.article || "",
       isFederal: defaultValues?.isFederal || false,
