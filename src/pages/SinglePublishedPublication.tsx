@@ -17,6 +17,7 @@ const SinglePublishedPublication = () => {
   const params = useParams();
   const { userId, userType } = useAppSelector((state: RootState) => state.auth);
   const [isDraft, setIsDraft] = useState(false);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
   const { data: publicationData, isLoading: publicationDataIsLoading } =
     useGetDataById({
@@ -134,6 +135,9 @@ const SinglePublishedPublication = () => {
             isLoading={updatePublicationMutation.isPending}
             setIsDraft={setIsDraft}
             isDraft={isDraft}
+            uploadedFile={uploadedFile}
+            handleFileUpload={setUploadedFile}
+            isPublished={true}
           />
         </div>
       )}

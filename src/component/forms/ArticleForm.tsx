@@ -15,10 +15,16 @@ import UpArrowButton from "../UpArrowButton";
 import DownArrowButton from "../DownArrowButton";
 import { RootState } from "../../lib/store";
 import { useAppSelector } from "../../lib/hook";
-import { useGetData } from "../../hooks/apiCalls";
+import {
+  UploadError,
+  uploadFile,
+  useCustomMutation,
+  useGetData,
+  useUploadMutation,
+} from "../../hooks/apiCalls";
 import ReactQuill from "react-quill";
 import { Header } from "../Header";
-import { userTypeObject } from "../../utils";
+import { directUserToPageOnLogin, userTypeObject } from "../../utils";
 import Modal from "../modals/Modal";
 import ReviewModal from "../modals/ReviewModal";
 import ApprovePublication from "../modals/ApprovePublication";
@@ -26,6 +32,8 @@ import ConfirmModuleDeletion from "../modals/ConfirmModuleDeletion";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import { InfoIcon } from "lucide-react";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 // interface ArticleFormProps {
 //   isLoading?: boolean; // Indicates if the form is in a loading state
@@ -51,7 +59,9 @@ const ArticleForm = ({
   tags,
   setTags,
   isPending = false,
+  isPublished = false,
 }: any) => {
+  const navigate = useNavigate();
   const { userCountry, userType, userId } = useAppSelector(
     (state: RootState) => state.auth
   );
@@ -64,6 +74,11 @@ const ArticleForm = ({
   const today = new Date().toISOString().split("T")[0];
   const [isAdditionalInformation, setIsAdditionalInformation] = useState(true);
 
+  const handleError = (error: UploadError) => {
+    console.error("Upload error:", error);
+  };
+  const uploadMutation = useUploadMutation(undefined, handleError);
+
   const toggleModal = () => {
     setReviewModal(!reviewModal);
     setSelectedArticleDetails((prev) => ({
@@ -71,6 +86,45 @@ const ArticleForm = ({
       articleTitle: defaultValues.title,
       publicationId: defaultValues.publicId,
     }));
+  };
+
+  const updatePublicationImageMutation = useCustomMutation({
+    endpoint: "Publications/UpdatePublicationImage",
+    successMessage: (data: any) => data?.remark,
+    method: "put",
+    errorMessage: (error: any) =>
+      error?.response?.data?.remark ||
+      error?.response?.data ||
+      error?.response?.data?.errors,
+    // console.log(error?.response?.data?.errors),
+
+    onSuccessCallback: () => {
+      navigate(directUserToPageOnLogin(userType));
+    },
+  });
+
+  const updateImage = async () => {
+    if (!uploadedFile) {
+      toast.error("Please upload a file first.");
+      return;
+    }
+
+    let uploadedFilePath;
+
+    if (uploadedFile) {
+      uploadedFilePath = await uploadFile(uploadedFile, userId, uploadMutation);
+      if (!uploadedFilePath) {
+        toast.error("File upload failed.");
+        return;
+      }
+    }
+
+    await updatePublicationImageMutation.mutateAsync({
+      oldImagePath: defaultValues?.image,
+      publicationId: defaultValues?.publicId,
+      imagePath: uploadedFilePath,
+      userId,
+    });
   };
 
   const toggleApproveModal = () => {
@@ -301,6 +355,16 @@ const ArticleForm = ({
               fileName={uploadedFile.name}
               fileSize={uploadedFile.size}
             />
+          )}
+          {isPublished && (
+            <div className="flex items-center justify-center">
+              <p
+                onClick={() => updateImage()}
+                className="cursor-pointer text-white text-center bg-primary px-4 py-2 rounded-lg transition-colors duration-200"
+              >
+                Update Image
+              </p>
+            </div>
           )}
           <CustomInput
             label="Image Caption"
@@ -596,12 +660,14 @@ const ArticleForm = ({
                         variant="secondary"
                         className="w-full md:w-1/2"
                         onClick={toggleModal}
+                        disabled={isLoading}
                       >
                         Review
                       </CustomButton>
                       <CustomButton
                         variant="primary"
                         className="w-full md:w-1/2 cursor-pointer"
+                        disabled={isLoading}
                         onClick={toggleApproveModal}
                       >
                         Approve
@@ -628,6 +694,7 @@ const ArticleForm = ({
                     variant="primary"
                     className="w-full md:w-1/2 cursor-pointer"
                     onClick={onSubmit}
+                    disabled={isLoading}
                   >
                     Edit
                   </CustomButton>
@@ -638,6 +705,7 @@ const ArticleForm = ({
                     variant="delete"
                     className="w-full md:w-1/2"
                     onClick={toggleDeleteModal}
+                    disabled={isLoading}
                   >
                     Delete
                   </CustomButton>
