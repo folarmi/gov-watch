@@ -98,7 +98,11 @@ const Comments = ({
       }
 
       // Detect no more articles
-      if (comments.length === 0 || comments.length < pageSize) {
+      if (
+        comments.length === 0 ||
+        comments.length < pageSize ||
+        comments === undefined
+      ) {
         setHasMore(false);
       }
     }
@@ -116,7 +120,7 @@ const Comments = ({
     <div>
       <h2 className="text-xl font-semibold mb-4 mt-4">Comments</h2>
       <InfiniteScroll
-        dataLength={comments?.length}
+        dataLength={comments?.length || 0}
         style={{
           overflow: "hidden",
         }}

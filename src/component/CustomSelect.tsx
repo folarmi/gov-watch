@@ -41,7 +41,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   } = useController({ name, control, rules });
 
   return (
-    <div className={`mb-4 w-full ${className}`}>
+    <div className={`z-30 mb-4 w-full ${className}`}>
       {label && <label className="text-sm font-semibold">{label}</label>}
       <Select
         {...field}

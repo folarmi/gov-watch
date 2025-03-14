@@ -32,6 +32,7 @@ import {
   Heart,
   Edit2,
   Shield,
+  Trophy,
 } from "lucide-react";
 
 export const SidebarList: SidebarItemProp[] = [
@@ -338,6 +339,12 @@ export const dashboardSideBarItems = [
     category: "User Management",
     items: [
       {
+        id: 15,
+        name: "Dashboard",
+        image: User,
+        link: "/dashboard/analytics",
+      },
+      {
         id: 1,
         name: "Users",
         image: User,
@@ -471,9 +478,15 @@ export const dashboardSideBarItems = [
       },
       {
         id: 8,
-        name: "All inbox",
+        name: "Reminders",
         image: Inbox,
-        link: "/dashboard/all-inbox",
+        link: "/dashboard/reminders",
+      },
+      {
+        id: 17,
+        name: "Leaderboard",
+        image: Trophy,
+        link: "/dashboard/contributor-leaderboard",
       },
     ],
     userRole: [userTypeObject.admin, userTypeObject.editor],
@@ -481,12 +494,12 @@ export const dashboardSideBarItems = [
   {
     category: "Publications",
     items: [
-      // {
-      //   id: 13,
-      //   name: "Total",
-      //   image: Layers,
-      //   link: "/dashboard/total",
-      // },
+      {
+        id: 16,
+        name: "Dashboard",
+        image: User,
+        link: "/dashboard/analytics",
+      },
       {
         id: 8,
         name: "Pending",

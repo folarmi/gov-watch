@@ -19,7 +19,7 @@ const BookMarks = () => {
     error,
   } = useGetData({
     url: `UserBookmarks/GetAllUserBookmarksByUserId?userId=${userId}&pageNumber=${pageNumber}&pageSize=${pageSize}`,
-    queryKey: ["GetAllUserBookmarksByUserId", pageNumber],
+    queryKey: ["GetAllUserBookmarksByUserId", JSON.stringify(pageNumber)],
     enabled: !!userId,
   });
 

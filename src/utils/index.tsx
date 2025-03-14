@@ -231,11 +231,31 @@ export const processCommentsOptimized = (data: any) => {
 
   // Second pass: Add replyCount to comments
   const comments = data
-    .filter((comment: any) => comment.superCommentPublicId === null)
-    .map((comment: any) => ({
+    ?.filter((comment: any) => comment.superCommentPublicId === null)
+    ?.map((comment: any) => ({
       ...comment,
       replyCount: replyCountMap.get(comment.publicId) || 0,
     }));
 
   return comments;
 };
+
+export function capitalize(str: string) {
+  if (!str) return "";
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+export const leaderboardFilter = [
+  {
+    value: "Daily",
+    label: "Daily",
+  },
+  {
+    value: "Weekly",
+    label: "Weekly",
+  },
+  {
+    value: "Monthly",
+    label: "Monthly",
+  },
+];

@@ -167,7 +167,7 @@ const SearchBar: React.FC<SearchBarProps> = React.memo(
             </button>
             {/* md:top-12 md:left-0 */}
             {showFilterDropdown && (
-              <div className="mt-6 absolute z-50 bg-green_100 text-offwhite font-medium text-xs rounded-md text-center transition-opacity">
+              <div className="mt-6 absolute z-40 bg-green_100 text-offwhite font-medium text-xs rounded-md text-center transition-opacity">
                 {searchBarFilter?.map(({ id, name }) => (
                   <div key={id} onClick={() => selectFilter(name)}>
                     <p className="border-b-2 pb-4 border-gray-100 whitespace-nowrap py-4 px-20">

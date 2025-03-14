@@ -44,6 +44,10 @@ import {
   SingleDraftPublication,
   SenatorialDistricts,
   PaymentHistory,
+  Leaderboard,
+  Reminders,
+  DashboardAnalytics,
+  ContributorLeaderboard,
 } from "../pages";
 import Reviewed from "../pages/Reviewed";
 import { LCDA } from "../pages/Lcda";
@@ -64,6 +68,7 @@ const RoutePage = () => {
         <Route path="/explore" element={<Explore />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="/terms-of-use" element={<TermsOfUse />} />
         <Route path="/cookies-policy" element={<CookiesPolicy />} />
         <Route path="/pricing" element={<Pricing />} />
@@ -73,6 +78,7 @@ const RoutePage = () => {
         />
         <Route path="/explore/:id" element={<StateDetails />} />
         <Route path="/dashboard/manage-users" element={<ManageUsers />} />
+        <Route path="/dashboard/analytics" element={<DashboardAnalytics />} />
         <Route path="/dashboard/subscription" element={<UserSubscription />} />
         {/* <Route path="/test" element={<Test />} /> */}
         <Route
@@ -114,6 +120,11 @@ const RoutePage = () => {
         <Route
           path="/dashboard/senatorial-districts"
           element={<SenatorialDistricts />}
+        />
+        <Route path="/dashboard/reminders" element={<Reminders />} />
+        <Route
+          path="/dashboard/contributor-leaderboard"
+          element={<ContributorLeaderboard />}
         />
         <Route
           path="/dashboard/settings/change-password"

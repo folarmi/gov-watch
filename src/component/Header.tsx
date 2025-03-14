@@ -11,6 +11,8 @@ import { useAppSelector } from "../lib/hook";
 import { directUserToPageOnLogin } from "../utils";
 import AvatarDropdown from "./forms/AvatarDropdown";
 import UserRoleTag from "./UserRoleTag";
+// import { useGetData } from "../hooks/apiCalls";
+import NotificationIcon from "./NotificationIcon";
 
 const Header = ({ resetState }: any) => {
   const { isAuthenticated } = useAuth();
@@ -50,6 +52,11 @@ const Header = ({ resetState }: any) => {
     },
 
     {
+      id: 7,
+      name: `Leaderboard`,
+      url: "/leaderboard",
+    },
+    {
       id: 6,
       name: `Pricing`,
       url: "/pricing",
@@ -61,9 +68,14 @@ const Header = ({ resetState }: any) => {
     },
   ];
 
+  // const { data: notificationData } = useGetData({
+  //   url: `https://govwatch.runasp.net/api/v1/Notifications/GetNotifications?id=${userId}`,
+  //   queryKey: ["GetAllNotifications"],
+  // });
+
   return (
     <>
-      <nav className="sticky top-0 z-50 bg-gray-200 h-24 md:h-32 px-8 md:px-0 flex items-center justify-between md:justify-around">
+      <nav className="sticky top-0 bg-gray-200 h-24 md:h-32 px-8 md:px-0 flex items-center justify-between md:justify-around">
         {/* <Link to="/" className="">
           <img src="/logo.svg" alt="Company logo" className="w-14 md:w-20" />
         </Link> */}
@@ -101,6 +113,10 @@ const Header = ({ resetState }: any) => {
 
           {isAuthenticated && (
             <div className="hidden md:flex items-center">
+              {/* <NotificationIcon
+                count={notificationData?.notificationResponseViewModel.length}
+              /> */}
+              <NotificationIcon count={9} />
               <UserRoleTag role={userType} />
               <AvatarDropdown />
             </div>
@@ -131,7 +147,7 @@ const Header = ({ resetState }: any) => {
           initial={{ x: "100%" }}
           animate={{ x: isSideBarOpen ? "0%" : "100%" }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="fixed top-0 right-0 w-64 h-full bg-white md:hidden pl-8 z-[150]"
+          className="fixed top-0 right-0 w-64 h-full bg-white md:hidden pl-8 z-[200]"
         >
           <div className="flex justify-end mt-4">
             <img
