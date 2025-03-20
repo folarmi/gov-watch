@@ -258,4 +258,8 @@ export const leaderboardFilter = [
     value: "Monthly",
     label: "Monthly",
   },
+  {
+    value: "All Time",
+    label: "All Time",
+  },
 ];

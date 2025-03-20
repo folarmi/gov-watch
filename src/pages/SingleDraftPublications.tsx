@@ -85,7 +85,7 @@ const SingleDraftPublication = () => {
       {publicationDataIsLoading ? (
         <Loader />
       ) : (
-        <div>
+        <div className="">
           <ArticleForm
             defaultValues={publicationData}
             setIsDraft={setIsDraft}

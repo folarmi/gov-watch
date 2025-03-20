@@ -1,6 +1,7 @@
 // import Image from "next/image";
 import { Link } from "react-router-dom";
 import { FooterList } from "../data";
+import { Twitter } from "lucide-react";
 // import { useTheme } from "next-themes";
 
 const Footer = () => {
@@ -38,6 +39,17 @@ const Footer = () => {
             </div>
           );
         })}
+      </div>
+
+      <div className="flex items-center justify-center gap-4 mt-12">
+        <a
+          href="https://x.com/GovWatchLimited?t=Ud-lEO9Qiq14rEyRbAAKnA&s=08"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Twitter"
+        >
+          <Twitter />
+        </a>
       </div>
 
       <div className="flex items-center justify-center mt-4 md:mt-14 mb-9">

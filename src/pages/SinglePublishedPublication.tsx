@@ -67,6 +67,7 @@ const SinglePublishedPublication = () => {
       "contributorPublicId",
       "category",
       "state",
+      "senatorialDistrict",
       "ward",
       "lcda",
       "isFederal",
@@ -79,11 +80,12 @@ const SinglePublishedPublication = () => {
       "isPromise",
       "isCredible",
       "isPromisedFulfilled",
+      "publishDate",
       "datePromiseMade",
       "promiseDeadline",
-      "datePromiseFulfilled",
-      "dateIncidentResolved",
       "dateIncidentStarted",
+      "dateIncidentResolved",
+      "datePromiseFulfilled",
       "politicalActorName",
       "lga",
       "country",
@@ -116,7 +118,6 @@ const SinglePublishedPublication = () => {
           : false,
       isSubmission: isDraft ? false : true,
     };
-
     updatePublicationMutation.mutate(formData);
   };
 

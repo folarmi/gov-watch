@@ -11,10 +11,13 @@ import { useAppSelector } from "../lib/hook";
 import { directUserToPageOnLogin } from "../utils";
 import AvatarDropdown from "./forms/AvatarDropdown";
 import UserRoleTag from "./UserRoleTag";
-// import { useGetData } from "../hooks/apiCalls";
 import NotificationIcon from "./NotificationIcon";
 
-const Header = ({ resetState }: any) => {
+interface HeaderProps {
+  resetState?: () => void; // Properly type resetState as a function
+}
+
+const Header = ({ resetState }: HeaderProps) => {
   const { isAuthenticated } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -22,11 +25,19 @@ const Header = ({ resetState }: any) => {
 
   // const { theme } = useTheme();
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
-  const { userType } = useAppSelector((state: RootState) => state.auth);
+  const { userType, userId } = useAppSelector((state: RootState) => state.auth);
 
   const toggleSideBar = () => {
     setIsSideBarOpen(!isSideBarOpen);
   };
+
+  // Default resetState function
+  const defaultResetState = () => {
+    navigate("/"); // Optional: Add a log for debugging
+  };
+
+  // Use the passed resetState or the default one
+  const handleResetState = resetState || defaultResetState;
 
   const SidebarList: SidebarItemProp[] = [
     {
@@ -70,18 +81,15 @@ const Header = ({ resetState }: any) => {
 
   // const { data: notificationData } = useGetData({
   //   url: `https://govwatch.runasp.net/api/v1/Notifications/GetNotifications?id=${userId}`,
-  //   queryKey: ["GetAllNotifications"],
+  //   queryKey: ["GetAllNotifications", userId],
   // });
 
   return (
     <>
       <nav className="sticky top-0 bg-gray-200 h-24 md:h-32 px-8 md:px-0 flex items-center justify-between md:justify-around">
-        {/* <Link to="/" className="">
-          <img src="/logo.svg" alt="Company logo" className="w-14 md:w-20" />
-        </Link> */}
         <div
           onClick={() => {
-            resetState();
+            handleResetState();
             navigate("/");
           }}
           className=""

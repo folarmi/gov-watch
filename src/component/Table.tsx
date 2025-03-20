@@ -4,6 +4,8 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import Loader from "./Loader";
+import emptyImage from "../assets/emptyPage.svg";
 
 const Table = ({
   data,
@@ -29,8 +31,10 @@ const Table = ({
   return (
     <section>
       {isLoading ? (
-        <div className="text-center py-4">Loading data...</div>
-      ) : table ? (
+        <div className="text-center py-4">
+          <Loader />
+        </div>
+      ) : table && table.getRowModel().rows.length > 0 ? (
         <>
           <div className="w-full overflow-x-auto">
             <table className="min-w-[600px] w-full table-auto border-collapse">
@@ -123,10 +127,31 @@ const Table = ({
                   {table.getPageCount().toLocaleString()}
                 </strong>
               </span>
+            </div>
+          )}
+        </>
+      ) : (
+        <div className="flex flex-col items-center justify-center py-8 space-y-4">
+          <div className="flex flex-col items-center justify-center space-y-2 py-8">
+            <img src={emptyImage} alt="No data" className="" />
+            <p className="text-gray-500 text-sm">No data available</p>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+};
 
-              {/* Optional Controls: Uncomment if needed */}
-              {/* Go to Page */}
-              {/*
+export default Table;
+
+{
+  /* Optional Controls: Uncomment if needed */
+}
+{
+  /* Go to Page */
+}
+{
+  /*
   <span className="flex items-center gap-2">
     <label htmlFor="gotoPage" className="text-gray-700">Go to page:</label>
     <input
@@ -142,10 +167,14 @@ const Table = ({
       className="border border-gray-300 rounded-md px-2 py-1 w-16 text-center text-gray-700"
     />
   </span>
-  */}
+  */
+}
 
-              {/* Page Size Selector */}
-              {/*
+{
+  /* Page Size Selector */
+}
+{
+  /*
   <select
     value={table.getState().pagination.pageSize}
     onChange={(e) => {
@@ -159,119 +188,5 @@ const Table = ({
       </option>
     ))}
   </select>
-  */}
-            </div>
-          )}
-        </>
-      ) : (
-        <div className="text-center py-4">No data available</div>
-      )}
-    </section>
-  );
-};
-
-export default Table;
-
-// <div className="flex items-center gap-2">
-// <button
-//   className="border rounded p-1"
-//   onClick={() => table.firstPage()}
-//   disabled={!table.getCanPreviousPage()}
-// >
-//   {"<<"}
-// </button>
-// <button
-//   className="border rounded p-1"
-//   onClick={() => table.previousPage()}
-//   disabled={!table.getCanPreviousPage()}
-// >
-//   {"<"}
-// </button>
-// <button
-//   className="border rounded p-1"
-//   onClick={() => table.nextPage()}
-//   disabled={!table.getCanNextPage()}
-// >
-//   {">"}
-// </button>
-// <button
-//   className="border rounded p-1"
-//   onClick={() => table.lastPage()}
-//   disabled={!table.getCanNextPage()}
-// >
-//   {">>"}
-// </button>
-// <span className="flex items-center gap-1">
-//   <div>Page</div>
-//   <strong>
-//     {table.getState().pagination.pageIndex + 1} of{" "}
-//     {table.getPageCount().toLocaleString()}
-//   </strong>
-// </span>
-
-// <span className="flex items-center gap-1">
-//   | Go to page:
-//   <input
-//     type="number"
-//     min="1"
-//     max={table.getPageCount()}
-//     defaultValue={table.getState().pagination.pageIndex + 1}
-//     onChange={(e) => {
-//       const page = e.target.value ? Number(e.target.value) - 1 : 0;
-//       table.setPageIndex(page);
-//     }}
-//     className="border p-1 rounded w-16"
-//   />
-// </span>
-
-//  <select
-//   value={table.getState().pagination.pageSize}
-//   onChange={(e) => {
-//     table.setPageSize(Number(e.target.value));
-//   }}
-// >
-//   {[10, 20, 30, 40, 50].map((pageSize) => (
-//     <option key={pageSize} value={pageSize}>
-//       Show {pageSize}
-//     </option>
-//   ))}
-// </select>
-// </div>
-
-{
-  /* <table className="w-full">
-<thead>
-  {table.getHeaderGroups().map((headerGroup) => (
-    <tr key={headerGroup.id}>
-      {headerGroup.headers.map((header) => (
-        <th
-          key={header.id}
-          className="text-left pr-10 pl-2 whitespace-nowrap"
-        >
-          {header.isPlaceholder
-            ? null
-            : flexRender(
-                header.column.columnDef.header,
-                header.getContext()
-              )}
-        </th>
-      ))}
-    </tr>
-  ))}
-</thead>
-<tbody>
-  {table.getRowModel().rows.map((row) => (
-    <tr key={row.id} className="border-b-2 border-b-grey-100">
-      {row.getVisibleCells().map((cell) => (
-        <td key={cell.id} className="px-2 whitespace-nowrap py-3">
-          {flexRender(
-            cell.column.columnDef.cell,
-            cell.getContext()
-          )}
-        </td>
-      ))}
-    </tr>
-  ))}
-</tbody>
-</table> */
+  */
 }

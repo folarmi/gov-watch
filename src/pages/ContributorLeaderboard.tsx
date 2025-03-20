@@ -11,8 +11,7 @@ import { leaderboardFilter } from "../utils";
 
 const ContributorLeaderboard = () => {
   const { control } = useForm();
-  const [selectedFilter, setSelectedFilter] = useState("monthly");
-
+  const [selectedFilter, setSelectedFilter] = useState("daily");
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 12,
