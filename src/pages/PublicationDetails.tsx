@@ -15,6 +15,7 @@ import sampleWriter from "../assets/sampleWriter.webp";
 import { RenderArticle } from "../component/forms/RenderArticle";
 import { useEffect, useState } from "react";
 import { Comments } from "../component/Comments";
+import { scrollToTop } from "../utils";
 // import { InfiniteScrolling } from "../component/InfiniteScrolling";
 
 const PublicationDetails = () => {
@@ -302,13 +303,17 @@ const PublicationDetails = () => {
 
             <div className="flex items-center space-x-8 my-8">
               {/* Profile Image */}
-              <div className="w-36 h-36 overflow-hidden rounded-full shadow-lg">
+              <Link
+                to={`/author/${publicationDetailsData?.contributorPublicId} `}
+                className="w-36 h-36 overflow-hidden rounded-full shadow-lg"
+                onClick={() => scrollToTop()}
+              >
                 <img
                   src={publicationDetailsData?.contributorImage || sampleWriter}
                   className="w-full h-full object-cover"
                   alt="Writer"
                 />
-              </div>
+              </Link>
 
               {/* Author Information */}
               <div>

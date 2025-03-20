@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -13,6 +12,8 @@ import { CommentBox } from "./modals/CommentBox";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useParams } from "react-router-dom";
 import { processCommentsOptimized } from "../utils";
+import { toast } from "react-toastify";
+import { useAuth } from "../context/AuthContext";
 
 type Prop = {
   comments: any;
@@ -31,6 +32,7 @@ const Comments = ({
 }: Prop) => {
   const params = useParams();
   const queryClient = useQueryClient();
+  const { isAuthenticated } = useAuth();
   const { userId } = useAppSelector((state: RootState) => state.auth);
   const [createCommentModal, setCreateCommentModal] = useState(false);
   const [replyingTo, setReplyingTo] = useState(null);
@@ -72,6 +74,11 @@ const Comments = ({
   };
 
   const toggleModal = (commentID: any) => {
+    if (!isAuthenticated) {
+      toast.error("Please sign in to make a comment");
+      return;
+    }
+
     setCreateCommentModal(!createCommentModal);
     setReplyingTo(commentID?.publicId);
   };
@@ -87,29 +94,57 @@ const Comments = ({
   };
 
   useEffect(() => {
-    if (comments) {
-      // Reset articles when pageNumber is 1 (new search)
-      if (pageNumber === 1) {
-        setItems(comments);
-        setHasMore(true); // Reset pagination state
-      } else {
-        // Append for infinite scroll
-        setItems((prevItems: any) => [...prevItems, ...comments]);
-      }
-
-      // Detect no more articles
-      if (
-        comments.length === 0 ||
-        comments.length < pageSize ||
-        comments === undefined
-      ) {
-        setHasMore(false);
-      }
+    if (comments === undefined) {
+      // If comments is undefined, set hasMore to false and clear items
+      setHasMore(false);
+      setItems([]);
+      return;
     }
-  }, [comments]);
+
+    // If comments is defined, update items and hasMore
+    if (pageNumber === 1) {
+      setItems(comments);
+    } else {
+      setItems((prevItems: any) => [...prevItems, ...comments]);
+    }
+
+    // Detect no more comments
+    if (comments.length === 0 || comments.length < pageSize) {
+      setHasMore(false);
+    } else {
+      setHasMore(true);
+    }
+  }, [comments, pageNumber, pageSize]);
+
+  // useEffect(() => {
+  //   if (comments) {
+  //     // Reset articles when pageNumber is 1 (new search)
+  //     if (pageNumber === 1) {
+  //       setItems(comments);
+  //       setHasMore(true); // Reset pagination state
+  //     } else {
+  //       // Append for infinite scroll
+  //       setItems((prevItems: any) => [...prevItems, ...comments]);
+  //     }
+
+  //     // Detect no more articles
+  //     if (comments.length === 0 || comments.length < pageSize) {
+  //       setHasMore(false);
+  //     } else {
+  //       // If comments is undefined, set hasMore to false
+  //       setHasMore(false);
+  //     }
+  //   }
+  // }, [comments]);
+
+  // const fetchMoreData = () => {
+  //   if (hasMore && comments !== undefined) {
+  //     setPageNumber((prevPageNumber: number) => prevPageNumber + 1);
+  //   }
+  // };
 
   const fetchMoreData = () => {
-    if (hasMore) {
+    if (hasMore && comments !== undefined && comments.length > 0) {
       setPageNumber((prevPageNumber: number) => prevPageNumber + 1);
     }
   };
@@ -205,17 +240,19 @@ const Comments = ({
         </ul>
 
         {/* Display Icons When There Are No Comments */}
-        {items === undefined && (
-          <div className="flex items-center space-x-4 mt-2">
-            <button
-              className="flex items-center space-x-1 text-primary_DM cursor-pointer"
-              onClick={() => toggleModal(null)}
-            >
-              <MessageCircle />
-              <span>Reply</span>
-            </button>
-          </div>
-        )}
+        {items === undefined ||
+          (items.length === 0 && (
+            <p className="text-center text-xl font-medium">No comments yet</p>
+          ))}
+        <div className="flex items-center space-x-4 mt-2">
+          <button
+            className="flex items-center space-x-1 text-primary_DM cursor-pointer"
+            onClick={() => toggleModal(null)}
+          >
+            <MessageCircle />
+            <span>Reply</span>
+          </button>
+        </div>
       </InfiniteScroll>
       {/* Comment Form */}
       <Modal show={createCommentModal} toggleModal={toggleModal}>

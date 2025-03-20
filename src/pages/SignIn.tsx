@@ -17,7 +17,7 @@ import {
 import { useAuth } from "../context/AuthContext";
 import AuthLayout from "../layouts/AuthLayout";
 import { Link, useNavigate } from "react-router-dom";
-import { directUserToPageOnLogin } from "../utils";
+// import { directUserToPageOnLogin } from "../utils";
 // import { RootState } from "../lib/store";
 
 const SignIn = () => {
@@ -43,7 +43,8 @@ const SignIn = () => {
         dispatch(updateUserObject(data?.data));
         loginFromContext(data?.data?.token);
 
-        navigate(directUserToPageOnLogin(userType));
+        navigate("/dashboard/analytics");
+        // navigate(directUserToPageOnLogin(userType));
       }
     },
     onError: (error: any) => {

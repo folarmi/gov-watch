@@ -86,7 +86,7 @@ const Header = ({ resetState }: HeaderProps) => {
 
   return (
     <>
-      <nav className="sticky top-0 bg-gray-200 h-24 md:h-32 px-8 md:px-0 flex items-center justify-between md:justify-around">
+      <nav className="sticky z-50 top-0 bg-gray-200 h-24 md:h-32 px-8 md:px-0 flex items-center justify-between md:justify-around">
         <div
           onClick={() => {
             handleResetState();

@@ -50,3 +50,4 @@ export * from "./Leaderboard";
 export * from "./Reminders";
 export * from "./DashboardAnalytics";
 export * from "./ContributorLeaderboard";
+export * from "./AuthorPage";

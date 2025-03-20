@@ -48,6 +48,7 @@ import {
   Reminders,
   DashboardAnalytics,
   ContributorLeaderboard,
+  AuthorPage,
 } from "../pages";
 import Reviewed from "../pages/Reviewed";
 import { LCDA } from "../pages/Lcda";
@@ -70,6 +71,7 @@ const RoutePage = () => {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="/terms-of-use" element={<TermsOfUse />} />
+        <Route path="/author/:id" element={<AuthorPage />} />
         <Route path="/cookies-policy" element={<CookiesPolicy />} />
         <Route path="/pricing" element={<Pricing />} />
         <Route

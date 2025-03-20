@@ -318,8 +318,6 @@ const ArticleForm = ({
       >
         {/* Publication Details */}
         <div className="space-y-4">
-          <BackButton />
-
           <CustomInput label="Title" name="title" control={control} />
           <CustomInput
             label="Author's Name"
