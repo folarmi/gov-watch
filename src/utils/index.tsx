@@ -76,7 +76,7 @@ export const calculateTimeDifference = (
 
   // Helper function to add singular/plural labels
   const pluralize = (value: number, label: string) =>
-    `${value} ${label}${value === 1 ? "" : "s"}`;
+    `${value.toLocaleString()} ${label}${value === 1 ? "" : "s"}`;
 
   // Create the time difference string with proper pluralization
   const timeString = [
@@ -120,7 +120,7 @@ export const calculateIncidentDuration = (
 
   // Helper function to add singular/plural labels
   const pluralize = (value: number, label: string) =>
-    `${value} ${label}${value === 1 ? "" : "s"}`;
+    `${value.toLocaleString()} ${label}${value === 1 ? "" : "s"}`;
 
   // Create the time difference string with proper pluralization
   const timeString = [

@@ -339,12 +339,6 @@ export const dashboardSideBarItems = [
     category: "User Management",
     items: [
       {
-        id: 15,
-        name: "Dashboard",
-        image: User,
-        link: "/dashboard/analytics",
-      },
-      {
         id: 1,
         name: "Users",
         image: User,
@@ -362,6 +356,12 @@ export const dashboardSideBarItems = [
   {
     category: "Publications",
     items: [
+      {
+        id: 15,
+        name: "Dashboard",
+        image: User,
+        link: "/dashboard/analytics",
+      },
       {
         id: 2,
         name: "Drafts",

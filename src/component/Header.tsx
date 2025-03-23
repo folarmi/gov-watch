@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 
 import CustomButton from "./CustomButton";
@@ -8,7 +7,7 @@ import { SidebarItemProp } from "../types/generalTypes";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { RootState } from "../lib/store";
 import { useAppSelector } from "../lib/hook";
-import { directUserToPageOnLogin } from "../utils";
+// import { directUserToPageOnLogin } from "../utils";
 import AvatarDropdown from "./forms/AvatarDropdown";
 import UserRoleTag from "./UserRoleTag";
 import NotificationIcon from "./NotificationIcon";
@@ -25,7 +24,7 @@ const Header = ({ resetState }: HeaderProps) => {
 
   // const { theme } = useTheme();
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
-  const { userType, userId } = useAppSelector((state: RootState) => state.auth);
+  const { userType } = useAppSelector((state: RootState) => state.auth);
 
   const toggleSideBar = () => {
     setIsSideBarOpen(!isSideBarOpen);
@@ -59,7 +58,7 @@ const Header = ({ resetState }: HeaderProps) => {
     {
       id: 4,
       name: `${isAuthenticated ? "Dashboard" : ""}`,
-      url: directUserToPageOnLogin(userType),
+      url: "/dashboard/analytics",
     },
 
     {

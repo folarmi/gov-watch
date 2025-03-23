@@ -23,10 +23,11 @@ const SingleDraftPublication = () => {
 
   const { data: publicationData, isLoading: publicationDataIsLoading } =
     useGetDataById({
-      url:
-        params?.id && userId
-          ? `/Publications/GetUserPublicationById?publicId=${params?.id}&userId=${userId}&isDraft=true`
-          : "",
+      // url:
+      //   params?.id && userId
+      //     ? `/Publications/GetUserPublicationById?publicId=${params?.id}&userId=${userId}&isDraft=true`
+      //     : "",
+      url: `Publications/GetPublicationById?publicId=${params?.id}`,
       queryKey: ["GetUserPublicationByIdForSinglePublication"],
       enabled: !!params?.id && !!userId,
     });
@@ -79,7 +80,7 @@ const SingleDraftPublication = () => {
     };
     createPublicationMutation.mutate(formData);
   };
-
+  console.log(publicationData);
   return (
     <>
       {publicationDataIsLoading ? (

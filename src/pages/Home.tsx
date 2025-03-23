@@ -22,6 +22,7 @@ const Home = () => {
   const [selectedFilter, setSelectedFilter] = useState("");
   const [queryParam, setQueryParam] = useState("");
   const [pageNumber, setPageNumber] = useState<any>(1);
+  // const [loading, setLoading] = useState(false);
   const pageSize = 12;
 
   const { control, handleSubmit } = useForm();
@@ -75,6 +76,7 @@ const Home = () => {
 
   const getCategory = (data: any) => {
     setCategoryName(data);
+    // setLoading(true);
   };
 
   const submitForm = (data: any) => {
@@ -103,6 +105,7 @@ const Home = () => {
         <ScrollableCategories
           onClick={getCategory}
           categories={categoriesDataFormatted}
+          // isLoading={loading}
         />
 
         <InfiniteScrolling
