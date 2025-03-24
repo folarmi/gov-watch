@@ -49,6 +49,7 @@ import {
   DashboardAnalytics,
   ContributorLeaderboard,
   AuthorPage,
+  Notifications,
 } from "../pages";
 import Reviewed from "../pages/Reviewed";
 import { LCDA } from "../pages/Lcda";
@@ -110,6 +111,7 @@ const RoutePage = () => {
         <Route path="/dashboard/tags" element={<Tags />} />
         <Route path="/dashboard/drafts" element={<Drafts />} />
         <Route path="/dashboard/rejected" element={<Rejected />} />
+        <Route path="/dashboard/notifications" element={<Notifications />} />
         <Route
           path="/dashboard/create-publication"
           element={<CreatePublication />}

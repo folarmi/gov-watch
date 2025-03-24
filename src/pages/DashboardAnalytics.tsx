@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+  Award,
   BookMarkedIcon,
   Clock,
   Eye,
@@ -13,35 +15,21 @@ import {
   Trophy,
   UsersIcon,
 } from "lucide-react";
-// import { useState } from "react";
 
-// import {
-//   LineChart,
-//   Line,
-//   XAxis,
-//   YAxis,
-//   Tooltip,
-//   ResponsiveContainer,
-// } from "recharts";
 import DashboardLayout from "../layouts/DashboardLayout";
 import { RootState } from "../lib/store";
 import { useAppSelector } from "../lib/hook";
 import { useGetData } from "../hooks/apiCalls";
-import { userTypeObject } from "../utils";
+import { leaderboardFilter, userTypeObject } from "../utils";
 import { DashboardCard } from "../component/forms/DashboardCard";
 import Loader from "../component/Loader";
+import CustomSelect from "../component/CustomSelect";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 const DashboardAnalytics = () => {
-  // Mock data for the line chart
-  // const [chartData] = useState([
-  //   { name: "Jan", uv: 4000, pv: 2400, amt: 2400 },
-  //   { name: "Feb", uv: 3000, pv: 1398, amt: 2210 },
-  //   { name: "Mar", uv: 2000, pv: 9800, amt: 2290 },
-  //   { name: "Apr", uv: 2780, pv: 3908, amt: 2000 },
-  //   { name: "May", uv: 1890, pv: 4800, amt: 2181 },
-  //   { name: "Jun", uv: 2390, pv: 3800, amt: 2500 },
-  //   { name: "Jul", uv: 3490, pv: 4300, amt: 2100 },
-  // ]);
+  const { control } = useForm();
+  const [selectedFilter, setSelectedFilter] = useState("daily");
 
   const { userType, userId } = useAppSelector((state: RootState) => state.auth);
 
@@ -105,6 +93,13 @@ const DashboardAnalytics = () => {
         userType === userTypeObject.admin || userType === userTypeObject.editor,
     }
   );
+
+  const { data: leaderboardData, isLoading: leaderboardDataIsLoading } =
+    useGetData({
+      url: `LeaderBoards/GetContributorLeaderBoardByContributorId?period=${selectedFilter}&publicId=${userId}`,
+      queryKey: ["GetContributorLeaderBoardByContributorId", selectedFilter],
+      enabled: userType === userTypeObject.contributor,
+    });
 
   const {
     data: publicationViewsData,
@@ -285,29 +280,61 @@ const DashboardAnalytics = () => {
             {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"></div> */}
 
             {userType === userTypeObject.contributor && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <DashboardCard
-                  name="Total Bookmarks"
-                  icon={BookMarkedIcon}
-                  count={bookmarksData?.totalCount || 0}
-                  iconColor="#3b82f6"
-                  bgColor="#eff6ff"
-                />
-                <DashboardCard
-                  name="Approved Publications"
-                  icon={Library}
-                  count={approvedPublicationsData?.totalCount || 0}
-                  iconColor="#22c55e"
-                  bgColor="#f0fdf4"
-                />
-                <DashboardCard
-                  name="Publications Views"
-                  icon={EyeIcon}
-                  count={userPublicationViewsData?.totalCount || 0}
-                  iconColor="#22c55e"
-                  bgColor="#f0fdf4"
-                />
-              </div>
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                  <DashboardCard
+                    name="Total Bookmarks"
+                    icon={BookMarkedIcon}
+                    count={bookmarksData?.totalCount || 0}
+                    iconColor="#3b82f6"
+                    bgColor="#eff6ff"
+                  />
+                  <DashboardCard
+                    name="Approved Publications"
+                    icon={Library}
+                    count={approvedPublicationsData?.totalCount || 0}
+                    iconColor="#22c55e"
+                    bgColor="#f0fdf4"
+                  />
+                  <DashboardCard
+                    name="Publications Views"
+                    icon={EyeIcon}
+                    count={userPublicationViewsData?.totalCount || 0}
+                    iconColor="#22c55e"
+                    bgColor="#f0fdf4"
+                  />
+                </div>
+
+                <div className="w-1/2">
+                  <h1 className="text-2xl font-bold text-gray-800 mb-6">
+                    Leaderboard
+                  </h1>
+
+                  <CustomSelect
+                    name="country"
+                    options={leaderboardFilter}
+                    isLoading={false}
+                    label="Filter By"
+                    control={control}
+                    placeholder="Select Filter"
+                    customOnChange={(name: any) =>
+                      setSelectedFilter(name?.value)
+                    }
+                  />
+
+                  {leaderboardDataIsLoading ? (
+                    <Loader />
+                  ) : (
+                    <DashboardCard
+                      name="Rank"
+                      icon={Award}
+                      count={leaderboardData?.rank || "N/A"}
+                      iconColor="#ec4899"
+                      bgColor="#fdf2f8"
+                    />
+                  )}
+                </div>
+              </>
             )}
 
             {/* Charts Section */}
