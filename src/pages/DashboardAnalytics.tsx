@@ -36,8 +36,7 @@ const DashboardAnalytics = () => {
   const { data: userCountData, isLoading: userCountIsLoading } = useGetData({
     url: "Users/GetCountOfUsers",
     queryKey: ["GetCountOfUsers"],
-    enabled:
-      userType === userTypeObject.admin || userType === userTypeObject.editor,
+    enabled: userType === userTypeObject.admin,
   });
 
   const { data: countOfPublications, isLoading: countOfPublicationsIsLoading } =
@@ -74,8 +73,7 @@ const DashboardAnalytics = () => {
   const { data: stateData, isLoading: stateDataIsLoading } = useGetData({
     url: "States/GetCountOfStates?isDeleted",
     queryKey: ["GetCountOfStates"],
-    enabled:
-      userType === userTypeObject.admin || userType === userTypeObject.editor,
+    enabled: userType === userTypeObject.admin,
   });
 
   const { data: tagsData, isLoading: tagsDatasLoading } = useGetData({
@@ -176,9 +174,8 @@ const DashboardAnalytics = () => {
             </h1>
 
             {/* Key Metrics Grid */}
-            {(userType === userTypeObject.admin ||
-              userType === userTypeObject.editor) && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            {userType === userTypeObject.admin && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <DashboardCard
                   name="Total Users"
                   icon={UsersIcon}
@@ -186,7 +183,26 @@ const DashboardAnalytics = () => {
                   iconColor="#3b82f6"
                   bgColor="#eff6ff"
                 />
+                <DashboardCard
+                  name="Total States"
+                  icon={Flag}
+                  count={stateData?.totalCount || 0}
+                  iconColor="#ec4899"
+                  bgColor="#fdf2f8"
+                />
+                <DashboardCard
+                  name="Total Bookmarks"
+                  icon={BookMarkedIcon}
+                  count={bookmarksData?.totalCount || 0}
+                  iconColor="#3b82f6"
+                  bgColor="#eff6ff"
+                />
+              </div>
+            )}
 
+            {(userType === userTypeObject.admin ||
+              userType === userTypeObject.editor) && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <DashboardCard
                   name="Total Publications"
                   icon={Library}
@@ -201,14 +217,6 @@ const DashboardAnalytics = () => {
                   count={countriesData?.totalCount || 0}
                   iconColor="#a855f7"
                   bgColor="#faf5ff"
-                />
-
-                <DashboardCard
-                  name="Total States"
-                  icon={Flag}
-                  count={stateData?.totalCount || 0}
-                  iconColor="#ec4899"
-                  bgColor="#fdf2f8"
                 />
 
                 <DashboardCard
@@ -265,14 +273,6 @@ const DashboardAnalytics = () => {
                   count={uploadData?.totalCount || 0}
                   iconColor="#f59e0b"
                   bgColor="#fde68a"
-                />
-
-                <DashboardCard
-                  name="Total Bookmarks"
-                  icon={BookMarkedIcon}
-                  count={bookmarksData?.totalCount || 0}
-                  iconColor="#3b82f6"
-                  bgColor="#eff6ff"
                 />
               </div>
             )}

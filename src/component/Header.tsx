@@ -14,7 +14,7 @@ import UserRoleTag from "./UserRoleTag";
 import NotificationIcon from "./NotificationIcon";
 import { useCustomMutation, useGetData } from "../hooks/apiCalls";
 import Loader from "./Loader";
-import { sampleData } from "../data";
+// import { sampleData } from "../data";
 
 interface HeaderProps {
   resetState?: () => void; // Properly type resetState as a function
@@ -181,21 +181,23 @@ const Header = ({ resetState }: HeaderProps) => {
                           ?.length > 0 ? (
                           <>
                             {/* {notificationData?.notificationResponseViewModel.map( */}
-                            {sampleData?.map((item: any, index: number) => (
-                              <div
-                                key={index}
-                                className="px-4 py-3 border-b last:border-none hover:bg-gray-50 transition cursor-pointer"
-                              >
-                                <p className="text-sm text-gray-700">
-                                  {item?.comment}
-                                </p>
-                                {item?.timestamp && (
-                                  <p className="text-xs text-gray-500 mt-1">
-                                    {item?.timestamp}
+                            {notificationData?.notificationResponseViewModel?.map(
+                              (item: any, index: number) => (
+                                <div
+                                  key={index}
+                                  className="px-4 py-3 border-b last:border-none hover:bg-gray-50 transition cursor-pointer"
+                                >
+                                  <p className="text-sm text-gray-700">
+                                    {item?.comment}
                                   </p>
-                                )}
-                              </div>
-                            ))}
+                                  {item?.timestamp && (
+                                    <p className="text-xs text-gray-500 mt-1">
+                                      {item?.timestamp}
+                                    </p>
+                                  )}
+                                </div>
+                              )
+                            )}
 
                             {/* See More Button */}
                             <div className="flex justify-center">
