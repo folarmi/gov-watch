@@ -15,6 +15,7 @@ import {
 import ArticleForm from "../component/forms/ArticleForm";
 import { useNavigate } from "react-router-dom";
 import { directUserToPageOnLogin } from "../utils";
+import { PageWithLeaveConfirmation } from "../component/forms/PageWithLeaveConfirmation";
 
 // import ArticleForm from "@/app/component/forms/ArticleForm";
 
@@ -85,17 +86,21 @@ const CreatePublication = () => {
   };
 
   return (
-    <ArticleForm
-      onSubmit={submitForm}
-      isEditing={false}
-      uploadedFile={uploadedFile}
-      handleFileUpload={setUploadedFile}
-      setIsDraft={setIsDraft}
-      isDraft={isDraft}
-      tags={tags}
-      setTags={setTags}
-      isLoading={createPublicationMutation.isPending}
-    />
+    <>
+      <ArticleForm
+        onSubmit={submitForm}
+        isEditing={false}
+        uploadedFile={uploadedFile}
+        handleFileUpload={setUploadedFile}
+        setIsDraft={setIsDraft}
+        isDraft={isDraft}
+        tags={tags}
+        setTags={setTags}
+        isLoading={createPublicationMutation.isPending}
+      />
+
+      <PageWithLeaveConfirmation />
+    </>
   );
 };
 

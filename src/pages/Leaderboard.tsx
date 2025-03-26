@@ -137,18 +137,18 @@ const Leaderboard = () => {
         <TextCell value={info.getValue()} className="text-green-500" />
       ),
     }),
-    columnHelper.accessor("likesCount", {
-      header: "Total Likes Count",
-      cell: (info) => <TextCell value={info.getValue()} />,
-    }),
-    columnHelper.accessor("commentsCount", {
-      header: "Total Comments Count",
-      cell: (info) => <TextCell value={info.getValue()} />,
-    }),
-    columnHelper.accessor("totalViewsCount", {
-      header: "Total Views Count",
-      cell: (info) => <TextCell value={info.getValue()} />,
-    }),
+    // columnHelper.accessor("likesCount", {
+    //   header: "Total Likes Count",
+    //   cell: (info) => <TextCell value={info.getValue()} />,
+    // }),
+    // columnHelper.accessor("commentsCount", {
+    //   header: "Total Comments Count",
+    //   cell: (info) => <TextCell value={info.getValue()} />,
+    // }),
+    // columnHelper.accessor("totalViewsCount", {
+    //   header: "Total Views Count",
+    //   cell: (info) => <TextCell value={info.getValue()} />,
+    // }),
     columnHelper.accessor("rank", {
       header: "Rank",
       cell: (info) => (

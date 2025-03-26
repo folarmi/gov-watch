@@ -14,10 +14,10 @@ import Loader from "../component/Loader";
 const Tags = () => {
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 5,
+    pageSize: 100,
   });
   const { data: tagData, isLoading } = useGetData({
-    url: `Tags/GetAllTags?page=${pagination.pageIndex + 1}&pageSize=${
+    url: `Tags/GetAllTags?pageNumber=${pagination.pageIndex + 1}&pageSize=${
       pagination.pageSize
     }`,
     queryKey: ["GetAllTags", JSON.stringify(pagination)],

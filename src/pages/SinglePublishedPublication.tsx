@@ -133,7 +133,9 @@ const SinglePublishedPublication = () => {
             tags={tags}
             setTags={setTags}
             onSubmit={handleEditSubmit}
-            isLoading={updatePublicationMutation.isPending}
+            isLoading={
+              publicationDataIsLoading || updatePublicationMutation.isPending
+            }
             setIsDraft={setIsDraft}
             isDraft={isDraft}
             uploadedFile={uploadedFile}
