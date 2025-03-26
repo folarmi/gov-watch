@@ -32,6 +32,12 @@ const InfiniteScrolling = <T,>({
   const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
+    if (!data || !Array.isArray(data)) {
+      console.warn("🚨 Data is null, undefined, or not an array!");
+      setHasMore(false);
+      return;
+    }
+
     if (data) {
       // Reset articles when pageNumber is 1 (new search)
       if (pageNumber === 1) {
@@ -41,9 +47,8 @@ const InfiniteScrolling = <T,>({
         // Append for infinite scroll
         setItems((prevItems) => [...prevItems, ...data]);
       }
-
       // Detect no more articles
-      if (data.length === 0 || data.length < pageSize) {
+      if (data?.length === 0 || data.length < pageSize || data === null) {
         setHasMore(false);
       }
     }
@@ -81,7 +86,7 @@ const InfiniteScrolling = <T,>({
           <section
             className={`mt-10 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-${colSize} xl:grid-cols-${colSize}`}
           >
-            {items.map((item) => (
+            {items?.map((item) => (
               <div key={keyExtractor(item)} className="w-full">
                 {renderItem(item)}
               </div>

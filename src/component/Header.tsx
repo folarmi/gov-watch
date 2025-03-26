@@ -38,7 +38,6 @@ const Header = ({ resetState }: HeaderProps) => {
   const toggleModal = () => {
     setShowModal(!showModal);
   };
-
   // Default resetState function
   const defaultResetState = () => {
     navigate("/"); // Optional: Add a log for debugging
@@ -95,7 +94,7 @@ const Header = ({ resetState }: HeaderProps) => {
     });
 
   const markNotificationAsReadMutation = useCustomMutation({
-    endpoint: `Notifications/UpdateNotificationReadStatus'`,
+    endpoint: `Notifications/UpdateNotificationReadStatus`,
     successMessage: (data: any) => data?.remark,
     method: "put",
     errorMessage: (error: any) => error?.response?.data?.remark,
@@ -177,11 +176,10 @@ const Header = ({ resetState }: HeaderProps) => {
                         </div>
 
                         {/* Notifications List */}
-                        {notificationData?.notificationResponseViewModel
-                          ?.length > 0 ? (
+                        {notificationData?.notificationViewModel?.length > 0 ? (
                           <>
                             {/* {notificationData?.notificationResponseViewModel.map( */}
-                            {notificationData?.notificationResponseViewModel?.map(
+                            {notificationData?.notificationViewModel?.map(
                               (item: any, index: number) => (
                                 <div
                                   key={index}

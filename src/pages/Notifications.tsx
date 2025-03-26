@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import AdminButton from "../component/forms/AdminButton";
@@ -13,6 +12,7 @@ import { CreateNotification } from "../component/modals/CreateNotification";
 // import { sampleData } from "../data";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { userTypeObject } from "../utils";
+import EmptyPage from "../component/EmptyPage";
 
 const Notifications = () => {
   const pageSize = 30;
@@ -34,44 +34,38 @@ const Notifications = () => {
   };
 
   const fetchMoreData = () => {
-    if (hasMore) {
+    if (hasMore && !isLoading) {
       setPageNumber((prevPageNumber) => prevPageNumber + 1); // Increment pageNumber
     }
   };
 
-  //   useEffect(() => {
-  //     if (notificationsData) {
-  //       if (pageNumber === 1) {
-  //         setItems(notificationsData?.notificationResponseViewModel); // Reset items for the first page
-  //       } else {
-  //         setItems((prevItems) => [
-  //           ...prevItems,
-  //           ...notificationsData?.notificationResponseViewModel,
-  //         ]); // Append new data
-  //       }
-
-  //       // Check if there's more data to load
-  //       if (
-  //         notificationsData?.notificationResponseViewModel.length === 0 ||
-  //         notificationsData?.notificationResponseViewModel.length < pageSize
-  //       ) {
-  //         setHasMore(false); // No more data to load
-  //       }
-  //     }
-  //   }, [notificationsData, pageNumber, pageSize]);
-
   useEffect(() => {
-    if (notificationsData?.notificationResponseViewModel) {
-      const newItems = notificationsData?.notificationResponseViewModel;
+    // if (!notificationsData || !Array.isArray(notificationsData)) {
+    //   setHasMore(false);
+    //   return;
+    // }
+    if (!notificationsData?.notificationViewModel) {
+      setHasMore(false);
+      return;
+    }
+
+    if (notificationsData?.notificationViewModel) {
+      const newItems = notificationsData?.notificationViewModel;
+      if (pageNumber === 1 && notificationsData?.totalCount === 0) {
+        setItems([]);
+        setHasMore(false);
+        return;
+      }
+
       if (pageNumber === 1) {
         setItems(newItems);
       } else {
         setItems((prevItems) => [...prevItems, ...newItems]);
       }
 
-      setHasMore(newItems.length >= pageSize);
+      setHasMore(newItems?.length >= pageSize);
     }
-  }, [notificationsData]);
+  }, [notificationsData, pageNumber]);
 
   return (
     <DashboardLayout>
@@ -82,7 +76,9 @@ const Notifications = () => {
           {(userType === userTypeObject.admin ||
             userType === userTypeObject.editor) && (
             <div className="flex justify-end w-full my-4 gap-x-4">
-              <AdminButton buttonText="Mark All as Read" />
+              {items.length > 0 && (
+                <AdminButton buttonText="Mark All as Read" />
+              )}
               <AdminButton
                 buttonText="Create Notification"
                 onClick={toggleModal}
@@ -90,7 +86,7 @@ const Notifications = () => {
             </div>
           )}
           <InfiniteScroll
-            dataLength={items.length} // Total number of items loaded
+            dataLength={items?.length} // Total number of items loaded
             style={{ overflow: "hidden" }}
             next={fetchMoreData} // Function to load more data
             hasMore={hasMore} // Whether there's more data to load
@@ -100,28 +96,36 @@ const Notifications = () => {
               </div>
             }
             endMessage={
-              <p className="text-center py-6 text-gray-600 font-semibold text-lg italic">
-                You've reached the end 🎉
-              </p>
+              items.length > 0 && (
+                <p className="text-center py-6 text-gray-600 font-semibold text-lg italic">
+                  You've reached the end 🎉
+                </p>
+              )
             }
           >
-            {/* {notificationsData?.notificationResponseViewModel?.map( */}
-            {items?.map((item: any, index: number) => (
-              <div
-                key={index}
-                className={`px-4 py-3 border-b border-gray-100 last:border-none hover:bg-gray-50/80 transition-all duration-200 cursor-pointer group ${
-                  item?.isNew ? "animate-pulse" : ""
-                }`}
-              >
-                <div className="flex items-start gap-2">
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-800 group-hover:text-gray-900">
-                      {item?.comment}
-                    </p>
+            {!isLoading && items.length < 1 ? (
+              <EmptyPage />
+            ) : (
+              <>
+                {" "}
+                {items?.map((item: any, index: number) => (
+                  <div
+                    key={index}
+                    className={`px-4 py-3 border-b border-gray-100 last:border-none hover:bg-gray-50/80 transition-all duration-200 cursor-pointer group ${
+                      item?.isNew ? "animate-pulse" : ""
+                    }`}
+                  >
+                    <div className="flex items-start gap-2">
+                      <div className="flex-1">
+                        <p className="text-sm font-medium text-gray-800 group-hover:text-gray-900">
+                          {item?.comment}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            ))}
+                ))}
+              </>
+            )}
           </InfiniteScroll>
 
           <Modal show={showModal} toggleModal={toggleModal}>

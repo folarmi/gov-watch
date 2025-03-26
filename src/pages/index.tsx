@@ -52,3 +52,4 @@ export * from "./DashboardAnalytics";
 export * from "./ContributorLeaderboard";
 export * from "./AuthorPage";
 export * from "./Notifications";
+export * from "./Messages";

@@ -23,62 +23,7 @@ const Leaderboard = () => {
   });
 
   const columnHelper = createColumnHelper<any>();
-  // const columns = [
-  //   columnHelper.accessor("image", {
-  //     header: "Image",
-  //     cell: (info) => (
-  //       <img src={info.getValue()} className="rounded-full h-12 w-12" />
-  //     ),
-  //   }),
-  //   columnHelper.accessor("title", {
-  //     header: "Title",
-  //     cell: (info) => (
-  //       <span className="text-sm font-normal">{info.getValue()}</span>
-  //     ),
-  //   }),
-  //   columnHelper.accessor("snippet", {
-  //     header: "Snippet",
-  //     cell: (info) => (
-  //       <span className="text-sm font-normal">{info.getValue()}</span>
-  //     ),
-  //   }),
-  //   columnHelper.accessor("score", {
-  //     header: "Score",
-  //     cell: (info) => (
-  //       <span className="text-sm font-normal">{info.getValue()}</span>
-  //     ),
-  //   }),
-  //   columnHelper.accessor("likesCount", {
-  //     header: "Total Likes Count",
-  //     cell: (info) => (
-  //       <span className="text-sm font-normal">{info.getValue() || 0}</span>
-  //     ),
-  //   }),
-  //   columnHelper.accessor("commentsCount", {
-  //     header: "Total Comments Count",
-  //     cell: (info) => (
-  //       <span className="text-sm font-normal">{info.getValue() || 0}</span>
-  //     ),
-  //   }),
-  //   columnHelper.accessor("totalPublicationsCount", {
-  //     header: "Total Publications Count",
-  //     cell: (info) => (
-  //       <span className="text-sm font-normal">{info.getValue()}</span>
-  //     ),
-  //   }),
-  //   columnHelper.accessor("totalViewsCount", {
-  //     header: "Total Views Count",
-  //     cell: (info) => (
-  //       <span className="text-sm font-normal">{info.getValue()}</span>
-  //     ),
-  //   }),
-  //   columnHelper.accessor("rank", {
-  //     header: "Rank",
-  //     cell: (info) => (
-  //       <span className="text-sm font-normal">{info.getValue()}</span>
-  //     ),
-  //   }),
-  // ];
+
   const TextCell = ({
     value,
     maxLength,
