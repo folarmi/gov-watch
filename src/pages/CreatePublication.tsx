@@ -15,7 +15,7 @@ import {
 import ArticleForm from "../component/forms/ArticleForm";
 import { useNavigate } from "react-router-dom";
 import { directUserToPageOnLogin } from "../utils";
-import { PageWithLeaveConfirmation } from "../component/forms/PageWithLeaveConfirmation";
+// import { PageWithLeaveConfirmation } from "../component/forms/PageWithLeaveConfirmation";
 
 // import ArticleForm from "@/app/component/forms/ArticleForm";
 
@@ -99,7 +99,7 @@ const CreatePublication = () => {
         isLoading={createPublicationMutation.isPending}
       />
 
-      <PageWithLeaveConfirmation />
+      {/* <PageWithLeaveConfirmation /> */}
     </>
   );
 };
