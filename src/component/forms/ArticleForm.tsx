@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useController, useForm } from "react-hook-form";
 
 import "react-quill/dist/quill.snow.css";
@@ -34,6 +34,8 @@ import "tippy.js/dist/tippy.css";
 import { InfoIcon } from "lucide-react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { EditPublication } from "../modals/EditPublication";
+import { SavePublicationToDraft } from "../modals/SavePublicationToDraft";
 
 // interface ArticleFormProps {
 //   isLoading?: boolean; // Indicates if the form is in a loading state
@@ -71,6 +73,8 @@ const ArticleForm = ({
   const [selectedLGA, setSelectedLGA] = useState("");
   const [approveModal, setApproveModal] = useState(false);
   const [deletePublication, setDeletePublication] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+  const [saveToDraftModal, setSaveToDraftModal] = useState(false);
   const today = new Date().toISOString().split("T")[0];
   const [isAdditionalInformation, setIsAdditionalInformation] = useState(true);
 
@@ -86,6 +90,14 @@ const ArticleForm = ({
       articleTitle: defaultValues.title,
       publicationId: defaultValues.publicId,
     }));
+  };
+
+  const toggleEditModal = () => {
+    setEditModal(!editModal);
+  };
+
+  const toggleSaveToDraftsModal = () => {
+    setSaveToDraftModal(!saveToDraftModal);
   };
 
   const updatePublicationImageMutation = useCustomMutation({
@@ -135,7 +147,7 @@ const ArticleForm = ({
     setDeletePublication(!deletePublication);
   };
 
-  const { control, handleSubmit, getValues } = useForm({
+  const { control, handleSubmit, getValues, reset } = useForm({
     defaultValues: {
       ...defaultValues,
       datePromiseMade: defaultValues?.datePromiseMade
@@ -312,11 +324,26 @@ const ArticleForm = ({
       };
     });
 
+  // useEffect(() => {
+  //   reset(defaultValues);
+  // }, [defaultValues, reset]);
+
+  useEffect(() => {
+    if (defaultValues && Object.keys(defaultValues).length > 0) {
+      reset(defaultValues);
+    }
+  }, [defaultValues, reset]);
+
+  const handleFormSubmit = () => {
+    const latestData = getValues(); // Fetch the latest form values
+    onSubmit(latestData); // Pass the latest values to the parent function
+  };
+
   return (
     <>
       <Header />
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleFormSubmit)}
         className="px-8 w-3/5 md:px-24 mx-auto mt-4 space-y-6 mb-20"
       >
         {/* Publication Details */}
@@ -703,9 +730,10 @@ const ArticleForm = ({
                     <CustomButton
                       variant="secondary"
                       className="w-full md:w-1/2"
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.preventDefault();
+                        toggleSaveToDraftsModal();
                         setIsDraft(true);
-                        onSubmit();
                       }}
                     >
                       Save to Drafts
@@ -716,7 +744,11 @@ const ArticleForm = ({
                   <CustomButton
                     variant="primary"
                     className="w-full md:w-1/2 cursor-pointer"
-                    onClick={onSubmit}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setIsDraft(false);
+                      toggleEditModal();
+                    }}
                     disabled={isLoading}
                   >
                     Edit
@@ -727,7 +759,11 @@ const ArticleForm = ({
                   <CustomButton
                     variant="delete"
                     className="w-full md:w-1/2"
-                    onClick={toggleDeleteModal}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setIsDraft(false);
+                      toggleDeleteModal();
+                    }}
                     disabled={isLoading}
                   >
                     Delete
@@ -740,9 +776,10 @@ const ArticleForm = ({
                   <CustomButton
                     variant="secondary"
                     className="w-full md:w-1/2"
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleSaveToDraftsModal();
                       setIsDraft(true);
-                      onSubmit();
                     }}
                   >
                     Save to Drafts
@@ -765,6 +802,26 @@ const ArticleForm = ({
             </div>
           )}
         </>
+
+        <Modal show={editModal} toggleModal={toggleEditModal}>
+          <div className="p-4">
+            <EditPublication
+              toggleModal={toggleEditModal}
+              handleFormSubmit={handleFormSubmit}
+              defaultValues={defaultValues}
+            />
+          </div>
+        </Modal>
+
+        <Modal show={saveToDraftModal} toggleModal={toggleSaveToDraftsModal}>
+          <div className="p-4">
+            <SavePublicationToDraft
+              toggleModal={toggleEditModal}
+              handleFormSubmit={handleFormSubmit}
+              defaultValues={defaultValues}
+            />
+          </div>
+        </Modal>
 
         <Modal show={reviewModal} toggleModal={toggleModal}>
           <div className="p-4">

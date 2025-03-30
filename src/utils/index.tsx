@@ -263,3 +263,56 @@ export const leaderboardFilter = [
     label: "All Time",
   },
 ];
+
+export interface PublicationFormData {
+  publicId: string;
+  snippet: string;
+  article: string;
+  image?: string;
+  imageCaption?: string;
+  contributorPublicId: string;
+  category: string;
+  state: string;
+  senatorialDistrict: string;
+  ward: string;
+  lcda: string;
+  isFederal: boolean;
+  title: string;
+  mda: string;
+  tags: string[] | string;
+  reference?: string;
+  authorName: string;
+  link?: string;
+  isPromise: boolean;
+  isCredible: boolean;
+  isPromisedFulfilled: boolean;
+  publishDate?: string;
+  datePromiseMade?: string;
+  promiseDeadline?: string;
+  dateIncidentStarted?: string;
+  dateIncidentResolved?: string;
+  datePromiseFulfilled?: string;
+  politicalActorName: string;
+  lga: string;
+  country: string;
+  isSubmission: boolean;
+}
+
+export const formatDateForInput = (dateString?: string | null) => {
+  if (!dateString) return null;
+  try {
+    return new Date(dateString).toLocaleDateString("en-CA");
+  } catch {
+    return null;
+  }
+};
+
+export const formatDateForSubmission = (dateString?: string | null) => {
+  if (!dateString) return undefined;
+  try {
+    const [year, month, day] = dateString.split("-");
+    return new Date(Number(year), Number(month) - 1, Number(day)).toISOString();
+  } catch {
+    return undefined;
+  }
+};

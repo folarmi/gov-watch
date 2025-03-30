@@ -93,7 +93,7 @@ const SinglePublishedPublication = () => {
     ];
 
     const filteredObject = Object.fromEntries(
-      requiredFields.map((key) => [
+      requiredFields?.map((key) => [
         key,
         data[key] ?? (typeof key === "boolean" ? false : null), // Default values
       ])
@@ -118,6 +118,8 @@ const SinglePublishedPublication = () => {
           : false,
       isSubmission: isDraft ? false : true,
     };
+
+    // console.log(formData);
     updatePublicationMutation.mutate(formData);
   };
 
