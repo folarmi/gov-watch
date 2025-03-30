@@ -12,8 +12,12 @@ import CreateMDA from "../component/modals/CreateMDA";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Loader from "../component/Loader";
 import ConfirmModuleDeletion from "../component/modals/ConfirmModuleDeletion";
+import { useAppSelector } from "../lib/hook";
+import { RootState } from "../lib/store";
 
 const MDA = () => {
+  const { userCountry } = useAppSelector((state: RootState) => state.auth);
+
   const [createMDA, setCreateMDA] = useState(false);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -25,7 +29,7 @@ const MDA = () => {
   const { data: mdaData, isLoading } = useGetData({
     url: `/Mdas/GetAllMdas?pageNumber=${pagination.pageIndex + 1}&pageSize=${
       pagination.pageSize
-    }`,
+    }&countryName=${userCountry}`,
     queryKey: ["GetAllMdasTable", JSON.stringify(pagination)],
   });
 

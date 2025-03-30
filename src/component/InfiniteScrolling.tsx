@@ -1,9 +1,9 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import EmptyPage from "./EmptyPage";
+import clsx from "clsx";
 
 type Props<T> = {
   data: T[];
@@ -31,28 +31,53 @@ const InfiniteScrolling = <T,>({
   const [items, setItems] = useState<T[]>([]);
   const [hasMore, setHasMore] = useState(true);
 
+  // useEffect(() => {
+  //   if (!data || !Array.isArray(data)) {
+  //     setHasMore(false);
+  //     return;
+  //   }
+
+  //   if (data) {
+  //     // Reset articles when pageNumber is 1 (new search)
+  //     if (pageNumber === 1) {
+  //       setItems(data);
+  //       setHasMore(true); // Reset pagination state
+  //     } else {
+  //       // Append for infinite scroll
+  //       setItems((prevItems) => [...prevItems, ...data]);
+  //     }
+  //     // Detect no more articles
+  //     if (data?.length === 0 || data.length < pageSize || data === null) {
+  //       setHasMore(false);
+  //     }
+  //   }
+  // }, [data]);
+
   useEffect(() => {
-    if (!data || !Array.isArray(data)) {
-      console.warn("🚨 Data is null, undefined, or not an array!");
+    // Handle non-array or invalid data
+    if (!Array.isArray(data)) {
       setHasMore(false);
       return;
     }
 
-    if (data) {
-      // Reset articles when pageNumber is 1 (new search)
+    // Handle empty data array
+    if (data.length === 0) {
       if (pageNumber === 1) {
-        setItems(data);
-        setHasMore(true); // Reset pagination state
-      } else {
-        // Append for infinite scroll
-        setItems((prevItems) => [...prevItems, ...data]);
+        setItems([]);
       }
-      // Detect no more articles
-      if (data?.length === 0 || data.length < pageSize || data === null) {
-        setHasMore(false);
-      }
+      setHasMore(false);
+      return;
     }
-  }, [data]);
+
+    // Normal data handling
+    if (pageNumber === 1) {
+      setItems(data);
+      setHasMore(data.length >= pageSize);
+    } else {
+      setItems((prev) => [...prev, ...data]);
+      setHasMore(data.length >= pageSize);
+    }
+  }, [data, pageNumber, pageSize]);
 
   const fetchMoreData = () => {
     if (hasMore) {
@@ -83,8 +108,24 @@ const InfiniteScrolling = <T,>({
         {!isLoading && !error && items.length < 1 ? (
           <EmptyPage />
         ) : (
+          // <section
+          //   className={`mt-10 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-${colSize} xl:grid-cols-${colSize}`}
+          // >
+          //   {items?.map((item) => (
+          //     <div key={keyExtractor(item)} className="w-full">
+          //       {renderItem(item)}
+          //     </div>
+          //   ))}
+          // </section>
           <section
-            className={`mt-10 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-${colSize} xl:grid-cols-${colSize}`}
+            style={{ "--cols": colSize } as React.CSSProperties}
+            className={clsx(
+              "mt-10 grid gap-6",
+              "grid-cols-1", // Default 1 column
+              "sm:grid-cols-2", // 2 columns on small screens
+              "lg:grid-cols-[repeat(var(--cols),minmax(0,1fr))]", // Dynamic on large
+              "xl:grid-cols-[repeat(var(--cols),minmax(0,1fr))]" // Dynamic on xlarge
+            )}
           >
             {items?.map((item) => (
               <div key={keyExtractor(item)} className="w-full">

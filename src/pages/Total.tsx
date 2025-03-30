@@ -43,6 +43,7 @@ const TotalArticles = () => {
           error={error}
           pageSize={pageSize}
           keyExtractor={(article) => article?.publicId}
+          colSize={3}
           renderItem={(article: Article) => (
             <Card
               section={article?.section}

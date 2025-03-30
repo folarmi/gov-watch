@@ -1,12 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 type CheckBoxProps = {
   iflabel?: boolean;
   checked: boolean;
-  onChange: any;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   labelText?: string;
   labelStyles?: string;
-  name?: string;
+  name: string;
 };
 
 const CustomCheckBox = ({
@@ -23,6 +21,7 @@ const CustomCheckBox = ({
         checked={checked}
         id={name}
         type="checkbox"
+        name={name}
         // value=""
         onChange={onChange}
         className="hidden"

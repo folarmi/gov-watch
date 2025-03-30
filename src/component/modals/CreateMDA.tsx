@@ -234,6 +234,7 @@ const CreateMDA = ({ toggleModal, selectedMDA }: any) => {
             onChange={() => setIsFederal(!isFederal)}
             iflabel
             labelText="isFederal"
+            name="isFederal"
           />
         </div>
 

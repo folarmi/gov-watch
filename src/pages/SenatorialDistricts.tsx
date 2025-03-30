@@ -11,8 +11,12 @@ import Modal from "../component/modals/Modal";
 import DashboardLayout from "../layouts/DashboardLayout";
 import ConfirmModuleDeletion from "../component/modals/ConfirmModuleDeletion";
 import { CreateSenatorialDistrict } from "../component/modals/CreateSenatorialDistrict";
+import { useAppSelector } from "../lib/hook";
+import { RootState } from "../lib/store";
 
 const SenatorialDistricts = () => {
+  const { userCountry } = useAppSelector((state: RootState) => state.auth);
+
   const [createSenatorialDistrict, setCreateSenatorialDistrict] =
     useState(false);
   const [pagination, setPagination] = useState<PaginationState>({
@@ -28,7 +32,7 @@ const SenatorialDistricts = () => {
   const { data: senatorialDistrictData, isLoading } = useGetData({
     url: `SenatorialDistricts/GetAllSenatorialDistricts?pageNumber=${
       pagination.pageIndex + 1
-    }&pageSize=${pagination.pageSize}`,
+    }&pageSize=${pagination.pageSize}&country=${userCountry}`,
     queryKey: ["GetAllSenatorialDistrictTable", JSON.stringify(pagination)],
   });
 

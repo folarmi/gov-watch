@@ -501,7 +501,7 @@ const ArticleForm = ({
                   </>
                 ))} */}
 
-              {(!getValues("isIncident") ||
+              {/* {(!getValues("isIncident") ||
                 defaultValues?.dateIncidentStarted !== null) && (
                 <>
                   <CustomInput
@@ -518,7 +518,27 @@ const ArticleForm = ({
                     control={control}
                   />
                 </>
+              )} */}
+
+              {(getValues("isIncident") ||
+                defaultValues?.dateIncidentStarted != null) && (
+                <>
+                  <CustomInput
+                    label="Date Incident Started"
+                    name="dateIncidentStarted"
+                    type="date"
+                    control={control}
+                    max={today}
+                  />
+                  <CustomInput
+                    label="Date Incident Was Resolved"
+                    name="dateIncidentResolved"
+                    type="date"
+                    control={control}
+                  />
+                </>
               )}
+
               {/* Promise Information */}
               {getValues("isPromise") && (
                 <>

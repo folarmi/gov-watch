@@ -114,6 +114,3 @@ const FileUploader: React.FC<FileUploaderProps> = ({
 };
 
 export default FileUploader;
-
-// If contributor wants to save as draft when updating a publication, isDraftUpdate should true and isSubmission= false
-// If contributor is not saving as draft when updating a publication, isDraftUpdate should false and isSubmission= true
