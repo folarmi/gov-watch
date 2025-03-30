@@ -30,8 +30,6 @@ const Rejected = () => {
     enabled: shouldFetchPublications,
   });
 
-  console.log("asdfg", error);
-
   return (
     <DashboardLayout>
       <InfiniteScrolling

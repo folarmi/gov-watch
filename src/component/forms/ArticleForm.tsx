@@ -159,6 +159,9 @@ const ArticleForm = ({
             "en-CA"
           )
         : null,
+      publishDate: defaultValues?.dateIncidentResolved
+        ? new Date(defaultValues?.publishDate).toLocaleDateString("en-CA")
+        : null,
       article: defaultValues?.article || "",
       isFederal: defaultValues?.isFederal || false,
       isPromiseFulfilled: defaultValues?.isPromiseFulfilled || false,
