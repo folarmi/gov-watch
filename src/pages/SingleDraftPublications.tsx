@@ -12,7 +12,7 @@ import ArticleForm from "../component/forms/ArticleForm";
 import Loader from "../component/Loader";
 import { directUserToPageOnLogin } from "../utils";
 import { toast } from "react-toastify";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const SingleDraftPublication = () => {
   const params = useParams();
@@ -36,6 +36,14 @@ const SingleDraftPublication = () => {
   const [isDraft, setIsDraft] = useState(false);
   const [tags, setTags] = useState<string[]>([]);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+
+  useEffect(() => {
+    if (publicationData?.tags) {
+      // Split the tags string into an array
+      const tagsArray = publicationData.tags.split(/\s*,\s*/);
+      setTags(tagsArray);
+    }
+  }, [publicationData]);
 
   const handleFileUpload = (file: File) => {
     setUploadedFile(file);
@@ -80,7 +88,6 @@ const SingleDraftPublication = () => {
     };
     createPublicationMutation.mutate(formData);
   };
-  console.log(publicationData);
   return (
     <>
       {publicationDataIsLoading ? (

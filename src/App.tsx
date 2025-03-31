@@ -18,7 +18,6 @@ function App() {
           <AuthProvider>
             <Router>
               <RoutePage />
-              {/* {!isSubscribed && <GoogleAdScript isSubscribed={isSubscribed} />} */}
             </Router>
             <ToastContainer />
           </AuthProvider>

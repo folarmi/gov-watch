@@ -3,11 +3,15 @@ import React, { useEffect } from "react";
 
 interface GoogleAdScriptProps {
   isSubscribed: boolean;
+  isLoggedIn: boolean;
 }
 
-const GoogleAdScript: React.FC<GoogleAdScriptProps> = ({ isSubscribed }) => {
+const GoogleAdScript: React.FC<GoogleAdScriptProps> = ({
+  isSubscribed,
+  isLoggedIn,
+}) => {
   useEffect(() => {
-    if (!isSubscribed) {
+    if (!isSubscribed || !isLoggedIn) {
       // Inject the Google Ads script
       const script = document.createElement("script");
       script.src = import.meta.env.VITE_GOOGLE_ADS_LINK;
@@ -21,16 +25,14 @@ const GoogleAdScript: React.FC<GoogleAdScriptProps> = ({ isSubscribed }) => {
       }
 
       gtag("js", new Date());
-      gtag("config", "YOUR_GOOGLE_ADS_ID");
-
-      // console.log("Google Ads script loaded for unsubscribed user");
+      gtag("config", import.meta.env.VITE_GOOGLE_ADS_ID);
 
       // Cleanup the script when the component unmounts
       return () => {
         document.body.removeChild(script);
       };
     }
-  }, [isSubscribed]);
+  }, [isSubscribed, isLoggedIn]);
 
   return null;
 };

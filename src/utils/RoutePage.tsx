@@ -55,11 +55,26 @@ import {
 import Reviewed from "../pages/Reviewed";
 import { LCDA } from "../pages/Lcda";
 import { CookiesPolicy } from "../pages/CookiesPolicy";
+import GoogleAdScript from "../hooks/AdsScript";
+import { useAppSelector } from "../lib/hook";
+import { RootState } from "../lib/store";
+import { useAuth } from "../context/AuthContext";
 // import Test from "../component/Test";
 
 const RoutePage = () => {
+  const { userObject } = useAppSelector((state: RootState) => state.auth);
+  const { isAuthenticated } = useAuth();
+
+  const shouldShowAds = !isAuthenticated || !userObject.isSubscribed;
+
   return (
     <div>
+      {shouldShowAds && (
+        <GoogleAdScript
+          isLoggedIn={isAuthenticated}
+          isSubscribed={userObject.isSubscribed}
+        />
+      )}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/contact-us" element={<ContactUs />} />

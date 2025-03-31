@@ -11,6 +11,7 @@ import { userTypeObject } from "../utils";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
+
   const pathName = location.pathname;
   const { userType } = useAppSelector((state: RootState) => state.auth);
 
