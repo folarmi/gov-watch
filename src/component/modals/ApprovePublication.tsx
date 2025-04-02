@@ -6,20 +6,24 @@ import CustomButton from "../CustomButton";
 import { directUserToPageOnLogin } from "../../utils";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const ApprovePublication = ({ toggleModal, defaultValues }: any) => {
+const ApprovePublication = ({ toggleModal, getValues }: any) => {
+  console.log(getValues());
   const navigate = useNavigate();
   const { userId, userType } = useAppSelector((state: RootState) => state.auth);
   const approvePublicationMutation = useCustomMutation({
     endpoint: "Publications/UpdatePublicationForAdmin",
     method: "put",
     successMessage: (data: any) => data?.remark,
-    errorMessage: (error: any) => error?.response?.data?.remark,
+    errorMessage: (error: any) =>
+      error?.response?.data?.remark || error?.response?.data,
     onSuccessCallback: () => {
       navigate(directUserToPageOnLogin(userType));
     },
   });
 
   const approvePublicationFunction = () => {
+    const latestData = getValues();
+
     const keysToDelete = [
       "isSuccessful",
       "statusCode",
@@ -35,17 +39,18 @@ const ApprovePublication = ({ toggleModal, defaultValues }: any) => {
     ];
 
     keysToDelete.forEach((key) => {
-      delete defaultValues[key];
+      delete latestData[key];
     });
 
     const data: any = {
-      ...defaultValues,
+      ...latestData,
       isApproval: true,
       lastModifiedBy: userId,
     };
 
     approvePublicationMutation.mutate(data);
   };
+
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
       <h2 className="text-xl font-semibold mb-4">

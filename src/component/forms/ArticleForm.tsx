@@ -324,10 +324,6 @@ const ArticleForm = ({
       };
     });
 
-  // useEffect(() => {
-  //   reset(defaultValues);
-  // }, [defaultValues, reset]);
-
   useEffect(() => {
     if (defaultValues && Object.keys(defaultValues).length > 0) {
       reset(defaultValues);
@@ -836,7 +832,7 @@ const ArticleForm = ({
           <div className="p-4">
             <ApprovePublication
               toggleModal={toggleApproveModal}
-              defaultValues={defaultValues}
+              getValues={getValues}
             />
           </div>
         </Modal>

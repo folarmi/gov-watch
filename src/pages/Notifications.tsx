@@ -3,7 +3,7 @@
 import AdminButton from "../component/forms/AdminButton";
 import Loader from "../component/Loader";
 import DashboardLayout from "../layouts/DashboardLayout";
-import { useGetData } from "../hooks/apiCalls";
+import { useCustomMutation, useGetData } from "../hooks/apiCalls";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../lib/hook";
 import { RootState } from "../lib/store";
@@ -67,24 +67,44 @@ const Notifications = () => {
     }
   }, [notificationsData, pageNumber]);
 
+  const markNotificationAsReadMutation = useCustomMutation({
+    endpoint: `Notifications/UpdateNotificationReadStatus`,
+    successMessage: (data: any) => data?.remark,
+    method: "put",
+    errorMessage: (error: any) => error?.response?.data?.remark,
+    onSuccessCallback: () => {
+      toggleModal();
+    },
+  });
+
   return (
     <DashboardLayout>
       {isLoading ? (
         <Loader />
       ) : (
         <div className="mt-2">
-          {(userType === userTypeObject.admin ||
-            userType === userTypeObject.editor) && (
-            <div className="flex justify-end w-full my-4 gap-x-4">
-              {items.length > 0 && (
-                <AdminButton buttonText="Mark All as Read" />
-              )}
+          <div className="flex justify-end w-full my-4 gap-x-4">
+            {items.length > 0 && (
+              <AdminButton
+                isLoading={markNotificationAsReadMutation.isPending}
+                onClick={() =>
+                  markNotificationAsReadMutation.mutate({
+                    userId,
+                    isRead: true,
+                  })
+                }
+                buttonText="Mark All as Read"
+              />
+            )}
+
+            {(userType === userTypeObject.admin ||
+              userType === userTypeObject.editor) && (
               <AdminButton
                 buttonText="Create Notification"
                 onClick={toggleModal}
               />
-            </div>
-          )}
+            )}
+          </div>
           <InfiniteScroll
             dataLength={items?.length} // Total number of items loaded
             style={{ overflow: "hidden" }}

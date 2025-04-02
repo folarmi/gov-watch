@@ -88,11 +88,10 @@ const Header = ({ resetState }: HeaderProps) => {
 
   const { data: notificationData, isLoading: notificationDataIsLoading } =
     useGetData({
-      url: `Notifications/GetNotifications?id=${userId}pageNumber=1&pageSize=5`,
+      url: `Notifications/GetNotifications?id=${userId}&pageNumber=1&pageSize=5`,
       queryKey: ["GetNotifications"],
-      enabled: !!userId,
+      enabled: isAuthenticated,
     });
-
   const markNotificationAsReadMutation = useCustomMutation({
     endpoint: `Notifications/UpdateNotificationReadStatus`,
     successMessage: (data: any) => data?.remark,
