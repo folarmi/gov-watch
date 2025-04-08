@@ -96,7 +96,9 @@ const CreatePublication = () => {
         isDraft={isDraft}
         tags={tags}
         setTags={setTags}
-        isLoading={createPublicationMutation.isPending}
+        isLoading={
+          createPublicationMutation.isPending || uploadMutation.isPending
+        }
       />
 
       {/* <PageWithLeaveConfirmation /> */}

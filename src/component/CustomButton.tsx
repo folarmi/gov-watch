@@ -49,7 +49,7 @@ const CustomButton: React.FC<ButtonProps> = ({
       disabled={loading || disabled}
     >
       {loading ? (
-        <div className="flex items-center">
+        <div className="flex items-center justify-center w-full">
           <svg
             className="animate-spin h-5 w-5 mr-3 text-white"
             xmlns="http://www.w3.org/2000/svg"

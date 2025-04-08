@@ -102,7 +102,9 @@ const SingleDraftPublication = () => {
             uploadedFile={uploadedFile}
             handleFileUpload={handleFileUpload}
             onSubmit={submitForm}
-            isLoading={createPublicationMutation.isPending}
+            isLoading={
+              createPublicationMutation.isPending || uploadMutation.isPending
+            }
             // handleFileUpload={handleFileUpload}
             // Pass other necessary props...
           />

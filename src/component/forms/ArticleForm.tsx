@@ -24,7 +24,11 @@ import {
 } from "../../hooks/apiCalls";
 import ReactQuill from "react-quill";
 import { Header } from "../Header";
-import { directUserToPageOnLogin, userTypeObject } from "../../utils";
+import {
+  directUserToPageOnLogin,
+  formatDateForInput,
+  userTypeObject,
+} from "../../utils";
 import Modal from "../modals/Modal";
 import ReviewModal from "../modals/ReviewModal";
 import ApprovePublication from "../modals/ApprovePublication";
@@ -151,28 +155,22 @@ const ArticleForm = ({
     defaultValues: {
       ...defaultValues,
       datePromiseMade: defaultValues?.datePromiseMade
-        ? new Date(defaultValues?.datePromiseMade).toLocaleDateString("en-CA")
+        ? formatDateForInput(defaultValues?.datePromiseMade)
         : null,
       promiseDeadline: defaultValues?.promiseDeadline
-        ? new Date(defaultValues?.promiseDeadline).toISOString().split("T")[0]
+        ? formatDateForInput(defaultValues?.promiseDeadline)
         : null,
       datePromiseFulfilled: defaultValues?.datePromiseFulfilled
-        ? new Date(defaultValues?.datePromiseFulfilled).toLocaleDateString(
-            "en-CA"
-          )
+        ? formatDateForInput(defaultValues?.datePromiseFulfilled)
         : null,
       dateIncidentStarted: defaultValues?.dateIncidentStarted
-        ? new Date(defaultValues?.dateIncidentStarted).toLocaleDateString(
-            "en-CA"
-          )
+        ? formatDateForInput(defaultValues?.dateIncidentStarted)
         : null,
       dateIncidentResolved: defaultValues?.dateIncidentResolved
-        ? new Date(defaultValues?.dateIncidentResolved).toLocaleDateString(
-            "en-CA"
-          )
+        ? formatDateForInput(defaultValues?.dateIncidentResolved)
         : null,
       publishDate: defaultValues?.dateIncidentResolved
-        ? new Date(defaultValues?.publishDate).toLocaleDateString("en-CA")
+        ? formatDateForInput(defaultValues?.publishDate)
         : null,
       article: defaultValues?.article || "",
       isFederal: defaultValues?.isFederal || false,
@@ -326,7 +324,27 @@ const ArticleForm = ({
 
   useEffect(() => {
     if (defaultValues && Object.keys(defaultValues).length > 0) {
-      reset(defaultValues);
+      reset({
+        ...defaultValues,
+        datePromiseMade: defaultValues?.datePromiseMade
+          ? formatDateForInput(defaultValues?.datePromiseMade)
+          : null,
+        promiseDeadline: defaultValues?.promiseDeadline
+          ? formatDateForInput(defaultValues?.promiseDeadline)
+          : null,
+        datePromiseFulfilled: defaultValues?.datePromiseFulfilled
+          ? formatDateForInput(defaultValues?.datePromiseFulfilled)
+          : null,
+        dateIncidentStarted: defaultValues?.dateIncidentStarted
+          ? formatDateForInput(defaultValues?.dateIncidentStarted)
+          : null,
+        dateIncidentResolved: defaultValues?.dateIncidentResolved
+          ? formatDateForInput(defaultValues?.dateIncidentResolved)
+          : null,
+        publishDate: defaultValues?.dateIncidentResolved
+          ? formatDateForInput(defaultValues?.publishDate)
+          : null,
+      });
     }
   }, [defaultValues, reset]);
 
@@ -344,18 +362,31 @@ const ArticleForm = ({
       >
         {/* Publication Details */}
         <div className="space-y-4">
-          <CustomInput label="Title" name="title" control={control} />
+          <CustomInput
+            label="Title"
+            name="title"
+            control={control}
+            rules={{
+              required: "Title is required",
+            }}
+          />
           <CustomInput
             label="Author's Name"
             name="authorName"
             control={control}
             placeholder="Whose work is this?"
+            rules={{
+              required: "Author's Name is required",
+            }}
           />
           <CustomTextArea
             name="snippet"
             control={control}
             label="Article Snippet"
             placeholder="A snippet about your article"
+            rules={{
+              required: "Article Snippet is required",
+            }}
           />
         </div>
 

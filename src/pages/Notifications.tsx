@@ -13,9 +13,11 @@ import { CreateNotification } from "../component/modals/CreateNotification";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { userTypeObject } from "../utils";
 import EmptyPage from "../component/EmptyPage";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Notifications = () => {
   const pageSize = 30;
+  const queryClient = useQueryClient();
   const [hasMore, setHasMore] = useState(true);
   const [pageNumber, setPageNumber] = useState(1); // Start with page 1
 
@@ -73,7 +75,10 @@ const Notifications = () => {
     method: "put",
     errorMessage: (error: any) => error?.response?.data?.remark,
     onSuccessCallback: () => {
-      toggleModal();
+      queryClient.invalidateQueries({
+        queryKey: ["GetNotifications"],
+        exact: false,
+      });
     },
   });
 

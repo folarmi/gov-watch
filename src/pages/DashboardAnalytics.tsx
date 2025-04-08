@@ -145,7 +145,7 @@ const DashboardAnalytics = () => {
     isLoading: userPublicationViewsDataIsLoading,
   } = useGetData({
     url: `Publications/GetCountOfPublishedPublicationsViewsByUserId?userId=${userId}`,
-    queryKey: ["GetCountOfPublicationsByUserId"],
+    queryKey: ["GetCountOfPublishedPublicationsViewsByUserId"],
     enabled: userType === userTypeObject.contributor,
   });
 

@@ -100,6 +100,7 @@ export const useGetData = ({
     refetchOnMount: true,
     refetchOnWindowFocus: false,
     staleTime: 0,
+
     ...rest,
   });
 };

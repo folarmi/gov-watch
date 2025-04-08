@@ -7,7 +7,6 @@ import { directUserToPageOnLogin } from "../../utils";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const ApprovePublication = ({ toggleModal, getValues }: any) => {
-  console.log(getValues());
   const navigate = useNavigate();
   const { userId, userType } = useAppSelector((state: RootState) => state.auth);
   const approvePublicationMutation = useCustomMutation({

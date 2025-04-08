@@ -4,13 +4,17 @@ import CustomSelect from "../component/CustomSelect";
 import Loader from "../component/Loader";
 import { useGetData } from "../hooks/apiCalls";
 import OuterPage from "../layouts/OuterPage";
-import { leaderboardFilter } from "../utils";
+import { leaderboardFilter, userTypeObject } from "../utils";
 import Table from "../component/Table";
 import { useState } from "react";
 import { createColumnHelper, PaginationState } from "@tanstack/react-table";
+import CustomInput from "../component/CustomInput";
+import { RootState } from "../lib/store";
+import { useAppSelector } from "../lib/hook";
 
 const Leaderboard = () => {
   const { control } = useForm();
+  const { userType } = useAppSelector((state: RootState) => state.auth);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 12,
@@ -108,7 +112,7 @@ const Leaderboard = () => {
         <Loader />
       ) : (
         <div className="mt-4 mx-auto w-3/4 mb-16">
-          <form className="w-1/4 mr-8 mb-4 flex">
+          <form className="w-1/2 mr-8 mb-4 flex items-center">
             <CustomSelect
               name="country"
               options={leaderboardFilter}
@@ -118,6 +122,16 @@ const Leaderboard = () => {
               placeholder="Select Filter"
               customOnChange={(name: any) => setSelectedFilter(name?.value)}
             />
+            {(userType === userTypeObject.admin ||
+              userType === userTypeObject.editor) && (
+              <CustomInput
+                label=""
+                name="email"
+                type="email"
+                control={control}
+                className="ml-8"
+              />
+            )}
           </form>
 
           <Table
