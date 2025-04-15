@@ -208,6 +208,13 @@ const PublicationDetails = () => {
               </div>
             </div>
 
+            <p className="mt-3 text-sm text-muted-foreground">
+              <span className="font-medium text-foreground">
+                Last Modified:
+              </span>{" "}
+              {publicationDetailsData?.lastModifiedDate}
+            </p>
+
             <Comments
               comments={publicationCommentsData?.publicationCommentViewModel}
               publicationDetailsData={publicationDetailsData}

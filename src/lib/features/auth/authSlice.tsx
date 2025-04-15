@@ -11,11 +11,14 @@ export type UserType =
   | "Organization"
   | "";
 
+export type CountryType = "Origin" | "Residence" | "Interest";
+
 export interface AuthState {
   userType: UserType;
   userId: string;
   userCountry: string;
   userObject: any;
+  countryType: "Origin" | "Residence" | "Interest" | "";
 }
 
 const initialState: AuthState = {
@@ -23,6 +26,7 @@ const initialState: AuthState = {
   userId: "",
   userCountry: "",
   userObject: {},
+  countryType: "",
 };
 
 export const authSlice = createSlice({
@@ -41,6 +45,9 @@ export const authSlice = createSlice({
     updateUserObject: (state, action: PayloadAction<string>) => {
       state.userObject = action.payload;
     },
+    updateCountryType: (state, action: PayloadAction<CountryType>) => {
+      state.countryType = action.payload;
+    },
     logout: () => {
       return initialState;
     },
@@ -53,6 +60,7 @@ export const {
   updateUserId,
   updateUserCountry,
   updateUserObject,
+  updateCountryType,
   logout,
 } = authSlice.actions;
 

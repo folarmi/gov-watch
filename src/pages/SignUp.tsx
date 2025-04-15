@@ -150,6 +150,7 @@ const Signup = () => {
               label="Country Of Origin"
               control={control}
               placeholder="Select Country"
+              rules={{ required: "Country of Origin is required" }}
             />
 
             <CustomSelect
@@ -159,6 +160,7 @@ const Signup = () => {
               label="Country Of Residence"
               control={control}
               placeholder="Select Country"
+              rules={{ required: "Country of Residence is required" }}
             />
 
             <CustomSelect

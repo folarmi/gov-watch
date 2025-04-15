@@ -4,7 +4,7 @@ import { SettingsLayout } from "../layouts/SettingsLayout";
 import { useAppSelector } from "../lib/hook";
 import { RootState } from "../lib/store";
 import CustomInput from "../component/CustomInput";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import CustomButton from "../component/CustomButton";
 import Loader from "../component/Loader";
 import CustomTextArea from "../component/CustomTextArea";
@@ -17,10 +17,17 @@ import {
 import FileUploader from "../component/FileUploader";
 import ImageDetails from "../component/ImageDetails";
 import { useQueryClient } from "@tanstack/react-query";
-import { getUserInitials } from "../utils";
+import { getAllCountryOptions, getUserInitials } from "../utils";
+import CustomSelect from "../component/CustomSelect";
+import { useDispatch } from "react-redux";
+import { CountryType, updateCountryType } from "../lib/features/auth/authSlice";
 
 const Setting = () => {
+  const dispatch = useDispatch();
+
+  const { countryType } = useAppSelector((state: RootState) => state.auth);
   const queryClient = useQueryClient();
+  const countryOptions = useMemo(() => getAllCountryOptions(), []);
 
   const { userId, userType } = useAppSelector((state: RootState) => state.auth);
 
@@ -112,6 +119,10 @@ const Setting = () => {
     }
   }, [userObject, reset]);
 
+  const handleSelectedType = (item: CountryType) => {
+    dispatch(updateCountryType(item));
+  };
+
   return (
     <SettingsLayout>
       {isLoading ? (
@@ -178,16 +189,49 @@ const Setting = () => {
               />
             </div>
 
-            <div className="flex items-center">
-              <CustomInput
-                className="mr-4"
-                label="Country"
-                name="country"
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Select Country Type
+              </label>
+              <div className="flex gap-x-2">
+                {["Origin", "Residence", "Interest"].map((type) => (
+                  <button
+                    key={type}
+                    type="button"
+                    className={`px-4 py-2 rounded-full border text-sm ${
+                      countryType === type
+                        ? "bg-green-600 text-white"
+                        : "bg-white border-gray-300 text-gray-700"
+                    }`}
+                    onClick={() => handleSelectedType(type)}
+                  >
+                    {type}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex items-center gap-x-4">
+              <CustomSelect
+                options={countryOptions}
+                placeholder="Select country"
+                label="Country of origin"
+                name="countryOfOrigin"
+                control={control}
+                isDisabled
+              />
+              <CustomSelect
+                options={countryOptions}
+                placeholder="Select country"
+                label="Country of Residence"
+                name="countryOfResidence"
                 control={control}
               />
-              <CustomInput
-                label="State of Residence"
-                name="state"
+              <CustomSelect
+                options={countryOptions}
+                placeholder="Select country"
+                label="Country of Interest"
+                name="countryOfInterest"
                 control={control}
               />
             </div>

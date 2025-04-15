@@ -14,7 +14,6 @@ const Subscription = () => {
     queryKey: ["GetUserDetails"],
   });
 
-  console.log(userObject);
   return (
     <>
       {isLoading ? (

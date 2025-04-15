@@ -13,11 +13,18 @@ import { RootState } from "../lib/store";
 
 import { useForm } from "react-hook-form";
 import { InfiniteScrolling } from "../component/InfiniteScrolling";
-import { queryParamsToAdd } from "../utils";
+import { convertCountryType, queryParamsToAdd } from "../utils";
 import Card from "../component/Card";
 import { Article } from "../types/generalTypes";
+import { useAuth } from "../context/AuthContext";
+import { updateCountryType } from "../lib/features/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useAuth();
+  const { countryType } = useAppSelector((state: RootState) => state.auth);
+
   const [categoryName, setCategoryName] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("");
   const [queryParam, setQueryParam] = useState("");
@@ -30,6 +37,12 @@ const Home = () => {
     (state: RootState) => state.auth
   );
 
+  // const test = {
+  //   countryOfInterest: "Nigeriahhs",
+  //   countryOfOrigin: "Nigeria",
+  //   countryOfResidence: "Nigeriahh",
+  // };
+
   const {
     data: articlesData,
     isLoading,
@@ -38,7 +51,8 @@ const Home = () => {
     url: `Publications/GetLatestPublications?categoryName=${
       categoryName === "all" ? "" : categoryName
     }&searcherId=${userId}${
-      userObject?.country ? `&countryName=${userObject.country}` : ""
+      isAuthenticated &&
+      `&countryName=${convertCountryType(countryType, userObject)}`
     }&${queryParamsToAdd(
       selectedFilter,
       queryParam
@@ -49,6 +63,7 @@ const Home = () => {
       queryParam,
       userObject?.country,
       JSON.stringify(pageNumber),
+      countryType,
       // pageNumber,
     ],
   });
@@ -102,11 +117,73 @@ const Home = () => {
         </form>
         <HeroSection />
 
+        {isAuthenticated && (
+          <div className="flex justify-center my-6">
+            {userObject?.countryOfInterest !== null ? (
+              <div className="flex justify-center my-6">
+                <div className="flex bg-gray-100 rounded-full p-1">
+                  {["Origin", "Residence", "Interest"].map((type) => (
+                    <button
+                      key={type}
+                      className={`px-4 py-2 rounded-full ${
+                        countryType === type
+                          ? "bg-primary text-white"
+                          : "hover:bg-gray-200"
+                      }`}
+                      onClick={() => dispatch(updateCountryType(type))}
+                    >
+                      {type}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center justify-center my-4">
+                <span className="mr-3">Origin</span>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    className="sr-only peer"
+                    checked={countryType === "Residence"}
+                    onChange={() =>
+                      dispatch(
+                        updateCountryType(
+                          countryType === "Origin" ? "Residence" : "Origin"
+                        )
+                      )
+                    }
+                  />
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                </label>
+                <span className="ml-3">Residence</span>
+              </div>
+            )}
+          </div>
+        )}
+
         <ScrollableCategories
           onClick={getCategory}
           categories={categoriesDataFormatted}
           // isLoading={loading}
         />
+
+        {/* <div className="border-b border-gray-200">
+          <nav className="flex space-x-8">
+            {["Origin", "Residence", "Interest",].map((type) => (
+              <button
+                key={type}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  countryType === type
+                    ? "border-blue-500 text-blue-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }`}
+                // onClick={() => setSelectedType(type)}
+              >
+                {type}
+              </button>
+            ))}
+          </nav>
+        </div> */}
 
         <InfiniteScrolling
           data={articlesData}

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { UserType } from "../lib/features/auth/authSlice";
+import { CountryType, UserType } from "../lib/features/auth/authSlice";
+import countryList from "react-select-country-list";
 
 export const truncateText = (text: string, maxLength: number) => {
   const words = text?.split(" ");
@@ -320,4 +321,26 @@ export const formatDateForSubmission = (dateString?: string | null) => {
 export const formatToYYYYMMDD = (dateStr: string | number | Date) => {
   const date = new Date(dateStr);
   return date.toISOString().split("T")[0]; // => "2025-04-01"
+};
+
+export const getAllCountryOptions = () => {
+  return countryList()
+    .getData()
+    .map((country: any) => ({
+      value: country.label,
+      label: country.label,
+    }));
+};
+
+export const convertCountryType = (
+  countryType: CountryType,
+  userObject: any
+) => {
+  let userCountryType;
+  if (countryType === "Interest")
+    userCountryType = userObject.countryOfInterest;
+  else if (countryType === "Residence")
+    userCountryType = userObject.countryOfResidence;
+  else userCountryType = userObject.countryOfOrigin;
+  return userCountryType;
 };
