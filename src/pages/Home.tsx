@@ -17,7 +17,7 @@ import { convertCountryType, queryParamsToAdd } from "../utils";
 import Card from "../component/Card";
 import { Article } from "../types/generalTypes";
 import { useAuth } from "../context/AuthContext";
-import { updateCountryType } from "../lib/features/auth/authSlice";
+import { CountryType, updateCountryType } from "../lib/features/auth/authSlice";
 import { useDispatch } from "react-redux";
 
 const Home = () => {
@@ -37,26 +37,23 @@ const Home = () => {
     (state: RootState) => state.auth
   );
 
-  // const test = {
-  //   countryOfInterest: "Nigeriahhs",
-  //   countryOfOrigin: "Nigeria",
-  //   countryOfResidence: "Nigeriahh",
-  // };
+  const hasQueryParams = queryParamsToAdd(selectedFilter, queryParam);
+  const url = `Publications/GetLatestPublications?categoryName=${
+    categoryName === "all" ? "" : categoryName
+  }&searcherId=${userId}${
+    isAuthenticated && !hasQueryParams
+      ? `&countryName=${convertCountryType(countryType, userObject)}`
+      : ""
+  }${
+    hasQueryParams ? `&${hasQueryParams}` : ""
+  }&pageNumber=${pageNumber}&pageSize=${pageSize}`;
 
   const {
     data: articlesData,
     isLoading,
     error,
   } = useGetData({
-    url: `Publications/GetLatestPublications?categoryName=${
-      categoryName === "all" ? "" : categoryName
-    }&searcherId=${userId}${
-      isAuthenticated &&
-      `&countryName=${convertCountryType(countryType, userObject)}`
-    }&${queryParamsToAdd(
-      selectedFilter,
-      queryParam
-    )}&pageNumber=${pageNumber}&pageSize=${pageSize}`,
+    url,
     queryKey: [
       "GetlatestPublications",
       categoryName,
@@ -122,19 +119,21 @@ const Home = () => {
             {userObject?.countryOfInterest !== null ? (
               <div className="flex justify-center my-6">
                 <div className="flex bg-gray-100 rounded-full p-1">
-                  {["Origin", "Residence", "Interest"].map((type) => (
-                    <button
-                      key={type}
-                      className={`px-4 py-2 rounded-full ${
-                        countryType === type
-                          ? "bg-primary text-white"
-                          : "hover:bg-gray-200"
-                      }`}
-                      onClick={() => dispatch(updateCountryType(type))}
-                    >
-                      {type}
-                    </button>
-                  ))}
+                  {(["Origin", "Residence", "Interest"] as CountryType[]).map(
+                    (type) => (
+                      <button
+                        key={type}
+                        className={`px-4 py-2 rounded-full ${
+                          countryType === type
+                            ? "bg-primary text-white"
+                            : "hover:bg-gray-200"
+                        }`}
+                        onClick={() => dispatch(updateCountryType(type))}
+                      >
+                        {type}
+                      </button>
+                    )
+                  )}
                 </div>
               </div>
             ) : (

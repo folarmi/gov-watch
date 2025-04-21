@@ -6,12 +6,14 @@ type EditPublicationProps = {
   toggleModal: () => void;
   handleFormSubmit: (data: any) => void;
   defaultValues?: any; // Add this
+  isLoading: boolean;
 };
 
 const EditPublication = ({
   toggleModal,
   handleFormSubmit,
   defaultValues,
+  isLoading,
 }: EditPublicationProps) => {
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
@@ -19,12 +21,13 @@ const EditPublication = ({
       <p className="text-sm mb-4">
         Are you sure you want to edit this publication?
       </p>
-
       <form className="flex items-center">
         <CustomButton
           className="w-fit mr-8"
           variant="secondary"
           onClick={toggleModal}
+          disabled={isLoading}
+          // loading={isLoading}
         >
           Cancel
         </CustomButton>
@@ -34,6 +37,8 @@ const EditPublication = ({
             handleFormSubmit(defaultValues);
           }}
           className="w-fit"
+          disabled={isLoading}
+          loading={isLoading}
         >
           Confirm
         </CustomButton>

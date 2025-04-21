@@ -836,6 +836,7 @@ const ArticleForm = ({
               toggleModal={toggleEditModal}
               handleFormSubmit={handleFormSubmit}
               defaultValues={defaultValues}
+              isLoading={isLoading}
             />
           </div>
         </Modal>

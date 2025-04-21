@@ -19,13 +19,8 @@ import ImageDetails from "../component/ImageDetails";
 import { useQueryClient } from "@tanstack/react-query";
 import { getAllCountryOptions, getUserInitials } from "../utils";
 import CustomSelect from "../component/CustomSelect";
-import { useDispatch } from "react-redux";
-import { CountryType, updateCountryType } from "../lib/features/auth/authSlice";
 
 const Setting = () => {
-  const dispatch = useDispatch();
-
-  const { countryType } = useAppSelector((state: RootState) => state.auth);
   const queryClient = useQueryClient();
   const countryOptions = useMemo(() => getAllCountryOptions(), []);
 
@@ -119,9 +114,9 @@ const Setting = () => {
     }
   }, [userObject, reset]);
 
-  const handleSelectedType = (item: CountryType) => {
-    dispatch(updateCountryType(item));
-  };
+  // const handleSelectedType = (item: CountryType) => {
+  //   dispatch(updateCountryType(item));
+  // };
 
   return (
     <SettingsLayout>
@@ -189,7 +184,7 @@ const Setting = () => {
               />
             </div>
 
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Select Country Type
               </label>
@@ -203,13 +198,13 @@ const Setting = () => {
                         ? "bg-green-600 text-white"
                         : "bg-white border-gray-300 text-gray-700"
                     }`}
-                    onClick={() => handleSelectedType(type)}
+                    // onClick={() => handleSelectedType(type)}
                   >
                     {type}
                   </button>
                 ))}
               </div>
-            </div>
+            </div> */}
 
             <div className="flex items-center gap-x-4">
               <CustomSelect
