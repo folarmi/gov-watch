@@ -33,10 +33,7 @@ const HeroSection = () => {
           participation in governance.
         </Text>
         <div className="flex items-center justify-between ">
-          <Text
-            variant="body"
-            className="w-[236px] md:w-[891px] pb-4 md:pb-0 leading-6"
-          >
+          <Text variant="body" className="lg:w-[891px] pb-4 md:pb-0 leading-6">
             GovWatch is on a mission to dismantle the iron law of oligarchy by
             strengthening the cornerstone of civilization: governance. Our goal
             is to champion and safeguard the interests of children, the true

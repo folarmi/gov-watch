@@ -18,7 +18,7 @@ const ManageUsers = () => {
   const [verticalMore, setVerticalMore] = useState(false);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 5,
+    pageSize: 10,
   });
 
   const { data: usersData, isLoading: usersDataIsLoading } = useGetData({
@@ -102,7 +102,7 @@ const ManageUsers = () => {
         {usersDataIsLoading ? (
           <Loader />
         ) : (
-          <div className="mt-10">
+          <div className="lg:mt-10">
             <Link
               to="/dashboard/manage-users/create
       "

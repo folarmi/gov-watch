@@ -110,6 +110,7 @@ const Home = () => {
             setQueryParam={setQueryParam}
             control={control}
             name="queryParam"
+            loading={isLoading}
           />
         </form>
         <HeroSection />

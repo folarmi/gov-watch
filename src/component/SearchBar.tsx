@@ -95,10 +95,17 @@ interface SearchBarProps {
   setQueryParam: (searchTerm: string) => void;
   name: string;
   control: any;
+  loading: boolean;
 }
 
 const SearchBar: React.FC<SearchBarProps> = React.memo(
-  ({ setSelectedFilter, name, control, setQueryParam }: SearchBarProps) => {
+  ({
+    setSelectedFilter,
+    name,
+    control,
+    setQueryParam,
+    loading,
+  }: SearchBarProps) => {
     const { field } = useController({
       name,
       control,
@@ -157,13 +164,17 @@ const SearchBar: React.FC<SearchBarProps> = React.memo(
               onClick={() => toggleFilter()}
               className="relative"
             >
-              <img
-                src="/filterIcon.svg"
-                alt="filter icon"
-                width={30}
-                height={30}
-                className="cursor-pointer"
-              />
+              {loading ? (
+                <p>hghhh</p>
+              ) : (
+                <img
+                  src="/filterIcon.svg"
+                  alt="filter icon"
+                  width={30}
+                  height={30}
+                  className="cursor-pointer"
+                />
+              )}
             </button>
             {/* md:top-12 md:left-0 */}
             {showFilterDropdown && (

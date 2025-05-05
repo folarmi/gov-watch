@@ -41,7 +41,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   } = useController({ name, control, rules });
 
   return (
-    <div className={`z-30 mb-4 w-full ${className}`}>
+    <div className={`z-30 mb-4 w-full  ${className}`}>
       {label && <label className="text-sm font-semibold">{label}</label>}
       <Select
         {...field}
@@ -53,7 +53,27 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
             ...baseStyles,
             height: "38px",
           }),
+          // control: (base, state) => ({
+          //   ...base,
+          //   height: "38px",
+          //   outline: "none", // Equivalent to focus:outline-none
+          //   boxShadow: state.isFocused ? "0 0 0 2px #16a34a" : "none", // focus:ring-2 focus:ring-green-600
+          //   borderColor: state.isFocused ? "#16a34a" : base.borderColor,
+          //   "&:hover": {
+          //     borderColor: state.isFocused ? "#16a34a" : base.borderColor,
+          //   },
+          // }),
+          menu: (base) => ({
+            ...base,
+            zIndex: 9999, // Ensure it's on top of most elements
+          }),
+          menuPortal: (base) => ({
+            ...base,
+            zIndex: 9999, // Necessary when using menuPortalTarget
+          }),
         }}
+        menuPortalTarget={document.body} // Render menu to body
+        menuPosition="absolute" // or 'fixed' if you prefer
         options={options}
         {...rest}
         onChange={(val: any) => {

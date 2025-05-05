@@ -29,7 +29,7 @@ const Text: React.FC<TextProps> = ({
       textSize = "text-base md:text-lg font-semibold dark:text-white";
       break;
     case "body":
-      textSize = "text-xs md:text-base font-normal dark:text-white";
+      textSize = "text-sm md:text-base font-normal dark:text-white";
       break;
     case "bodyTwo":
       textSize = "text-base font-bold dark:text-white";

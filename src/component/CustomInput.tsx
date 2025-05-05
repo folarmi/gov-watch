@@ -61,7 +61,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
             ${
               readOnly || rest.disabled
                 ? "bg-gray-200 border-gray-400 cursor-not-allowed"
-                : "bg-gray-50 border-black"
+                : "focus:outline-none focus:ring-2 focus:ring-green-600"
             }
           `}
           {...field}

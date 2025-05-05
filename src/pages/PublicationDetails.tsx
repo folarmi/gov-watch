@@ -16,6 +16,7 @@ import { RenderArticle } from "../component/forms/RenderArticle";
 import { useEffect, useState } from "react";
 import { Comments } from "../component/Comments";
 import { scrollToTop } from "../utils";
+import { InfoItem } from "../component/InfoItem";
 // import { InfiniteScrolling } from "../component/InfiniteScrolling";
 
 const PublicationDetails = () => {
@@ -67,34 +68,40 @@ const PublicationDetails = () => {
       {publicationDetailsIsLoading || publicationCommentsIsLoading ? (
         <Loader />
       ) : (
-        <section className="w-full max-w-[680px] mt-4 mx-auto">
+        <section className="w-full max-w-[680px] mt-4 mx-auto px-4 lg:px-0 ">
           <Link to="/" className="cursor-pointer">
             <img src={backButton} className="w-5 h-5" />
           </Link>
 
-          <div className="flex mt-2 mb-8 items-center gap-x-4">
-            <p className="text-base text-primary font-bold">
+          <div className="flex flex-wrap items-center mt-2 mb-8 gap-x-2 gap-y-2 lg:flex-nowrap lg:gap-x-4">
+            <p className="text-sm lg:text-base text-primary font-bold">
               {publicationDetailsData?.category}
             </p>
-            <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+
+            <div className="w-1.5 h-1.5 bg-gray-500 rounded-full"></div>
 
             <div className="flex items-center">
-              <img src={eyeIcon} className="mr-2" />
-              <p>{viewCount || 0} views</p>
+              <img
+                src={eyeIcon}
+                className="mr-1.5 w-4 h-4 lg:w-auto lg:h-auto"
+              />
+              <p className="text-sm lg:text-base">{viewCount || 0} views</p>
             </div>
-            <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
-            <p className="text-base text-black/90 font-medium">
+
+            <div className="w-1.5 h-1.5 bg-gray-500 rounded-full"></div>
+
+            <p className="text-sm lg:text-base text-black/90 font-medium">
               {publicationDetailsData?.date}
             </p>
           </div>
 
-          <main>
+          <main className="">
             <p
               style={{
                 fontSize:
                   "font-size: clamp(2rem, 1.4783rem + 2.6087vw, 3.5rem)",
               }}
-              className="text-6xl text-black font-black mb-2"
+              className="text-2xl lg:text-6xl text-black font-black mb-2"
             >
               {publicationDetailsData?.title}
             </p>
@@ -114,96 +121,45 @@ const PublicationDetails = () => {
             <RenderArticle articleContent={publicationDetailsData?.article} />
 
             {/* Start of additional information */}
+
             <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mt-8 shadow-md">
               <h3 className="font-bold text-lg mb-2">Additional Information</h3>
 
-              <div className="grid grid-cols-2 gap-4">
-                {publicationDetailsData?.state && (
-                  <div className="flex items-center">
-                    <span className="font-semibold text-gray-700">State:</span>
-                    <p className="ml-2 text-gray-600">
-                      {publicationDetailsData?.state}
-                    </p>
-                  </div>
-                )}
-
-                {publicationDetailsData?.lga && (
-                  <div className="flex items-center">
-                    <span className="font-semibold text-gray-700">LGA:</span>
-                    <p className="ml-2 text-gray-600">
-                      {publicationDetailsData?.lga}
-                    </p>
-                  </div>
-                )}
-
-                {publicationDetailsData?.politicalActorName && (
-                  <div className="flex items-center">
-                    <span className="font-semibold text-gray-700">
-                      Political Actor:
-                    </span>
-                    <p className="ml-2 text-gray-600">
-                      {publicationDetailsData?.politicalActorName}
-                    </p>
-                  </div>
-                )}
-
-                {publicationDetailsData?.mda && (
-                  <div className="flex items-center">
-                    <span className="font-semibold text-gray-700">MDAs:</span>
-                    <p className="ml-2 text-gray-600">
-                      {publicationDetailsData?.mda}
-                    </p>
-                  </div>
-                )}
-
-                {publicationDetailsData?.region && (
-                  <div className="flex items-center">
-                    <span className="font-semibold text-gray-700">Region:</span>
-                    <p className="ml-2 text-gray-600">
-                      {publicationDetailsData?.region}
-                    </p>
-                  </div>
-                )}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <InfoItem label="State" value={publicationDetailsData?.state} />
+                <InfoItem label="LGA" value={publicationDetailsData?.lga} />
+                <InfoItem
+                  label="Political Actor"
+                  value={publicationDetailsData?.politicalActorName}
+                />
+                <InfoItem label="MDAs" value={publicationDetailsData?.mda} />
+                <InfoItem
+                  label="Region"
+                  value={publicationDetailsData?.region}
+                />
 
                 {publicationDetailsData?.isPromise && (
-                  <div className="flex items-center">
-                    <span className="font-semibold text-gray-700">
-                      Date Promise Made:
-                    </span>
-                    <p className="ml-2 text-gray-600">
-                      {new Date(
-                        publicationDetailsData?.datePromiseMade
-                      ).toLocaleDateString()}
-                    </p>
-                  </div>
-                )}
-
-                {publicationDetailsData?.isPromise && (
-                  <div className="flex items-center">
-                    <span className="font-semibold text-gray-700">
-                      Promise Deadline:
-                    </span>
-                    <p className="ml-2 text-gray-600">
-                      {new Date(
-                        publicationDetailsData?.promiseDeadline
-                      ).toLocaleDateString()}
-                    </p>
-                  </div>
-                )}
-
-                {publicationDetailsData?.isPromise && (
-                  <div className="flex items-center">
-                    <span className="font-semibold text-gray-700">
-                      Date Promise Fulfilled:
-                    </span>
-                    <p className="ml-2 text-gray-600">
-                      {publicationDetailsData?.datePromiseFulfilled
-                        ? new Date(
-                            publicationDetailsData?.datePromiseFulfilled
-                          ).toLocaleDateString()
-                        : "Not fulfilled"}
-                    </p>
-                  </div>
+                  <>
+                    <InfoItem
+                      label="Date Promise Made"
+                      value={publicationDetailsData?.datePromiseMade}
+                      isDate
+                    />
+                    <InfoItem
+                      label="Promise Deadline"
+                      value={publicationDetailsData?.promiseDeadline}
+                      isDate
+                    />
+                    <InfoItem
+                      label="Date Promise Fulfilled"
+                      value={
+                        publicationDetailsData?.datePromiseFulfilled
+                          ? publicationDetailsData?.datePromiseFulfilled
+                          : "Not fulfilled"
+                      }
+                      isDate={!!publicationDetailsData?.datePromiseFulfilled}
+                    />
+                  </>
                 )}
               </div>
             </div>
@@ -311,8 +267,8 @@ const PublicationDetails = () => {
             <div className="flex items-center space-x-8 my-8">
               {/* Profile Image */}
               <Link
-                to={`/author/${publicationDetailsData?.contributorPublicId} `}
-                className="w-36 h-36 overflow-hidden rounded-full shadow-lg"
+                to={`/author/${publicationDetailsData?.contributorPublicId}`}
+                className="relative overflow-hidden rounded-full shadow-lg aspect-square w-16 sm:w-20 md:w-28 lg:w-36"
                 onClick={() => scrollToTop()}
               >
                 <img
@@ -324,10 +280,10 @@ const PublicationDetails = () => {
 
               {/* Author Information */}
               <div>
-                <p className="font-bold text-3xl text-gray-800">
+                <p className="font-bold text-xl lg:text-3xl text-gray-800">
                   Written by {publicationDetailsData?.authorName}
                 </p>
-                <p className="text-gray-600 mt-2 text-base">
+                <p className="text-gray-600 mt-2 text-sm lg:text-base">
                   {publicationDetailsData?.bio}
                 </p>
               </div>

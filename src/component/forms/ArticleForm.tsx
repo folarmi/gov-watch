@@ -247,6 +247,13 @@ const ArticleForm = ({
     enabled: !!selectedLGA || isEditing,
   });
 
+  const { data: senatorialData, isLoading: senatorialDataIsLoading } =
+    useGetData({
+      url: `/SenatorialDistricts/GetListOfSenatorialDistricts?countryName=${userCountry}&pageSize=100`,
+      queryKey: ["GetListOfSenatorialDistricts"],
+      // enabled: !!selectedLGA || isEditing,
+    });
+
   const { data: mdaData, isLoading: mdaDataIsLoading } = useGetData({
     url: `/Mdas/GetListOfMdas?countryName=${userCountry}&pageNumber=1&pageSize=100`,
     queryKey: ["GetListOfMdas", selectedState],
@@ -298,6 +305,14 @@ const ArticleForm = ({
   const wardDataFormatted =
     wardData &&
     wardData?.map((item: string) => {
+      return {
+        label: item,
+        value: item,
+      };
+    });
+  const senatorialListDataFormatted =
+    senatorialData &&
+    senatorialData?.map((item: string) => {
       return {
         label: item,
         value: item,
@@ -486,6 +501,15 @@ const ArticleForm = ({
                   placeholder="Select Ward"
                 />
               </div>
+
+              <CustomSelect
+                name="senatorialDistrict"
+                options={senatorialListDataFormatted}
+                isLoading={senatorialDataIsLoading}
+                label="Senatorial District"
+                control={control}
+                placeholder="Select Senatorial District"
+              />
 
               {/* Checkboxes */}
 
@@ -715,7 +739,7 @@ const ArticleForm = ({
           Article
         </label>
         <ReactQuill
-          style={{ height: "10rem", marginBottom: "5rem" }}
+          style={{ height: "40rem", marginBottom: "5rem" }}
           theme="snow"
           value={field?.value}
           onChange={field?.onChange}
