@@ -18,6 +18,15 @@ import { Comments } from "../component/Comments";
 import { scrollToTop } from "../utils";
 import { InfoItem } from "../component/InfoItem";
 // import { InfiniteScrolling } from "../component/InfiniteScrolling";
+import {
+  FacebookShareButton,
+  LinkedinIcon,
+  LinkedinShareButton,
+  TwitterIcon,
+  TwitterShareButton,
+  FacebookIcon,
+} from "react-share";
+import { ShareButtonIcon } from "../component/SocialShrareButton";
 
 const PublicationDetails = () => {
   const params = useParams();
@@ -69,9 +78,29 @@ const PublicationDetails = () => {
         <Loader />
       ) : (
         <section className="w-full max-w-[680px] mt-4 mx-auto px-4 lg:px-0 ">
-          <Link to="/" className="cursor-pointer">
-            <img src={backButton} className="w-5 h-5" />
-          </Link>
+          <div className="flex items-center justify-between ">
+            <Link to="/" className="cursor-pointer">
+              <img src={backButton} className="w-5 h-5" />
+            </Link>
+
+            <div className="flex items-center gap-x-3">
+              <ShareButtonIcon
+                Button={LinkedinShareButton}
+                Icon={LinkedinIcon}
+                publicId={publicationDetailsData?.publicId}
+              />
+              <ShareButtonIcon
+                Button={TwitterShareButton}
+                Icon={TwitterIcon}
+                publicId={publicationDetailsData?.publicId}
+              />
+              <ShareButtonIcon
+                Button={FacebookShareButton}
+                Icon={FacebookIcon}
+                publicId={publicationDetailsData?.publicId}
+              />
+            </div>
+          </div>
 
           <div className="flex flex-wrap items-center mt-2 mb-8 gap-x-2 gap-y-2 lg:flex-nowrap lg:gap-x-4">
             <p className="text-sm lg:text-base text-primary font-bold">
@@ -296,3 +325,6 @@ const PublicationDetails = () => {
 };
 
 export { PublicationDetails };
+
+// https://www.govwatch.ng/latest-publications/ed3a47a4-879f-43bd-9820-6215f2c6fd6e - linkedIn
+// https://www.govwatch.ng/latest-publications/eec65335-1fe6-4f30-a23e-f38d2f431a6e

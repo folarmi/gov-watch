@@ -153,7 +153,7 @@ const StateDetails = () => {
                           // isArticleBookMarked={isArticleBookMarked}
                           // setIsArticleBookMarked={setIsArticleBookMarked}
                           isPublished
-                          link={`/latest-publications/${publicId}`}
+                          link={`/publication/${publicId}`}
                         />
                       </div>
                     );

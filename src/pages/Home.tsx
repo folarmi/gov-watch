@@ -211,7 +211,7 @@ const Home = () => {
               isPublished
               dateIncidentStarted={article?.dateIncidentStarted}
               dateIncidentResolved={article?.dateIncidentResolved}
-              link={`/latest-publications/${article?.publicId}`}
+              link={`/publication/${article?.publicId}`}
             />
           )}
         />

@@ -59,6 +59,7 @@ import GoogleAdScript from "../hooks/AdsScript";
 import { useAppSelector } from "../lib/hook";
 import { RootState } from "../lib/store";
 import { useAuth } from "../context/AuthContext";
+import { RedirectOldPublication } from "./RedirectOldPublication";
 // import Test from "../component/Test";
 
 const RoutePage = () => {
@@ -92,9 +93,10 @@ const RoutePage = () => {
         <Route path="/cookies-policy" element={<CookiesPolicy />} />
         <Route path="/pricing" element={<Pricing />} />
         <Route
-          path="/latest-publications/:id"
-          element={<PublicationDetails />}
+          path="/latest-publications/:oldId"
+          element={<RedirectOldPublication />}
         />
+        <Route path="/publication/:id" element={<PublicationDetails />} />
         <Route path="/explore/:id" element={<StateDetails />} />
         <Route path="/dashboard/manage-users" element={<ManageUsers />} />
         <Route path="/dashboard/analytics" element={<DashboardAnalytics />} />

@@ -8,11 +8,11 @@ const Pricing = () => {
 
   return (
     <OuterPage>
-      <div className="flex justify-center items-center">
+      <div className="flex flex-col md:flex-row justify-center items-center">
         {planTypes?.map(({ amount, id, planName }) => {
           return (
             <div
-              className="mr-8"
+              className="mr-0 md:mr-8 mt-8"
               key={id}
               onClick={() => setSelectedPlan(planName)}
             >
