@@ -15,7 +15,7 @@ import sampleWriter from "../assets/sampleWriter.webp";
 import { RenderArticle } from "../component/forms/RenderArticle";
 import { useEffect, useState } from "react";
 import { Comments } from "../component/Comments";
-import { scrollToTop } from "../utils";
+import { copyToClipboard, scrollToTop } from "../utils";
 import { InfoItem } from "../component/InfoItem";
 // import { InfiniteScrolling } from "../component/InfiniteScrolling";
 import {
@@ -27,10 +27,12 @@ import {
   FacebookIcon,
 } from "react-share";
 import { ShareButtonIcon } from "../component/SocialShrareButton";
+import { Link2Icon } from "lucide-react";
+import { toast } from "react-toastify";
 
 const PublicationDetails = () => {
   const params = useParams();
-  const [viewCount, setViewCount] = useState();
+  const [, setViewCount] = useState();
   const [pageNumber, setPageNumber] = useState<any>(1);
   const pageSize = 12;
 
@@ -72,6 +74,18 @@ const PublicationDetails = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  const handleCopy = async () => {
+    const success = await copyToClipboard(
+      `https://www.govwatch.ng/publication/${publicationDetailsData?.publicId}`
+    );
+
+    toast[success ? "success" : "error"](
+      success
+        ? "Link copied to clipboard!"
+        : "Failed to copy. Please try again."
+    );
+  };
+
   return (
     <OuterPage>
       {publicationDetailsIsLoading || publicationCommentsIsLoading ? (
@@ -99,6 +113,9 @@ const PublicationDetails = () => {
                 Icon={FacebookIcon}
                 publicId={publicationDetailsData?.publicId}
               />
+              <div className="transition-transform duration-200 hover:opacity-80 hover:scale-105 cursor-pointer">
+                <Link2Icon onClick={handleCopy} />
+              </div>
             </div>
           </div>
 
@@ -114,7 +131,9 @@ const PublicationDetails = () => {
                 src={eyeIcon}
                 className="mr-1.5 w-4 h-4 lg:w-auto lg:h-auto"
               />
-              <p className="text-sm lg:text-base">{viewCount || 0} views</p>
+              <p className="text-sm lg:text-base">
+                {publicationDetailsData?.viewCount || 0} views
+              </p>
             </div>
 
             <div className="w-1.5 h-1.5 bg-gray-500 rounded-full"></div>

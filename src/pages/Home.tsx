@@ -101,6 +101,12 @@ const Home = () => {
     setPageNumber(1);
   };
 
+  const getAllowedCountryTypes = (status: number): CountryType[] => {
+    if (status === 0) return ["Origin"];
+    if (status === 1) return ["Origin", "Residence"];
+    return ["Origin", "Residence", "Interest"];
+  };
+
   return (
     <OuterPage resetState={resetState}>
       <div className="px-8 md:px-24">
@@ -117,7 +123,7 @@ const Home = () => {
 
         {isAuthenticated && (
           <div className="flex justify-center my-6">
-            {userObject?.countryOfInterest !== null ? (
+            {/* {userObject?.countryOfInterest !== null ? (
               <div className="flex justify-center my-6">
                 <div className="flex bg-gray-100 rounded-full p-1">
                   {(["Origin", "Residence", "Interest"] as CountryType[]).map(
@@ -156,6 +162,52 @@ const Home = () => {
                   <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                 </label>
                 <span className="ml-3">Residence</span>
+              </div>
+            )} */}
+
+            {userObject?.countryOfInterest !== null ? (
+              <div className="flex justify-center my-6">
+                <div className="flex bg-gray-100 rounded-full p-1">
+                  {getAllowedCountryTypes(userObject?.subscriptionStatus).map(
+                    (type) => (
+                      <button
+                        key={type}
+                        className={`px-4 py-2 rounded-full ${
+                          countryType === type
+                            ? "bg-primary text-white"
+                            : "hover:bg-gray-200"
+                        }`}
+                        onClick={() => dispatch(updateCountryType(type))}
+                      >
+                        {type}
+                      </button>
+                    )
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center justify-center my-4">
+                <span className="mr-3">Origin</span>
+                {userObject?.subscriptionStatus >= 1 && (
+                  <>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        className="sr-only peer"
+                        checked={countryType === "Residence"}
+                        onChange={() =>
+                          dispatch(
+                            updateCountryType(
+                              countryType === "Origin" ? "Residence" : "Origin"
+                            )
+                          )
+                        }
+                      />
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                    </label>
+                    <span className="ml-3">Residence</span>
+                  </>
+                )}
               </div>
             )}
           </div>
