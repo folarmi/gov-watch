@@ -13,7 +13,6 @@ const Subscription = () => {
     url: `Users/GetUserById?publicId=${userId}`,
     queryKey: ["GetUserDetails"],
   });
-
   return (
     <>
       {isLoading ? (
@@ -22,7 +21,7 @@ const Subscription = () => {
         <SettingsLayout>
           <div className="flex items-center">
             <SubscriptionInfo
-              isSubscribed={userObject?.isSubscribed}
+              isSubscribed={userObject?.subscriptionStatus !== 0}
               expirationDate={moment(
                 userObject?.subscriptionExpirationDate
               ).format("DD-MM-YYYY")}

@@ -165,7 +165,7 @@ const SearchBar: React.FC<SearchBarProps> = React.memo(
               className="relative"
             >
               {loading ? (
-                <p>hghhh</p>
+                <div className="w-[30px] h-[30px] rounded-full bg-gray-200 animate-pulse" />
               ) : (
                 <img
                   src="/filterIcon.svg"
