@@ -75,3 +75,47 @@ export interface Article {
   dateIncidentResolved?: string;
   isLiked?: boolean;
 }
+
+export interface Publication {
+  publicId: string;
+  snippet: string;
+  article: string;
+  image: string;
+  imageCaption: string;
+  contributorPublicId: string;
+  category: string;
+  state: string;
+  senatorialDistrict: string | null;
+  ward: string | null;
+  lcda: string;
+  region: string | null;
+  isFederal: boolean;
+  title: string;
+  authorName: string;
+  tags: string;
+  reference: string;
+  link: string;
+  contributorFullName: string;
+  bio: string;
+  socialMediaLink: string;
+  contributorImage: string;
+  viewCount: string;
+  date: string;
+  lastModifiedDate: string | null;
+  isPromise: boolean;
+  isCredible: boolean;
+  isPromiseFulfilled: boolean | null;
+  datePromiseMade: string | null;
+  promiseDeadline: string | null;
+  dateIncidentStarted: string;
+  dateIncidentResolved: string | null;
+  datePromiseFulfilled: string | null;
+  politicalActorName: string;
+  lga: string;
+  mda: string;
+  country: string;
+  isSuccessful: boolean;
+  statusCode: number;
+  remark: string;
+  totalCount: number;
+}

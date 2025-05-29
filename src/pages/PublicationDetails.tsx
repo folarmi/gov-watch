@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link, useParams } from "react-router-dom";
@@ -29,6 +30,7 @@ import {
 import { ShareButtonIcon } from "../component/SocialShrareButton";
 import { Link2Icon } from "lucide-react";
 import { toast } from "react-toastify";
+import RelatedArticles from "../component/RelatedArticles";
 
 const PublicationDetails = () => {
   const params = useParams();
@@ -41,7 +43,7 @@ const PublicationDetails = () => {
     isLoading: publicationDetailsIsLoading,
   } = useGetDataById({
     url: `Publications/GetPublicationById?publicId=${params?.id}`,
-    queryKey: ["GetAllUserBookmarksByUserId"],
+    queryKey: ["GetAllUserBookmarksByUserId", params?.id!],
     enabled: !!params?.id,
   });
 
@@ -275,6 +277,10 @@ const PublicationDetails = () => {
                   })}
             </div>
 
+            <RelatedArticles
+              article={publicationDetailsData}
+              key={publicationDetailsData.publicId}
+            />
             {/* {publicationDetailsData?.bio !== null && (
               <p className="my-6 text-base font-normal">
                 <span className="font-semibold">
@@ -344,6 +350,3 @@ const PublicationDetails = () => {
 };
 
 export { PublicationDetails };
-
-// https://www.govwatch.ng/latest-publications/ed3a47a4-879f-43bd-9820-6215f2c6fd6e - linkedIn
-// https://www.govwatch.ng/latest-publications/eec65335-1fe6-4f30-a23e-f38d2f431a6e
