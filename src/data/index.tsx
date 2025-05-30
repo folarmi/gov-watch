@@ -631,42 +631,51 @@ export const searchBarFilter = [
   },
 ];
 
-export const dummyPlans = [
-  {
-    id: 1,
-    name: "Bookmark publications",
-    isActive: true,
-  },
-  {
-    id: 2,
-    name: "Setup Reminders",
-    isActive: true,
-  },
-  {
-    id: 3,
-    name: "No Ads",
-    isActive: true,
-  },
-  {
-    id: 4,
-    name: "Update comment on a post",
-    isActive: true,
-  },
-  // {
-  //   id: 5,
-  //   name: "API Access",
-  //   isActive: false,
-  // },
-  // {
-  //   id: 6,
-  //   name: "Complete documentation",
-  //   isActive: false,
-  // },
-  // {
-  //   id: 7,
-  //   name: "24×7 phone & email support",
-  //   isActive: false,
-  // },
+const sharedFeatures = [
+  { id: 1, name: "Bookmark publications", isActive: true },
+  { id: 2, name: "Setup Reminders", isActive: true },
+  { id: 3, name: "No Ads", isActive: true },
+  { id: 4, name: "Update comment on a post", isActive: true },
+];
+
+const standardOnlyFeatures = [
+  { id: 5, name: "View content from country of origin", isActive: true },
+  { id: 6, name: "View content from country of residence", isActive: true },
+  { id: 7, name: "Change country of residence once a year", isActive: true },
+];
+
+const globalOnlyFeatures = [
+  { id: 8, name: "View content from country of origin", isActive: true },
+  { id: 9, name: "View content from country of residence", isActive: true },
+  { id: 10, name: "View content from country of interest", isActive: true },
+  { id: 11, name: "Change country of interest anytime", isActive: true },
+  { id: 12, name: "Change country of residence anytime", isActive: true },
+];
+
+export const standardSubscriptionFeatures = [
+  ...sharedFeatures,
+  ...standardOnlyFeatures,
+];
+
+export const globalSubscriptionFeatures = [
+  ...sharedFeatures,
+  ...globalOnlyFeatures,
+];
+
+const makePlan = (id: number, name: string, amount: string, features: any) => ({
+  id,
+  planName: name,
+  amount,
+  features,
+});
+
+export const planTypes = [
+  makePlan(1, "Classic Monthly", "1000", standardSubscriptionFeatures),
+  makePlan(2, "Classic Biannual", "5800", standardSubscriptionFeatures),
+  makePlan(3, "Classic Yearly", "11000", standardSubscriptionFeatures),
+  makePlan(4, "Global Monthly", "150,000", globalSubscriptionFeatures),
+  makePlan(5, "Global Biannual", "870,000", globalSubscriptionFeatures),
+  makePlan(6, "Global Yearly", "1,650,000", globalSubscriptionFeatures),
 ];
 
 <li className="flex line-through decoration-gray-500">
@@ -683,24 +692,6 @@ export const dummyPlans = [
     Sketch Files
   </span>
 </li>;
-
-export const planTypes = [
-  {
-    id: 1,
-    planName: "Monthly",
-    amount: "1000",
-  },
-  {
-    id: 2,
-    planName: "Biannual",
-    amount: "5800",
-  },
-  {
-    id: 3,
-    planName: "Yearly",
-    amount: "11000",
-  },
-];
 
 export const politicalLevelData = [
   {

@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useDispatch } from "react-redux";
-import { dummyPlans } from "../data";
 import { useCustomMutation, useGetData } from "../hooks/apiCalls";
 import { useAppSelector } from "../lib/hook";
 import { RootState } from "../lib/store";
@@ -15,9 +14,15 @@ type PricingCardProp = {
   planName: string;
   amount: string;
   selectedPlan?: string;
+  features: any;
 };
 
-const PricingCard = ({ planName, amount, selectedPlan }: PricingCardProp) => {
+const PricingCard = ({
+  planName,
+  amount,
+  selectedPlan,
+  features,
+}: PricingCardProp) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [shouldFetch, setShouldFetch] = useState(false);
@@ -119,37 +124,36 @@ const PricingCard = ({ planName, amount, selectedPlan }: PricingCardProp) => {
         <span className="text-3xl font-semibold">₦</span>
         <span className="text-5xl font-extrabold tracking-tight">{amount}</span>
       </div>
-
       <ul role="list" className="space-y-5 my-7">
-        {dummyPlans?.map(({ id, name, isActive }) => {
-          return (
-            <li
-              className={`flex ${
-                isActive ? "items-center" : "line-through decoration-gray-500"
+        {features.map(({ id, name, isActive }: any) => (
+          <li
+            key={id}
+            className={`flex ${
+              isActive ? "items-center" : "line-through decoration-gray-500"
+            }`}
+          >
+            <svg
+              className={`flex-shrink-0 w-4 h-4 ${
+                isActive ? "text-primary" : "text-gray-400"
               }`}
-              key={id}
+              style={{
+                color: isActive ? "#008000" : "#9CA3AF",
+              }}
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 20 20"
             >
-              <svg
-                className={`flex-shrink-0 w-4 h-4 ${
-                  isActive ? "text-primary" : "text-gray-400"
-                }"`}
-                style={{
-                  color: isActive ? "#008000" : "#9CA3AF",
-                }}
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
-              </svg>
-              <span className="text-base font-normal leading-tight text-gray-500  ms-3">
-                {name}
-              </span>
-            </li>
-          );
-        })}
+              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+            </svg>
+
+            <span className="text-base font-normal leading-tight text-gray-500  ms-3">
+              {name}
+            </span>
+          </li>
+        ))}
       </ul>
+      {/* <SubscriptionFeatureList features={standardSubscriptionFeatures} /> */}
 
       <CustomButton
         type="button"

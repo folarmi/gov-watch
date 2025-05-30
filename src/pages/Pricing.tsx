@@ -8,8 +8,9 @@ const Pricing = () => {
 
   return (
     <OuterPage>
-      <div className="flex flex-col md:flex-row justify-center items-center">
-        {planTypes?.map(({ amount, id, planName }) => {
+      {/* <div className="flex flex-col md:flex-row flex-wrap justify-center items-center"> */}
+      <div className="grid grid-cols-3 mx-auto w-[80%]">
+        {planTypes?.map(({ amount, id, planName, features }) => {
           return (
             <div
               className="mr-0 md:mr-8 mt-8"
@@ -20,6 +21,7 @@ const Pricing = () => {
                 planName={planName}
                 amount={amount}
                 selectedPlan={selectedPlan}
+                features={features}
               />
             </div>
           );
