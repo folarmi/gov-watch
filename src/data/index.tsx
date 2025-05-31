@@ -678,6 +678,57 @@ export const planTypes = [
   makePlan(6, "Global Yearly", "1,650,000", globalSubscriptionFeatures),
 ];
 
+export const pricingPlans = [
+  {
+    title: "Classic Monthly",
+    price: "₦1,000",
+    frequency: "per month",
+    emails: "1000 emails/mo",
+    contacts: "100 contacts",
+    cta: "Buy Now",
+  },
+  {
+    title: "Classic Biannual",
+    price: "₦5,800",
+    frequency: "every 6 months",
+    emails: "50,000 emails/mo",
+    contacts: "25,000 contacts",
+    cta: "Buy Now",
+  },
+  {
+    title: "Classic Yearly",
+    price: "₦11,000",
+    frequency: "per year",
+    emails: "100,000 emails/mo",
+    contacts: "100,000 contacts",
+    cta: "Buy Now",
+  },
+  {
+    title: "Global Monthly",
+    price: "₦150,000",
+    frequency: "per month",
+    emails: "1,500,000 emails/mo",
+    contacts: "1,500,000 contacts",
+    cta: "Buy Now",
+  },
+  {
+    title: "Global Biannual",
+    price: "₦870,000",
+    frequency: "every 6 months",
+    emails: "1,500,000 emails/mo",
+    contacts: "1,500,000 contacts",
+    cta: "Buy Now",
+  },
+  {
+    title: "Global Yearly",
+    price: "₦1,650,000",
+    frequency: "per year",
+    emails: "1,500,000 emails/mo",
+    contacts: "1,500,000 contacts",
+    cta: "Buy Now",
+  },
+];
+
 <li className="flex line-through decoration-gray-500">
   <svg
     className="flex-shrink-0 w-4 h-4 text-gray-400 dark:text-gray-500"
