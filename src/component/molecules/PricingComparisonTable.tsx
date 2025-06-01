@@ -14,7 +14,7 @@ const rows = [
     values: [true, true, true, true, true, true],
   },
   {
-    label: "Comment on a post",
+    label: "Update comment on post",
     values: [true, true, true, true, true, true],
   },
   {

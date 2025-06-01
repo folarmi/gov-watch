@@ -42,9 +42,10 @@ const Pricing = () => {
         <PricingComparisonTable />
 
         <div className="bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 p-4 rounded-md mt-6 text-sm">
-          Please note: At the moment, all pricing and content are tailored
-          specifically for Nigeria. We’re working to expand to more countries
-          soon.
+          Disclaimer: At the moment, all pricing and content are tailored
+          specifically for Nigeria. We are working to expand to more countries
+          soon and your global plan subscription can help to determine which
+          countries we prioritize in our expansion.
         </div>
       </div>
     </OuterPage>
