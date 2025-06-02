@@ -30,7 +30,7 @@ const rows = [
     values: [true, true, true, true, true, true],
   },
   {
-    label: "Change country of Residence once a year",
+    label: "Change country of residence once a year",
     values: [true, true, true, false, false, false],
   },
   {
