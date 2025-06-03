@@ -29,7 +29,7 @@ const PricingCard = ({
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const [shouldFetch, setShouldFetch] = useState(false);
-  const [verificationStatus, setVerificationStatus] = useState("");
+  const [, setVerificationStatus] = useState("");
   const { userId, userType } = useAppSelector((state: RootState) => state.auth);
   const { referenceNumber } = useAppSelector(
     (state: RootState) => state.payment
