@@ -677,6 +677,19 @@ const ArticleForm = ({
                 defaultTags={defaultValues?.tags?.split(/\s*,\s*/) || []}
                 // defaultTags={defaultValues?.tags}
               />
+
+              {/* Article Content */}
+
+              <label htmlFor="Article" className="text-sm mt-2 font-medium">
+                Article
+              </label>
+              <ReactQuill
+                style={{ height: "40rem", marginBottom: "5rem" }}
+                theme="snow"
+                value={field?.value}
+                onChange={field?.onChange}
+              />
+
               <label htmlFor="Reference" className="text-sm mt-2 font-medium">
                 Reference
               </label>
@@ -733,20 +746,7 @@ const ArticleForm = ({
           )}
         </div>
 
-        {/* Article Content */}
-
-        <label htmlFor="Article" className="text-sm mt-2 font-medium">
-          Article
-        </label>
-        <ReactQuill
-          style={{ height: "40rem", marginBottom: "5rem" }}
-          theme="snow"
-          value={field?.value}
-          onChange={field?.onChange}
-        />
-
         {/* Button Actions */}
-
         <>
           {!isPending && (
             <div className="flex flex-wrap gap-4 mb-10">

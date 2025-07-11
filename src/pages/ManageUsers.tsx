@@ -13,6 +13,7 @@ import { useState } from "react";
 import Modal from "../component/modals/Modal";
 import Users from "../component/modals/Users";
 import { keepPreviousData } from "@tanstack/react-query";
+import { getUserInitialsFirstAndLast } from "../types/generalTypes";
 
 const ManageUsers = () => {
   const [verticalMore, setVerticalMore] = useState(false);
@@ -43,9 +44,33 @@ const ManageUsers = () => {
         />
       ),
     }),
-    columnHelper.display({
-      id: "actions",
-      cell: () => <img src="/defaultAvatar.svg" alt="default avatar" />,
+
+    columnHelper.accessor("image", {
+      header: "User Image",
+      cell: (info) => {
+        const firstName = info.row.original?.firstName;
+        const lastName = info.row.original?.lastName;
+        return (
+          <>
+            {!info.getValue() ? (
+              <div
+                className="w-20 h-20 rounded-full bg-primary text-white flex items-center justify-center text-xl font-semibold uppercase"
+                role="img"
+                aria-label="User initials"
+              >
+                {getUserInitialsFirstAndLast(firstName, lastName)}
+              </div>
+            ) : (
+              <img
+                src={info.getValue()}
+                className="h-20 w-20 rounded-full"
+                alt="user-avatar"
+                loading="lazy"
+              />
+            )}
+          </>
+        );
+      },
     }),
     columnHelper.accessor("firstName", {
       header: "First Name",

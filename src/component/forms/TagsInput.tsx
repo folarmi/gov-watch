@@ -36,7 +36,7 @@ const TagsInput: React.FC<TagsInputProps> = ({ tags, setTags }) => {
   };
 
   return (
-    <div className="tag-input-container mt-4">
+    <div className="tag-input-container">
       <label htmlFor="article-tags" className="text-sm font-medium">
         Article Tags
       </label>

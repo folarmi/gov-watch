@@ -112,7 +112,7 @@ const Leaderboard = () => {
         <Loader />
       ) : (
         <div className="mt-4 mx-auto w-3/4 mb-16">
-          <form className="w-1/2 mr-8 mb-4 flex items-center">
+          <form className="w-full lg:w-1/2 mr-8 mb-4 flex items-center">
             <CustomSelect
               name="country"
               options={leaderboardFilter}

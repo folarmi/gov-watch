@@ -9,9 +9,12 @@ import CustomButton from "../component/CustomButton";
 import Loader from "../component/Loader";
 import CustomTextArea from "../component/CustomTextArea";
 import {
+  updateFileHandler,
   UploadError,
+  uploadFile,
   useCustomMutation,
   useGetData,
+  useGetImageDetails,
   useUploadMutation,
 } from "../hooks/apiCalls";
 import FileUploader from "../component/FileUploader";
@@ -19,17 +22,20 @@ import ImageDetails from "../component/ImageDetails";
 import { useQueryClient } from "@tanstack/react-query";
 import { getAllCountryOptions, getUserInitials } from "../utils";
 import CustomSelect from "../component/CustomSelect";
+import { toast } from "react-toastify";
 
 const Setting = () => {
   const queryClient = useQueryClient();
   const countryOptions = useMemo(() => getAllCountryOptions(), []);
-
   const { userId, userType } = useAppSelector((state: RootState) => state.auth);
 
   const { data: userObject, isLoading } = useGetData({
     url: `Users/GetUserById?publicId=${userId}`,
-    queryKey: ["GetUserDetails"],
+    queryKey: ["GetUserDetails", userId],
+    enabled: !!userId,
   });
+
+  const { data: imageDetails } = useGetImageDetails(userObject);
 
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
@@ -42,7 +48,6 @@ const Setting = () => {
     },
   });
 
-  const [backendPath, setBackendPath] = useState("");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
   const updateUserMutation = useCustomMutation({
@@ -58,7 +63,14 @@ const Setting = () => {
     },
   });
 
-  const submitForm = (data: any) => {
+  const handleError = (error: UploadError) => {
+    console.error("Upload error:", error);
+  };
+
+  const uploadMutation = useUploadMutation(undefined, handleError);
+  const updateUploadMutation = useUploadMutation(undefined, handleError, "put");
+
+  const submitForm = async (data: any) => {
     const keysToDelete = [
       "statusCode",
       "remark",
@@ -84,28 +96,55 @@ const Setting = () => {
     const formData = {
       ...data,
       lastModifiedBy: userId,
-      image: backendPath || userObject?.image,
+      image: userObject?.image,
     };
 
-    updateUserMutation.mutate(formData);
-  };
+    try {
+      let uploadedFilePath;
 
-  const handleSuccess = (data: any) => {
-    setBackendPath(data?.filePath);
-  };
+      if (uploadedFile && userObject?.image === "") {
+        // Upload the new file
+        uploadedFilePath = await uploadFile(
+          uploadedFile,
+          userId,
+          uploadMutation
+        );
 
-  const handleError = (error: UploadError) => {
-    console.error("Upload error:", error);
-  };
+        if (!uploadedFilePath) {
+          toast.error("File upload failed.");
+          return;
+        }
+      }
 
-  const uploadMutation = useUploadMutation(handleSuccess, handleError);
+      // Handle existing user image
+      if (userObject?.image) {
+        if (uploadedFile) {
+          // User has an existing image AND uploaded a new one → update
+          const newFilePath = await updateFileHandler(
+            uploadedFile,
+            userId,
+            imageDetails?.publicId,
+            updateUploadMutation
+          );
+          formData.image = newFilePath;
+        } else {
+          // User has an existing image but didn’t upload a new one → reuse
+          formData.image = userObject.image;
+        }
 
-  const handleFileUpload = (file: File) => {
-    setUploadedFile(file);
-    const formData = new FormData();
-    formData.append("uploadFile", file);
-    formData.append("createdBy", userId);
-    uploadMutation.mutate(formData);
+        // Mark that the user updated their data
+        formData.lastModifiedBy = userId;
+      } else {
+        // New user or no existing image
+        formData.image = uploadedFilePath;
+        formData.createdBy = userId;
+      }
+
+      // Submit the form
+      await updateUserMutation.mutateAsync(formData);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -114,10 +153,6 @@ const Setting = () => {
     }
   }, [userObject, reset]);
 
-  // const handleSelectedType = (item: CountryType) => {
-  //   dispatch(updateCountryType(item));
-  // };
-
   return (
     <SettingsLayout>
       {isLoading ? (
@@ -125,7 +160,7 @@ const Setting = () => {
       ) : (
         <form onSubmit={handleSubmit(submitForm)}>
           <>
-            {userObject?.image !== null ? (
+            {userObject?.image ? (
               <div className="flex items-center w-full justify-center rounded-full">
                 <img
                   className=" w-20 h-20 rounded-full object-cover"
@@ -134,10 +169,14 @@ const Setting = () => {
                 />
               </div>
             ) : (
-              <div className="flex items-center justify-center">
-                <span className="font-medium text-white uppercase">
+              <div className="flex justify-center">
+                <div
+                  className="w-20 h-20 rounded-full bg-primary text-white flex items-center justify-center text-xl font-semibold uppercase"
+                  role="img"
+                  aria-label="User initials"
+                >
                   {getUserInitials(userObject, userType)}
-                </span>
+                </div>
               </div>
             )}
           </>
@@ -234,8 +273,7 @@ const Setting = () => {
             <FileUploader
               maxSizeMB={1}
               acceptFormats={["png", "jpeg", "jpg", "gif", "webp"]}
-              onFileUpload={handleFileUpload}
-              defaultFile={userObject?.image}
+              onFileUpload={setUploadedFile}
             />
             {uploadedFile && (
               <ImageDetails
